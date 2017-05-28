@@ -50,7 +50,7 @@ A aplicação deve:
 + Salvar no banco de dados local quais personagens foram favoritados.
 + Tratar a remoção de favoritos apenas no banco de dados local.
 
-Em metade das requisições enviadas para a api starwarsfavorites a aplicação deve adicionar o header: `Prefer:status=400`
+Em metade das requisições enviadas para a api starwarsfavorites a aplicação deve adicionar o header `Prefer` com o valor `status=400`.
 
 P.S.: O candidato deve escolher o ID.
 
