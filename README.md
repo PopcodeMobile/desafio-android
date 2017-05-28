@@ -12,7 +12,7 @@ http://docs.starwarsfavorites.apiary.io/#
 
 ### Lista de Personagens
 
-Para obter os personagens, sua aplicação deverá utilizar o recurso `people` da Swapi (documentação disponível no topo do documento). A aplicação deve exibir todos os 87 personagens e permitir pesquisar o personagem pelo nome.
+Para obter os personagens, sua aplicação deverá utilizar o recurso `people` da Swapi (documentação disponível no topo do documento). A aplicação deve exibir todos os 87 personagens e permitir pesquisar o personagem pelo nome. Sugerimos exibir as primeiras páginas enquanto carrega as outras, em um formato de scroll infinito.
 
 A lista de itens deve exibir as seguintes informações:
 + Nome [name]
@@ -35,7 +35,9 @@ Ao clicar em um item da lista o seu app deve mostrar as informações abaixo:
 + birth_year
 + gender
 + Nome do Planeta Natal 
-+ Nome da Especie
++ Nome da Espécie
+
+A busca pelo nome do planeta e da espécie deve ser feita em paralelo.
 
 ### Favoritos
 
