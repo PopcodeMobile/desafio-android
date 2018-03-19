@@ -40,7 +40,7 @@ class HomeInteractorImpl implements HomeInteractor {
                             controleFluxo = auxSubString
                                     .substring(auxSubString.indexOf('='), auxSubString.length());
                         } else {
-                            controleFluxo = "OFB";
+                            controleFluxo = "OFB"; //Out of bounds
                         }
                         listener.onGetCharacterListSuccess(
                                 response.body().getResults()
@@ -73,7 +73,7 @@ class HomeInteractorImpl implements HomeInteractor {
                             controleFluxoAux = auxSubString
                                     .substring(auxSubString.indexOf('='), auxSubString.length());
                         } else {
-                            controleFluxoAux = "OFB";
+                            controleFluxoAux = "OFB"; //Out of bounds
                         }
                         listener.onGetCharacterNextPageSuccess(characterList, controleFluxoAux);
                     } catch (NullPointerException npe) {

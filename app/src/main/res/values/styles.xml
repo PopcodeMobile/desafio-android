@@ -20,6 +20,10 @@
         <item name="android:lineSpacingExtra">8sp</item>
     </style>
 
-
+    <style name="TextViewNoResults" >
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 
 </resources>
