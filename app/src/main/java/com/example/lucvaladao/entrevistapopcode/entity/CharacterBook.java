@@ -19,4 +19,20 @@ public class CharacterBook {
     @SerializedName("results")
     public List<Character> results;
 
+    public int getCount() {
+        return count;
+    }
+
+    public String getNext() {
+        return next;
+    }
+
+    public String getPrevious() {
+        return previous;
+    }
+
+    public List<Character> getResults() {
+        return results;
+    }
+
 }
