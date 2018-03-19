@@ -1,4 +1,4 @@
-package com.example.lucvaladao.entrevistapopcode.mvp.home;
+package com.example.lucvaladao.entrevistapopcode.mvp.favorite;
 
 
 import android.os.Bundle;
@@ -16,13 +16,14 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements HomeView {
+public class FavoriteFragment extends Fragment implements FavoriteView {
 
-    public HomeFragment() {}
+
+    public FavoriteFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_favorite, container, false);
     }
 
     @Override
