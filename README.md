@@ -45,6 +45,8 @@ Na lista e nos detalhes deve ser possível adicionar e remover um personagem a s
 
 ##### Adição e Remoção de Favoritos
 
+URL BASE: http://private-782d3-starwarsfavorites.apiary-mock.com/
+
 Ao adicionar um favorito a aplicação deve fazer um request para a api starwarsfavorites (documentação disponível no topo do documento). 
 A aplicação deve:
 + Exibir a mensagem de retorno da API em caso de sucesso ou erro.
