@@ -1,5 +1,9 @@
 package com.example.lucvaladao.entrevistapopcode.entity;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,32 +12,58 @@ import java.util.List;
  * Created by lucvaladao on 3/19/18.
  */
 
+@Entity
 public class Character {
 
+    @PrimaryKey
     @SerializedName("name")
     private String name;
+
+    @ColumnInfo(name = "height")
     @SerializedName("height")
     private String height;
+
+    @ColumnInfo(name = "mass")
     @SerializedName("mass")
     private String mass;
+
+    @ColumnInfo(name = "hair_color")
     @SerializedName("hair_color")
     private String hairColor;
+
+    @ColumnInfo(name = "skin_color")
     @SerializedName("skin_color")
     private String skinColor;
+
+    @ColumnInfo(name = "eye_color")
     @SerializedName("eye_color")
     private String eyeColor;
+
+    @ColumnInfo(name = "birth_year")
     @SerializedName("birth_year")
     private String birthYear;
+
+    @ColumnInfo(name = "gender")
     @SerializedName("gender")
     private String gender;
+
+    @ColumnInfo(name = "homeworld")
     @SerializedName("homeworld")
     private String homeworld;
+
+    @ColumnInfo(name = "species")
     @SerializedName("species")
     private List<String> species;
+
+    @ColumnInfo(name = "created")
     @SerializedName("created")
     private String created;
+
+    @ColumnInfo(name = "edited")
     @SerializedName("edited")
     private String edited;
+
+    @ColumnInfo(name = "url")
     @SerializedName("url")
     private String url;
 
