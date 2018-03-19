@@ -13,7 +13,7 @@
 
         <TextView
             style="@style/TextViewItemName"
-            android:id="@+id/textView"
+            android:id="@+id/textViewIdName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -22,13 +22,13 @@
             android:layout_marginTop="16dp"
             android:text="@string/name"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView5"
+            app:layout_constraintEnd_toStartOf="@+id/textViewIdHeight"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             style="@style/TextViewItemInfo"
-            android:id="@+id/textView5"
+            android:id="@+id/textViewIdHeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -39,29 +39,29 @@
 
         <TextView
             style="@style/TextViewItemInfo"
-            android:id="@+id/textView6"
+            android:id="@+id/textViewIdGender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/gender"
-            app:layout_constraintEnd_toEndOf="@+id/textView5"
+            app:layout_constraintEnd_toEndOf="@+id/textViewIdHeight"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintStart_toStartOf="@+id/textViewIdHeight"
+            app:layout_constraintTop_toBottomOf="@+id/textViewIdHeight" />
 
         <TextView
             style="@style/TextViewItemInfo"
-            android:id="@+id/textView7"
+            android:id="@+id/textViewIdWeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
             android:text="@string/weight"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textView6"
+            app:layout_constraintEnd_toEndOf="@+id/textViewIdGender"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintStart_toStartOf="@+id/textViewIdGender"
+            app:layout_constraintTop_toBottomOf="@+id/textViewIdGender" />
 
     </android.support.constraint.ConstraintLayout>
 
