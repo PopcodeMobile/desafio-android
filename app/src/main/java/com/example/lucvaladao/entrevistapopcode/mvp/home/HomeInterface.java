@@ -2,6 +2,11 @@ package com.example.lucvaladao.entrevistapopcode.mvp.home;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Path;
+
 /**
  * Created by lucvaladao on 3/19/18.
  */
@@ -28,4 +33,11 @@ interface HomeView {
     void hideProgress ();
     void showNoResults ();
     void hideNoResults ();
+}
+
+interface HomeRetrofit {
+    String BASE_URL = "https://swapi.co/api/";
+
+    @GET("people")
+    Call<String> getCharacterList();
 }
