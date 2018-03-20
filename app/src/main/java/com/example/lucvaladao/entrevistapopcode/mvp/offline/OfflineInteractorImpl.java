@@ -52,17 +52,17 @@ class OfflineInteractorImpl implements OfflineInteractor {
             @Override
             public void onResponse(Call<FavResponse> call, Response<FavResponse> response) {
                 if (response.code() == 201 && response.body() != null){
-                    listener.onPostCharacterRemoteSuccess(character, response.body().getMessage());
+                    listener.onPostCharacterRemoteSuccess(character);
                 } else if (response.code() == 400 && response.body() != null){
-                    listener.onPostCharacterRemoteFailure(character, response.body().getErrorMessage());
+                    listener.onPostCharacterRemoteFailure(character);
                 } else {
-                    listener.onPostCharacterRemoteFailure(character, "Erro de comunicação com a API :( - onResponse: " + response.code());
+                    listener.onPostCharacterRemoteFailure(character);
                 }
             }
 
             @Override
             public void onFailure(Call<FavResponse> call, Throwable t) {
-                listener.onPostCharacterRemoteFailure(character,"Erro de comunicação com a API :( - onFailure");
+                listener.onPostCharacterRemoteFailure(character);
             }
         });
     }
@@ -73,7 +73,7 @@ class OfflineInteractorImpl implements OfflineInteractor {
         new  AsyncTask<Void, Void, List<Character>>() {
             @Override
             protected List<Character> doInBackground(Void... params) {
-                return MyApp.database.characterDAO().getAllCharacters();
+                return MyApp.database.characterDAO().getCharactersFavoriteFailure(false);
             }
 
             @Override

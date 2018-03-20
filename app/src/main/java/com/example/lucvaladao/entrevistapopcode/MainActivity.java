@@ -17,6 +17,7 @@ import com.example.lucvaladao.entrevistapopcode.mvp.favorite.FavoriteAdapterInte
 import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeAdapterInterface;
 import com.example.lucvaladao.entrevistapopcode.mvp.favorite.FavoriteFragment;
 import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeFragment;
+import com.example.lucvaladao.entrevistapopcode.mvp.offline.OfflineService;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.Serializable;
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements HomeAdapterInterf
     @Override
     protected void onStart() {
         super.onStart();
+
+        //Service sendo chamada cada vez que a activity fica visível
+        startService(new Intent(getApplicationContext(), OfflineService.class)
+                .setAction(OfflineService.ACTION));
 
         mNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

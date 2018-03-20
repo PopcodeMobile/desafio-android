@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class OfflineService extends IntentService implements OnConcludeListener, PostCharacterRemoteListener {
 
-    public static final String ACTION = ".mvp.OfflineService";
+    public static final String ACTION = ".mvp.offline.OfflineService";
     private OfflineInteractor offlineInteractor = new OfflineInteractorImpl();
     private static List<Character> characterListAux;
 
@@ -39,11 +39,13 @@ public class OfflineService extends IntentService implements OnConcludeListener,
     public void onConclude(List<Character> characterList) {
         int index = 0;
         characterListAux = characterList;
-        for (Character character : characterList){
-            String auxHeader = Math.random() < 0.5 ? "400" : "201";
-            offlineInteractor.postCharacterRemote(character, String.valueOf(index++), auxHeader, this);
-
+        if (!characterList.isEmpty()){
+            for (Character character : characterList){
+                String auxHeader = Math.random() < 0.5 ? "400" : "201";
+                offlineInteractor.postCharacterRemote(character, String.valueOf(index++), auxHeader, this);
+            }
         }
+
     }
 
 
