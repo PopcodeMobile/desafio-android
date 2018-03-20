@@ -54,7 +54,7 @@
 
             <TextView
                 style="@style/TextViewDetailName"
-                android:id="@+id/textView"
+                android:id="@+id/textViewNameDetail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
@@ -72,8 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="Height"
-                app:layout_constraintStart_toStartOf="@+id/textView"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintStart_toStartOf="@+id/textViewNameDetail"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNameDetail" />
 
             <TextView
                 style="@style/TextViewItemName"
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hair Color"
-                app:layout_constraintEnd_toEndOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="@+id/textViewNameDetail"
                 app:layout_constraintTop_toTopOf="@+id/textView2" />
 
             <TextView
@@ -109,7 +109,7 @@
                 android:text="Mass"
                 app:layout_constraintEnd_toStartOf="@+id/textView3"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewNameDetail" />
 
             <TextView
                 android:id="@+id/textViewMassDetail"
