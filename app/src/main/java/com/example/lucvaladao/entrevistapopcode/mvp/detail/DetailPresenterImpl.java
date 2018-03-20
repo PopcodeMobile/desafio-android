@@ -16,11 +16,13 @@ class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, Get
 
     private DetailInteractor detailInteractor;
     private DetailView detailView;
+    private Character character;
 
     DetailPresenterImpl (DetailInteractor detailInteractor, DetailView detailView){
         this.detailInteractor = detailInteractor;
         this.detailView = detailView;
     }
+
 
     @Override
     public void bindView(DetailView detailView) {
@@ -45,22 +47,34 @@ class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, Get
     }
 
     @Override
+    public void getInfo(Character character) {
+        this.character = character;
+        detailInteractor.getSpecieInfo(getId(character.getSpecies().get(0)), this);
+    }
+
+    @Override
     public void onGetSpecieInfoSuccess(Specie specie) {
-        detailView.setSpecieText(specie.)
+        detailView.setSpecieText(specie.getName());
+        detailInteractor.getPlanetInfo(getId(character.getHomeworld()), this);
     }
 
     @Override
     public void onGetSpecieInfoFailure(String message) {
-
+        detailView.showToast(message);
     }
 
     @Override
     public void onGetPlanetInfoSuccess(Planet planet) {
-
+        detailView.setPlanetText(planet.getName());
     }
 
     @Override
     public void onGetPlanetInfoFailure(String message) {
+        detailView.showToast(message);
+    }
 
+    public String getId (String info){
+        int aux = info.length();
+        return info.substring(aux - 2, aux - 1);
     }
 }

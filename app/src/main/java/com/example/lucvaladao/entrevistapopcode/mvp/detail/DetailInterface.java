@@ -1,16 +1,12 @@
 package com.example.lucvaladao.entrevistapopcode.mvp.detail;
 
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
-import com.example.lucvaladao.entrevistapopcode.entity.CharacterBook;
 import com.example.lucvaladao.entrevistapopcode.entity.Planet;
 import com.example.lucvaladao.entrevistapopcode.entity.Specie;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * Created by lucvaladao on 3/20/18.
@@ -19,6 +15,7 @@ import retrofit2.http.Query;
 interface DetailInteractor {
 
     void saveToDB (Character character);
+
 
     interface GetSpecieInfoListener {
         void onGetSpecieInfoSuccess (Specie specie);
@@ -44,14 +41,16 @@ interface DetailPresenter {
     void unbindView ();
     void putCharacterIntoFav (Character character);
     void removeCharacterFromFav (Character character);
+    void getInfo (Character character);
 }
 
 interface DetailView {
     void putCharacterIntoFav (Character character);
     void removeCharacterFromFav (Character character);
-    void showToast ();
+    void showToast(String message);
     void toggleFavButton ();
-    void setSpecieText();
+    void setSpecieText(String specieName);
+    void setPlanetText(String planetName);
 }
 
 interface DetailRetrofit {

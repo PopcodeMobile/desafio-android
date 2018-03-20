@@ -25,7 +25,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
     }
 
     @Override
-    public void showToast() {
+    public void showToast(String message) {
 
     }
 
