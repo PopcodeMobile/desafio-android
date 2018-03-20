@@ -45,6 +45,7 @@ interface DetailPresenter {
 }
 
 interface DetailView {
+    void getInfo (Character character);
     void putCharacterIntoFav (Character character);
     void removeCharacterFromFav (Character character);
     void showToast(String message);

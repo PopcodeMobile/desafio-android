@@ -65,6 +65,8 @@ public class DetailActivity extends AppCompatActivity implements DetailView, Fav
         birthYearTextView.setText(character.getBirthYear());
         genderTextView.setText(character.getGender());
 
+        getInfo(character);
+
         if (character.isFav()){
             materialFavoriteButton.setFavorite(true);
         } else {
@@ -81,6 +83,11 @@ public class DetailActivity extends AppCompatActivity implements DetailView, Fav
                 }
             }
         });
+    }
+
+    @Override
+    public void getInfo(Character character) {
+        mDetailPresenter.getInfo(character);
     }
 
     @Override
