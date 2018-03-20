@@ -31,18 +31,20 @@
             style="@style/TextViewItemInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
+            android:maxLines="1"
             android:layout_marginTop="16dp"
             android:text="@string/height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            style="@style/TextViewItemInfo"
             android:id="@+id/textViewIdGender"
+            style="@style/TextViewItemInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:maxLines="1"
             android:text="@string/gender"
             app:layout_constraintEnd_toEndOf="@+id/textViewIdHeight"
             app:layout_constraintHorizontal_bias="0.0"
@@ -50,12 +52,13 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewIdHeight" />
 
         <TextView
-            style="@style/TextViewItemInfo"
             android:id="@+id/textViewIdWeight"
+            style="@style/TextViewItemInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
+            android:maxLines="1"
             android:text="@string/weight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textViewIdGender"

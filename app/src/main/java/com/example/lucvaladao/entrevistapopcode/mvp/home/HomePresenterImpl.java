@@ -50,6 +50,11 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
     }
 
     @Override
+    public void forceUpdate() {
+        homeInteractor.getCharacterList(this);
+    }
+
+    @Override
     public void onGetCharacterListSuccess(List<Character> characterList, String controleFluxo, int comparedValue) {
         this.characterList = characterList;
         this.controleFluxo = controleFluxo;
@@ -89,10 +94,5 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
         } else {
             homeInteractor.getCharacterList(this);
         }
-    }
-
-    @Override
-    public void onGetFromDBFailure() {
-        homeView.showToast("Some error happened with my DB!");
     }
 }

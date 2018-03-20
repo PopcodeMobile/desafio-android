@@ -3,6 +3,7 @@ package com.example.lucvaladao.entrevistapopcode.db;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.TypeConverter;
 
@@ -22,7 +23,7 @@ public interface CharacterDao {
     @Query("SELECT * FROM character")
     List<Character> getAllCharacters();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Character> characterList);
 
     @Delete

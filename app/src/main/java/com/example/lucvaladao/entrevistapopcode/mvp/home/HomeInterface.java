@@ -32,7 +32,6 @@ interface HomeInteractor {
 
     interface GetFromDBListener {
         void onGetFromDBSuccess(List<Character> characterList);
-        void onGetFromDBFailure();
     }
 
     void saveToDB (List<Character> characterList);
@@ -45,6 +44,7 @@ interface HomePresenter {
     void bindView (HomeView homeView);
     void unbindView ();
     void saveToDB(List<Character> characterList);
+    void forceUpdate();
 }
 
 interface HomeView {
