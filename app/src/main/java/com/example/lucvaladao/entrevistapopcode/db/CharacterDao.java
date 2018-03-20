@@ -29,6 +29,9 @@ public interface CharacterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCharacter(Character character);
 
+    @Query("SELECT * FROM character WHERE request_status = :requestStatus")
+    List<Character> getCharactersFavoriteFailure(boolean requestStatus);
+
      class Converters {
         @TypeConverter
         public static List<String> fromString(String value) {

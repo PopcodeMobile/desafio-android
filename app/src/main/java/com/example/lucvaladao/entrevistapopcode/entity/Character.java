@@ -74,6 +74,18 @@ public class Character implements Serializable {
     @SerializedName("fav")
     private boolean fav = false;
 
+    public boolean isRequestStatus() {
+        return requestStatus;
+    }
+
+    public void setRequestStatus(boolean requestStatus) {
+        this.requestStatus = requestStatus;
+    }
+
+    @ColumnInfo(name = "request_status")
+    @SerializedName("request_status")
+    private boolean requestStatus;
+
     public String getName() {
         return name;
     }

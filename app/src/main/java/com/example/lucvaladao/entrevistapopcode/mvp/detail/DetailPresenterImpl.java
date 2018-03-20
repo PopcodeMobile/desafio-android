@@ -98,5 +98,6 @@ class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, Get
     @Override
     public void onPostCharacterRemoteFailure(String message) {
         detailView.showToast(message);
+
     }
 }

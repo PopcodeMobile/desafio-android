@@ -23,6 +23,7 @@ interface DetailInteractor {
     }
     void postCharacterRemote (String id, String auxHeader, PostCharacterRemoteListener listener);
 
+    void changeRequestStatus (Character character);
     void saveToDB (Character character);
 
     interface GetSpecieInfoListener {

@@ -60,6 +60,12 @@ class DetailInteractorImpl implements DetailInteractor {
         });
     }
 
+    @Override
+    public void changeRequestStatus(Character character) {
+        character.setRequestStatus(false);
+        saveToDB(character);
+    }
+
     @SuppressLint("StaticFieldLeak")
     @Override
     public void saveToDB(final Character character) {

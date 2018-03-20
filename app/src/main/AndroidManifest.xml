@@ -20,6 +20,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".mvp.detail.DetailActivity"></activity>
+
+        <service
+            android:name=".mvp.offline.OfflineService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
