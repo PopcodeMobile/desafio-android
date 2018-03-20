@@ -43,7 +43,7 @@ interface HomePresenter {
     void getCharacterNextPage ();
     void bindView (HomeView homeView);
     void unbindView ();
-    void saveToDB(List<Character> characterList);
+    void saveToDB (List<Character> characterList);
     void forceUpdate();
 }
 

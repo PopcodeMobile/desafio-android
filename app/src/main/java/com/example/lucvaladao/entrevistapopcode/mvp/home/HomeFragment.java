@@ -104,6 +104,7 @@ public class HomeFragment extends Fragment implements HomeView {
             mRecyclerView.addItemDecoration(dividerItemDecoration);
             hideProgress();
             mSwipeRefreshLayout.setRefreshing(false);
+            showToast("Updated!");
         } else {
             showNoResults();
             mSwipeRefreshLayout.setRefreshing(false);

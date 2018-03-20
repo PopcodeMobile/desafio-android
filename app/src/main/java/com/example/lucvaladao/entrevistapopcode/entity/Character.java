@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  */
 
 @Entity
-public class Character {
+public class Character implements Serializable {
 
     @NonNull
     @PrimaryKey
@@ -68,6 +69,10 @@ public class Character {
     @ColumnInfo(name = "url")
     @SerializedName("url")
     private String url;
+
+    @ColumnInfo(name = "fav")
+    @SerializedName("fav")
+    private boolean fav = false;
 
     public String getName() {
         return name;
@@ -173,4 +178,11 @@ public class Character {
         this.species = species;
     }
 
+    public boolean isFav() {
+        return fav;
+    }
+
+    public void setFav(boolean fav) {
+        this.fav = fav;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.lucvaladao.entrevistapopcode;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,11 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
+import com.example.lucvaladao.entrevistapopcode.mvp.detail.DetailActivity;
 import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeAdapterInterface;
 import com.example.lucvaladao.entrevistapopcode.mvp.favorite.FavoriteFragment;
 import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeFragment;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements HomeAdapterInterface {
@@ -161,7 +164,9 @@ public class MainActivity extends AppCompatActivity implements HomeAdapterInterf
     }
 
     @Override
-    public void goToCharacterDetail(Character character) {
-
+    public void goToCharacterDetailFromHome(Character character) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("character", character);
+        startActivity(intent);
     }
 }

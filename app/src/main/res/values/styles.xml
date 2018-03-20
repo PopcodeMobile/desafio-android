@@ -26,4 +26,14 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="CustomToolbar">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextViewDetailName" >
+        <item name="android:textColor">@color/colorTextBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
 </resources>

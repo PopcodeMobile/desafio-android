@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/itemBeerConstraintLayout"
+        android:id="@+id/itemCharacterConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">

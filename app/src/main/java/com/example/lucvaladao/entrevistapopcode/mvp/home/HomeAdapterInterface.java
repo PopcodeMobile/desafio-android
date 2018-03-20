@@ -7,5 +7,5 @@ import com.example.lucvaladao.entrevistapopcode.entity.Character;
  */
 
 public interface HomeAdapterInterface {
-    void goToCharacterDetail (Character character);
+    void goToCharacterDetailFromHome (Character character);
 }
