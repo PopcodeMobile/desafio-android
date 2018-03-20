@@ -53,7 +53,7 @@ interface HomeRetrofit {
     @GET("people/")
     Call<CharacterBook> getCharacterList();
 
-    @GET("people/{page}")
+    @GET("people/")
     Call<CharacterBook> getCharacterListNextPage(@Query("page") String page);
 }
 

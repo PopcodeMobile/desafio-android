@@ -38,7 +38,7 @@ class HomeInteractorImpl implements HomeInteractor {
                         String auxSubString = response.body().getNext();
                         if (auxSubString != null) {
                             controleFluxo = auxSubString
-                                    .substring(auxSubString.indexOf('='), auxSubString.length());
+                                    .substring(auxSubString.indexOf('=') + 1, auxSubString.length());
                         } else {
                             controleFluxo = "OFB"; //Out of bounds
                         }
@@ -72,7 +72,7 @@ class HomeInteractorImpl implements HomeInteractor {
                         String auxSubString = response.body().getNext();
                         if (auxSubString != null) {
                             controleFluxoAux = auxSubString
-                                    .substring(auxSubString.indexOf('='), auxSubString.length());
+                                    .substring(auxSubString.indexOf('=') + 1, auxSubString.length());
                         } else {
                             controleFluxoAux = "OFB"; //Out of bounds
                         }

@@ -48,7 +48,7 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
     public void onGetCharacterListSuccess(List<Character> characterList, String controleFluxo, int comparedValue) {
         this.characterList = characterList;
         this.controleFluxo = controleFluxo;
-        if (characterList.size() < comparedValue){
+        if (characterList.size() < comparedValue - 1){
             getCharacterNextPage();
         }
     }
@@ -62,7 +62,7 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
     public void onGetCharacterNextPageSuccess(List<Character> characterList, String controleFluxo, int comparedValue) {
         this.characterList = characterList;
         this.controleFluxo = controleFluxo;
-        if (characterList.size() < comparedValue){
+        if (characterList.size() < comparedValue - 1){
             getCharacterNextPage();
         } else {
             homeView.fillAdapter(characterList);
