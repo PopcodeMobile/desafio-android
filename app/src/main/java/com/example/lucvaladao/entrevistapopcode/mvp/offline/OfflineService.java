@@ -1,25 +1,25 @@
 package com.example.lucvaladao.entrevistapopcode.mvp.offline;
 
-import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 
-import com.example.lucvaladao.entrevistapopcode.db.MyApp;
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
+import com.example.lucvaladao.entrevistapopcode.mvp.offline.OfflineInteractor.OnConcludeListener;
+import com.example.lucvaladao.entrevistapopcode.mvp.offline.OfflineInteractor.PostCharacterRemoteListener;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by lucvaladao on 3/20/18.
  */
 
-public class OfflineService extends IntentService implements OfflineInterface.OnConcludeListener {
+public class OfflineService extends IntentService implements OnConcludeListener, PostCharacterRemoteListener {
 
     public static final String ACTION = ".mvp.OfflineService";
+    private OfflineInteractor offlineInteractor = new OfflineInteractorImpl();
     private static List<Character> characterListAux;
-    private OfflineInterface offlineInterface = new OfflineInterfaceImpl();
 
     public OfflineService() {
         super("OfflineService");
@@ -27,16 +27,35 @@ public class OfflineService extends IntentService implements OfflineInterface.On
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        if (intent != null){
+        if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION.equals(action)){
-                offlineInterface.getAllCharacterFailure(this);
+            if (ACTION.equals(action)) {
+                offlineInteractor.getAllCharacterFailure(this);
             }
         }
     }
 
     @Override
     public void onConclude(List<Character> characterList) {
+        int index = 0;
         characterListAux = characterList;
+        for (Character character : characterList){
+            String auxHeader = Math.random() < 0.5 ? "400" : "201";
+            offlineInteractor.postCharacterRemote(character, String.valueOf(index++), auxHeader, this);
+
+        }
+    }
+
+
+    @Override
+    public void onPostCharacterRemoteSuccess(Character character) {
+        character.setRequestStatus(true);
+        offlineInteractor.putCHaracterIntoDB(character);
+    }
+
+    @Override
+    public void onPostCharacterRemoteFailure(Character character) {
+        character.setRequestStatus(false);
+        offlineInteractor.putCHaracterIntoDB(character);
     }
 }
