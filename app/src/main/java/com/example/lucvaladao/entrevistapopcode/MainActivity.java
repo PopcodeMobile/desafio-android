@@ -90,6 +90,11 @@ public class MainActivity extends AppCompatActivity implements HomeAdapterInterf
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (mCurrentFragment == 0){
+                    onSearchHome(newText);
+                } else if (mCurrentFragment == 1){
+                    onSearchFavorite(newText);
+                }
                 return false;
             }
         });
