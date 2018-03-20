@@ -44,9 +44,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     public void onBindViewHolder(HomeViewHolder holder, int position) {
         Character characterItem = characterList.get(position);
         holder.characterName.setText(characterItem.getName());
-        holder.characterHeight.setText(characterItem.getHeight());
-        holder.characterGender.setText(characterItem.getGender());
-        holder.characterWeight.setText(characterItem.getMass());
+        holder.characterHeight.setText(context.getString(R.string.height) + " " + characterItem.getHeight());
+        holder.characterGender.setText(context.getString(R.string.gender) + " "  + characterItem.getGender());
+        holder.characterWeight.setText(context.getString(R.string.weight) + " "  +characterItem.getMass());
     }
 
     @Override

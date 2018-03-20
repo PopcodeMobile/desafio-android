@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment implements HomeView {
         homeProgress = rootView.findViewById(R.id.homeProgress);
         homeNoResults = rootView.findViewById(R.id.homeNoResults);
         recyclerView = rootView.findViewById(R.id.homeRecyclerView);
+        mHomePresenter.bindView(this);
         return rootView;
     }
 
@@ -64,6 +65,12 @@ public class HomeFragment extends Fragment implements HomeView {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mHomePresenter.unbindView();
+    }
+
+    @Override
     public void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
@@ -79,7 +86,7 @@ public class HomeFragment extends Fragment implements HomeView {
         if (!characterListAux.isEmpty()){
             hideNoResults();
             try {
-                mHomeAdapter = new HomeAdapter(characterList, mContext);
+                mHomeAdapter = new HomeAdapter(characterListAux, mContext);
             } catch (Exception e) {
                 e.printStackTrace();
             }

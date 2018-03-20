@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements HomeAdapterInterf
                             replaceFragment(new HomeFragment(), R.id.containerFrameLayout, false, "");
                         }
                         mCurrentFragment = 0;
+                        break;
                     }
                     case R.id.navigation_favorite: {
                         if (navigationList.get(navigationList.size() - 1) == 0){
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements HomeAdapterInterf
                             replaceFragment(new FavoriteFragment(), R.id.containerFrameLayout, false, "");
                         }
                         mCurrentFragment = 1;
+                        break;
                     }
                     default:
                 }
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements HomeAdapterInterf
     }
 
     private void onSearchHome (String query){
-
+        replaceFragment(HomeFragment.newInstance(query), R.id.containerFrameLayout, true, "");
     }
 
     private void onSearchFavorite(String query){

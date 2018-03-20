@@ -18,7 +18,7 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
     private List<Character> characterList;
     private String controleFluxo;
 
-    public HomePresenterImpl(HomeInteractor homeInteractor, HomeView homeView){
+    HomePresenterImpl(HomeInteractor homeInteractor, HomeView homeView){
         this.homeInteractor = homeInteractor;
         this.homeView = homeView;
         this.characterList = new ArrayList<>();
@@ -56,6 +56,8 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
     @Override
     public void onGetCharacterListFailure(Exception e) {
         homeView.showToast("Erro ao carregar - FIRST PAGE!");
+        homeView.hideProgress();
+        homeView.showNoResults();
     }
 
     @Override
