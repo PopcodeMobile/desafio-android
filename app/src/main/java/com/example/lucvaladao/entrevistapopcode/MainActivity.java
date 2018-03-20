@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
 import com.example.lucvaladao.entrevistapopcode.mvp.detail.DetailActivity;
+import com.example.lucvaladao.entrevistapopcode.mvp.favorite.FavoriteAdapterInterface;
 import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeAdapterInterface;
 import com.example.lucvaladao.entrevistapopcode.mvp.favorite.FavoriteFragment;
 import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeFragment;
@@ -21,7 +22,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements HomeAdapterInterface {
+public class MainActivity extends AppCompatActivity implements HomeAdapterInterface, FavoriteAdapterInterface {
 
     private int mCurrentFragment = 0;
     private ArrayList<Integer> navigationList = new ArrayList<>();
@@ -165,6 +166,13 @@ public class MainActivity extends AppCompatActivity implements HomeAdapterInterf
 
     @Override
     public void goToCharacterDetailFromHome(Character character) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("character", character);
+        startActivity(intent);
+    }
+
+    @Override
+    public void goToCharacterDetailFromFavorite(Character character) {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("character", character);
         startActivity(intent);

@@ -15,10 +15,6 @@ import android.widget.Toast;
 
 import com.example.lucvaladao.entrevistapopcode.R;
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
-import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeAdapter;
-import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeInteractorImpl;
-import com.example.lucvaladao.entrevistapopcode.mvp.home.HomePresenter;
-import com.example.lucvaladao.entrevistapopcode.mvp.home.HomePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +22,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoriteFragment extends Fragment implements FavoriteView, FavoriteAdapterInterface {
+public class FavoriteFragment extends Fragment implements FavoriteView {
 
     private FavoritePresenter mFavoritePresenter = new FavoritePresenterImpl(
             new FavoriteInteractorImpl(), this
     );
     private Context mContext;
-    private HomeAdapter mFavoriteAdapter;
+    private FavoriteAdapter mFavoriteAdapter;
     private String mFilter = "";
     private FrameLayout mFavoriteProgress, mFavoriteNoResults;
     private RecyclerView mRecyclerView;
@@ -81,7 +77,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Favorite
     public void fillAdapter(List<Character> characterList) {
         List<Character> characterListAux = new ArrayList<>();
         for (Character characterAux : characterList){
-            if (characterAux.getName().contains(mFilter)){
+            if (characterAux.getName().contains(mFilter) && characterAux.isFav()){
                 characterListAux.add(characterAux);
             }
         }
@@ -97,36 +93,29 @@ public class FavoriteFragment extends Fragment implements FavoriteView, Favorite
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
             mRecyclerView.addItemDecoration(dividerItemDecoration);
             hideProgress();
-            mSwipeRefreshLayout.setRefreshing(false);
             showToast("Updated!");
         } else {
             showNoResults();
-            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
     @Override
     public void showProgress() {
-
+        mFavoriteProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        mFavoriteProgress.setVisibility(View.GONE);
     }
 
     @Override
     public void showNoResults() {
-
+        mFavoriteNoResults.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideNoResults() {
-
-    }
-
-    @Override
-    public void goToCharacterDetailFromFavorite(Character character) {
-
+        mFavoriteNoResults.setVisibility(View.GONE);
     }
 }
