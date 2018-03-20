@@ -7,12 +7,15 @@ import com.example.lucvaladao.entrevistapopcode.mvp.detail.DetailInteractor.GetP
 import com.example.lucvaladao.entrevistapopcode.mvp.detail.DetailInteractor.GetSpecieInfoListener;
 
 import java.util.List;
+import java.util.Random;
+
+import static com.example.lucvaladao.entrevistapopcode.mvp.detail.DetailInteractor.*;
 
 /**
  * Created by lucvaladao on 3/20/18.
  */
 
-class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, GetPlanetInfoListener {
+class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, GetPlanetInfoListener, PostCharacterRemoteListener {
 
     private DetailInteractor detailInteractor;
     private DetailView detailView;
@@ -23,6 +26,12 @@ class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, Get
         this.detailView = detailView;
     }
 
+
+    @Override
+    public void postCharacterRemote(Character character) {
+        String auxHeader = Math.random() < 0.5 ? "400" : "201";
+        detailInteractor.postCharacterRemote(String.valueOf(new Random().nextInt(100) + 1), auxHeader, this);
+    }
 
     @Override
     public void bindView(DetailView detailView) {
@@ -38,6 +47,7 @@ class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, Get
     public void putCharacterIntoFav(Character character, FavoriteActionListener listener) {
         character.setFav(true);
         listener.toggleFav();
+        postCharacterRemote(character);
         detailInteractor.saveToDB(character);
     }
 
@@ -75,8 +85,18 @@ class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, Get
         detailView.showToast(message);
     }
 
-    public String getId (String info){
+    private String getId(String info){
         int aux = info.length();
         return info.substring(aux - 2, aux - 1);
+    }
+
+    @Override
+    public void onPostCharacterRemoteSuccess(String message) {
+        detailView.showToast(message);
+    }
+
+    @Override
+    public void onPostCharacterRemoteFailure(String message) {
+        detailView.showToast(message);
     }
 }

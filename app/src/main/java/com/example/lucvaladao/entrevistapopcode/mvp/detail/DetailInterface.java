@@ -1,11 +1,14 @@
 package com.example.lucvaladao.entrevistapopcode.mvp.detail;
 
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
+import com.example.lucvaladao.entrevistapopcode.entity.FavResponse;
 import com.example.lucvaladao.entrevistapopcode.entity.Planet;
 import com.example.lucvaladao.entrevistapopcode.entity.Specie;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -14,8 +17,13 @@ import retrofit2.http.Path;
 
 interface DetailInteractor {
 
-    void saveToDB (Character character);
+    interface PostCharacterRemoteListener {
+        void onPostCharacterRemoteSuccess(String message);
+        void onPostCharacterRemoteFailure(String message);
+    }
+    void postCharacterRemote (String id, String auxHeader, PostCharacterRemoteListener listener);
 
+    void saveToDB (Character character);
 
     interface GetSpecieInfoListener {
         void onGetSpecieInfoSuccess (Specie specie);
@@ -37,6 +45,7 @@ interface DetailPresenter {
         void toggleFav();
     }
 
+    void postCharacterRemote(Character character);
     void bindView (DetailView detailView);
     void unbindView ();
     void putCharacterIntoFav (Character character, FavoriteActionListener listener);
@@ -56,10 +65,14 @@ interface DetailView {
 
 interface DetailRetrofit {
     String BASE_URL = "https://swapi.co/api/";
+    String URL_FAV = "http://private-782d3-starwarsfavorites.apiary-mock.com/";
 
     @GET("planets/{id}")
     Call<Planet> getPlanetInfo(@Path("id") String id);
 
     @GET("species/{id}")
     Call<Specie> getSpecieInfo(@Path("id") String id);
+
+    @POST("favorite/{id}")
+    Call<FavResponse> postFavoriteCharacter(@Header("Prefer") String auxHeader, @Path("id") String id);
 }

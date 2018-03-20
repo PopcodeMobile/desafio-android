@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment implements HomeView {
     public void fillAdapter(List<Character> characterList) {
         List<Character> characterListAux = new ArrayList<>();
         for (Character characterAux : characterList){
-            if (characterAux.getName().contains(mFilter)){
+            if (characterAux.getName().contains (mFilter)){
                 characterListAux.add(characterAux);
             }
         }
@@ -104,7 +104,6 @@ public class HomeFragment extends Fragment implements HomeView {
             mRecyclerView.addItemDecoration(dividerItemDecoration);
             hideProgress();
             mSwipeRefreshLayout.setRefreshing(false);
-            showToast("Home View Ready!");
         } else {
             showNoResults();
             mSwipeRefreshLayout.setRefreshing(false);
