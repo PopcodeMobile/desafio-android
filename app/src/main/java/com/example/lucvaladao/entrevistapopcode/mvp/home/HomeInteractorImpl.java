@@ -32,19 +32,20 @@ class HomeInteractorImpl implements HomeInteractor {
         mRetrofitService.getCharacterList().enqueue(new Callback<CharacterBook>() {
             @Override
             public void onResponse(Call<CharacterBook> call, Response<CharacterBook> response) {
-                if (response.code() == 200 && response.body() != null){
+                if (response.code() == 200 && response.body() != null) {
                     try {
                         String controleFluxo;
                         String auxSubString = response.body().getNext();
-                        if (auxSubString != null){
+                        if (auxSubString != null) {
                             controleFluxo = auxSubString
                                     .substring(auxSubString.indexOf('='), auxSubString.length());
                         } else {
                             controleFluxo = "OFB"; //Out of bounds
                         }
                         listener.onGetCharacterListSuccess(
-                                response.body().getResults()
-                                , controleFluxo);
+                                response.body().getResults(),
+                                controleFluxo,
+                                response.body().getCount());
                     } catch (NullPointerException npe) {
                         Log.e("Error", "Chracters loading error - NPE!");
                     }
@@ -64,18 +65,20 @@ class HomeInteractorImpl implements HomeInteractor {
         mRetrofitService.getCharacterListNextPage(controleFluxo).enqueue(new Callback<CharacterBook>() {
             @Override
             public void onResponse(Call<CharacterBook> call, Response<CharacterBook> response) {
-                if (response.code() == 200 && response.body() != null){
+                if (response.code() == 200 && response.body() != null) {
                     try {
                         characterList.addAll(response.body().getResults());
                         String controleFluxoAux;
                         String auxSubString = response.body().getNext();
-                        if (auxSubString != null){
+                        if (auxSubString != null) {
                             controleFluxoAux = auxSubString
                                     .substring(auxSubString.indexOf('='), auxSubString.length());
                         } else {
                             controleFluxoAux = "OFB"; //Out of bounds
                         }
-                        listener.onGetCharacterNextPageSuccess(characterList, controleFluxoAux);
+                        listener.onGetCharacterNextPageSuccess(characterList,
+                                controleFluxoAux,
+                                response.body().getCount());
                     } catch (NullPointerException npe) {
                         Log.e("Error", "Chracters loading error - NPE!");
                     }

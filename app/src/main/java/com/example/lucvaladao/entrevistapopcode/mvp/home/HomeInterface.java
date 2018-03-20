@@ -17,14 +17,14 @@ import retrofit2.http.Query;
 
 interface HomeInteractor {
     interface GetCharacterListListener {
-        void onGetCharacterListSuccess(List<Character> characterList, String controleFluxo);
+        void onGetCharacterListSuccess(List<Character> characterList, String controleFluxo, int comparedValue);
         void onGetCharacterListFailure(Exception e);
     }
 
     void getCharacterList (GetCharacterListListener listener);
 
     interface GetCharacterNextPageListener {
-        void onGetCharacterNextPageSuccess (List<Character> characterList, String controleFluxo);
+        void onGetCharacterNextPageSuccess (List<Character> characterList, String controleFluxo, int comparedValue);
         void onGetCharacterNextPageFailure (Exception e);
     }
 

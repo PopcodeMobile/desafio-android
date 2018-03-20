@@ -1,6 +1,7 @@
 package com.example.lucvaladao.entrevistapopcode.mvp.home;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,11 +19,36 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment implements HomeView {
 
-    public HomeFragment() {}
+    private HomePresenter mHomePresenter = new HomePresenterImpl(
+            new HomeInteractorImpl(), this
+    );
+    private Context mContext;
+    private HomeAdapter mHomeAdapter;
+    private String mFilter = "";
+
+    public static Fragment newInstance (String query){
+        HomeFragment fragment = new HomeFragment();
+        fragment.mFilter = query;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        showProgress();
+        mHomePresenter.getCharacterList();
     }
 
     @Override
