@@ -3,6 +3,8 @@ package com.example.lucvaladao.entrevistapopcode.mvp.detail;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +17,8 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
 
     TextView nameTextView, heightTextView, massTextView, hairColorTextView, skinColorTextView,
                 eyeColorTextView, birthYearTextView, genderTextView, planetTextView, specieTextView;
+
+    Toolbar toolbar;
 
     MaterialFavoriteButton materialFavoriteButton;
 
@@ -39,6 +43,9 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
         planetTextView = findViewById(R.id.textViewPlanetDetail);
         specieTextView = findViewById(R.id.textViewSpecieDetail);
         materialFavoriteButton = findViewById(R.id.starButton);
+        toolbar = findViewById(R.id.detailToolbar);
+
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -103,5 +110,16 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
     @Override
     public void setPlanetText(String planetName) {
         planetTextView.setText(planetName);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
+        } else {
+            super.onOptionsItemSelected(item);
+            return false;
+        }
     }
 }
