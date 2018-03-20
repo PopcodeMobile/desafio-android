@@ -33,4 +33,9 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
     public void toggleFavButton() {
 
     }
+
+    @Override
+    public void setSpecieText() {
+
+    }
 }

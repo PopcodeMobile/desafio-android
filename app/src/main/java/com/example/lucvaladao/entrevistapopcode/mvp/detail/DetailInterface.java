@@ -18,21 +18,19 @@ import retrofit2.http.Query;
 
 interface DetailInteractor {
 
-    interface GetFromDBListener {
-        void onGetFromDBSuccess(List<Character> characterList);
-    }
-    void saveToDB (List<Character> characterList);
-    void getFromDB (GetFromDBListener listener);
+    void saveToDB (Character character);
 
     interface GetSpecieInfoListener {
         void onGetSpecieInfoSuccess (Specie specie);
+        void onGetSpecieInfoFailure (String message);
     }
-    void getSpecieInfo (String id);
+    void getSpecieInfo (String id, GetSpecieInfoListener listener);
 
     interface GetPlanetInfoListener {
         void onGetPlanetInfoSuccess (Planet planet);
+        void onGetPlanetInfoFailure (String message);
     }
-    void getPlanetInfo (String id);
+    void getPlanetInfo (String id, GetPlanetInfoListener listener);
 
 }
 
@@ -53,16 +51,15 @@ interface DetailView {
     void removeCharacterFromFav (Character character);
     void showToast ();
     void toggleFavButton ();
+    void setSpecieText();
 }
 
 interface DetailRetrofit {
-    interface HomeRetrofit {
-        String BASE_URL = "https://swapi.co/api/";
+    String BASE_URL = "https://swapi.co/api/";
 
-        @GET("planets/{id}")
-        Call<Planet> getPlanetInfo(@Path("id") String id);
+    @GET("planets/{id}")
+    Call<Planet> getPlanetInfo(@Path("id") String id);
 
-        @GET("species/{id}")
-        Call<Specie> getSpecieInfo(@Path("id") String id);
-    }
+    @GET("species/{id}")
+    Call<Specie> getSpecieInfo(@Path("id") String id);
 }
