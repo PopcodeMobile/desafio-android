@@ -11,9 +11,10 @@ import android.widget.Toast;
 
 import com.example.lucvaladao.entrevistapopcode.R;
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
+import com.example.lucvaladao.entrevistapopcode.mvp.detail.DetailPresenter.FavoriteActionListener;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
-public class DetailActivity extends AppCompatActivity implements DetailView {
+public class DetailActivity extends AppCompatActivity implements DetailView, FavoriteActionListener {
 
     TextView nameTextView, heightTextView, massTextView, hairColorTextView, skinColorTextView,
                 eyeColorTextView, birthYearTextView, genderTextView, planetTextView, specieTextView;
@@ -84,12 +85,12 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
 
     @Override
     public void putCharacterIntoFav(Character character) {
-        mDetailPresenter.putCharacterIntoFav(character);
+        mDetailPresenter.putCharacterIntoFav(character, this);
     }
 
     @Override
     public void removeCharacterFromFav(Character character) {
-        mDetailPresenter.removeCharacterFromFav(character);
+        mDetailPresenter.removeCharacterFromFav(character, this);
     }
 
     @Override
@@ -121,5 +122,10 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
             super.onOptionsItemSelected(item);
             return false;
         }
+    }
+
+    @Override
+    public void toggleFav() {
+        materialFavoriteButton.toggleFavorite();
     }
 }

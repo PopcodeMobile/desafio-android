@@ -35,14 +35,16 @@ class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, Get
     }
 
     @Override
-    public void putCharacterIntoFav(Character character) {
+    public void putCharacterIntoFav(Character character, FavoriteActionListener listener) {
         character.setFav(true);
+        listener.toggleFav();
         detailInteractor.saveToDB(character);
     }
 
     @Override
-    public void removeCharacterFromFav(Character character) {
+    public void removeCharacterFromFav(Character character, FavoriteActionListener listener) {
         character.setFav(false);
+        listener.toggleFav();
         detailInteractor.saveToDB(character);
     }
 

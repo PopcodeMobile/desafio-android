@@ -39,8 +39,8 @@ interface DetailPresenter {
 
     void bindView (DetailView detailView);
     void unbindView ();
-    void putCharacterIntoFav (Character character);
-    void removeCharacterFromFav (Character character);
+    void putCharacterIntoFav (Character character, FavoriteActionListener listener);
+    void removeCharacterFromFav (Character character, FavoriteActionListener listener);
     void getInfo (Character character);
 }
 

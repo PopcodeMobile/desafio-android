@@ -22,7 +22,6 @@ interface FavoriteInteractor {
 
 interface FavoritePresenter {
     void getCharacterList ();
-    void getCharacterNextPage ();
     void bindView (FavoriteView favoriteView);
     void unbindView ();
 }
