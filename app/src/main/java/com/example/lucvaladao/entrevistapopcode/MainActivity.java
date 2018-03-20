@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements HomeAdapterInterf
     }
 
     private void onSearchFavorite(String query){
-
+        replaceFragment(FavoriteFragment.newInstance(query), R.id.containerFrameLayout, true, "");
     }
 
     private void addFragment(Fragment fragment,

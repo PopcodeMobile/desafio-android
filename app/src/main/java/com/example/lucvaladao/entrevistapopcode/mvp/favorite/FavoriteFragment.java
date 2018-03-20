@@ -93,7 +93,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView {
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
             mRecyclerView.addItemDecoration(dividerItemDecoration);
             hideProgress();
-            showToast("Updated!");
+            showToast("Favorite View Ready!");
         } else {
             showNoResults();
         }

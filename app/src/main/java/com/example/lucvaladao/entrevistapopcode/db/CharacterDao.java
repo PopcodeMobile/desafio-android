@@ -23,14 +23,11 @@ public interface CharacterDao {
     @Query("SELECT * FROM character")
     List<Character> getAllCharacters();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(List<Character> characterList);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCharacter(Character character);
-
-    @Delete
-    void delete(Character character);
 
      class Converters {
         @TypeConverter
