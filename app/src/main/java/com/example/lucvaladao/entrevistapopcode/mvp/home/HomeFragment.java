@@ -85,9 +85,11 @@ public class HomeFragment extends Fragment implements HomeView {
             }
             recyclerView.setAdapter(mHomeAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), 1);
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
             recyclerView.addItemDecoration(dividerItemDecoration);
             hideProgress();
+        } else {
+            showNoResults();
         }
     }
 

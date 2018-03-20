@@ -57,6 +57,3 @@ interface HomeRetrofit {
     Call<CharacterBook> getCharacterListNextPage(@Query("page") String page);
 }
 
-interface HomeAdapterInterface {
-    void goToCharacterDetail(Character character);
-}

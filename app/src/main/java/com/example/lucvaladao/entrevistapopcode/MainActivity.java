@@ -11,13 +11,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.lucvaladao.entrevistapopcode.entity.Character;
+import com.example.lucvaladao.entrevistapopcode.mvp.HomeAdapterInterface;
 import com.example.lucvaladao.entrevistapopcode.mvp.favorite.FavoriteFragment;
 import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeFragment;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeAdapterInterface {
 
     private int mCurrentFragment = 0;
     private ArrayList<Integer> navigationList = new ArrayList<>();
@@ -38,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         mSearchView = findViewById(R.id.searchView);
 
         setSupportActionBar(mMainToolbar);
-
         addFragment(new HomeFragment(), R.id.containerFrameLayout, false, "");
     }
 
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.navigation_home: {
-                        if (navigationList.get(navigationList.size()) == 1){
+                        if (navigationList.get(navigationList.size() - 1) == 1){
                             replaceFragment(new HomeFragment(), R.id.containerFrameLayout, true, "");
                             navigationList.add(0);
                         } else {
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                         mCurrentFragment = 0;
                     }
                     case R.id.navigation_favorite: {
-                        if (navigationList.get(navigationList.size()) == 0){
+                        if (navigationList.get(navigationList.size() - 1) == 0){
                             replaceFragment(new FavoriteFragment(), R.id.containerFrameLayout, true, "");
                             navigationList.add(1);
                         } else {
@@ -106,14 +107,14 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (mSearchView.isSearchOpen()){
             mSearchView.closeSearch();
-        } else if (navigationList.get(navigationList.size() - 1) == 0){
-            navigationList.remove(navigationList.size());
+        } else if (navigationList.get(navigationList.size() - 2) == 0){
+            navigationList.remove(navigationList.size() - 1);
             mNavigation.setSelectedItemId(R.id.navigation_home);
-        } else if (navigationList.get(navigationList.size() - 1) == 1){
-            navigationList.remove(navigationList.size());
+        } else if (navigationList.get(navigationList.size() - 2) == 1){
+            navigationList.remove(navigationList.size() - 1);
             mNavigation.setSelectedItemId(R.id.navigation_favorite);
-        } else if (navigationList.get(navigationList.size() - 1) == -1 ||
-                navigationList.get(navigationList.size()) == -1){
+        } else if (navigationList.get(navigationList.size() - 2) == -1 ||
+                navigationList.get(navigationList.size() - 1) == -1){
             finish();
         } else {
             super.onBackPressed();
@@ -151,5 +152,10 @@ public class MainActivity extends AppCompatActivity {
             transaction.addToBackStack(String.valueOf(fragment.getId()));
         }
         transaction.commit();
+    }
+
+    @Override
+    public void goToCharacterDetail(Character character) {
+
     }
 }
