@@ -1,4 +1,4 @@
-package com.example.lucvaladao.entrevistapopcode.mvp;
+package com.example.lucvaladao.entrevistapopcode.mvp.home;
 
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
 

@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.lucvaladao.entrevistapopcode.R;
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
-import com.example.lucvaladao.entrevistapopcode.mvp.HomeAdapterInterface;
 
 import java.util.List;
 

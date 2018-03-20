@@ -1,7 +1,11 @@
 package com.example.lucvaladao.entrevistapopcode.mvp.home;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
+import com.example.lucvaladao.entrevistapopcode.db.MyApp;
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
 import com.example.lucvaladao.entrevistapopcode.entity.CharacterBook;
 
@@ -17,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by lucvaladao on 3/19/18.
  */
 
-class HomeInteractorImpl implements HomeInteractor {
+class HomeInteractorImpl implements HomeInteractor{
 
     private Retrofit mRetrofit = new Retrofit
             .Builder()
@@ -93,5 +97,35 @@ class HomeInteractorImpl implements HomeInteractor {
         });
     }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void saveToDB(final List<Character> characterList) {
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... params) {
+                MyApp.database.characterDAO().insert(characterList);
+                return 1;
+            }
+
+            @Override
+            protected void onPostExecute(Integer agentsCount) {}
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void getFromDB(final GetFromDBListener listener) {
+        new  AsyncTask<Void, Void, List<Character>>() {
+            @Override
+            protected List<Character> doInBackground(Void... params) {
+                return MyApp.database.characterDAO().getAllCharacters();
+            }
+
+            @Override
+            protected void onPostExecute(List<Character> characterList) {
+                listener.onGetFromDBSuccess(characterList);
+            }
+        }.execute();
+    }
 
 }

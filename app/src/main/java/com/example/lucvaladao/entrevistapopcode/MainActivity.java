@@ -6,13 +6,12 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.lucvaladao.entrevistapopcode.entity.Character;
-import com.example.lucvaladao.entrevistapopcode.mvp.HomeAdapterInterface;
+import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeAdapterInterface;
 import com.example.lucvaladao.entrevistapopcode.mvp.favorite.FavoriteFragment;
 import com.example.lucvaladao.entrevistapopcode.mvp.home.HomeFragment;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;

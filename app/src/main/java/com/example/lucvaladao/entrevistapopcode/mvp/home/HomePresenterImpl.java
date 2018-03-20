@@ -11,7 +11,7 @@ import static com.example.lucvaladao.entrevistapopcode.mvp.home.HomeInteractor.*
  * Created by lucvaladao on 3/19/18.
  */
 
-class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetCharacterNextPageListener {
+class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetCharacterNextPageListener, GetFromDBListener {
 
     private HomeInteractor homeInteractor;
     private HomeView homeView;
@@ -26,7 +26,7 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
 
     @Override
     public void getCharacterList() {
-        homeInteractor.getCharacterList(this);
+        homeInteractor.getFromDB(this);
     }
 
     @Override
@@ -42,6 +42,11 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
     @Override
     public void unbindView() {
         this.homeView = null;
+    }
+
+    @Override
+    public void saveToDB(List<Character> characterList) {
+        homeInteractor.saveToDB(characterList);
     }
 
     @Override
@@ -67,6 +72,7 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
         if (characterList.size() < comparedValue - 1){
             getCharacterNextPage();
         } else {
+            homeInteractor.saveToDB(characterList);
             homeView.fillAdapter(characterList);
         }
     }
@@ -74,5 +80,19 @@ class HomePresenterImpl implements HomePresenter, GetCharacterListListener, GetC
     @Override
     public void onGetCharacterNextPageFailure(Exception e) {
         homeView.showToast("Erro ao carregar - NEXT PAGE!");
+    }
+
+    @Override
+    public void onGetFromDBSuccess(List<Character> characterList) {
+        if (!characterList.isEmpty()){
+            homeView.fillAdapter(characterList);
+        } else {
+            homeInteractor.getCharacterList(this);
+        }
+    }
+
+    @Override
+    public void onGetFromDBFailure() {
+        homeView.showToast("Some error happened with my DB!");
     }
 }

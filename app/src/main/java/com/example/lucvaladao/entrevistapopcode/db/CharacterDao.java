@@ -17,13 +17,13 @@ import java.util.List;
  * Created by lucvaladao on 3/19/18.
  */
 @Dao
-interface CharacterDao {
+public interface CharacterDao {
 
     @Query("SELECT * FROM character")
     List<Character> getAllCharacters();
 
     @Insert
-    void insert(Character character);
+    void insert(List<Character> characterList);
 
     @Delete
     void delete(Character character);

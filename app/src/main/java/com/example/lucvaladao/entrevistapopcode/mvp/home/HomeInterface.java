@@ -29,6 +29,14 @@ interface HomeInteractor {
     }
 
     void getCharacterNextPage (List<Character> characterList, String controleFluxo, GetCharacterNextPageListener listener);
+
+    interface GetFromDBListener {
+        void onGetFromDBSuccess(List<Character> characterList);
+        void onGetFromDBFailure();
+    }
+
+    void saveToDB (List<Character> characterList);
+    void getFromDB (GetFromDBListener listener);
 }
 
 interface HomePresenter {
@@ -36,6 +44,7 @@ interface HomePresenter {
     void getCharacterNextPage ();
     void bindView (HomeView homeView);
     void unbindView ();
+    void saveToDB(List<Character> characterList);
 }
 
 interface HomeView {

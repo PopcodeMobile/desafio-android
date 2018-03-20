@@ -9,7 +9,7 @@ import android.arch.persistence.room.Room;
 
 public class MyApp extends Application {
 
-    private static AppDatabase database;
+    public static AppDatabase database;
 
     @Override
     public void onCreate() {
