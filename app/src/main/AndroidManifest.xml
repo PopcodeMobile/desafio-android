@@ -7,24 +7,23 @@
     <application
         android:name=".db.MyApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_round"
         android:label="Star Wars Characters"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".mvp.detail.DetailActivity" />
+        <service
+            android:name=".mvp.offline.OfflineService"
+            android:exported="false" />
+        <activity android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.detail.DetailActivity"></activity>
-
-        <service
-            android:name=".mvp.offline.OfflineService"
-            android:exported="false"/>
-
     </application>
 
 </manifest>
