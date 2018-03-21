@@ -9,7 +9,6 @@ import com.example.lucvaladao.entrevistapopcode.mvp.offline.OfflineInteractor.On
 import com.example.lucvaladao.entrevistapopcode.mvp.offline.OfflineInteractor.PostCharacterRemoteListener;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by lucvaladao on 3/20/18.
@@ -39,8 +38,8 @@ public class OfflineService extends IntentService implements OnConcludeListener,
     public void onConclude(List<Character> characterList) {
         int index = 0;
         characterListAux = characterList;
-        if (!characterList.isEmpty()){
-            for (Character character : characterList){
+        if (!characterList.isEmpty()) {
+            for (Character character : characterList) {
                 String auxHeader = Math.random() < 0.5 ? "400" : "201";
                 offlineInteractor.postCharacterRemote(character, String.valueOf(index++), auxHeader, this);
             }

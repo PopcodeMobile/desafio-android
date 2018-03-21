@@ -61,13 +61,21 @@ class DetailPresenterImpl implements DetailPresenter, GetSpecieInfoListener, Get
     @Override
     public void getInfo(Character character) {
         this.character = character;
-        detailInteractor.getSpecieInfo(getId(character.getSpecies().get(0)), this);
+        if (!character.getSpecies().isEmpty()){
+            detailInteractor.getSpecieInfo(getId(character.getSpecies().get(0)), this);
+        } else {
+            if (character.getHomeworld() != null){
+                detailInteractor.getPlanetInfo(character.getHomeworld(), this);
+            }
+        }
     }
 
     @Override
     public void onGetSpecieInfoSuccess(Specie specie) {
         detailView.setSpecieText(specie.getName());
-        detailInteractor.getPlanetInfo(getId(character.getHomeworld()), this);
+        if (character.getHomeworld() != null){
+            detailInteractor.getPlanetInfo(getId(character.getHomeworld()), this);
+        }
     }
 
     @Override
