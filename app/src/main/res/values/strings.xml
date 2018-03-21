@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">EntrevistaPopcode</string>
+    <string name="gender">Gender:</string>
+    <string name="weight">Weight:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_results">No Results</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorite</string>
+    <string name="height">Height:</string>
+    <string name="name">Name</string>
+    <string name="height_label">Height</string>
+    <string name="hair_color_label">Hair Color</string>
+    <string name="mass_label">Mass</string>
+    <string name="skin_color_label">Skin Color</string>
+    <string name="eye_color_label">Eye Color</string>
+    <string name="birth_year_label">Birth Year</string>
+    <string name="gender_label">Gender</string>
+    <string name="planet_label">Planet</string>
+    <string name="specie_label">Specie</string>
+</resources>
