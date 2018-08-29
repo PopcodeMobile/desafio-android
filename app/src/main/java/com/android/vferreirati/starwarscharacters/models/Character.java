@@ -7,6 +7,8 @@ public class Character {
     private int mWeight;
     private String mGender;
 
+    public Character() { }
+
     public Character(String name, int height, int weight, String gender) {
         mName = name;
         mHeight = height;
