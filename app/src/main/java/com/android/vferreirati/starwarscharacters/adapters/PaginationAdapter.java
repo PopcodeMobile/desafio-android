@@ -33,6 +33,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         public void bind(Character character) {
+            // TODO: Improve this method
             mNameTextView.setText(character.getName());
             mHeightTextView.setText(character.getHeight() + "m");
             mGenderTextView.setText(character.getGender());
