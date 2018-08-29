@@ -1,54 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="false">
+    android:orientation="horizontal">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/itemCharacterConstraintLayout"
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="24dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black"
+        tools:text="Victor" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Victor" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_height"
-            android:layout_width="wrap_content"
-            android:layout_height="17dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/tv_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            tools:text="1.75m" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|end"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            tools:text="175cm" />
 
         <TextView
             android:id="@+id/tv_gender"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/tv_height"
-            app:layout_constraintTop_toBottomOf="@+id/tv_height"
+            android:gravity="center|end"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="18dp"
             tools:text="Male" />
 
         <TextView
             android:id="@+id/tv_weight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/tv_gender"
-            app:layout_constraintTop_toBottomOf="@+id/tv_gender"
-            tools:text="75 Kg" />
-    </android.support.constraint.ConstraintLayout>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|end"
+            android:padding="16dp"
+            tools:text="75kg" />
 
-</android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</LinearLayout>

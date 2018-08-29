@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private ProgressBar mProgressBar;
+    DividerItemDecoration mItemDecoration;
 
     private static final int PAGE_START = 0;
 
@@ -46,10 +48,12 @@ public class MainActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.pb_loading);
         mPaginationAdapter = new PaginationAdapter(this);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mPaginationAdapter);
+        mRecyclerView.addItemDecoration(mItemDecoration);
         mRecyclerView.addOnScrollListener(new PaginationScrollListener(mLayoutManager) {
             @Override
             public void loadMoreItems() {

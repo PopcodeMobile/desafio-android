@@ -1,7 +1,6 @@
 package com.android.vferreirati.starwarscharacters.adapters;
 
 import android.content.Context;
-import android.graphics.Movie;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
