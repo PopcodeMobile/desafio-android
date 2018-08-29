@@ -11,6 +11,6 @@ public interface CharacterService {
     @GET("people")
     Call<PeopleQuery> getCharacters(
         @Query("format") String format,
-        @Query("page") String page
+        @Query("page") int pageIndex
     );
 }
