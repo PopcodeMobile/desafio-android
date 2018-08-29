@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<PeopleQuery> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Error while making request", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, t.getMessage());
+
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -139,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<PeopleQuery> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Error while making request", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, t.getMessage());
+
+                mPaginationAdapter.removeLoadingFooter();
             }
         });
 
