@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     DividerItemDecoration mItemDecoration;
 
-    private static final int PAGE_START = 0;
+    private static final int PAGE_START = 1;
 
     // Is loading more resources from server?
     private boolean isLoading = false;
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Number of pages to be loaded from server (Using mock data atm)
     // TODO: Obtain this from server response when using actual data
-    private int TOTAL_PAGES = 3;
+    private int TOTAL_PAGES;
 
     // Current page that is being fetched.
     private int mCurrentPage = PAGE_START;
@@ -116,19 +116,17 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, t.getMessage());
             }
         });
-
-
-
     }
 
     private void loadNextPage() {
         callPeopleQueryApi().enqueue(new Callback<PeopleQuery>() {
             @Override
             public void onResponse(Call<PeopleQuery> call, Response<PeopleQuery> response) {
-                List<Character> characters = fetchCharacters(response);
-                mProgressBar.setVisibility(View.GONE);
-                mPaginationAdapter.addAll(characters);
                 mPaginationAdapter.removeLoadingFooter();
+                isLoading = false;
+
+                List<Character> characters = fetchCharacters(response);
+                mPaginationAdapter.addAll(characters);
 
                 if(mCurrentPage != TOTAL_PAGES) {
                     mPaginationAdapter.addLoadingFooter();
@@ -156,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Character> fetchCharacters(Response<PeopleQuery> response) {
         PeopleQuery peopleQuery = response.body();
-        int pageCount = peopleQuery.getCount() / 10;
-        Log.d(TAG, "Page count: " + pageCount);
+        TOTAL_PAGES = peopleQuery.getCount() / 10;
+        Log.d(TAG, response.toString());
 
         return peopleQuery.getResults();
     }

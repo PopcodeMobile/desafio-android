@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CharacterApi {
 
     private static Retrofit retrofit = null;
-    private static final String BASE_URL = "https://swapi.co/api/people/";
+    private static final String BASE_URL = "https://swapi.co/api/";
 
     public static Retrofit getClient() {
         if(retrofit == null) {
