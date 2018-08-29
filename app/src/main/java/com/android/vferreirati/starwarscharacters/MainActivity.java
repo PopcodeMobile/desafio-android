@@ -7,16 +7,28 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.vferreirati.starwarscharacters.adapters.PaginationAdapter;
 import com.android.vferreirati.starwarscharacters.listeners.PaginationScrollListener;
 import com.android.vferreirati.starwarscharacters.models.Character;
+import com.android.vferreirati.starwarscharacters.models.Character2;
+import com.android.vferreirati.starwarscharacters.models.PeopleQuery;
+import com.android.vferreirati.starwarscharacters.services.CharacterApi;
+import com.android.vferreirati.starwarscharacters.services.CharacterService;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     private PaginationAdapter mPaginationAdapter;
     private RecyclerView mRecyclerView;
@@ -38,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Current page that is being fetched.
     private int mCurrentPage = PAGE_START;
+
+    // Retrofit CharacterService
+    private CharacterService mCharacterService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,42 +93,74 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // mocking 1 second network delay
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadFirstPage();
-            }
-        }, 1000);
+        mCharacterService = CharacterApi.getClient().create(CharacterService.class);
+        loadFirstPage();
     }
 
     private void loadFirstPage() {
-        // TODO: Get actual data from swapi
-        List<Character> characters = Character.createMockCharacters(mPaginationAdapter.getItemCount());
-        mProgressBar.setVisibility(View.GONE);
-        isLoading = false;
+        callPeopleQueryApi().enqueue(new Callback<PeopleQuery>() {
+            @Override
+            public void onResponse(Call<PeopleQuery> call, Response<PeopleQuery> response) {
+                List<Character> characters = fetchCharacters(response);
+                mProgressBar.setVisibility(View.GONE);
+                mPaginationAdapter.addAll(characters);
 
-        mPaginationAdapter.addAll(characters);
+                if (mCurrentPage <= TOTAL_PAGES) {
+                    mPaginationAdapter.addLoadingFooter();
+                } else {
+                    isLastPage = true;
+                }
+            }
 
-        if (mCurrentPage <= TOTAL_PAGES) {
-            mPaginationAdapter.addLoadingFooter();
-        } else {
-            isLastPage = true;
-        }
+            @Override
+            public void onFailure(Call<PeopleQuery> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error while making request", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, t.getMessage());
+            }
+        });
+
+
+
     }
 
     private void loadNextPage() {
-        List<Character> characters = Character.createMockCharacters(mPaginationAdapter.getItemCount());
+        callPeopleQueryApi().enqueue(new Callback<PeopleQuery>() {
+            @Override
+            public void onResponse(Call<PeopleQuery> call, Response<PeopleQuery> response) {
+                List<Character> characters = fetchCharacters(response);
+                mProgressBar.setVisibility(View.GONE);
+                mPaginationAdapter.addAll(characters);
+                mPaginationAdapter.removeLoadingFooter();
 
-        mPaginationAdapter.removeLoadingFooter();
-        isLoading = false;
+                if(mCurrentPage != TOTAL_PAGES) {
+                    mPaginationAdapter.addLoadingFooter();
+                } else {
+                    isLastPage = true;
+                }
+            }
 
-        mPaginationAdapter.addAll(characters);
+            @Override
+            public void onFailure(Call<PeopleQuery> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error while making request", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, t.getMessage());
+            }
+        });
 
-        if(mCurrentPage != TOTAL_PAGES) {
-            mPaginationAdapter.addLoadingFooter();
-        } else {
-            isLastPage = true;
-        }
+
+    }
+
+    private Call<PeopleQuery> callPeopleQueryApi() {
+        return mCharacterService.getCharacters(
+                getString(R.string.query_format),
+                mCurrentPage
+        );
+    }
+
+    private List<Character> fetchCharacters(Response<PeopleQuery> response) {
+        PeopleQuery peopleQuery = response.body();
+        int pageCount = peopleQuery.getCount() / 10;
+        Log.d(TAG, "Page count: " + pageCount);
+
+        return peopleQuery.getResults();
     }
 }
