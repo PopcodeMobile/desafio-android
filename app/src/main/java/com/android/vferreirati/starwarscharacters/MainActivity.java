@@ -1,7 +1,6 @@
 package com.android.vferreirati.starwarscharacters;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import com.android.vferreirati.starwarscharacters.adapters.PaginationAdapter;
 import com.android.vferreirati.starwarscharacters.listeners.PaginationScrollListener;
 import com.android.vferreirati.starwarscharacters.models.Character;
-import com.android.vferreirati.starwarscharacters.models.Character2;
 import com.android.vferreirati.starwarscharacters.models.PeopleQuery;
 import com.android.vferreirati.starwarscharacters.services.CharacterApi;
 import com.android.vferreirati.starwarscharacters.services.CharacterService;

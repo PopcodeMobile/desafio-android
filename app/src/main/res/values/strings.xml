@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Star Wars Characters</string>
+    <string name="query_format">json</string>
 </resources>

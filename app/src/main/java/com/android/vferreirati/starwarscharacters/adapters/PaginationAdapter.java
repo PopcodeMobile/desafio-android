@@ -35,9 +35,9 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public void bind(Character character) {
             // TODO: Improve this method
             mNameTextView.setText(character.getName());
-            mHeightTextView.setText(character.getHeight() + "m");
+            mHeightTextView.setText(character.getHeight());
             mGenderTextView.setText(character.getGender());
-            mWeightTextView.setText(character.getWeight() + "kg");
+            mWeightTextView.setText(character.getMass());
         }
     }
 
@@ -106,7 +106,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return mCharacters.get(position);
     }
 
-    // Adds a new Character and updates the data set
+    // Adds a new Character2 and updates the data set
     public void add(Character character) {
         mCharacters.add(character);
         notifyItemInserted(mCharacters.size() - 1);
