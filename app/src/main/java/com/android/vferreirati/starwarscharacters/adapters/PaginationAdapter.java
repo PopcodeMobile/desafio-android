@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.android.vferreirati.starwarscharacters.R;
 import com.android.vferreirati.starwarscharacters.models.Character;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -34,9 +35,9 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public void bind(Character character) {
             mNameTextView.setText(character.getName());
-            mHeightTextView.setText(character.getHeight());
+            mHeightTextView.setText(character.getHeight() + "m");
             mGenderTextView.setText(character.getGender());
-            mWeightTextView.setText(character.getWeight());
+            mWeightTextView.setText(character.getWeight() + "kg");
         }
     }
 
@@ -58,6 +59,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public PaginationAdapter(Context packageContext) {
         mContext = packageContext;
+        mCharacters = new ArrayList<>();
     }
 
     @NonNull
