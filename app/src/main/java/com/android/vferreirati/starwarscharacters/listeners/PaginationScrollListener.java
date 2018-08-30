@@ -33,9 +33,9 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
         // If not on last page and not loading already
         if(!isLastPage() && !isLoading()) {
 
-            // Limite = 70% of total items
+            // Threshold = 70% of total items
             // Meaning it will load more items when the 70% mark is hit
-            mThreshold = (totalItemsCount * 7) / 10;
+            mThreshold = (totalItemsCount * mThresholdDivider) / 10;
             // Check if the recycler view is at the threshold
             if((visibleItemsCount + firstVisibleItemPosition) >= mThreshold
                     && firstVisibleItemPosition >= 0) {

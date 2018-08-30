@@ -22,6 +22,8 @@ import retrofit2.Response;
 public class DetailActivity extends AppCompatActivity {
 
     private static final String EXTRA_CHARACTER = "com.android.vferreirati.starwarscharacters.character";
+    private static final String KEY_CHARACTER_PLANET = "CharacterPlanetKey";
+    private static final String KEY_CHARACTER_SPECIE = "CharacterSpecieKey";
     private static final String TAG = "DetailActivity";
     private static final String SPLIT_WORD_SPECIE = "species/";
     private static final String SPLIT_WORD_PLANET = "planets/";
@@ -83,7 +85,17 @@ public class DetailActivity extends AppCompatActivity {
 
         mPlanetService = CharacterApi.getClient().create(PlanetService.class);
         mSpecieService = CharacterApi.getClient().create(SpecieService.class);
-        loadCharacterRemainingData();
+
+        if(savedInstanceState != null) {
+            mCharacterSpecieName = savedInstanceState.getString(KEY_CHARACTER_SPECIE, "");
+            mCharacterPlanetName = savedInstanceState.getString(KEY_CHARACTER_PLANET, "");
+            mCharacterHomePlanetTextView.setText(mCharacterPlanetName);
+            mCharacterSpecieTextView.setText(mCharacterSpecieName);
+
+            Log.d(TAG, "Reusing character data!");
+        } else {
+            loadCharacterRemainingData();
+        }
     }
 
     private void loadCharacterRemainingData() {
@@ -141,5 +153,18 @@ public class DetailActivity extends AppCompatActivity {
         String[] splitString = url.split(splitWord);
         String id = splitString[1].split("/")[0];
         return Integer.valueOf(id);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(mCharacterPlanetName != null) {
+            outState.putString(KEY_CHARACTER_PLANET, mCharacterPlanetName);
+        }
+
+        if(mCharacterSpecieName != null) {
+            outState.putString(KEY_CHARACTER_SPECIE, mCharacterSpecieName);
+        }
     }
 }
