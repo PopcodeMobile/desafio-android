@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean isLastPage = false;
 
     // Number of pages to be loaded from server (Using mock data atm)
-    // TODO: Obtain this from server response when using actual data
     private int TOTAL_PAGES;
 
     // Current page that is being fetched.

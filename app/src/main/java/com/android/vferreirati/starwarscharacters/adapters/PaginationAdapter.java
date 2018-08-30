@@ -23,7 +23,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private TextView mGenderTextView;
         private TextView mWeightTextView;
 
-        public ContentHolder(View itemView) {
+        ContentHolder(View itemView) {
             super(itemView);
 
             mNameTextView = itemView.findViewById(R.id.tv_name);
@@ -32,7 +32,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mWeightTextView = itemView.findViewById(R.id.tv_weight);
         }
 
-        public void bind(Character character) {
+        void bind(Character character) {
             // TODO: Improve this method
             mNameTextView.setText(character.getName());
             mHeightTextView.setText(character.getHeight());
@@ -45,7 +45,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     // No need to do anything about it
     public class LoadingHolder extends RecyclerView.ViewHolder {
 
-        public LoadingHolder(View itemView) {
+        LoadingHolder(View itemView) {
             super(itemView);
         }
     }

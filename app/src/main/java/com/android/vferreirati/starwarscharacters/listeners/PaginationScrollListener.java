@@ -12,6 +12,11 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
     public static final String TAG = "PaginationScrollListnr";
 
     LinearLayoutManager mLayoutManager;
+    // Load new data when reaching the 70% mark => (TotalItems * 70) / 100
+    private static final int mThresholdDivider = 7;
+
+    // Number of items to start loading more data.
+    private int mThreshold;
 
     public PaginationScrollListener(LinearLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
@@ -28,8 +33,11 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
         // If not on last page and not loading already
         if(!isLastPage() && !isLoading()) {
 
-            // Check if the recycler view is at the bottom
-            if((visibleItemsCount + firstVisibleItemPosition) >= totalItemsCount
+            // Limite = 70% of total items
+            // Meaning it will load more items when the 70% mark is hit
+            mThreshold = (totalItemsCount * 7) / 10;
+            // Check if the recycler view is at the threshold
+            if((visibleItemsCount + firstVisibleItemPosition) >= mThreshold
                     && firstVisibleItemPosition >= 0) {
 
                 Log.d(TAG, "Request more data!");
