@@ -18,6 +18,7 @@ import com.android.vferreirati.starwarscharacters.models.PeopleQuery;
 import com.android.vferreirati.starwarscharacters.services.CharacterApi;
 import com.android.vferreirati.starwarscharacters.services.CharacterService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,6 +28,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final String KEY_CHARACTERS_LIST = "CharactersListKey";
 
     private PaginationAdapter mPaginationAdapter;
     private RecyclerView mRecyclerView;
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Retrofit CharacterService
     private CharacterService mCharacterService;
+
+    ArrayList<Character> mCharactersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +95,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mCharacterService = CharacterApi.getClient().create(CharacterService.class);
-        loadFirstPage();
+
+        // New instance?
+        if (savedInstanceState == null) {
+            mCharactersList = new ArrayList<>();
+            loadFirstPage();
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+            mCharactersList = savedInstanceState.getParcelableArrayList(KEY_CHARACTERS_LIST);
+            mPaginationAdapter.addAll(mCharactersList);
+            Log.d(TAG, "Reusing character list data");
+        }
+
     }
 
     private void loadFirstPage() {
@@ -101,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 List<Character> characters = fetchCharacters(response);
                 mProgressBar.setVisibility(View.GONE);
                 mPaginationAdapter.addAll(characters);
+
+                mCharactersList.addAll(characters);
 
                 if (mCurrentPage <= TOTAL_PAGES) {
                     mPaginationAdapter.addLoadingFooter();
@@ -129,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 List<Character> characters = fetchCharacters(response);
                 mPaginationAdapter.addAll(characters);
 
-                if(mCurrentPage != TOTAL_PAGES) {
+                if (mCurrentPage != TOTAL_PAGES) {
                     mPaginationAdapter.addLoadingFooter();
                 } else {
                     isLastPage = true;
@@ -161,5 +178,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, response.toString());
 
         return peopleQuery.getResults();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (!mCharactersList.isEmpty()) {
+            outState.putParcelableArrayList(KEY_CHARACTERS_LIST, mCharactersList);
+        }
     }
 }
