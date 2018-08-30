@@ -3,8 +3,10 @@ package com.android.vferreirati.starwarscharacters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +61,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mCharacter = getIntent().getParcelableExtra(EXTRA_CHARACTER);
         mCharacterNameTextView = findViewById(R.id.tv_character_name);
@@ -166,5 +170,16 @@ public class DetailActivity extends AppCompatActivity {
         if(mCharacterSpecieName != null) {
             outState.putString(KEY_CHARACTER_SPECIE, mCharacterSpecieName);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
