@@ -1,12 +1,15 @@
 
 package com.android.vferreirati.starwarscharacters.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Character {
+public class Character implements Parcelable{
 
     @SerializedName("name")
     @Expose
@@ -56,6 +59,64 @@ public class Character {
     @SerializedName("url")
     @Expose
     private String url;
+
+    public Character() { }
+
+    protected Character(Parcel in) {
+        name = in.readString();
+        height = in.readString();
+        mass = in.readString();
+        hairColor = in.readString();
+        skinColor = in.readString();
+        eyeColor = in.readString();
+        birthYear = in.readString();
+        gender = in.readString();
+        homeworld = in.readString();
+        films = in.createStringArrayList();
+        species = in.createStringArrayList();
+        vehicles = in.createStringArrayList();
+        starships = in.createStringArrayList();
+        created = in.readString();
+        edited = in.readString();
+        url = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(height);
+        dest.writeString(mass);
+        dest.writeString(hairColor);
+        dest.writeString(skinColor);
+        dest.writeString(eyeColor);
+        dest.writeString(birthYear);
+        dest.writeString(gender);
+        dest.writeString(homeworld);
+        dest.writeStringList(films);
+        dest.writeStringList(species);
+        dest.writeStringList(vehicles);
+        dest.writeStringList(starships);
+        dest.writeString(created);
+        dest.writeString(edited);
+        dest.writeString(url);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Character> CREATOR = new Creator<Character>() {
+        @Override
+        public Character createFromParcel(Parcel in) {
+            return new Character(in);
+        }
+
+        @Override
+        public Character[] newArray(int size) {
+            return new Character[size];
+        }
+    };
 
     public String getName() {
         return name;

@@ -1,13 +1,16 @@
 package com.android.vferreirati.starwarscharacters.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.vferreirati.starwarscharacters.DetailActivity;
 import com.android.vferreirati.starwarscharacters.R;
 import com.android.vferreirati.starwarscharacters.models.Character;
 
@@ -17,11 +20,12 @@ import java.util.List;
 public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // ViewHolder that actually holds the character View
-    public class ContentHolder extends RecyclerView.ViewHolder {
+    public class ContentHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mNameTextView;
         private TextView mHeightTextView;
         private TextView mGenderTextView;
         private TextView mWeightTextView;
+        private Character mCharacter;
 
         ContentHolder(View itemView) {
             super(itemView);
@@ -30,14 +34,24 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mHeightTextView = itemView.findViewById(R.id.tv_height);
             mGenderTextView = itemView.findViewById(R.id.tv_gender);
             mWeightTextView = itemView.findViewById(R.id.tv_weight);
+            itemView.setOnClickListener(this);
         }
 
         void bind(Character character) {
-            // TODO: Improve this method
+            mCharacter = character;
+            String heightText = mContext.getString(R.string.height) + " " + character.getHeight();
+            String genderText = mContext.getString(R.string.gender) + " " + character.getGender();
+            String massText = mContext.getString(R.string.weight) + " " + character.getMass();
             mNameTextView.setText(character.getName());
-            mHeightTextView.setText(character.getHeight());
-            mGenderTextView.setText(character.getGender());
-            mWeightTextView.setText(character.getMass());
+            mHeightTextView.setText(heightText);
+            mGenderTextView.setText(genderText);
+            mWeightTextView.setText(massText);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = DetailActivity.newIntent(mContext, mCharacter);
+            mContext.startActivity(intent);
         }
     }
 
