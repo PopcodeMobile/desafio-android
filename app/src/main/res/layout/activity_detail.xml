@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.popcode.starwars.viewmodel.CharacterViewModel" />
+
+        <variable
+            name="isLoading"
+            type="Boolean" />
+    </data>
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/detail_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/backgroundActivity">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.character.name}"
+                        android:textColor="#fff"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"/>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/card_detail_margin"
+                        android:padding="@dimen/card_detail_padding"
+                        app:cardBackgroundColor="@color/backgroundCard"
+                        visibleGone="@{!isLoading}">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="30dp">
+
+                            <!-- height -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailTitleCharacter"
+                                android:text="height"/>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/StyleDetailItemCharacter"
+                                    android:text="@{viewModel.character.height}"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/StyleDetailItemCharacter"
+                                    android:text="cm"/>
+                            </LinearLayout>
+
+                            <!-- mass -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailTitleCharacter"
+                                android:text="mass"/>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/StyleDetailItemCharacter"
+                                    android:text="@{viewModel.character.mass}"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/StyleDetailItemCharacter"
+                                    android:text="kg"/>
+                            </LinearLayout>
+
+                            <!-- hair color -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailTitleCharacter"
+                                android:text="hair color"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailItemCharacter"
+                                android:text="@{viewModel.character.hairColor}"/>
+
+                            <!-- eye color -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailTitleCharacter"
+                                android:text="eye color"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailItemCharacter"
+                                android:text="@{viewModel.character.eyeColor}"/>
+
+                            <!-- birth year -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailTitleCharacter"
+                                android:text="birthday year"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailItemCharacter"
+                                android:text="@{viewModel.character.birthYear}"/>
+
+                            <!-- skin color -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailTitleCharacter"
+                                android:text="skin color"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailItemCharacter"
+                                android:text="@{viewModel.character.skinColor}"/>
+
+                            <!-- gender -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailTitleCharacter"
+                                android:text="gender"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailItemCharacter"
+                                android:text="@{viewModel.character.gender}"/>
+
+                            <!-- homeworld -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailTitleCharacter"
+                                android:text="planet"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailItemCharacter"
+                                android:text="@{viewModel.planet}"/>
+
+                            <!-- specie -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailTitleCharacter"
+                                android:text="specie"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/StyleDetailItemCharacter"
+                                android:text="@{viewModel.specie}"/>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+            </ScrollView>
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:visibleGone="@{isLoading}"/>
+        </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
