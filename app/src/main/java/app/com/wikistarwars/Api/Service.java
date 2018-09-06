@@ -13,4 +13,7 @@ public interface Service {
 
     @GET("people/{id}/")
     Call<Personagem> getPeople(@Path("id") int peopleId);
+
+    @GET("people/")
+    Call<PersonagemResponse> searchPeople(@Query("search") String peopleName);
 }

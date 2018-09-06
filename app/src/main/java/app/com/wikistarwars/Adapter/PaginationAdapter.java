@@ -65,12 +65,15 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        Personagem result = pResults.get(position); // Movie
+        Personagem result = pResults.get(position);
 
         switch (getItemViewType(position)) {
             case ITEM:
                 final PersonVH personVH = (PersonVH) holder;
-                personVH.pTitle.setText(result.getName());
+                personVH.pName.setText(result.getName());
+                personVH.pHeight.setText(result.getHeight());
+                personVH.pGender.setText(result.getGender());
+                personVH.pMass.setText(result.getMass());
                 break;
 
             case LOADING:
@@ -142,13 +145,16 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     protected class PersonVH extends RecyclerView.ViewHolder {
-        private TextView pTitle;
+        private TextView pName, pHeight, pGender, pMass;
         private ProgressBar mProgress;
 
         public PersonVH(View itemView) {
             super(itemView);
 
-            pTitle = (TextView) itemView.findViewById(R.id.name);
+            pName = (TextView) itemView.findViewById(R.id.name);
+            pHeight = (TextView) itemView.findViewById(R.id.height);
+            pGender = (TextView) itemView.findViewById(R.id.gender);
+            pMass = (TextView) itemView.findViewById(R.id.mass);
             mProgress = (ProgressBar) itemView.findViewById(R.id.progress);
         }
     }

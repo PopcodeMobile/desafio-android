@@ -16,9 +16,11 @@ public class Personagem implements Parcelable {
     @SerializedName("mass")
     private String mass;
 
-    public Personagem(String name, String height) {
+    public Personagem(String name, String height, String gender, String mass) {
         this.name = name;
         this.height = height;
+        this.gender = gender;
+        this.mass = mass;
     }
 
     public Personagem(){
@@ -34,11 +36,15 @@ public class Personagem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
         dest.writeString(this.height);
+        dest.writeString(this.gender);
+        dest.writeString(this.mass);
     }
 
     protected Personagem(Parcel in) {
         this.name = in.readString();
         this.height = in.readString();
+        this.gender = in.readString();
+        this.mass = in.readString();
     }
 
     public String getName() {
