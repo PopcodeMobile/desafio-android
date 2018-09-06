@@ -1,16 +1,29 @@
 package br.com.jaysonsabino.desafioandroidpopcode.entities;
 
-public class Character {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serializable;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Character implements Serializable {
 
     private int id;
     private String name;
     private String height;
     private String mass;
+    @JsonProperty("hair_colors")
     private String hairColor;
+    @JsonProperty("skin_color")
     private String skinColor;
+    @JsonProperty("eye_colors")
     private String eyeColor;
+    @JsonProperty("birth_year")
     private String birthYear;
     private String gender;
+
+    public Character() {
+    }
 
     public Character(String name) {
         this.name = name;
