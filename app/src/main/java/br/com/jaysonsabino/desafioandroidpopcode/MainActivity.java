@@ -5,52 +5,63 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.jaysonsabino.desafioandroidpopcode.adapters.CharacterListAdapter;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
+import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.dto.PeopleListResponseDTO;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    private RecyclerView lista;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        carregarLista();
+        configurarLista();
 
-        Call<Character> test = new ServiceFactory().getPeopleService().getTest();
+        consultarPersonagensSWAPI();
+    }
 
-        Log.i("DEBUGANDO", "INICIO DA REQUISICAO");
-        test.enqueue(new Callback<Character>() {
+    private void consultarPersonagensSWAPI() {
+        Call<PeopleListResponseDTO> list = new ServiceFactory().getPeopleService().getList();
+        list.enqueue(new Callback<PeopleListResponseDTO>() {
             @Override
-            public void onResponse(Call<Character> call, Response<Character> response) {
-                Log.i("sucesso", "show de bola");
+            public void onResponse(Call<PeopleListResponseDTO> call, Response<PeopleListResponseDTO> response) {
+                PeopleListResponseDTO dto = response.body();
+
+                if (dto == null) {
+                    Toast.makeText(MainActivity.this, "Falha ao consultar lista de personagens.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                popularLista(dto.getResults());
             }
 
             @Override
-            public void onFailure(Call<Character> call, Throwable t) {
-                Log.e("falha", "deu ruim", t);
+            public void onFailure(Call<PeopleListResponseDTO> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Falha ao consultar lista de personagens.", Toast.LENGTH_LONG).show();
+                Log.e("ERRO", "Erro", t);
             }
         });
     }
 
-    private void carregarLista() {
-        List<Character> characters = new ArrayList<>();
-        characters.add(new Character("Jayson", "Male", "1.71m", "73kg"));
-        characters.add(new Character("Luke", "Male", "1.65m", "70kg"));
-
-        RecyclerView lista = findViewById(R.id.main_lista_personagens);
+    private void configurarLista() {
+        lista = findViewById(R.id.main_lista_personagens);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         lista.setLayoutManager(layoutManager);
+    }
 
+    private void popularLista(List<Character> characters) {
         lista.setAdapter(new CharacterListAdapter(this, characters));
     }
 }
