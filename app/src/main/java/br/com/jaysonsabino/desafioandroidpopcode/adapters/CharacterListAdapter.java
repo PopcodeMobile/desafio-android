@@ -23,6 +23,10 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
         this.characters = characters;
     }
 
+    public List<Character> getCharacters() {
+        return characters;
+    }
+
     @NonNull
     @Override
     public CharacterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -35,10 +39,20 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
     public void onBindViewHolder(@NonNull CharacterViewHolder characterViewHolder, int i) {
         Character character = characters.get(i);
 
+        String height = character.getHeight();
+        String mass = character.getMass();
+
+        if (!height.equals("unknown")) {
+            height = height + " cm";
+        }
+        if (!mass.equals("unknown")) {
+            mass = mass + " kg";
+        }
+
         characterViewHolder.getName().setText(character.getName());
         characterViewHolder.getGender().setText(character.getGender());
-        characterViewHolder.getHeight().setText(character.getHeight());
-        characterViewHolder.getMass().setText(character.getMass());
+        characterViewHolder.getHeight().setText(height);
+        characterViewHolder.getMass().setText(mass);
     }
 
     @Override
