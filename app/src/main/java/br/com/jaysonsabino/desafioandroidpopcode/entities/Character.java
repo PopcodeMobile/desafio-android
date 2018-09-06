@@ -1,13 +1,22 @@
 package br.com.jaysonsabino.desafioandroidpopcode.entities;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Character implements Serializable {
 
+    private static final String URL_PATTERN = "https://swapi.co/api/people/([0-9]+)/";
+
+    @PrimaryKey
     private int id;
     private String name;
     private String height;
@@ -21,20 +30,7 @@ public class Character implements Serializable {
     @JsonProperty("birth_year")
     private String birthYear;
     private String gender;
-
-    public Character() {
-    }
-
-    public Character(String name) {
-        this.name = name;
-    }
-
-    public Character(String name, String gender, String height, String mass) {
-        this.name = name;
-        this.gender = gender;
-        this.height = height;
-        this.mass = mass;
-    }
+    private String url;
 
     public int getId() {
         return id;
@@ -106,5 +102,23 @@ public class Character implements Serializable {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setIdByUrl() {
+        Pattern pattern = Pattern.compile(URL_PATTERN);
+        Matcher matcher = pattern.matcher(url);
+
+        if (matcher.find()) {
+            String id = matcher.group(1);
+            this.id = Integer.parseInt(id);
+        }
     }
 }

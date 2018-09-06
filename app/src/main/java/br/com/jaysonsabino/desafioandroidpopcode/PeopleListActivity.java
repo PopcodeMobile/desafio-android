@@ -22,7 +22,8 @@ public class PeopleListActivity extends AppCompatActivity {
 
         configurarLista();
 
-        new PeopleListViewModel(this, characterListAdapter).consultarPersonagensSWAPI(1);
+//        new PeopleListViewModel(this, characterListAdapter).consultarPersonagensSWAPI(1);
+        new PeopleListViewModel(this, characterListAdapter).consultarPersonagensDatabase();
     }
 
     private void configurarLista() {
