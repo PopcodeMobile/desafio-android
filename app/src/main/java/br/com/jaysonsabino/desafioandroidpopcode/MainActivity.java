@@ -1,12 +1,14 @@
 package br.com.jaysonsabino.desafioandroidpopcode;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.jaysonsabino.desafioandroidpopcode.adapters.CharacterListAdapter;
@@ -19,7 +21,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView lista;
+    private final List<Character> characters = new ArrayList<>();
+    private CharacterListAdapter characterListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
         configurarLista();
 
-        consultarPersonagensSWAPI();
+        consultarPersonagensSWAPI(1);
     }
 
-    private void consultarPersonagensSWAPI() {
-        Call<PeopleListResponseDTO> list = new ServiceFactory().getPeopleService().getList();
+    private void consultarPersonagensSWAPI(final int page) {
+        Call<PeopleListResponseDTO> list = new ServiceFactory().getPeopleService().getList(page);
         list.enqueue(new Callback<PeopleListResponseDTO>() {
             @Override
-            public void onResponse(Call<PeopleListResponseDTO> call, Response<PeopleListResponseDTO> response) {
+            public void onResponse(@NonNull Call<PeopleListResponseDTO> call, @NonNull Response<PeopleListResponseDTO> response) {
                 PeopleListResponseDTO dto = response.body();
 
                 if (dto == null) {
@@ -43,11 +46,18 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                popularLista(dto.getResults());
+                Toast.makeText(MainActivity.this, "Consulta de personagens finalizada com sucesso. Página: " + page, Toast.LENGTH_SHORT).show();
+
+                characters.addAll(dto.getResults());
+                characterListAdapter.notifyDataSetChanged();
+
+                if (dto.getNext() != null) {
+                    consultarPersonagensSWAPI(page + 1);
+                }
             }
 
             @Override
-            public void onFailure(Call<PeopleListResponseDTO> call, Throwable t) {
+            public void onFailure(@NonNull Call<PeopleListResponseDTO> call, @NonNull Throwable t) {
                 Toast.makeText(MainActivity.this, "Falha ao consultar lista de personagens.", Toast.LENGTH_LONG).show();
                 Log.e("ERRO", "Erro", t);
             }
@@ -55,13 +65,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configurarLista() {
-        lista = findViewById(R.id.main_lista_personagens);
+        characterListAdapter = new CharacterListAdapter(this, characters);
+
+        RecyclerView charactersRecyclerView = findViewById(R.id.main_lista_personagens);
+        charactersRecyclerView.setAdapter(characterListAdapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        lista.setLayoutManager(layoutManager);
-    }
-
-    private void popularLista(List<Character> characters) {
-        lista.setAdapter(new CharacterListAdapter(this, characters));
+        charactersRecyclerView.setLayoutManager(layoutManager);
     }
 }
