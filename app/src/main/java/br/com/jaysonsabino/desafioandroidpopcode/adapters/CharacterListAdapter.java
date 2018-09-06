@@ -37,6 +37,8 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
 
         characterViewHolder.getName().setText(character.getName());
         characterViewHolder.getGender().setText(character.getGender());
+        characterViewHolder.getHeight().setText(character.getHeight());
+        characterViewHolder.getMass().setText(character.getMass());
     }
 
     @Override
@@ -48,12 +50,16 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
 
         private final TextView name;
         private final TextView gender;
+        private final TextView height;
+        private final TextView mass;
 
         CharacterViewHolder(@NonNull View itemView) {
             super(itemView);
 
             name = itemView.findViewById(R.id.listItemCharacterName);
             gender = itemView.findViewById(R.id.listItemCharacterGender);
+            height = itemView.findViewById(R.id.listItemCharacterHeight);
+            mass = itemView.findViewById(R.id.listItemCharacterMass);
         }
 
         public TextView getName() {
@@ -62,6 +68,14 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
 
         public TextView getGender() {
             return gender;
+        }
+
+        public TextView getHeight() {
+            return height;
+        }
+
+        public TextView getMass() {
+            return mass;
         }
     }
 }

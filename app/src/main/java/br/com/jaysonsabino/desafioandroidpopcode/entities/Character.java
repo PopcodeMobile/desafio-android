@@ -16,9 +16,11 @@ public class Character {
         this.name = name;
     }
 
-    public Character(String name, String gender) {
+    public Character(String name, String gender, String height, String mass) {
         this.name = name;
         this.gender = gender;
+        this.height = height;
+        this.mass = mass;
     }
 
     public int getId() {

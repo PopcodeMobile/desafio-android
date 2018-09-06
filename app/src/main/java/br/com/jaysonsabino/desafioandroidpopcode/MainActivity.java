@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         List<Character> characters = new ArrayList<>();
-        characters.add(new Character("Jayson", "Male"));
-        characters.add(new Character("Luke"));
+        characters.add(new Character("Jayson", "Male", "1.71m", "73kg"));
+        characters.add(new Character("Luke", "Male", "1.65m", "70kg"));
 
         RecyclerView lista = findViewById(R.id.main_lista_personagens);
 
