@@ -1,78 +1,50 @@
 package br.com.jaysonsabino.desafioandroidpopcode.viewmodels;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.util.Log;
+import android.arch.lifecycle.LiveData;
+import android.arch.paging.DataSource;
+import android.arch.paging.LivePagedListBuilder;
+import android.arch.paging.PagedList;
 import android.widget.Toast;
 
-import java.util.List;
+import java.util.Random;
 
-import br.com.jaysonsabino.desafioandroidpopcode.adapters.CharacterListAdapter;
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
-import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
-import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.dto.PeopleListResponseDTO;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.DatabaseSynchronizer;
 
 public class PeopleListViewModel {
 
     private Activity activity;
-    private CharacterListAdapter characterListAdapter;
-    private final AppDatabase appDatabase;
+    private final AppDatabase database;
 
-    public PeopleListViewModel(Activity activity, CharacterListAdapter characterListAdapter) {
+    private LiveData<PagedList<Character>> characters;
+
+    public PeopleListViewModel(Activity activity) {
         this.activity = activity;
-        this.characterListAdapter = characterListAdapter;
-        appDatabase = new DatabaseFactory().getDatabase(activity);
+        database = new DatabaseFactory().getDatabase(activity);
+
+        configurarLivePagedList();
     }
 
-    public void consultarPersonagensDatabase() {
-        List<Character> characters = appDatabase.getCharacterDAO().findAll();
-
-        characterListAdapter.getCharacters().addAll(characters);
-        characterListAdapter.notifyDataSetChanged();
-
-        Toast.makeText(activity, "Lista de personagens do banco.", Toast.LENGTH_LONG).show();
+    public LiveData<PagedList<Character>> getCharacters() {
+        return characters;
     }
 
-    public void consultarPersonagensSWAPI(final int page) {
-        Call<PeopleListResponseDTO> list = new ServiceFactory().getPeopleService().getList(page);
-        list.enqueue(new Callback<PeopleListResponseDTO>() {
-            @Override
-            public void onResponse(@NonNull Call<PeopleListResponseDTO> call, @NonNull Response<PeopleListResponseDTO> response) {
-                PeopleListResponseDTO dto = response.body();
+    private void configurarLivePagedList() {
+        DataSource.Factory<Integer, Character> factory = database.getCharacterDAO().loadCharactersByNameAsc();
+        PagedList.Config config = new PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).build();
 
-                if (dto == null) {
-                    Toast.makeText(activity, "Falha ao consultar lista de personagens.", Toast.LENGTH_LONG).show();
-                    return;
-                }
+        characters = new LivePagedListBuilder<>(factory, config).build();
+    }
 
-                Toast.makeText(activity, "Consulta de personagens finalizada com sucesso. Página: " + page, Toast.LENGTH_SHORT).show();
+    public void sincronizarBancoDePersonagens() {
+        if (new Random().nextInt(2) == 1) {
+            Toast.makeText(activity, "Simulando banco local desatualizado", Toast.LENGTH_LONG).show();
+            database.getCharacterDAO().deleteSomeForTestPurposes();
+        }
 
-                List<Character> characters = dto.getResults();
-
-                characterListAdapter.getCharacters().addAll(characters);
-                characterListAdapter.notifyDataSetChanged();
-
-
-                for (Character character : characters) {
-                    character.setIdByUrl();
-                    appDatabase.getCharacterDAO().insert(character);
-                }
-
-                if (dto.getNext() != null) {
-                    consultarPersonagensSWAPI(page + 1);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<PeopleListResponseDTO> call, @NonNull Throwable t) {
-                Toast.makeText(activity, "Falha ao consultar lista de personagens.", Toast.LENGTH_LONG).show();
-                Log.e("ERRO", "Erro", t);
-            }
-        });
+        new DatabaseSynchronizer(activity, database).syncCharacters();
     }
 }

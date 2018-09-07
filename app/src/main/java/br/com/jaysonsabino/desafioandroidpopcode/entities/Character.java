@@ -121,4 +121,18 @@ public class Character implements Serializable {
             this.id = Integer.parseInt(id);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Character character = (Character) o;
+        return name.equals(character.name) &&
+                url.equals(character.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return (name + url).hashCode();
+    }
 }

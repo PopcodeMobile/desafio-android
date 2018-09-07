@@ -1,30 +1,25 @@
 package br.com.jaysonsabino.desafioandroidpopcode.adapters;
 
+import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 import br.com.jaysonsabino.desafioandroidpopcode.R;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 
-public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdapter.CharacterViewHolder> {
+public class CharacterListAdapter extends PagedListAdapter<Character, CharacterListAdapter.CharacterViewHolder> {
 
-    private List<Character> characters;
     private Context context;
 
-    public CharacterListAdapter(Context context, List<Character> characters) {
+    public CharacterListAdapter(Context context, @NonNull DiffUtil.ItemCallback<Character> diffCallback) {
+        super(diffCallback);
         this.context = context;
-        this.characters = characters;
-    }
-
-    public List<Character> getCharacters() {
-        return characters;
     }
 
     @NonNull
@@ -37,7 +32,11 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
 
     @Override
     public void onBindViewHolder(@NonNull CharacterViewHolder characterViewHolder, int i) {
-        Character character = characters.get(i);
+        Character character = getItem(i);
+
+        if (character == null) {
+            return;
+        }
 
         String height = character.getHeight();
         String mass = character.getMass();
@@ -53,11 +52,6 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
         characterViewHolder.getGender().setText(character.getGender());
         characterViewHolder.getHeight().setText(height);
         characterViewHolder.getMass().setText(mass);
-    }
-
-    @Override
-    public int getItemCount() {
-        return characters.size();
     }
 
     class CharacterViewHolder extends RecyclerView.ViewHolder {
@@ -76,19 +70,19 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
             mass = itemView.findViewById(R.id.listItemCharacterMass);
         }
 
-        public TextView getName() {
+        TextView getName() {
             return name;
         }
 
-        public TextView getGender() {
+        TextView getGender() {
             return gender;
         }
 
-        public TextView getHeight() {
+        TextView getHeight() {
             return height;
         }
 
-        public TextView getMass() {
+        TextView getMass() {
             return mass;
         }
     }
