@@ -7,4 +7,9 @@
         android:icon="@android:drawable/ic_search_category_default"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />
+    <item
+        android:id="@+id/action_favorite"
+        android:title="@string/favorite"
+        android:icon="@android:drawable/star_big_off"
+        app:showAsAction="always" />
 </menu>

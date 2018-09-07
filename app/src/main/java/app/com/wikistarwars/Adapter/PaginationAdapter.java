@@ -1,6 +1,7 @@
 package app.com.wikistarwars.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.com.wikistarwars.DetailsPersonActivity;
 import app.com.wikistarwars.Model.Personagem;
 import app.com.wikistarwars.R;
 
@@ -65,7 +67,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        Personagem result = pResults.get(position);
+        final Personagem result = pResults.get(position);
 
         switch (getItemViewType(position)) {
             case ITEM:
@@ -74,6 +76,16 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 personVH.pHeight.setText(result.getHeight());
                 personVH.pGender.setText(result.getGender());
                 personVH.pMass.setText(result.getMass());
+
+                personVH.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, DetailsPersonActivity.class);
+                        intent.putExtra("Name", result.getName());
+                        context.startActivity(intent);
+                    }
+                });
                 break;
 
             case LOADING:

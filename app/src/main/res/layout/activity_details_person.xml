@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name: "
+                android:textSize="20dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="65dp"
+                android:textSize="20dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Mass: "
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_below="@+id/name"/>
+
+            <TextView
+                android:id="@+id/mass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="65dp"
+                android:textSize="20dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@+id/name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Height: "
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_below="@+id/mass"/>
+
+            <TextView
+                android:id="@+id/height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="70dp"
+                android:textSize="20dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@+id/mass" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Hair Color: "
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_below="@+id/height"/>
+
+            <TextView
+                android:id="@+id/hair_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="105dp"
+                android:textSize="20dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@+id/height" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Skin Color: "
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_below="@+id/hair_color"/>
+
+            <TextView
+                android:id="@+id/skin_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="105dp"
+                android:textSize="20dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@+id/hair_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Eye Color: "
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_below="@+id/skin_color"/>
+
+            <TextView
+                android:id="@+id/eye_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="105dp"
+                android:textSize="20dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@+id/skin_color" />
+
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Birth Year: "
+                android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_below="@+id/eye_color"/>
+
+            <TextView
+                android:id="@+id/birth_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="105dp"
+                android:textSize="20dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@+id/eye_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Gender: "
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_below="@+id/birth_year"/>
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="80dp"
+                android:textSize="20dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@+id/birth_year" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Planet: "
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_below="@+id/gender"/>
+
+            <TextView
+                android:id="@+id/planet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="70dp"
+                android:textSize="20dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@+id/gender" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Specie: "
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_below="@+id/planet"/>
+            <TextView
+                android:id="@+id/specie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="70dp"
+                android:textSize="20dp"
+                android:paddingBottom="8dp"
+                android:layout_below="@+id/planet" />
+
+        </RelativeLayout>
+
+
+
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
+

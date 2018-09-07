@@ -7,6 +7,10 @@ public class RetrofitConfig {
     private static final String ROOT_URL = "https://swapi.co/api/";
     public static Retrofit retrofit = null;
 
+    public static String getRootUrl() {
+        return ROOT_URL;
+    }
+
     private static Retrofit getRetrofitInstance() {
         if (retrofit == null){
             retrofit = new Retrofit.Builder()
@@ -16,6 +20,7 @@ public class RetrofitConfig {
         }
         return retrofit;
     }
+
 
     public static Service getApiService() {
         return getRetrofitInstance().create(Service.class);

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Wiki Star Wars</string>
     <string name="search">Search</string>
+    <string name="favorite">Favorites</string>
 </resources>

@@ -1,19 +1,21 @@
 package app.com.wikistarwars;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.support.v7.widget.SearchView;
-
-import org.w3c.dom.Text;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ import app.com.wikistarwars.Api.Service;
 import app.com.wikistarwars.Model.Personagem;
 import app.com.wikistarwars.Model.PersonagemResponse;
 import app.com.wikistarwars.Util.PaginationScrollListener;
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,11 +46,15 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchView;
 
     private Service api;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        realm = Realm.getDefaultInstance();
 
         recyclerView = (RecyclerView) findViewById(R.id.rvPersonagens);
         progressBar = (ProgressBar) findViewById(R.id.progress);
@@ -97,27 +104,50 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    protected boolean isConnected(){
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(isConnected())
+            Toast.makeText(this,"ONLINE",Toast.LENGTH_SHORT);
+        else
+            Toast.makeText(this,"OFFLINE",Toast.LENGTH_SHORT);
+//        realm =  Realm.getDefaultInstance();
+//        RealmResults<Personagem> personagens = realm.where(Personagem.class).findAll();
+//        adapter.setPersons(personagens);
+//        realm.close();
+    }
+
     private List<Personagem> fetchResults(Response<PersonagemResponse> response) {
         PersonagemResponse persons = response.body();
         return persons.getResults();
     }
 
     private void loadSearch(final String nome) {
+        clearSearch();
         callSearchApi(nome).enqueue(new Callback<PersonagemResponse>() {
             @Override
             public void onResponse(Call<PersonagemResponse> call, Response<PersonagemResponse> response) {
                 PersonagemResponse persons = response.body();
 
                 List<Personagem> results = persons.getResults();
-
-                progressBar.setVisibility(View.GONE);
                 adapter.clear();
                 adapter.addAll(results);
                 adapter.notifyDataSetChanged();
-                if (currentPage <= TOTAL_PAGES)
+                progressBar.setVisibility(View.GONE);
+                if (currentPage < TOTAL_PAGES)
                     adapter.addLoadingFooter();
-                else
+                else {
                     isLastPage = true;
+                }
             }
 
             @Override
@@ -128,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void clearSearch(){
-        isLoading   = isLastPage = false;
+    protected void clearSearch() {
+        isLoading = isLastPage = false;
         TOTAL_PAGES = 1;
         currentPage = PAGE_START;
     }
@@ -139,12 +169,13 @@ public class MainActivity extends AppCompatActivity {
         callPersonsApi().enqueue(new Callback<PersonagemResponse>() {
             @Override
             public void onResponse(Call<PersonagemResponse> call, Response<PersonagemResponse> response) {
+
                 PersonagemResponse persons = response.body();
 
-                List<Personagem> results = persons.getResults();
+                List<Personagem> results =  persons.getResults();
 
                 try {
-                    TOTAL_PAGES = (int) Math.ceil((double)persons.getCount()/persons.getResults().size());
+                    TOTAL_PAGES = (int) Math.ceil((double) persons.getCount() / persons.getResults().size());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -154,14 +185,18 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
                 if (currentPage <= TOTAL_PAGES)
                     adapter.addLoadingFooter();
-                else
+                else {
                     isLastPage = true;
+                }
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(results);
+                realm.commitTransaction();
             }
 
             @Override
             public void onFailure(Call<PersonagemResponse> call, Throwable t) {
                 t.printStackTrace();
-
             }
         });
 
@@ -178,6 +213,12 @@ public class MainActivity extends AppCompatActivity {
                 List<Personagem> results = fetchResults(response);
                 adapter.addAll(results);
                 adapter.notifyDataSetChanged();
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(results);
+                realm.commitTransaction();
+                realm.close();
+
                 if (currentPage != TOTAL_PAGES)
                     adapter.addLoadingFooter();
                 else

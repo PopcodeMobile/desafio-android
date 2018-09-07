@@ -1,11 +1,11 @@
 package app.com.wikistarwars.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
 
-public class Personagem implements Parcelable {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+
+public class Personagem extends RealmObject{
 
     @SerializedName("name")
     private String name;
@@ -15,36 +15,92 @@ public class Personagem implements Parcelable {
     private String gender;
     @SerializedName("mass")
     private String mass;
+    @SerializedName("hair_color")
+    private String hair_color;
+    @SerializedName("skin_color")
+    private String skin_color;
+    @SerializedName("eye_color")
+    private String eye_color;
+    @SerializedName("birth_year")
+    private String birth_year;
+    @SerializedName("homeworld")
+    private String homeworld;
+    @SerializedName("species")
+    private RealmList<String> species;
+    private boolean favourite;
 
-    public Personagem(String name, String height, String gender, String mass) {
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public RealmList<String> getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(RealmList<String> species) {
+        this.species = species;
+    }
+
+    public String getHair_color() {
+        return hair_color;
+    }
+
+    public void setHair_color(String hair_color) {
+        this.hair_color = hair_color;
+    }
+
+    public String getSkin_color() {
+        return skin_color;
+    }
+
+    public void setSkin_color(String skin_color) {
+        this.skin_color = skin_color;
+    }
+
+    public String getEye_color() {
+        return eye_color;
+    }
+
+    public void setEye_color(String eye_color) {
+        this.eye_color = eye_color;
+    }
+
+    public String getBirth_year() {
+        return birth_year;
+    }
+
+    public void setBirth_year(String birth_year) {
+        this.birth_year = birth_year;
+    }
+
+    public String getHomeworld() {
+        return homeworld;
+    }
+
+    public void setHomeworld(String homeworld) {
+        this.homeworld = homeworld;
+    }
+
+
+    public Personagem(String name, String height, String gender, String mass, String hair_color, String skin_color, String eye_color, String birth_year, String homeWorld, RealmList<String> species) {
         this.name = name;
         this.height = height;
-        this.gender = gender;
         this.mass = mass;
+        this.gender = gender;
+        this.hair_color = hair_color;
+        this.skin_color = skin_color;
+        this.eye_color = eye_color;
+        this.birth_year = birth_year;
+        this.homeworld = homeWorld;
+        this.species = species;
     }
 
     public Personagem(){
 
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeString(this.height);
-        dest.writeString(this.gender);
-        dest.writeString(this.mass);
-    }
-
-    protected Personagem(Parcel in) {
-        this.name = in.readString();
-        this.height = in.readString();
-        this.gender = in.readString();
-        this.mass = in.readString();
     }
 
     public String getName() {
@@ -79,15 +135,4 @@ public class Personagem implements Parcelable {
         this.mass = mass;
     }
 
-    public static final Creator<Personagem> CREATOR = new Creator<Personagem>() {
-        @Override
-        public Personagem createFromParcel(Parcel source) {
-            return new Personagem(source);
-        }
-
-        @Override
-        public Personagem[] newArray(int size) {
-            return new Personagem[size];
-        }
-    };
 }
