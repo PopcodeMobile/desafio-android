@@ -16,10 +16,15 @@ import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 public class CharacterListAdapter extends PagedListAdapter<Character, CharacterListAdapter.CharacterViewHolder> {
 
     private Context context;
+    private OnClickListener onClickListener;
 
     public CharacterListAdapter(Context context, @NonNull DiffUtil.ItemCallback<Character> diffCallback) {
         super(diffCallback);
         this.context = context;
+    }
+
+    public void setOnItemClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
@@ -27,7 +32,13 @@ public class CharacterListAdapter extends PagedListAdapter<Character, CharacterL
     public CharacterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.character_list_item, viewGroup, false);
 
-        return new CharacterViewHolder(view);
+        CharacterViewHolder characterViewHolder = new CharacterViewHolder(view);
+
+        if (onClickListener != null) {
+            characterViewHolder.setOnClickListener(onClickListener);
+        }
+
+        return characterViewHolder;
     }
 
     @Override
@@ -70,6 +81,17 @@ public class CharacterListAdapter extends PagedListAdapter<Character, CharacterL
             mass = itemView.findViewById(R.id.listItemCharacterMass);
         }
 
+        public void setOnClickListener(final OnClickListener onClickListener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Character item = getItem(getAdapterPosition());
+
+                    onClickListener.onClick(v, item);
+                }
+            });
+        }
+
         TextView getName() {
             return name;
         }
@@ -85,5 +107,10 @@ public class CharacterListAdapter extends PagedListAdapter<Character, CharacterL
         TextView getMass() {
             return mass;
         }
+    }
+
+    public interface OnClickListener {
+
+        void onClick(View v, Character character);
     }
 }
