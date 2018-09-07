@@ -127,10 +127,16 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                FavoriteCharacter favoriteCharacter = new DatabaseFactory().getDatabase(CharacterDetailsActivity.this).getFavoriteCharacterDAO().getByCharacterId(character.getId());
+                final FavoriteCharacter favoriteCharacter = new DatabaseFactory().getDatabase(CharacterDetailsActivity.this).getFavoriteCharacterDAO().getByCharacterId(character.getId());
 
-                favorite.setChecked(favoriteCharacter != null);
-                favorite.setVisibility(View.VISIBLE);
+                // prevents "Only the original thread that created a view hierarchy can touch its views."
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        favorite.setChecked(favoriteCharacter != null);
+                        favorite.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         });
     }

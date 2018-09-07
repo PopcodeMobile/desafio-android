@@ -3,6 +3,9 @@ package br.com.jaysonsabino.desafioandroidpopcode.services;
 import android.app.Activity;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Executor;
 
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
@@ -56,11 +59,24 @@ public class FavoritesService {
     }
 
     private void sendFavoriteToStarWarsFavorites(final FavoriteCharacter favoriteCharacter) {
-        Call<StarWarsFavoritesResponseDTO> call =
-                favoritesService.favorite(favoriteCharacter.getCharacterId());
+        Map<String, String> headers = new HashMap<>();
+
+        if (new Random().nextInt(2) == 1) {
+            headers.put("Prefer", "status=400");
+        }
+
+        Call<StarWarsFavoritesResponseDTO> call = favoritesService.favorite(
+                favoriteCharacter.getCharacterId(),
+                headers
+        );
         call.enqueue(new Callback<StarWarsFavoritesResponseDTO>() {
             @Override
             public void onResponse(Call<StarWarsFavoritesResponseDTO> call, Response<StarWarsFavoritesResponseDTO> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(activity, "Falha ao salvar favorito na api: code " + response.code(), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 StarWarsFavoritesResponseDTO body = response.body();
 
                 if (body == null) {
