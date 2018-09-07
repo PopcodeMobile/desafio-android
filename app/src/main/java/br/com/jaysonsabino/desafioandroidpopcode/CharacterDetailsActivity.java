@@ -23,23 +23,5 @@ public class CharacterDetailsActivity extends AppCompatActivity {
 
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_character_details);
         binding.setVariable(BR.character, character);
-
-//        TextView name = findViewById(R.id.detailsCharacterName);
-//        TextView gender = findViewById(R.id.detailsCharacterGender);
-//        TextView height = findViewById(R.id.detailsCharacterHeight);
-//        TextView mass = findViewById(R.id.detailsCharacterMass);
-//        TextView hairColor = findViewById(R.id.detailsCharacterHairColor);
-//        TextView skinColor = findViewById(R.id.detailsCharacterSkinColor);
-//        TextView eyeColor = findViewById(R.id.detailsCharacterEyeColor);
-//        TextView birthYear = findViewById(R.id.detailsCharacterBirthYear);
-
-//        name.setText(character.getName());
-//        gender.setText(character.getGender());
-//        height.setText(character.getHeight());
-//        mass.setText(character.getMass());
-//        hairColor.setText(character.getHairColor());
-//        skinColor.setText(character.getSkinColor());
-//        eyeColor.setText(character.getEyeColor());
-//        birthYear.setText(character.getBirthYear());
     }
 }
