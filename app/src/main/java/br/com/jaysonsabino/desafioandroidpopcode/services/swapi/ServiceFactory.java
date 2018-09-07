@@ -18,4 +18,8 @@ public class ServiceFactory {
     public PeopleService getPeopleService() {
         return retrofit.create(PeopleService.class);
     }
+
+    public PlanetService getPlanetService() {
+        return retrofit.create(PlanetService.class);
+    }
 }

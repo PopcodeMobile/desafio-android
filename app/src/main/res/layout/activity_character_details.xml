@@ -194,11 +194,12 @@
             tools:text="Blue" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Ano de nascimento:"
+            app:layout_constraintEnd_toStartOf="@+id/textView12"
             app:layout_constraintStart_toStartOf="@+id/detailsCharacterName"
             app:layout_constraintTop_toBottomOf="@+id/detailsCharacterMass" />
 
@@ -206,12 +207,38 @@
             android:id="@+id/detailsCharacterBirthYear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="@{character.birthYear}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
-            android:text="@{character.birthYear}"
+            app:layout_constraintEnd_toStartOf="@+id/detailsCharacterHomeWorld"
             app:layout_constraintStart_toStartOf="@+id/detailsCharacterName"
-            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
             tools:text="1992" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Planeta natal:"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/detailsCharacterEyeColor" />
+
+        <TextView
+            android:id="@+id/detailsCharacterHomeWorld"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detailsCharacterBirthYear"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            tools:text="Earth" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

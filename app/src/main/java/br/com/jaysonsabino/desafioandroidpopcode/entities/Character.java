@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Character implements Serializable {
 
-    private static final String URL_PATTERN = "https://swapi.co/api/people/([0-9]+)/";
+    private static final String CHARACTER_URL_PATTERN = "https://swapi.co/api/people/([0-9]+)/";
 
     @PrimaryKey
     private int id;
@@ -32,6 +32,7 @@ public class Character implements Serializable {
     private String gender;
     private String url;
     private String created;
+    private String homeworld;
 
     public int getId() {
         return id;
@@ -121,8 +122,20 @@ public class Character implements Serializable {
         this.created = created;
     }
 
+    public String getHomeworld() {
+        return homeworld;
+    }
+
+    public Integer getHomeworldId() {
+        return Planet.getIdByUrl(homeworld);
+    }
+
+    public void setHomeworld(String homeworld) {
+        this.homeworld = homeworld;
+    }
+
     public void setIdByUrl() {
-        Pattern pattern = Pattern.compile(URL_PATTERN);
+        Pattern pattern = Pattern.compile(CHARACTER_URL_PATTERN);
         Matcher matcher = pattern.matcher(url);
 
         if (matcher.find()) {
