@@ -10,6 +10,8 @@ import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 public class PeopleListResponseDTO {
 
     private int count;
+
+    private String previous;
     private String next;
     private List<Character> results;
 
@@ -35,5 +37,13 @@ public class PeopleListResponseDTO {
 
     public void setNext(String next) {
         this.next = next;
+    }
+
+    public String getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(String previous) {
+        this.previous = previous;
     }
 }

@@ -11,6 +11,7 @@ import java.util.Random;
 
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
+import br.com.jaysonsabino.desafioandroidpopcode.datasources.PageKeyedCharactersDataSourceFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.DatabaseSynchronizer;
 
@@ -25,7 +26,8 @@ public class PeopleListViewModel {
         this.activity = activity;
         database = new DatabaseFactory().getDatabase(activity);
 
-        configurarLivePagedList();
+//        configurarLivePagedList();
+        configurarLivePagedListUsingSWAPI();
     }
 
     public LiveData<PagedList<Character>> getCharacters() {
@@ -34,6 +36,13 @@ public class PeopleListViewModel {
 
     private void configurarLivePagedList() {
         DataSource.Factory<Integer, Character> factory = database.getCharacterDAO().loadCharactersByNameAsc();
+        PagedList.Config config = new PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).build();
+
+        characters = new LivePagedListBuilder<>(factory, config).build();
+    }
+
+    private void configurarLivePagedListUsingSWAPI() {
+        PageKeyedCharactersDataSourceFactory factory = new PageKeyedCharactersDataSourceFactory();
         PagedList.Config config = new PagedList.Config.Builder().setPageSize(10).setEnablePlaceholders(false).build();
 
         characters = new LivePagedListBuilder<>(factory, config).build();
