@@ -11,6 +11,7 @@ import br.com.jaysonsabino.desafioandroidpopcode.BR;
 import br.com.jaysonsabino.desafioandroidpopcode.R;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Planet;
+import br.com.jaysonsabino.desafioandroidpopcode.entities.Specie;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,10 +36,12 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_character_details);
         binding.setVariable(BR.character, character);
 
-        carregarPlanetaNatal();
+        loadHomeWorld();
+
+        loadSpecie();
     }
 
-    private void carregarPlanetaNatal() {
+    private void loadHomeWorld() {
         Integer homeworldId = character.getHomeworldId();
 
         if (homeworldId == null) {
@@ -49,13 +52,11 @@ public class CharacterDetailsActivity extends AppCompatActivity {
 
         final TextView homeworld = findViewById(R.id.detailsCharacterHomeWorld);
 
-        Call<Planet> callPlanet = new ServiceFactory().getPlanetService().getPlanetById(homeworldId);
-        callPlanet.enqueue(new Callback<Planet>() {
+        Call<Planet> call = new ServiceFactory().getPlanetService().getPlanetById(homeworldId);
+        call.enqueue(new Callback<Planet>() {
             @Override
             public void onResponse(Call<Planet> call, Response<Planet> response) {
                 Planet planet = response.body();
-                Toast.makeText(CharacterDetailsActivity.this, "Planeta natal carregado.", Toast.LENGTH_SHORT).show();
-
                 if (planet == null) {
                     return;
                 }
@@ -66,6 +67,37 @@ public class CharacterDetailsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Planet> call, Throwable t) {
                 Toast.makeText(CharacterDetailsActivity.this, "Falha na consulta do planeta natal.", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void loadSpecie() {
+        Integer specieId = character.getSpecie();
+
+        if (specieId == null) {
+            return;
+        }
+
+        Toast.makeText(CharacterDetailsActivity.this, "Carregando espécie.", Toast.LENGTH_SHORT).show();
+
+        final TextView tvSpecie = findViewById(R.id.detailsCharacterSpecie);
+
+        Call<Specie> call = new ServiceFactory().getSpecieService().getSpecieById(specieId);
+        call.enqueue(new Callback<Specie>() {
+            @Override
+            public void onResponse(Call<Specie> call, Response<Specie> response) {
+                Specie specie = response.body();
+                if (specie == null) {
+                    return;
+                }
+
+                tvSpecie.setText(specie.getName());
+            }
+
+            @Override
+            public void onFailure(Call<Specie> call, Throwable t) {
+                Toast.makeText(CharacterDetailsActivity.this, "Falha na consulta da espécie.", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });

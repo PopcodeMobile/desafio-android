@@ -22,4 +22,8 @@ public class ServiceFactory {
     public PlanetService getPlanetService() {
         return retrofit.create(PlanetService.class);
     }
+
+    public SpecieService getSpecieService() {
+        return retrofit.create(SpecieService.class);
+    }
 }

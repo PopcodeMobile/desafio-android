@@ -3,6 +3,7 @@ package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
 import android.app.Activity;
 import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.concurrent.Executor;
 
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
+import br.com.jaysonsabino.desafioandroidpopcode.entities.Specie;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.PeopleListResponseDTO;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.PeopleService;
 import br.com.jaysonsabino.desafioandroidpopcode.util.NetworkHelper;
@@ -80,9 +82,18 @@ public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character
 
                 List<Character> characters = body.getResults();
 
-                // hack to set id of all returned characters
+                // TODO melhorar esse codigo, verificar se tem algo pronto no Jackson para isso, outra alternativa seria criar um DTO para o serviço e depois convertê-lo na entidade
                 for (Character character : characters) {
                     character.setIdByUrl();
+
+                    if (character.getSpecies().size() == 1) {
+                        Integer specieId = Specie.getIdByUrl(character.getSpecies().get(0));
+                        character.setSpecie(specieId);
+
+                        Toast.makeText(activity, "Planeta " + character.getSpecies().get(0) + " id " + specieId, Toast.LENGTH_SHORT).show();
+                    } else if (character.getSpecies().size() > 1) {
+                        Log.e("RETORNO_NAO_ESPERADO", "Nenhum personagem possuía mais de uma espécie no momento da criação do app. Sendo assim simplifiquei a entidade para salvar apenas o id.");
+                    }
                 }
 
                 insertIntoDatabase(characters);

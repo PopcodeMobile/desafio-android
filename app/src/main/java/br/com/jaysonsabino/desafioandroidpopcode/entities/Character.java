@@ -1,12 +1,14 @@
 package br.com.jaysonsabino.desafioandroidpopcode.entities;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +34,13 @@ public class Character implements Serializable {
     private String gender;
     private String url;
     private String created;
+    /**
+     * TODO O ideal para os campos homeworld e species seria salvar apenas o id
+     */
     private String homeworld;
+    @Ignore
+    private List<String> species;
+    private Integer specie;
 
     public int getId() {
         return id;
@@ -132,6 +140,22 @@ public class Character implements Serializable {
 
     public void setHomeworld(String homeworld) {
         this.homeworld = homeworld;
+    }
+
+    public List<String> getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(List<String> species) {
+        this.species = species;
+    }
+
+    public Integer getSpecie() {
+        return specie;
+    }
+
+    public void setSpecie(Integer specie) {
+        this.specie = specie;
     }
 
     public void setIdByUrl() {
