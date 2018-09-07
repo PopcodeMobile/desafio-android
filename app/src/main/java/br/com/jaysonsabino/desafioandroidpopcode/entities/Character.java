@@ -21,11 +21,11 @@ public class Character implements Serializable {
     private String name;
     private String height;
     private String mass;
-    @JsonProperty("hair_colors")
+    @JsonProperty("hair_color")
     private String hairColor;
     @JsonProperty("skin_color")
     private String skinColor;
-    @JsonProperty("eye_colors")
+    @JsonProperty("eye_color")
     private String eyeColor;
     @JsonProperty("birth_year")
     private String birthYear;
