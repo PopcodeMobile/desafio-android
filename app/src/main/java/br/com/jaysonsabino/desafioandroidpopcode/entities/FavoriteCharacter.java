@@ -7,22 +7,22 @@ import android.arch.persistence.room.PrimaryKey;
 public class FavoriteCharacter {
 
     @PrimaryKey
-    private int characterId;
+    private Integer characterId;
     private boolean syncedWithApi;
 
     public FavoriteCharacter() {
     }
 
-    public FavoriteCharacter(int characterId) {
+    public FavoriteCharacter(Integer characterId) {
         this.characterId = characterId;
         this.syncedWithApi = false;
     }
 
-    public int getCharacterId() {
+    public Integer getCharacterId() {
         return characterId;
     }
 
-    public void setCharacterId(int characterId) {
+    public void setCharacterId(Integer characterId) {
         this.characterId = characterId;
     }
 

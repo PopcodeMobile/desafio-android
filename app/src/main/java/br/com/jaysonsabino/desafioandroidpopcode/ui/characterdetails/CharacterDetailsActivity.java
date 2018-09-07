@@ -14,15 +14,12 @@ import java.util.concurrent.Executors;
 
 import br.com.jaysonsabino.desafioandroidpopcode.BR;
 import br.com.jaysonsabino.desafioandroidpopcode.R;
-import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.FavoriteCharacter;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Planet;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Specie;
-import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesResponseDTO;
-import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesService;
-import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesServiceFactory;
+import br.com.jaysonsabino.desafioandroidpopcode.services.FavoritesService;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,9 +28,8 @@ import retrofit2.Response;
 public class CharacterDetailsActivity extends AppCompatActivity {
 
     private Character character;
+    private FavoritesService favoritesService;
     private Executor executor;
-    private AppDatabase database;
-    private StarWarsFavoritesService favoritesService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +43,18 @@ public class CharacterDetailsActivity extends AppCompatActivity {
             return;
         }
 
-        executor = Executors.newFixedThreadPool(1);
-        database = new DatabaseFactory().getDatabase(this);
-        favoritesService = new StarWarsFavoritesServiceFactory().getService();
-
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_character_details);
         binding.setVariable(BR.character, character);
+
+        executor = Executors.newFixedThreadPool(2);
 
         loadHomeWorld();
 
         loadSpecie();
+
+        loadFavorite();
+
+        favoritesService = new FavoritesService(this, executor);
     }
 
     private void loadHomeWorld() {
@@ -121,71 +119,32 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         });
     }
 
+    private void loadFavorite() {
+        final CheckBox favorite = findViewById(R.id.detailsCheckIsFavorite);
+
+        favorite.setVisibility(View.INVISIBLE);
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                FavoriteCharacter favoriteCharacter = new DatabaseFactory().getDatabase(CharacterDetailsActivity.this).getFavoriteCharacterDAO().getByCharacterId(character.getId());
+
+                favorite.setChecked(favoriteCharacter != null);
+                favorite.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
     public void onClickFavorite(View view) {
         if (!(view instanceof CheckBox)) {
             return;
         }
 
-        final FavoriteCharacter favoriteCharacter = new FavoriteCharacter(character.getId());
         if (((CheckBox) view).isChecked()) {
-            favoritar(favoriteCharacter);
+            favoritesService.setAsFavorite(character);
         } else {
-            desfavoritar(favoriteCharacter);
+            favoritesService.unsetAsFavorite(character);
         }
     }
 
-    private void favoritar(final FavoriteCharacter favoriteCharacter) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                database.getFavoriteCharacterDAO().insert(favoriteCharacter);
-
-                sendFavoriteToStarWarsFavorites(favoriteCharacter);
-            }
-        });
-    }
-
-    private void sendFavoriteToStarWarsFavorites(final FavoriteCharacter favoriteCharacter) {
-        Call<StarWarsFavoritesResponseDTO> call =
-                favoritesService.favorite(favoriteCharacter.getCharacterId());
-        call.enqueue(new Callback<StarWarsFavoritesResponseDTO>() {
-            @Override
-            public void onResponse(Call<StarWarsFavoritesResponseDTO> call, Response<StarWarsFavoritesResponseDTO> response) {
-                StarWarsFavoritesResponseDTO body = response.body();
-
-                if (body == null) {
-                    return;
-                }
-
-                markFavoriteCharacterAsSynced(favoriteCharacter);
-
-                Toast.makeText(CharacterDetailsActivity.this, body.toString(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Call<StarWarsFavoritesResponseDTO> call, Throwable t) {
-                Toast.makeText(CharacterDetailsActivity.this, "Falha na comunicação com a StarWarsFavorites.", Toast.LENGTH_LONG).show();
-                t.printStackTrace();
-            }
-        });
-    }
-
-    private void markFavoriteCharacterAsSynced(final FavoriteCharacter favoriteCharacter) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                favoriteCharacter.setSyncedWithApi(true);
-                database.getFavoriteCharacterDAO().update(favoriteCharacter);
-            }
-        });
-    }
-
-    private void desfavoritar(final FavoriteCharacter favoriteCharacter) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                database.getFavoriteCharacterDAO().delete(favoriteCharacter);
-            }
-        });
-    }
 }
