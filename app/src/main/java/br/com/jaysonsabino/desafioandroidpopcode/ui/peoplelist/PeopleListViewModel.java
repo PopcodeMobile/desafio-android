@@ -6,6 +6,8 @@ import android.arch.paging.DataSource;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 
+import java.util.concurrent.Executor;
+
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
@@ -15,12 +17,14 @@ public class PeopleListViewModel {
 
     private Activity activity;
     private final AppDatabase database;
+    private Executor executor;
 
     private LiveData<PagedList<Character>> characters;
 
-    PeopleListViewModel(Activity activity) {
+    PeopleListViewModel(Activity activity, Executor executor) {
         this.activity = activity;
         database = new DatabaseFactory().getDatabase(activity);
+        this.executor = executor;
 
         configurarLivePagedListWithBoundaryCallback();
     }
@@ -32,8 +36,9 @@ public class PeopleListViewModel {
     private void configurarLivePagedListWithBoundaryCallback() {
         DataSource.Factory<Integer, Character> factory = database.getCharacterDAO().findAll();
         PagedList.Config config = new PagedList.Config.Builder()
-                .setPageSize(10)
-                .setInitialLoadSizeHint(10)
+                .setPageSize(8)
+                .setPrefetchDistance(24)
+                .setInitialLoadSizeHint(24)
                 .setEnablePlaceholders(false)
                 .build();
 
@@ -41,8 +46,9 @@ public class PeopleListViewModel {
                 .setBoundaryCallback(new PeopleBoundaryCallback(
                         activity,
                         database,
-                        new ServiceFactory().getPeopleService())
-                )
+                        new ServiceFactory().getPeopleService(),
+                        executor
+                ))
                 .build();
     }
 
@@ -50,6 +56,11 @@ public class PeopleListViewModel {
      * TODO temporario
      */
     public void apagarPersonagensBancoLocal() {
-        database.getCharacterDAO().deleteAll();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                database.getCharacterDAO().deleteAll();
+            }
+        });
     }
 }

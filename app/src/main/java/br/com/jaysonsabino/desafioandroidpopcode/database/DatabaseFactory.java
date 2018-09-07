@@ -9,7 +9,6 @@ public class DatabaseFactory {
 
     public AppDatabase getDatabase(Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME)
-                .allowMainThreadQueries() // TODO desabilitar
                 .fallbackToDestructiveMigration()
                 .build();
     }

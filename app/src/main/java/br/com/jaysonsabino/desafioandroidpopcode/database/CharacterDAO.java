@@ -13,7 +13,7 @@ import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 @Dao
 public interface CharacterDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(List<Character> characters);
 
     @Query("DELETE FROM Character")

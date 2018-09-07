@@ -6,9 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import br.com.jaysonsabino.desafioandroidpopcode.R;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
@@ -25,7 +30,9 @@ public class PeopleListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewModel = new PeopleListViewModel(this);
+        Executor executor = Executors.newFixedThreadPool(2);
+
+        viewModel = new PeopleListViewModel(this, executor);
 
         viewModel.apagarPersonagensBancoLocal();
 
@@ -62,5 +69,10 @@ public class PeopleListActivity extends AppCompatActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         charactersRecyclerView.setLayoutManager(layoutManager);
+
+        RecyclerView.ItemAnimator animator = charactersRecyclerView.getItemAnimator();
+        if (animator instanceof DefaultItemAnimator) {
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+        }
     }
 }
