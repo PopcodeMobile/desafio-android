@@ -39,6 +39,13 @@ public class PeopleListViewModel {
         characters = new LivePagedListBuilder<>(factory, config).build();
     }
 
+    /**
+     * TODO temporario
+     */
+    public void apagarPersonagensBancoLocal() {
+        database.getCharacterDAO().deleteAll();
+    }
+
     public void sincronizarBancoDePersonagens() {
         if (new Random().nextInt(2) == 1) {
             Toast.makeText(activity, "Simulando banco local desatualizado", Toast.LENGTH_LONG).show();

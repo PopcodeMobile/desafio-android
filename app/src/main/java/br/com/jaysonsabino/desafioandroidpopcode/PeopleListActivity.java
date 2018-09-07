@@ -29,11 +29,13 @@ public class PeopleListActivity extends AppCompatActivity {
 
         viewModel = new PeopleListViewModel(this);
 
+//        viewModel.apagarPersonagensBancoLocal();
+
         configurarAdapter();
 
         configurarLista();
 
-        viewModel.sincronizarBancoDePersonagens();
+//        viewModel.sincronizarBancoDePersonagens();
     }
 
     private void configurarAdapter() {

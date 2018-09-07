@@ -1,8 +1,9 @@
 package br.com.jaysonsabino.desafioandroidpopcode;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 
@@ -20,22 +21,25 @@ public class CharacterDetailsActivity extends AppCompatActivity {
             return;
         }
 
-        TextView name = findViewById(R.id.detailsCharacterName);
-        TextView gender = findViewById(R.id.detailsCharacterGender);
-        TextView height = findViewById(R.id.detailsCharacterHeight);
-        TextView mass = findViewById(R.id.detailsCharacterMass);
-        TextView hairColor = findViewById(R.id.detailsCharacterHairColor);
-        TextView skinColor = findViewById(R.id.detailsCharacterSkinColor);
-        TextView eyeColor = findViewById(R.id.detailsCharacterEyeColor);
-        TextView birthYear = findViewById(R.id.detailsCharacterBirthYear);
+        ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_character_details);
+        binding.setVariable(BR.character, character);
 
-        name.setText(character.getName());
-        gender.setText(character.getGender());
-        height.setText(character.getHeight());
-        mass.setText(character.getMass());
-        hairColor.setText(character.getHairColor());
-        skinColor.setText(character.getSkinColor());
-        eyeColor.setText(character.getEyeColor());
-        birthYear.setText(character.getBirthYear());
+//        TextView name = findViewById(R.id.detailsCharacterName);
+//        TextView gender = findViewById(R.id.detailsCharacterGender);
+//        TextView height = findViewById(R.id.detailsCharacterHeight);
+//        TextView mass = findViewById(R.id.detailsCharacterMass);
+//        TextView hairColor = findViewById(R.id.detailsCharacterHairColor);
+//        TextView skinColor = findViewById(R.id.detailsCharacterSkinColor);
+//        TextView eyeColor = findViewById(R.id.detailsCharacterEyeColor);
+//        TextView birthYear = findViewById(R.id.detailsCharacterBirthYear);
+
+//        name.setText(character.getName());
+//        gender.setText(character.getGender());
+//        height.setText(character.getHeight());
+//        mass.setText(character.getMass());
+//        hairColor.setText(character.getHairColor());
+//        skinColor.setText(character.getSkinColor());
+//        eyeColor.setText(character.getEyeColor());
+//        birthYear.setText(character.getBirthYear());
     }
 }
