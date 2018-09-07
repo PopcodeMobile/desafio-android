@@ -5,7 +5,7 @@ import android.arch.persistence.room.RoomDatabase;
 
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 
-@Database(entities = {Character.class}, version = 1, exportSchema = false)
+@Database(entities = {Character.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CharacterDAO getCharacterDAO();

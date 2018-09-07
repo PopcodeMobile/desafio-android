@@ -31,6 +31,7 @@ public class Character implements Serializable {
     private String birthYear;
     private String gender;
     private String url;
+    private String created;
 
     public int getId() {
         return id;
@@ -110,6 +111,14 @@ public class Character implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
     }
 
     public void setIdByUrl() {
