@@ -29,7 +29,7 @@ public class PeopleListActivity extends AppCompatActivity {
 
         viewModel = new PeopleListViewModel(this);
 
-//        viewModel.apagarPersonagensBancoLocal();
+        viewModel.apagarPersonagensBancoLocal();
 
         configurarAdapter();
 
