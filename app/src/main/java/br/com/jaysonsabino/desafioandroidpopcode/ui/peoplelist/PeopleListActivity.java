@@ -1,24 +1,22 @@
-package br.com.jaysonsabino.desafioandroidpopcode;
+package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
 
 import android.arch.lifecycle.Observer;
 import android.arch.paging.PagedList;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import br.com.jaysonsabino.desafioandroidpopcode.adapters.CharacterListAdapter;
+import br.com.jaysonsabino.desafioandroidpopcode.R;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
-import br.com.jaysonsabino.desafioandroidpopcode.viewmodels.PeopleListViewModel;
+import br.com.jaysonsabino.desafioandroidpopcode.ui.characterdetails.CharacterDetailsActivity;
 
 public class PeopleListActivity extends AppCompatActivity {
 
-    private CharacterListAdapter characterListAdapter;
+    private PeopleListAdapter characterListAdapter;
     private PeopleListViewModel viewModel;
 
 
@@ -34,22 +32,10 @@ public class PeopleListActivity extends AppCompatActivity {
         configurarAdapter();
 
         configurarLista();
-
-//        viewModel.sincronizarBancoDePersonagens();
     }
 
     private void configurarAdapter() {
-        characterListAdapter = new CharacterListAdapter(this, new DiffUtil.ItemCallback<Character>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull Character character, @NonNull Character t1) {
-                return character.getId() == t1.getId();
-            }
-
-            @Override
-            public boolean areContentsTheSame(@NonNull Character character, @NonNull Character t1) {
-                return character == t1;
-            }
-        });
+        characterListAdapter = new PeopleListAdapter(this);
 
         viewModel.getCharacters().observe(this, new Observer<PagedList<Character>>() {
             @Override
@@ -58,7 +44,7 @@ public class PeopleListActivity extends AppCompatActivity {
             }
         });
 
-        characterListAdapter.setOnItemClickListener(new CharacterListAdapter.OnClickListener() {
+        characterListAdapter.setOnItemClickListener(new PeopleListAdapter.OnClickListener() {
             @Override
             public void onClick(View v, Character character) {
                 Intent intent = new Intent(PeopleListActivity.this, CharacterDetailsActivity.class);

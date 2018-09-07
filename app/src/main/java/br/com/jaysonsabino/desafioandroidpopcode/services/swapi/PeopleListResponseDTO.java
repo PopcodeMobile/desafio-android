@@ -1,4 +1,4 @@
-package br.com.jaysonsabino.desafioandroidpopcode.services.swapi.dto;
+package br.com.jaysonsabino.desafioandroidpopcode.services.swapi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -10,7 +10,6 @@ import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 public class PeopleListResponseDTO {
 
     private int count;
-
     private String previous;
     private String next;
     private List<Character> results;

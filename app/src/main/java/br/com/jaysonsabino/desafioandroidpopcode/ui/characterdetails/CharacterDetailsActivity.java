@@ -1,10 +1,12 @@
-package br.com.jaysonsabino.desafioandroidpopcode;
+package br.com.jaysonsabino.desafioandroidpopcode.ui.characterdetails;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import br.com.jaysonsabino.desafioandroidpopcode.BR;
+import br.com.jaysonsabino.desafioandroidpopcode.R;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 
 public class CharacterDetailsActivity extends AppCompatActivity {

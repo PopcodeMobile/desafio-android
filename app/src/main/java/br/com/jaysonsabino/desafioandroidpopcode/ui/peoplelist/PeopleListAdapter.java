@@ -1,9 +1,8 @@
-package br.com.jaysonsabino.desafioandroidpopcode.adapters;
+package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
 
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +12,13 @@ import android.widget.TextView;
 import br.com.jaysonsabino.desafioandroidpopcode.R;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 
-public class CharacterListAdapter extends PagedListAdapter<Character, CharacterListAdapter.CharacterViewHolder> {
+public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAdapter.CharacterViewHolder> {
 
     private Context context;
     private OnClickListener onClickListener;
 
-    public CharacterListAdapter(Context context, @NonNull DiffUtil.ItemCallback<Character> diffCallback) {
-        super(diffCallback);
+    PeopleListAdapter(Context context) {
+        super(new DiffPeopleCallback());
         this.context = context;
     }
 
@@ -81,7 +80,7 @@ public class CharacterListAdapter extends PagedListAdapter<Character, CharacterL
             mass = itemView.findViewById(R.id.listItemCharacterMass);
         }
 
-        public void setOnClickListener(final OnClickListener onClickListener) {
+        void setOnClickListener(final OnClickListener onClickListener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
