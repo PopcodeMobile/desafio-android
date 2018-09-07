@@ -34,14 +34,14 @@ public class PeopleListActivity extends AppCompatActivity {
 
         viewModel = new PeopleListViewModel(this, executor);
 
-        viewModel.apagarPersonagensBancoLocal();
+        viewModel.deleteCharactersLocalCacheIfConnected();
 
-        configurarAdapter();
+        initAdapter();
 
-        configurarLista();
+        initRecyclerView();
     }
 
-    private void configurarAdapter() {
+    private void initAdapter() {
         characterListAdapter = new PeopleListAdapter(this);
 
         viewModel.getCharacters().observe(this, new Observer<PagedList<Character>>() {
@@ -62,7 +62,7 @@ public class PeopleListActivity extends AppCompatActivity {
         });
     }
 
-    private void configurarLista() {
+    private void initRecyclerView() {
         RecyclerView charactersRecyclerView = findViewById(R.id.main_lista_personagens);
 
         charactersRecyclerView.setAdapter(characterListAdapter);

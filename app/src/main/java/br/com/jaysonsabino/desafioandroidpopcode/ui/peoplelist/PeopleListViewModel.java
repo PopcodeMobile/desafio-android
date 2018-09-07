@@ -12,6 +12,7 @@ import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
+import br.com.jaysonsabino.desafioandroidpopcode.util.NetworkHelper;
 
 public class PeopleListViewModel {
 
@@ -26,14 +27,14 @@ public class PeopleListViewModel {
         database = new DatabaseFactory().getDatabase(activity);
         this.executor = executor;
 
-        configurarLivePagedListWithBoundaryCallback();
+        configLivePagedListWithBoundaryCallback();
     }
 
     public LiveData<PagedList<Character>> getCharacters() {
         return characters;
     }
 
-    private void configurarLivePagedListWithBoundaryCallback() {
+    private void configLivePagedListWithBoundaryCallback() {
         DataSource.Factory<Integer, Character> factory = database.getCharacterDAO().findAll();
         PagedList.Config config = new PagedList.Config.Builder()
                 .setPageSize(8)
@@ -52,10 +53,9 @@ public class PeopleListViewModel {
                 .build();
     }
 
-    /**
-     * TODO temporario
-     */
-    public void apagarPersonagensBancoLocal() {
+    public void deleteCharactersLocalCacheIfConnected() {
+        if (!NetworkHelper.isConnected(activity)) return;
+
         executor.execute(new Runnable() {
             @Override
             public void run() {

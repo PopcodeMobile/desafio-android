@@ -12,6 +12,7 @@ import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.PeopleListResponseDTO;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.PeopleService;
+import br.com.jaysonsabino.desafioandroidpopcode.util.NetworkHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +35,10 @@ public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character
 
     @Override
     public void onZeroItemsLoaded() {
+        if (!NetworkHelper.isConnected(activity)) {
+            Toast.makeText(activity, "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (loading) return;
         loading = true;
 
@@ -49,6 +54,10 @@ public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character
 
     @Override
     public void onItemAtEndLoaded(@NonNull Character itemAtEnd) {
+        if (!NetworkHelper.isConnected(activity)) {
+            Toast.makeText(activity, "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (loading) return;
         loading = true;
 
