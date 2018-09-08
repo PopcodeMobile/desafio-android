@@ -25,11 +25,13 @@ import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
 public class PeopleListViewModel extends ViewModel {
 
     private final PeopleRepository peopleRepository;
+    private FavoritesRepository favoritesRepository;
     private MutableLiveData<PeopleListFilter> peopleListFilter = new MutableLiveData<>();
     private LiveData<PagedList<Character>> charactersPagedList;
 
     private PeopleListViewModel(PeopleRepository peopleRepository, FavoritesRepository favoritesRepository) {
         this.peopleRepository = peopleRepository;
+        this.favoritesRepository = favoritesRepository;
 
         favoritesRepository.syncFavorites();
 
@@ -44,13 +46,12 @@ public class PeopleListViewModel extends ViewModel {
         return charactersPagedList;
     }
 
-    private void initPagedList() {
-        charactersPagedList = Transformations.switchMap(peopleListFilter, new Function<PeopleListFilter, LiveData<PagedList<Character>>>() {
-            @Override
-            public LiveData<PagedList<Character>> apply(PeopleListFilter peopleListFilter) {
-                return peopleRepository.getPagedList(peopleListFilter.name, peopleListFilter.showOnlyFavorites);
-            }
-        });
+    public void setAsFavorite(Character character) {
+        favoritesRepository.setAsFavorite(character);
+    }
+
+    public void unsetAsFavorite(Character character) {
+        favoritesRepository.unsetAsFavorite(character);
     }
 
     public void search(String name) {
@@ -63,6 +64,15 @@ public class PeopleListViewModel extends ViewModel {
 
     public boolean showOnlyFavorites() {
         return peopleListFilter.getValue() != null && peopleListFilter.getValue().showOnlyFavorites;
+    }
+
+    private void initPagedList() {
+        charactersPagedList = Transformations.switchMap(peopleListFilter, new Function<PeopleListFilter, LiveData<PagedList<Character>>>() {
+            @Override
+            public LiveData<PagedList<Character>> apply(PeopleListFilter peopleListFilter) {
+                return peopleRepository.getPagedList(peopleListFilter.name, peopleListFilter.showOnlyFavorites);
+            }
+        });
     }
 
     public static class Factory implements ViewModelProvider.Factory {

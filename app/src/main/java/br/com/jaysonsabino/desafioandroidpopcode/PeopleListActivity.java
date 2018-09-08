@@ -14,6 +14,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.SearchView;
 
 import java.util.concurrent.Executor;
@@ -66,6 +67,21 @@ public class PeopleListActivity extends AppCompatActivity implements SearchView.
                 intent.putExtra("character", character);
 
                 startActivity(intent);
+            }
+        });
+
+        characterListAdapter.setOnFavoriteClickListener(new PeopleListAdapter.OnClickListener() {
+            @Override
+            public void onClick(View view, Character character) {
+                if (!(view instanceof CheckBox)) {
+                    return;
+                }
+
+                if (((CheckBox) view).isChecked()) {
+                    viewModel.setAsFavorite(character);
+                } else {
+                    viewModel.unsetAsFavorite(character);
+                }
             }
         });
     }

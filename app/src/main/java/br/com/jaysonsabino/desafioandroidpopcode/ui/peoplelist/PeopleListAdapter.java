@@ -16,6 +16,7 @@ public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAda
 
     private Context context;
     private OnClickListener onClickListener;
+    private OnClickListener onFavoriteClickListener;
 
     public PeopleListAdapter(Context context) {
         super(new DiffPeopleCallback());
@@ -24,6 +25,10 @@ public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAda
 
     public void setOnItemClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
+    }
+
+    public void setOnFavoriteClickListener(OnClickListener onClickListener) {
+        this.onFavoriteClickListener = onClickListener;
     }
 
     @NonNull
@@ -36,6 +41,9 @@ public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAda
         CharacterViewHolder characterViewHolder = new CharacterViewHolder(itemBinding);
         if (onClickListener != null) {
             characterViewHolder.setOnClickListener(onClickListener);
+        }
+        if (onFavoriteClickListener != null) {
+            characterViewHolder.setOnFavoriteClickListener(onFavoriteClickListener);
         }
         return characterViewHolder;
     }
@@ -61,6 +69,17 @@ public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAda
 
         void setOnClickListener(final OnClickListener onClickListener) {
             itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Character item = getItem(getAdapterPosition());
+
+                    onClickListener.onClick(v, item);
+                }
+            });
+        }
+
+        void setOnFavoriteClickListener(final OnClickListener onClickListener) {
+            itemBinding.listItemCheckIsFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Character item = getItem(getAdapterPosition());

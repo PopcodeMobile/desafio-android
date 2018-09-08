@@ -9,6 +9,10 @@
         <variable
             name="listItemCharacter"
             type="br.com.jaysonsabino.desafioandroidpopcode.entities.Character" />
+
+        <variable
+            name="peopleListActivity"
+            type="br.com.jaysonsabino.desafioandroidpopcode.PeopleListActivity" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -30,14 +34,23 @@
                 android:id="@+id/listItemCharacterName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:text="@{listItemCharacter.name}"
                 android:textColor="#000"
                 android:textSize="18sp"
-                android:text="@{listItemCharacter.name}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/listItemCheckIsFavorite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Name" />
+
+            <CheckBox
+                android:id="@+id/listItemCheckIsFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/favorite_checkbox"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/listItemCharacterName"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/listItemCharacterGender"
