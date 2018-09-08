@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character> {
+public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character.CharacterWithFavorite> {
 
     private Application app;
     private final AppDatabase database;
@@ -48,12 +48,12 @@ public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character
     }
 
     @Override
-    public void onItemAtFrontLoaded(@NonNull Character itemAtFront) {
+    public void onItemAtFrontLoaded(@NonNull Character.CharacterWithFavorite itemAtFront) {
         // nothing to do, already loaded
     }
 
     @Override
-    public void onItemAtEndLoaded(@NonNull Character itemAtEnd) {
+    public void onItemAtEndLoaded(@NonNull Character.CharacterWithFavorite itemAtEnd) {
         if (!NetworkHelper.isConnected(app)) {
             Toast.makeText(app, "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
             return;

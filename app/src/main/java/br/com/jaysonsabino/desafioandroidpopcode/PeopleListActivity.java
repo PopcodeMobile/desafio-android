@@ -53,18 +53,18 @@ public class PeopleListActivity extends AppCompatActivity implements SearchView.
     private void initAdapter() {
         characterListAdapter = new PeopleListAdapter(this);
 
-        viewModel.getCharactersPagedList().observe(this, new Observer<PagedList<Character>>() {
+        viewModel.getCharactersPagedList().observe(this, new Observer<PagedList<Character.CharacterWithFavorite>>() {
             @Override
-            public void onChanged(@Nullable PagedList<Character> characters) {
-                characterListAdapter.submitList(characters);
+            public void onChanged(@Nullable PagedList<Character.CharacterWithFavorite> characterWithFavoriteList) {
+                characterListAdapter.submitList(characterWithFavoriteList);
             }
         });
 
         characterListAdapter.setOnItemClickListener(new PeopleListAdapter.OnClickListener() {
             @Override
-            public void onClick(View v, Character character) {
+            public void onClick(View v, Character.CharacterWithFavorite characterWithFavorite) {
                 Intent intent = new Intent(PeopleListActivity.this, CharacterDetailsActivity.class);
-                intent.putExtra("character", character);
+                intent.putExtra("characterWithFavorite", characterWithFavorite);
 
                 startActivity(intent);
             }
@@ -72,15 +72,15 @@ public class PeopleListActivity extends AppCompatActivity implements SearchView.
 
         characterListAdapter.setOnFavoriteClickListener(new PeopleListAdapter.OnClickListener() {
             @Override
-            public void onClick(View view, Character character) {
+            public void onClick(View view, Character.CharacterWithFavorite characterWithFavorite) {
                 if (!(view instanceof CheckBox)) {
                     return;
                 }
 
                 if (((CheckBox) view).isChecked()) {
-                    viewModel.setAsFavorite(character);
+                    viewModel.setAsFavorite(characterWithFavorite.getCharacter());
                 } else {
-                    viewModel.unsetAsFavorite(character);
+                    viewModel.unsetAsFavorite(characterWithFavorite.getCharacter());
                 }
             }
         });

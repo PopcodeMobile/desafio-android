@@ -27,7 +27,7 @@ public class PeopleListViewModel extends ViewModel {
     private final PeopleRepository peopleRepository;
     private FavoritesRepository favoritesRepository;
     private MutableLiveData<PeopleListFilter> peopleListFilter = new MutableLiveData<>();
-    private LiveData<PagedList<Character>> charactersPagedList;
+    private LiveData<PagedList<Character.CharacterWithFavorite>> charactersPagedList;
 
     private PeopleListViewModel(PeopleRepository peopleRepository, FavoritesRepository favoritesRepository) {
         this.peopleRepository = peopleRepository;
@@ -42,7 +42,7 @@ public class PeopleListViewModel extends ViewModel {
         search(null);
     }
 
-    public LiveData<PagedList<Character>> getCharactersPagedList() {
+    public LiveData<PagedList<Character.CharacterWithFavorite>> getCharactersPagedList() {
         return charactersPagedList;
     }
 
@@ -67,9 +67,9 @@ public class PeopleListViewModel extends ViewModel {
     }
 
     private void initPagedList() {
-        charactersPagedList = Transformations.switchMap(peopleListFilter, new Function<PeopleListFilter, LiveData<PagedList<Character>>>() {
+        charactersPagedList = Transformations.switchMap(peopleListFilter, new Function<PeopleListFilter, LiveData<PagedList<Character.CharacterWithFavorite>>>() {
             @Override
-            public LiveData<PagedList<Character>> apply(PeopleListFilter peopleListFilter) {
+            public LiveData<PagedList<Character.CharacterWithFavorite>> apply(PeopleListFilter peopleListFilter) {
                 return peopleRepository.getPagedList(peopleListFilter.name, peopleListFilter.showOnlyFavorites);
             }
         });

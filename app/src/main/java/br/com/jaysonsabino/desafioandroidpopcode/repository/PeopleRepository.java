@@ -42,8 +42,8 @@ public class PeopleRepository {
         });
     }
 
-    public LiveData<PagedList<Character>> getPagedList(String queryName, Boolean showOnlyFavorites) {
-        DataSource.Factory<Integer, Character> dataSourceFactory;
+    public LiveData<PagedList<Character.CharacterWithFavorite>> getPagedList(String queryName, Boolean showOnlyFavorites) {
+        DataSource.Factory<Integer, Character.CharacterWithFavorite> dataSourceFactory;
 
         if (showOnlyFavorites && queryName != null) {
             dataSourceFactory = database.getCharacterDAO().findAllFavoritesByName("%" + queryName + "%");

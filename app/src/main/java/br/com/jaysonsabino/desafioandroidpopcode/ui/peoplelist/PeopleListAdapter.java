@@ -12,7 +12,7 @@ import br.com.jaysonsabino.desafioandroidpopcode.databinding.CharacterListItemBi
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.util.DiffPeopleCallback;
 
-public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAdapter.CharacterViewHolder> {
+public class PeopleListAdapter extends PagedListAdapter<Character.CharacterWithFavorite, PeopleListAdapter.CharacterViewHolder> {
 
     private Context context;
     private OnClickListener onClickListener;
@@ -63,15 +63,15 @@ public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAda
             this.itemBinding = itemBinding;
         }
 
-        void bind(Character character) {
-            itemBinding.setListItemCharacter(character);
+        void bind(Character.CharacterWithFavorite characterWithFavorite) {
+            itemBinding.setListItemCharacterWithFavorite(characterWithFavorite);
         }
 
         void setOnClickListener(final OnClickListener onClickListener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Character item = getItem(getAdapterPosition());
+                    Character.CharacterWithFavorite item = getItem(getAdapterPosition());
 
                     onClickListener.onClick(v, item);
                 }
@@ -82,7 +82,7 @@ public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAda
             itemBinding.listItemCheckIsFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Character item = getItem(getAdapterPosition());
+                    Character.CharacterWithFavorite item = getItem(getAdapterPosition());
 
                     onClickListener.onClick(v, item);
                 }
@@ -92,6 +92,6 @@ public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAda
 
     public interface OnClickListener {
 
-        void onClick(View v, Character character);
+        void onClick(View v, Character.CharacterWithFavorite characterWithFavorite);
     }
 }

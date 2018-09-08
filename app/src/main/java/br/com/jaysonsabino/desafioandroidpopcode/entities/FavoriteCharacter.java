@@ -3,8 +3,10 @@ package br.com.jaysonsabino.desafioandroidpopcode.entities;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity
-public class FavoriteCharacter {
+public class FavoriteCharacter implements Serializable {
 
     @PrimaryKey
     private Integer characterId;

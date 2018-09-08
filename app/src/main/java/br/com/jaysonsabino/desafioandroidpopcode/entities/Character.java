@@ -1,5 +1,6 @@
 package br.com.jaysonsabino.desafioandroidpopcode.entities;
 
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -180,5 +181,29 @@ public class Character implements Serializable {
     @Override
     public int hashCode() {
         return (name + url).hashCode();
+    }
+
+    public static class CharacterWithFavorite implements Serializable {
+
+        @Embedded
+        private Character character;
+        @Embedded
+        private FavoriteCharacter favoriteCharacter;
+
+        public Character getCharacter() {
+            return character;
+        }
+
+        public void setCharacter(Character character) {
+            this.character = character;
+        }
+
+        public FavoriteCharacter getFavoriteCharacter() {
+            return favoriteCharacter;
+        }
+
+        public void setFavoriteCharacter(FavoriteCharacter favoriteCharacter) {
+            this.favoriteCharacter = favoriteCharacter;
+        }
     }
 }

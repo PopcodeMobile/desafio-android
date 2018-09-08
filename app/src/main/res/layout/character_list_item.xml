@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="listItemCharacter"
-            type="br.com.jaysonsabino.desafioandroidpopcode.entities.Character" />
+            name="listItemCharacterWithFavorite"
+            type="br.com.jaysonsabino.desafioandroidpopcode.entities.Character.CharacterWithFavorite" />
 
         <variable
             name="peopleListActivity"
@@ -34,7 +34,7 @@
                 android:id="@+id/listItemCharacterName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{listItemCharacter.name}"
+                android:text="@{listItemCharacterWithFavorite.character.name}"
                 android:textColor="#000"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/listItemCheckIsFavorite"
@@ -47,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/favorite_checkbox"
+                android:checked="@{listItemCharacterWithFavorite.favoriteCharacter != null ? true : false}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/listItemCharacterName"
@@ -59,7 +60,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{listItemCharacter.gender}"
+                android:text="@{listItemCharacterWithFavorite.character.gender}"
                 app:layout_constraintEnd_toStartOf="@+id/listItemCharacterHeight"
                 app:layout_constraintStart_toStartOf="@+id/listItemCharacterName"
                 app:layout_constraintTop_toBottomOf="@+id/listItemCharacterName"
@@ -74,7 +75,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{listItemCharacter.height}"
+                android:text="@{listItemCharacterWithFavorite.character.height}"
                 app:layout_constraintEnd_toStartOf="@+id/listItemCharacterMass"
                 app:layout_constraintStart_toEndOf="@+id/listItemCharacterGender"
                 app:layout_constraintTop_toBottomOf="@+id/listItemCharacterName"
@@ -87,7 +88,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{listItemCharacter.mass}"
+                android:text="@{listItemCharacterWithFavorite.character.mass}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/listItemCharacterHeight"
                 app:layout_constraintTop_toBottomOf="@+id/listItemCharacterName"

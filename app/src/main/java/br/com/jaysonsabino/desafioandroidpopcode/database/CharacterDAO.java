@@ -19,15 +19,15 @@ public interface CharacterDAO {
     @Query("DELETE FROM Character")
     void deleteAll();
 
-    @Query("SELECT * FROM Character ORDER BY created")
-    DataSource.Factory<Integer, Character> findAll();
+    @Query("SELECT * FROM Character LEFT JOIN FavoriteCharacter ON characterId = id ORDER BY created")
+    DataSource.Factory<Integer, Character.CharacterWithFavorite> findAll();
 
-    @Query("SELECT * FROM Character WHERE name LIKE :name ORDER BY created")
-    DataSource.Factory<Integer, Character> findByName(String name);
+    @Query("SELECT * FROM Character LEFT JOIN FavoriteCharacter ON characterId = id WHERE name LIKE :name ORDER BY created")
+    DataSource.Factory<Integer, Character.CharacterWithFavorite> findByName(String name);
 
-    @Query("SELECT * FROM Character WHERE EXISTS (select 1 from FavoriteCharacter WHERE characterId = id) ORDER BY created")
-    DataSource.Factory<Integer, Character> findAllFavorites();
+    @Query("SELECT * FROM Character LEFT JOIN FavoriteCharacter ON characterId = id WHERE characterId IS NOT NULL ORDER BY created")
+    DataSource.Factory<Integer, Character.CharacterWithFavorite> findAllFavorites();
 
-    @Query("SELECT * FROM Character WHERE name LIKE :name AND EXISTS (select 1 from FavoriteCharacter WHERE characterId = id) ORDER BY created")
-    DataSource.Factory<Integer, Character> findAllFavoritesByName(String name);
+    @Query("SELECT * FROM Character LEFT JOIN FavoriteCharacter ON characterId = id WHERE name LIKE :name AND characterId IS NOT NULL ORDER BY created")
+    DataSource.Factory<Integer, Character.CharacterWithFavorite> findAllFavoritesByName(String name);
 }

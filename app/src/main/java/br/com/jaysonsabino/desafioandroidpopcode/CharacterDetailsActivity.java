@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class CharacterDetailsActivity extends AppCompatActivity {
 
-    private Character character;
+    private Character.CharacterWithFavorite characterWithFavorite;
     private FavoritesRepository favoritesService;
     private Executor executor;
 
@@ -35,15 +35,15 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_details);
 
-        character = (Character) getIntent().getSerializableExtra("character");
+        characterWithFavorite = (Character.CharacterWithFavorite) getIntent().getSerializableExtra("characterWithFavorite");
 
-        if (character == null) {
+        if (characterWithFavorite == null) {
             finish();
             return;
         }
 
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_character_details);
-        binding.setVariable(BR.character, character);
+        binding.setVariable(BR.characterWithFavorite, characterWithFavorite);
 
         executor = Executors.newFixedThreadPool(2);
 
@@ -57,7 +57,7 @@ public class CharacterDetailsActivity extends AppCompatActivity {
     }
 
     private void loadHomeWorld() {
-        Integer homeworldId = character.getHomeworldId();
+        Integer homeworldId = characterWithFavorite.getCharacter().getHomeworldId();
 
         if (homeworldId == null) {
             return;
@@ -88,7 +88,7 @@ public class CharacterDetailsActivity extends AppCompatActivity {
     }
 
     private void loadSpecie() {
-        Integer specieId = character.getSpecie();
+        Integer specieId = characterWithFavorite.getCharacter().getSpecie();
 
         if (specieId == null) {
             return;
@@ -126,7 +126,7 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                final FavoriteCharacter favoriteCharacter = new DatabaseFactory().getDatabase(CharacterDetailsActivity.this).getFavoriteCharacterDAO().getByCharacterId(character.getId());
+                final FavoriteCharacter favoriteCharacter = new DatabaseFactory().getDatabase(CharacterDetailsActivity.this).getFavoriteCharacterDAO().getByCharacterId(characterWithFavorite.getCharacter().getId());
 
                 // prevents "Only the original thread that created a view hierarchy can touch its views."
                 runOnUiThread(new Runnable() {
@@ -146,9 +146,9 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         }
 
         if (((CheckBox) view).isChecked()) {
-            favoritesService.setAsFavorite(character);
+            favoritesService.setAsFavorite(characterWithFavorite.getCharacter());
         } else {
-            favoritesService.unsetAsFavorite(character);
+            favoritesService.unsetAsFavorite(characterWithFavorite.getCharacter());
         }
     }
 
