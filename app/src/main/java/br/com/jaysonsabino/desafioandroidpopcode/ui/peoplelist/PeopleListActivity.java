@@ -1,6 +1,7 @@
 package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,13 +34,20 @@ public class PeopleListActivity extends AppCompatActivity implements SearchView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Executor executor = Executors.newFixedThreadPool(2);
 
-        viewModel = new PeopleListViewModel(this, executor);
+        viewModel = getViewModel();
 
         initAdapter();
 
         initRecyclerView();
+    }
+
+    private PeopleListViewModel getViewModel() {
+        Executor executor = Executors.newFixedThreadPool(2);
+
+        return ViewModelProviders
+                .of(this, new PeopleListViewModel.Factory(executor, this))
+                .get(PeopleListViewModel.class);
     }
 
     private void initAdapter() {
