@@ -44,7 +44,7 @@ public class PeopleListActivity extends AppCompatActivity implements SearchView.
         Executor executor = Executors.newFixedThreadPool(2);
 
         return ViewModelProviders
-                .of(this, new PeopleListViewModel.Factory(executor, getApplication()))
+                .of(this, new PeopleListViewModel.Factory(getApplication(), executor))
                 .get(PeopleListViewModel.class);
     }
 

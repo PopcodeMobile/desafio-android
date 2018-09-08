@@ -16,6 +16,8 @@ import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.repository.PeopleRepository;
+import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.PeopleService;
+import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
 
 public class PeopleListViewModel extends ViewModel {
 
@@ -52,20 +54,22 @@ public class PeopleListViewModel extends ViewModel {
 
     public static class Factory implements ViewModelProvider.Factory {
 
-        private AppDatabase database;
-        private Executor executor;
         private Application app;
+        private Executor executor;
+        private AppDatabase database;
+        private PeopleService peopleService;
 
-        public Factory(Executor executor, Application app) {
-            this.executor = executor;
+        public Factory(Application app, Executor executor) {
             this.app = app;
+            this.executor = executor;
             database = new DatabaseFactory().getDatabase(app);
+            peopleService = new ServiceFactory().getPeopleService();
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            PeopleRepository repository = new PeopleRepository(app, database, executor);
+            PeopleRepository repository = new PeopleRepository(app, database, peopleService, executor);
 
             return (T) new PeopleListViewModel(repository);
         }

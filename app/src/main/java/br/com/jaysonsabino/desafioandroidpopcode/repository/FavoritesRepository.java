@@ -1,6 +1,6 @@
-package br.com.jaysonsabino.desafioandroidpopcode.services;
+package br.com.jaysonsabino.desafioandroidpopcode.repository;
 
-import android.app.Activity;
+import android.app.Application;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -9,29 +9,27 @@ import java.util.Random;
 import java.util.concurrent.Executor;
 
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
-import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.FavoriteCharacter;
 import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesResponseDTO;
 import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesService;
-import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesServiceFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FavoritesService {
+public class FavoritesRepository {
 
     private AppDatabase database;
     private Executor executor;
     private StarWarsFavoritesService favoritesService;
-    private Activity activity;
+    private Application app;
 
-    public FavoritesService(Activity activity, Executor executor) {
-        this.activity = activity;
-
-        database = new DatabaseFactory().getDatabase(activity);
+    public FavoritesRepository(Application app, AppDatabase database, StarWarsFavoritesService favoritesService, Executor executor) {
+        this.app = app;
+        this.database = database;
         this.executor = executor;
-        favoritesService = new StarWarsFavoritesServiceFactory().getService();
+
+        this.favoritesService = favoritesService;
     }
 
     public void setAsFavorite(Character character) {
@@ -73,7 +71,7 @@ public class FavoritesService {
             @Override
             public void onResponse(Call<StarWarsFavoritesResponseDTO> call, Response<StarWarsFavoritesResponseDTO> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(activity, "Falha ao salvar favorito na api: code " + response.code(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(app, "Falha ao salvar favorito na api: code " + response.code(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -85,12 +83,12 @@ public class FavoritesService {
 
                 markFavoriteCharacterAsSynced(favoriteCharacter);
 
-                Toast.makeText(activity, body.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(app, body.toString(), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(Call<StarWarsFavoritesResponseDTO> call, Throwable t) {
-                Toast.makeText(activity, "Falha na comunicação com a StarWarsFavorites.", Toast.LENGTH_LONG).show();
+                Toast.makeText(app, "Falha na comunicação com a StarWarsFavorites.", Toast.LENGTH_LONG).show();
                 t.printStackTrace();
             }
         });

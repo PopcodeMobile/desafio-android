@@ -10,7 +10,7 @@ import java.util.concurrent.Executor;
 
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
-import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
+import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.PeopleService;
 import br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist.PeopleBoundaryCallback;
 import br.com.jaysonsabino.desafioandroidpopcode.util.NetworkHelper;
 
@@ -20,8 +20,9 @@ public class PeopleRepository {
     private AppDatabase database;
     private Executor executor;
     private PeopleBoundaryCallback boundaryCallback;
+    private PeopleService peopleService;
 
-    public PeopleRepository(Application app, AppDatabase database, Executor executor) {
+    public PeopleRepository(Application app, AppDatabase database, PeopleService peopleService, Executor executor) {
         this.app = app;
         this.database = database;
         this.executor = executor;
@@ -65,7 +66,7 @@ public class PeopleRepository {
         boundaryCallback = new PeopleBoundaryCallback(
                 app,
                 database,
-                new ServiceFactory().getPeopleService(),
+                peopleService,
                 executor
         );
     }

@@ -17,7 +17,8 @@ import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.FavoriteCharacter;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Planet;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Specie;
-import br.com.jaysonsabino.desafioandroidpopcode.services.FavoritesService;
+import br.com.jaysonsabino.desafioandroidpopcode.repository.FavoritesRepository;
+import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesServiceFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +27,7 @@ import retrofit2.Response;
 public class CharacterDetailsActivity extends AppCompatActivity {
 
     private Character character;
-    private FavoritesService favoritesService;
+    private FavoritesRepository favoritesService;
     private Executor executor;
 
     @Override
@@ -52,7 +53,7 @@ public class CharacterDetailsActivity extends AppCompatActivity {
 
         loadFavorite();
 
-        favoritesService = new FavoritesService(this, executor);
+        favoritesService = new FavoritesRepository(this.getApplication(), new DatabaseFactory().getDatabase(this), new StarWarsFavoritesServiceFactory().getService(), executor);
     }
 
     private void loadHomeWorld() {
