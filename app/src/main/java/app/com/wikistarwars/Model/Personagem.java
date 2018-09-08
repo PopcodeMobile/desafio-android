@@ -2,11 +2,14 @@ package app.com.wikistarwars.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class Personagem extends RealmObject{
 
+    @PrimaryKey
     @SerializedName("name")
     private String name;
     @SerializedName("height")
@@ -29,12 +32,14 @@ public class Personagem extends RealmObject{
     private RealmList<String> species;
     private boolean favourite;
 
+
     public boolean isFavourite() {
         return favourite;
     }
 
+
     public void setFavourite(boolean favourite) {
-        this.favourite = favourite;
+           this.favourite = favourite;
     }
 
     public RealmList<String> getSpecies() {

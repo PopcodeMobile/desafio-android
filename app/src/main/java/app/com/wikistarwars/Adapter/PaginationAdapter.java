@@ -2,6 +2,8 @@ package app.com.wikistarwars.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,13 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.com.wikistarwars.DetailsPersonActivity;
 import app.com.wikistarwars.Model.Personagem;
+import app.com.wikistarwars.Model.PersonagemRealm;
 import app.com.wikistarwars.R;
+import io.realm.Realm;
 
 public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int ITEM = 0;
@@ -77,6 +82,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 personVH.pGender.setText(result.getGender());
                 personVH.pMass.setText(result.getMass());
 
+
                 personVH.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -86,6 +92,20 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         context.startActivity(intent);
                     }
                 });
+
+                 if(PersonagemRealm.getRealmInstance(context).getPersonagem(result.getName()).isFavourite())
+                     personVH.favouriteButton.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
+                 else
+                     personVH.favouriteButton.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
+
+
+                personVH.favouriteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                     PersonagemRealm.getRealmInstance(context).addRemoveFavourite(result.getName());
+                     notifyDataSetChanged();
+                    }
+                });
                 break;
 
             case LOADING:
@@ -93,6 +113,12 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
     }
+
+//    private void updateFavourite(String name){
+//        Personagem.getPersonagem(name);
+//     Personagem.setFavourite(name);
+//
+//    }
 
     @Override
     public int getItemCount() {
@@ -158,6 +184,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     protected class PersonVH extends RecyclerView.ViewHolder {
         private TextView pName, pHeight, pGender, pMass;
+        private ToggleButton favouriteButton;
         private ProgressBar mProgress;
 
         public PersonVH(View itemView) {
@@ -168,6 +195,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             pGender = (TextView) itemView.findViewById(R.id.gender);
             pMass = (TextView) itemView.findViewById(R.id.mass);
             mProgress = (ProgressBar) itemView.findViewById(R.id.progress);
+            favouriteButton = (ToggleButton) itemView.findViewById(R.id.favourite_button);
         }
     }
 

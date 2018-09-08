@@ -14,6 +14,7 @@ import java.util.List;
 import app.com.wikistarwars.Api.RetrofitConfig;
 import app.com.wikistarwars.Api.Service;
 import app.com.wikistarwars.Model.Personagem;
+import app.com.wikistarwars.Model.PersonagemRealm;
 import app.com.wikistarwars.Model.PersonagemResponse;
 import app.com.wikistarwars.Model.Planet;
 import app.com.wikistarwars.Model.Species;
@@ -48,9 +49,8 @@ public class DetailsPersonActivity extends AppCompatActivity {
             name = extras.getString(KEY_NAME);
         }
 
-        Realm realm = Realm.getDefaultInstance();
-        Personagem personagens = realm.where(Personagem.class).equalTo("name",name).findFirst();
-        realm.close();
+       Personagem personagens =   PersonagemRealm.getRealmInstance(getApplicationContext()).getPersonagem(name);
+
 
         api = RetrofitConfig.getApiService();
 
@@ -81,8 +81,8 @@ public class DetailsPersonActivity extends AppCompatActivity {
         pSkin_color.setText(personagens.getSkin_color());
         pEye_color.setText(personagens.getEye_color());
         pBirth_year.setText(personagens.getBirth_year());
-        pPlanet.setText(" - loading - ");
-        pSpecie.setText(" - loading - ");
+        pPlanet.setText(" - ");
+        pSpecie.setText(" - ");
 
 
     }

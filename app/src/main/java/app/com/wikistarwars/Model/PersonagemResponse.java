@@ -3,13 +3,15 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import io.realm.RealmList;
+
 public class PersonagemResponse  {
 
     private int page;
     private int totalPages;
 
     @SerializedName("results")
-    private List<Personagem> results;
+    private RealmList<Personagem> results;
 
     @SerializedName("count")
     private int count;
@@ -28,11 +30,11 @@ public class PersonagemResponse  {
         this.page = page;
     }
 
-    public List<Personagem> getResults() {
+    public RealmList<Personagem> getResults() {
         return results;
     }
 
-    public void setResults(List<Personagem> results) {
+    public void setResults(RealmList<Personagem> results) {
         this.results = results;
     }
 
