@@ -21,4 +21,7 @@ public interface CharacterDAO {
 
     @Query("SELECT * FROM Character ORDER BY created")
     DataSource.Factory<Integer, Character> findAll();
+
+    @Query("SELECT * FROM Character WHERE name LIKE :name ORDER BY created")
+    DataSource.Factory<Integer, Character> findByName(String name);
 }

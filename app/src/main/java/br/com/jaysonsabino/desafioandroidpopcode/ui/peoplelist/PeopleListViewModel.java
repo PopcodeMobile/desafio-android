@@ -1,65 +1,50 @@
 package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
 
 import android.app.Activity;
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
-import android.arch.paging.DataSource;
-import android.arch.paging.LivePagedListBuilder;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.paging.PagedList;
 
 import java.util.concurrent.Executor;
 
-import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
-import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
-import br.com.jaysonsabino.desafioandroidpopcode.util.NetworkHelper;
 
 public class PeopleListViewModel {
 
-    private Activity activity;
-    private final AppDatabase database;
-    private Executor executor;
-
-    private LiveData<PagedList<Character>> characters;
+    private final PeopleRepository repository;
+    private MutableLiveData<String> queryName = new MutableLiveData<>();
+    private LiveData<PagedList<Character>> charactersPagedList;
 
     PeopleListViewModel(Activity activity, Executor executor) {
-        this.activity = activity;
-        database = new DatabaseFactory().getDatabase(activity);
-        this.executor = executor;
+        repository = new PeopleRepository(
+                activity,
+                new DatabaseFactory().getDatabase(activity),
+                executor
+        );
 
-        configLivePagedListWithBoundaryCallback();
+        repository.deleteLocalCharactersCacheIfConnected();
+
+        initPagedList();
+
+        search(null);
     }
 
-    public LiveData<PagedList<Character>> getCharacters() {
-        return characters;
+    public LiveData<PagedList<Character>> getCharactersPagedList() {
+        return charactersPagedList;
     }
 
-    private void configLivePagedListWithBoundaryCallback() {
-        DataSource.Factory<Integer, Character> factory = database.getCharacterDAO().findAll();
-        PagedList.Config config = new PagedList.Config.Builder()
-                .setPageSize(8)
-                .setPrefetchDistance(24)
-                .setInitialLoadSizeHint(24)
-                .setEnablePlaceholders(false)
-                .build();
-
-        characters = new LivePagedListBuilder<>(factory, config)
-                .setBoundaryCallback(new PeopleBoundaryCallback(
-                        activity,
-                        database,
-                        new ServiceFactory().getPeopleService(),
-                        executor
-                ))
-                .build();
+    public void search(String name) {
+        queryName.setValue(name);
     }
 
-    public void deleteCharactersLocalCacheIfConnected() {
-        if (!NetworkHelper.isConnected(activity)) return;
-
-        executor.execute(new Runnable() {
+    private void initPagedList() {
+        charactersPagedList = Transformations.switchMap(queryName, new Function<String, LiveData<PagedList<Character>>>() {
             @Override
-            public void run() {
-                database.getCharacterDAO().deleteAll();
+            public LiveData<PagedList<Character>> apply(String input) {
+                return repository.getPagedList(input);
             }
         });
     }

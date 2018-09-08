@@ -10,7 +10,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.view.Menu;
 import android.view.View;
+import android.widget.SearchView;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -19,10 +21,11 @@ import br.com.jaysonsabino.desafioandroidpopcode.R;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.ui.characterdetails.CharacterDetailsActivity;
 
-public class PeopleListActivity extends AppCompatActivity {
+public class PeopleListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private PeopleListAdapter characterListAdapter;
     private PeopleListViewModel viewModel;
+    private RecyclerView list;
 
 
     @Override
@@ -34,8 +37,6 @@ public class PeopleListActivity extends AppCompatActivity {
 
         viewModel = new PeopleListViewModel(this, executor);
 
-        viewModel.deleteCharactersLocalCacheIfConnected();
-
         initAdapter();
 
         initRecyclerView();
@@ -44,7 +45,7 @@ public class PeopleListActivity extends AppCompatActivity {
     private void initAdapter() {
         characterListAdapter = new PeopleListAdapter(this);
 
-        viewModel.getCharacters().observe(this, new Observer<PagedList<Character>>() {
+        viewModel.getCharactersPagedList().observe(this, new Observer<PagedList<Character>>() {
             @Override
             public void onChanged(@Nullable PagedList<Character> characters) {
                 characterListAdapter.submitList(characters);
@@ -63,16 +64,39 @@ public class PeopleListActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        RecyclerView charactersRecyclerView = findViewById(R.id.main_lista_personagens);
+        list = findViewById(R.id.main_lista_personagens);
 
-        charactersRecyclerView.setAdapter(characterListAdapter);
+        list.setAdapter(characterListAdapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        charactersRecyclerView.setLayoutManager(layoutManager);
+        list.setLayoutManager(layoutManager);
 
-        RecyclerView.ItemAnimator animator = charactersRecyclerView.getItemAnimator();
+        RecyclerView.ItemAnimator animator = list.getItemAnimator();
         if (animator instanceof DefaultItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_people_list, menu);
+
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.menu_peoplelist_filtrar).getActionView();
+        searchView.setOnQueryTextListener(this);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        viewModel.search(query);
+        list.scrollToPosition(0);
+        return true;
     }
 }
