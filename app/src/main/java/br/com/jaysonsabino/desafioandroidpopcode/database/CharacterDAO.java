@@ -24,4 +24,10 @@ public interface CharacterDAO {
 
     @Query("SELECT * FROM Character WHERE name LIKE :name ORDER BY created")
     DataSource.Factory<Integer, Character> findByName(String name);
+
+    @Query("SELECT * FROM Character WHERE EXISTS (select 1 from FavoriteCharacter WHERE characterId = id) ORDER BY created")
+    DataSource.Factory<Integer, Character> findAllFavorites();
+
+    @Query("SELECT * FROM Character WHERE name LIKE :name AND EXISTS (select 1 from FavoriteCharacter WHERE characterId = id) ORDER BY created")
+    DataSource.Factory<Integer, Character> findAllFavoritesByName(String name);
 }

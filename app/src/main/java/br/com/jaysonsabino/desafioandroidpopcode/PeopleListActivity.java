@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
@@ -87,11 +88,33 @@ public class PeopleListActivity extends AppCompatActivity implements SearchView.
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_people_list, menu);
 
+        MenuItem vwShowOnlyFavorites = menu.findItem(R.id.menu_peoplelist_show_only_favorites);
+        MenuItem vwShowAll = menu.findItem(R.id.menu_peoplelist_show_all);
+
+        vwShowOnlyFavorites.setVisible(!viewModel.showOnlyFavorites());
+        vwShowAll.setVisible(viewModel.showOnlyFavorites());
+
         SearchView searchView =
-                (SearchView) menu.findItem(R.id.menu_peoplelist_filtrar).getActionView();
+                (SearchView) menu.findItem(R.id.menu_peoplelist_search).getActionView();
         searchView.setOnQueryTextListener(this);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_peoplelist_show_only_favorites:
+                viewModel.showOnlyFavorites(true);
+                invalidateOptionsMenu();
+                break;
+            case R.id.menu_peoplelist_show_all:
+                viewModel.showOnlyFavorites(false);
+                invalidateOptionsMenu();
+                break;
+        }
+
+        return true;
     }
 
     @Override

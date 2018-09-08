@@ -2,10 +2,20 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <group>
+        <item
+            android:id="@+id/menu_peoplelist_search"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Filtrar"
+            app:showAsAction="always"
+            app:actionViewClass="android.widget.SearchView" />
+    </group>
+
     <item
-        android:id="@+id/menu_peoplelist_filtrar"
-        android:icon="@drawable/ic_search_black_24dp"
-        android:title="Filtrar"
-        app:showAsAction="always"
-        app:actionViewClass="android.widget.SearchView" />
+        android:id="@+id/menu_peoplelist_show_only_favorites"
+        android:title="Apenas Favoritos" />
+    <item
+        android:id="@+id/menu_peoplelist_show_all"
+        android:title="Todos"
+        android:visible="false" />
 </menu>

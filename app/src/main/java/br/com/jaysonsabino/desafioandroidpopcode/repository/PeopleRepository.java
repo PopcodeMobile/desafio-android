@@ -42,13 +42,17 @@ public class PeopleRepository {
         });
     }
 
-    public LiveData<PagedList<Character>> getPagedList(String queryName) {
+    public LiveData<PagedList<Character>> getPagedList(String queryName, Boolean showOnlyFavorites) {
         DataSource.Factory<Integer, Character> dataSourceFactory;
 
-        if (queryName == null) {
-            dataSourceFactory = database.getCharacterDAO().findAll();
-        } else {
+        if (showOnlyFavorites && queryName != null) {
+            dataSourceFactory = database.getCharacterDAO().findAllFavoritesByName("%" + queryName + "%");
+        } else if (showOnlyFavorites) {
+            dataSourceFactory = database.getCharacterDAO().findAllFavorites();
+        } else if (queryName != null) {
             dataSourceFactory = database.getCharacterDAO().findByName("%" + queryName + "%");
+        } else {
+            dataSourceFactory = database.getCharacterDAO().findAll();
         }
 
         PagedList.Config config = new PagedList.Config.Builder()

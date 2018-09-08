@@ -25,13 +25,11 @@ import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
 public class PeopleListViewModel extends ViewModel {
 
     private final PeopleRepository peopleRepository;
-    private FavoritesRepository favoritesRepository;
-    private MutableLiveData<String> queryName = new MutableLiveData<>();
+    private MutableLiveData<PeopleListFilter> peopleListFilter = new MutableLiveData<>();
     private LiveData<PagedList<Character>> charactersPagedList;
 
     private PeopleListViewModel(PeopleRepository peopleRepository, FavoritesRepository favoritesRepository) {
         this.peopleRepository = peopleRepository;
-        this.favoritesRepository = favoritesRepository;
 
         favoritesRepository.syncFavorites();
 
@@ -46,17 +44,25 @@ public class PeopleListViewModel extends ViewModel {
         return charactersPagedList;
     }
 
-    public void search(String name) {
-        queryName.setValue(name);
-    }
-
     private void initPagedList() {
-        charactersPagedList = Transformations.switchMap(queryName, new Function<String, LiveData<PagedList<Character>>>() {
+        charactersPagedList = Transformations.switchMap(peopleListFilter, new Function<PeopleListFilter, LiveData<PagedList<Character>>>() {
             @Override
-            public LiveData<PagedList<Character>> apply(String input) {
-                return peopleRepository.getPagedList(input);
+            public LiveData<PagedList<Character>> apply(PeopleListFilter peopleListFilter) {
+                return peopleRepository.getPagedList(peopleListFilter.name, peopleListFilter.showOnlyFavorites);
             }
         });
+    }
+
+    public void search(String name) {
+        peopleListFilter.setValue(new PeopleListFilter(name, showOnlyFavorites()));
+    }
+
+    public void showOnlyFavorites(boolean showOnlyFavorites) {
+        this.peopleListFilter.setValue(new PeopleListFilter(null, showOnlyFavorites));
+    }
+
+    public boolean showOnlyFavorites() {
+        return peopleListFilter.getValue() != null && peopleListFilter.getValue().showOnlyFavorites;
     }
 
     public static class Factory implements ViewModelProvider.Factory {
@@ -82,6 +88,17 @@ public class PeopleListViewModel extends ViewModel {
             FavoritesRepository favoritesRepository = new FavoritesRepository(app, database, favoritesService, executor);
 
             return (T) new PeopleListViewModel(peopleRepository, favoritesRepository);
+        }
+    }
+
+    static class PeopleListFilter {
+
+        String name;
+        boolean showOnlyFavorites;
+
+        PeopleListFilter(String name, boolean showOnlyFavorites) {
+            this.name = name;
+            this.showOnlyFavorites = showOnlyFavorites;
         }
     }
 }
