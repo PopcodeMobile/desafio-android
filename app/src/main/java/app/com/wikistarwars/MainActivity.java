@@ -1,6 +1,7 @@
 package app.com.wikistarwars;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,9 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.IOException;
 import java.util.List;
 
 import app.com.wikistarwars.Adapter.PaginationAdapter;
@@ -27,7 +28,6 @@ import app.com.wikistarwars.Model.Personagem;
 import app.com.wikistarwars.Model.PersonagemRealm;
 import app.com.wikistarwars.Model.PersonagemResponse;
 import app.com.wikistarwars.Util.PaginationScrollListener;
-import io.realm.Realm;
 import io.realm.RealmList;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     Handler mHandler;
 
+    SharedPreferences sp;
+    String app_name;
+
     private static final int PAGE_START = 1;
     private boolean isLoading = false;
     private boolean isLastPage = false;
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private int currentPage = PAGE_START;
     ToggleButton favouriteButton;
     private SearchView searchView;
+    private boolean isViewingFavourites = false;
 
     private Service api;
 
@@ -104,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
 
         loadFirstPage();
 
+        app_name = getPackageName();
+        sp = getSharedPreferences(app_name, MODE_PRIVATE);
     }
 
     protected boolean isConnected(){
@@ -119,10 +125,20 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         if(isConnected()) {
-            Toast.makeText(this, "ONLINE", Toast.LENGTH_SHORT);
+//            Toast.makeText(this, "Oba! Você está online ;)", Toast.LENGTH_SHORT).show();
             loadFirstPage();
+
+/*            Verificando se tem pendencias de favoritos para serem enviadas*/
+            if(sp.getBoolean("PendingSync",false)) {
+                try {
+                    PersonagemRealm.getRealmInstance(getApplicationContext()).addPendingFavourite();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }else {
-            Toast.makeText(this, "OFFLINE", Toast.LENGTH_SHORT);
+//            Toast.makeText(this, "Você está offline ;(", Toast.LENGTH_SHORT).show();
             loadFromDatabase();
         }
     }
@@ -194,11 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 PersonagemRealm.getRealmInstance(getApplicationContext()).addOrUpdateRealmList(results);
-             //                Realm realm = Realm.getDefaultInstance();
-//                realm.beginTransaction();
-//                realm.copyToRealmOrUpdate(results);
-//                realm.commitTransaction();
-//                realm.close();
+
             }
 
             @Override
@@ -227,6 +239,14 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
             }
+            private void loadFavouritesFromDatabase() {
+        clearSearch();
+        List<Personagem> results =   PersonagemRealm.getRealmInstance(getApplicationContext()).getAllFavouritePersonagens();
+                 progressBar.setVisibility(View.GONE);
+                adapter.clear();
+                adapter.addAll(results);
+                adapter.notifyDataSetChanged();
+            }
 
 
 
@@ -241,11 +261,6 @@ public class MainActivity extends AppCompatActivity {
                 RealmList<Personagem> results = fetchResults(response);
                 adapter.addAll(results);
                 adapter.notifyDataSetChanged();
-//                Realm realm = Realm.getDefaultInstance();
-//                realm.beginTransaction();
-//                realm.copyToRealmOrUpdate(results);
-//                realm.commitTransaction();
-//                realm.close();
                 PersonagemRealm.getRealmInstance(getApplicationContext()).addOrUpdateRealmList(results);
 
                 if (currentPage != TOTAL_PAGES)
@@ -265,8 +280,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        MenuItem search = menu.findItem(R.id.action_search);
+        final MenuItem favourite = menu.findItem(R.id.action_favorite);
+        searchView = (SearchView) MenuItemCompat.getActionView(search);
+        favourite.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                isViewingFavourites=!isViewingFavourites;
+                if(isViewingFavourites) {
+                    loadFavouritesFromDatabase();
+                    favourite.setIcon(R.drawable.ic_favorite_white_24dp);
+                }else{
+                    favourite.setIcon(R.drawable.ic_favorite_border_white_24dp);
+                    if(isConnected()) {
+                             loadFirstPage();
+                    }else{
+                             loadFromDatabase();
+                    }
+                }
+
+                return false;
+            }
+        });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -283,7 +320,6 @@ public class MainActivity extends AppCompatActivity {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //Put your call to the server here (with mQueryString)
                         callSearch(mQueryString);
                     }
                 }, 300);
@@ -315,4 +351,7 @@ public class MainActivity extends AppCompatActivity {
     private Call<PersonagemResponse> callSearchApi(String name) {
         return api.searchPeople(name);
     }
+
+
+
 }

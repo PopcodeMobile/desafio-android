@@ -70,7 +70,5 @@ public class PersonagemResponse  {
         this.previous = previous;
     }
 
-    public PersonagemResponse() {
-    }
 
 }

@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,8 +103,12 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 personVH.favouriteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                     PersonagemRealm.getRealmInstance(context).addRemoveFavourite(result.getName());
-                     notifyDataSetChanged();
+                        try {
+                            PersonagemRealm.getRealmInstance(context).addRemoveFavourite(result.getName());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        notifyDataSetChanged();
                     }
                 });
                 break;
@@ -114,11 +119,6 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
-//    private void updateFavourite(String name){
-//        Personagem.getPersonagem(name);
-//     Personagem.setFavourite(name);
-//
-//    }
 
     @Override
     public int getItemCount() {
