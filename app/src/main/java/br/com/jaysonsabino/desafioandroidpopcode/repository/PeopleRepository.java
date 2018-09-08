@@ -26,6 +26,7 @@ public class PeopleRepository {
         this.app = app;
         this.database = database;
         this.executor = executor;
+        this.peopleService = peopleService;
 
         initBoundaryCallback();
     }
