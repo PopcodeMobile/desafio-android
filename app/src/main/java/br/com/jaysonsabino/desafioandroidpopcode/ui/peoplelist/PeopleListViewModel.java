@@ -15,6 +15,7 @@ import java.util.concurrent.Executor;
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
+import br.com.jaysonsabino.desafioandroidpopcode.repository.PeopleRepository;
 
 public class PeopleListViewModel extends ViewModel {
 
@@ -22,7 +23,7 @@ public class PeopleListViewModel extends ViewModel {
     private MutableLiveData<String> queryName = new MutableLiveData<>();
     private LiveData<PagedList<Character>> charactersPagedList;
 
-    PeopleListViewModel(PeopleRepository repository) {
+    private PeopleListViewModel(PeopleRepository repository) {
         this.repository = repository;
 
         repository.deleteLocalCharactersCacheIfConnected();
@@ -49,13 +50,13 @@ public class PeopleListViewModel extends ViewModel {
         });
     }
 
-    static class Factory implements ViewModelProvider.Factory {
+    public static class Factory implements ViewModelProvider.Factory {
 
         private AppDatabase database;
         private Executor executor;
         private Application app;
 
-        Factory(Executor executor, Application app) {
+        public Factory(Executor executor, Application app) {
             this.executor = executor;
             this.app = app;
             database = new DatabaseFactory().getDatabase(app);

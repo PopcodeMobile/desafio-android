@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 
 import br.com.jaysonsabino.desafioandroidpopcode.databinding.CharacterListItemBinding;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
+import br.com.jaysonsabino.desafioandroidpopcode.util.DiffPeopleCallback;
 
 public class PeopleListAdapter extends PagedListAdapter<Character, PeopleListAdapter.CharacterViewHolder> {
 
     private Context context;
     private OnClickListener onClickListener;
 
-    PeopleListAdapter(Context context) {
+    public PeopleListAdapter(Context context) {
         super(new DiffPeopleCallback());
         this.context = context;
     }

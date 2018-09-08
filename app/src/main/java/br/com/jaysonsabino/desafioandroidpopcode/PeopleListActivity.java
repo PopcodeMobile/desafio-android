@@ -1,4 +1,4 @@
-package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
+package br.com.jaysonsabino.desafioandroidpopcode;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -18,9 +18,9 @@ import android.widget.SearchView;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import br.com.jaysonsabino.desafioandroidpopcode.R;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
-import br.com.jaysonsabino.desafioandroidpopcode.ui.characterdetails.CharacterDetailsActivity;
+import br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist.PeopleListAdapter;
+import br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist.PeopleListViewModel;
 
 public class PeopleListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -28,12 +28,10 @@ public class PeopleListActivity extends AppCompatActivity implements SearchView.
     private PeopleListViewModel viewModel;
     private RecyclerView list;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         viewModel = getViewModel();
 

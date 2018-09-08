@@ -28,7 +28,7 @@ public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character
     private int actualPage = 0;
     private boolean loading = false;
 
-    PeopleBoundaryCallback(Application app, AppDatabase database, PeopleService peopleService, Executor executor) {
+    public PeopleBoundaryCallback(Application app, AppDatabase database, PeopleService peopleService, Executor executor) {
         this.app = app;
         this.database = database;
         this.peopleService = peopleService;

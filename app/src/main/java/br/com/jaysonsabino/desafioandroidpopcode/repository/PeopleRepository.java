@@ -1,4 +1,4 @@
-package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
+package br.com.jaysonsabino.desafioandroidpopcode.repository;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
@@ -11,6 +11,7 @@ import java.util.concurrent.Executor;
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
+import br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist.PeopleBoundaryCallback;
 import br.com.jaysonsabino.desafioandroidpopcode.util.NetworkHelper;
 
 public class PeopleRepository {
@@ -20,7 +21,7 @@ public class PeopleRepository {
     private Executor executor;
     private PeopleBoundaryCallback boundaryCallback;
 
-    PeopleRepository(Application app, AppDatabase database, Executor executor) {
+    public PeopleRepository(Application app, AppDatabase database, Executor executor) {
         this.app = app;
         this.database = database;
         this.executor = executor;

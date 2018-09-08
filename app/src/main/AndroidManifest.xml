@@ -13,14 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name=".ui.peoplelist.PeopleListActivity">
+        <activity android:name=".PeopleListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.characterdetails.CharacterDetailsActivity" />
+        <activity android:name=".CharacterDetailsActivity" />
     </application>
 
 </manifest>

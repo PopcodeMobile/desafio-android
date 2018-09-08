@@ -1,4 +1,4 @@
-package br.com.jaysonsabino.desafioandroidpopcode.ui.characterdetails;
+package br.com.jaysonsabino.desafioandroidpopcode;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -12,8 +12,6 @@ import android.widget.Toast;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import br.com.jaysonsabino.desafioandroidpopcode.BR;
-import br.com.jaysonsabino.desafioandroidpopcode.R;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.FavoriteCharacter;
