@@ -1,6 +1,6 @@
 package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
 
-import android.app.Activity;
+import android.app.Application;
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executor;
 
+import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 
@@ -50,22 +51,22 @@ public class PeopleListViewModel extends ViewModel {
 
     static class Factory implements ViewModelProvider.Factory {
 
-        Executor executor;
-        Activity activity;
+        private AppDatabase database;
+        private Executor executor;
+        private Application app;
 
-        public Factory(Executor executor, Activity activity) {
+        Factory(Executor executor, Application app) {
             this.executor = executor;
-            this.activity = activity;
+            this.app = app;
+            database = new DatabaseFactory().getDatabase(app);
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new PeopleListViewModel(new PeopleRepository(
-                    activity,
-                    new DatabaseFactory().getDatabase(activity),
-                    executor
-            ));
+            PeopleRepository repository = new PeopleRepository(app, database, executor);
+
+            return (T) new PeopleListViewModel(repository);
         }
     }
 }

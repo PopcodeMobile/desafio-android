@@ -1,6 +1,6 @@
 package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
 
-import android.app.Activity;
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.paging.DataSource;
 import android.arch.paging.LivePagedListBuilder;
@@ -15,13 +15,13 @@ import br.com.jaysonsabino.desafioandroidpopcode.util.NetworkHelper;
 
 public class PeopleRepository {
 
-    private Activity activity;
+    private Application app;
     private AppDatabase database;
     private Executor executor;
     private PeopleBoundaryCallback boundaryCallback;
 
-    PeopleRepository(Activity activity, AppDatabase database, Executor executor) {
-        this.activity = activity;
+    PeopleRepository(Application app, AppDatabase database, Executor executor) {
+        this.app = app;
         this.database = database;
         this.executor = executor;
 
@@ -29,7 +29,7 @@ public class PeopleRepository {
     }
 
     public void deleteLocalCharactersCacheIfConnected() {
-        if (!NetworkHelper.isConnected(activity)) return;
+        if (!NetworkHelper.isConnected(app)) return;
 
         executor.execute(new Runnable() {
             @Override
@@ -62,7 +62,7 @@ public class PeopleRepository {
 
     private void initBoundaryCallback() {
         boundaryCallback = new PeopleBoundaryCallback(
-                activity,
+                app,
                 database,
                 new ServiceFactory().getPeopleService(),
                 executor

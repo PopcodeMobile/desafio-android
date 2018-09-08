@@ -1,6 +1,6 @@
 package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
 
-import android.app.Activity;
+import android.app.Application;
 import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -21,15 +21,15 @@ import retrofit2.Response;
 
 public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character> {
 
-    private final Activity activity;
+    private Application app;
     private final AppDatabase database;
     private final PeopleService peopleService;
     private Executor executor;
     private int actualPage = 0;
     private boolean loading = false;
 
-    PeopleBoundaryCallback(Activity activity, AppDatabase database, PeopleService peopleService, Executor executor) {
-        this.activity = activity;
+    PeopleBoundaryCallback(Application app, AppDatabase database, PeopleService peopleService, Executor executor) {
+        this.app = app;
         this.database = database;
         this.peopleService = peopleService;
         this.executor = executor;
@@ -37,14 +37,12 @@ public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character
 
     @Override
     public void onZeroItemsLoaded() {
-        if (!NetworkHelper.isConnected(activity)) {
-            Toast.makeText(activity, "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
+        if (!NetworkHelper.isConnected(app)) {
+            Toast.makeText(app, "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (loading) return;
         loading = true;
-
-        Toast.makeText(activity, "onZeroItemsLoaded " + actualPage, Toast.LENGTH_SHORT).show();
 
         queryNextPage();
     }
@@ -56,14 +54,12 @@ public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character
 
     @Override
     public void onItemAtEndLoaded(@NonNull Character itemAtEnd) {
-        if (!NetworkHelper.isConnected(activity)) {
-            Toast.makeText(activity, "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
+        if (!NetworkHelper.isConnected(app)) {
+            Toast.makeText(app, "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (loading) return;
         loading = true;
-
-        Toast.makeText(activity, "onItemAtEndLoaded " + actualPage, Toast.LENGTH_SHORT).show();
 
         queryNextPage();
     }
@@ -89,8 +85,6 @@ public class PeopleBoundaryCallback extends PagedList.BoundaryCallback<Character
                     if (character.getSpecies().size() == 1) {
                         Integer specieId = Specie.getIdByUrl(character.getSpecies().get(0));
                         character.setSpecie(specieId);
-
-                        Toast.makeText(activity, "Planeta " + character.getSpecies().get(0) + " id " + specieId, Toast.LENGTH_SHORT).show();
                     } else if (character.getSpecies().size() > 1) {
                         Log.e("RETORNO_NAO_ESPERADO", "Nenhum personagem possuía mais de uma espécie no momento da criação do app. Sendo assim simplifiquei a entidade para salvar apenas o id.");
                     }
