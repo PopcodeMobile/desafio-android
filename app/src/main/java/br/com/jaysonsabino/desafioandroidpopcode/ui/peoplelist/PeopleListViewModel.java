@@ -15,20 +15,27 @@ import java.util.concurrent.Executor;
 import br.com.jaysonsabino.desafioandroidpopcode.database.AppDatabase;
 import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
+import br.com.jaysonsabino.desafioandroidpopcode.repository.FavoritesRepository;
 import br.com.jaysonsabino.desafioandroidpopcode.repository.PeopleRepository;
+import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesService;
+import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesServiceFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.PeopleService;
 import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
 
 public class PeopleListViewModel extends ViewModel {
 
-    private final PeopleRepository repository;
+    private final PeopleRepository peopleRepository;
+    private FavoritesRepository favoritesRepository;
     private MutableLiveData<String> queryName = new MutableLiveData<>();
     private LiveData<PagedList<Character>> charactersPagedList;
 
-    private PeopleListViewModel(PeopleRepository repository) {
-        this.repository = repository;
+    private PeopleListViewModel(PeopleRepository peopleRepository, FavoritesRepository favoritesRepository) {
+        this.peopleRepository = peopleRepository;
+        this.favoritesRepository = favoritesRepository;
 
-        repository.deleteLocalCharactersCacheIfConnected();
+        favoritesRepository.syncFavorites();
+
+        peopleRepository.deleteLocalCharactersCacheIfConnected();
 
         initPagedList();
 
@@ -47,7 +54,7 @@ public class PeopleListViewModel extends ViewModel {
         charactersPagedList = Transformations.switchMap(queryName, new Function<String, LiveData<PagedList<Character>>>() {
             @Override
             public LiveData<PagedList<Character>> apply(String input) {
-                return repository.getPagedList(input);
+                return peopleRepository.getPagedList(input);
             }
         });
     }
@@ -58,20 +65,23 @@ public class PeopleListViewModel extends ViewModel {
         private Executor executor;
         private AppDatabase database;
         private PeopleService peopleService;
+        private StarWarsFavoritesService favoritesService;
 
         public Factory(Application app, Executor executor) {
             this.app = app;
             this.executor = executor;
             database = new DatabaseFactory().getDatabase(app);
             peopleService = new ServiceFactory().getPeopleService();
+            favoritesService = new StarWarsFavoritesServiceFactory().getService();
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            PeopleRepository repository = new PeopleRepository(app, database, peopleService, executor);
+            PeopleRepository peopleRepository = new PeopleRepository(app, database, peopleService, executor);
+            FavoritesRepository favoritesRepository = new FavoritesRepository(app, database, favoritesService, executor);
 
-            return (T) new PeopleListViewModel(repository);
+            return (T) new PeopleListViewModel(peopleRepository, favoritesRepository);
         }
     }
 }

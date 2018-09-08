@@ -4,6 +4,7 @@ import android.app.Application;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Executor;
@@ -13,6 +14,7 @@ import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.FavoriteCharacter;
 import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesResponseDTO;
 import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesService;
+import br.com.jaysonsabino.desafioandroidpopcode.util.NetworkHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +32,24 @@ public class FavoritesRepository {
         this.executor = executor;
 
         this.favoritesService = favoritesService;
+    }
+
+    public void syncFavorites() {
+        if (!NetworkHelper.isConnected(app)) {
+            Toast.makeText(app, "Não foi possível sincronizar os favoritos pois o telefone está sem acesso à internet.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<FavoriteCharacter> favoriteCharacters = database.getFavoriteCharacterDAO().findNotSynced();
+
+                for (FavoriteCharacter favoriteCharacter : favoriteCharacters) {
+                    sendFavoriteToStarWarsFavorites(favoriteCharacter);
+                }
+            }
+        });
     }
 
     public void setAsFavorite(Character character) {
