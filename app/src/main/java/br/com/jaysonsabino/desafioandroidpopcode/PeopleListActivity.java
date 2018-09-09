@@ -21,8 +21,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
-import br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist.PeopleListAdapter;
-import br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist.PeopleListViewModel;
+import br.com.jaysonsabino.desafioandroidpopcode.ui.PeopleListAdapter;
+import br.com.jaysonsabino.desafioandroidpopcode.ui.PeopleListViewModel;
 
 public class PeopleListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 

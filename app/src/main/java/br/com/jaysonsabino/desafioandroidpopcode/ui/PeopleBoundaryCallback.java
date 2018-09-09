@@ -1,4 +1,4 @@
-package br.com.jaysonsabino.desafioandroidpopcode.ui.peoplelist;
+package br.com.jaysonsabino.desafioandroidpopcode.ui;
 
 import android.app.Application;
 import android.arch.paging.PagedList;

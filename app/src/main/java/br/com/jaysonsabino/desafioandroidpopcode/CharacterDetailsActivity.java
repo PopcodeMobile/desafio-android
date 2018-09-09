@@ -1,34 +1,26 @@
 package br.com.jaysonsabino.desafioandroidpopcode;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import br.com.jaysonsabino.desafioandroidpopcode.database.DatabaseFactory;
 import br.com.jaysonsabino.desafioandroidpopcode.entities.Character;
-import br.com.jaysonsabino.desafioandroidpopcode.entities.FavoriteCharacter;
-import br.com.jaysonsabino.desafioandroidpopcode.entities.Planet;
-import br.com.jaysonsabino.desafioandroidpopcode.entities.Specie;
-import br.com.jaysonsabino.desafioandroidpopcode.repository.FavoritesRepository;
-import br.com.jaysonsabino.desafioandroidpopcode.services.starwarsfavorites.StarWarsFavoritesServiceFactory;
-import br.com.jaysonsabino.desafioandroidpopcode.services.swapi.ServiceFactory;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import br.com.jaysonsabino.desafioandroidpopcode.ui.CharacterDetailsViewModel;
 
 public class CharacterDetailsActivity extends AppCompatActivity {
 
     private Character.CharacterWithFavorite characterWithFavorite;
-    private FavoritesRepository favoritesService;
-    private Executor executor;
+    private CharacterDetailsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,97 +37,39 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_character_details);
         binding.setVariable(BR.characterWithFavorite, characterWithFavorite);
 
-        executor = Executors.newFixedThreadPool(2);
+        viewModel = getViewModel();
 
         loadHomeWorld();
 
         loadSpecie();
+    }
 
-        loadFavorite();
+    private CharacterDetailsViewModel getViewModel() {
+        Executor executor = Executors.newFixedThreadPool(2);
 
-        favoritesService = new FavoritesRepository(this.getApplication(), new DatabaseFactory().getDatabase(this), new StarWarsFavoritesServiceFactory().getService(), executor);
+        return ViewModelProviders
+                .of(this, new CharacterDetailsViewModel.Factory(getApplication(), executor))
+                .get(CharacterDetailsViewModel.class);
     }
 
     private void loadHomeWorld() {
-        Integer homeworldId = characterWithFavorite.getCharacter().getHomeworldId();
+        final TextView tvHomeWorld = findViewById(R.id.detailsCharacterHomeWorld);
 
-        if (homeworldId == null) {
-            return;
-        }
-
-        Toast.makeText(CharacterDetailsActivity.this, "Carregando planeta natal.", Toast.LENGTH_SHORT).show();
-
-        final TextView homeworld = findViewById(R.id.detailsCharacterHomeWorld);
-
-        Call<Planet> call = new ServiceFactory().getPlanetService().getPlanetById(homeworldId);
-        call.enqueue(new Callback<Planet>() {
+        viewModel.getHomeWorld(characterWithFavorite.getCharacter()).observe(this, new Observer<String>() {
             @Override
-            public void onResponse(Call<Planet> call, Response<Planet> response) {
-                Planet planet = response.body();
-                if (planet == null) {
-                    return;
-                }
-
-                homeworld.setText(planet.getName());
-            }
-
-            @Override
-            public void onFailure(Call<Planet> call, Throwable t) {
-                Toast.makeText(CharacterDetailsActivity.this, "Falha na consulta do planeta natal.", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
+            public void onChanged(@Nullable String homeWorld) {
+                tvHomeWorld.setText(homeWorld);
             }
         });
     }
 
     private void loadSpecie() {
-        Integer specieId = characterWithFavorite.getCharacter().getSpecie();
-
-        if (specieId == null) {
-            return;
-        }
-
-        Toast.makeText(CharacterDetailsActivity.this, "Carregando espécie.", Toast.LENGTH_SHORT).show();
-
         final TextView tvSpecie = findViewById(R.id.detailsCharacterSpecie);
 
-        Call<Specie> call = new ServiceFactory().getSpecieService().getSpecieById(specieId);
-        call.enqueue(new Callback<Specie>() {
+        viewModel.getSpecie(characterWithFavorite.getCharacter()).observe(this, new Observer<String>() {
             @Override
-            public void onResponse(Call<Specie> call, Response<Specie> response) {
-                Specie specie = response.body();
-                if (specie == null) {
-                    return;
-                }
-
-                tvSpecie.setText(specie.getName());
-            }
-
-            @Override
-            public void onFailure(Call<Specie> call, Throwable t) {
-                Toast.makeText(CharacterDetailsActivity.this, "Falha na consulta da espécie.", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
-    }
-
-    private void loadFavorite() {
-        final CheckBox favorite = findViewById(R.id.detailsCheckIsFavorite);
-
-        favorite.setVisibility(View.INVISIBLE);
-
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                final FavoriteCharacter favoriteCharacter = new DatabaseFactory().getDatabase(CharacterDetailsActivity.this).getFavoriteCharacterDAO().getByCharacterId(characterWithFavorite.getCharacter().getId());
-
-                // prevents "Only the original thread that created a view hierarchy can touch its views."
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        favorite.setChecked(favoriteCharacter != null);
-                        favorite.setVisibility(View.VISIBLE);
-                    }
-                });
+            public void onChanged(@Nullable String specie) {
+                tvSpecie.setText(specie);
             }
         });
     }
@@ -146,9 +80,9 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         }
 
         if (((CheckBox) view).isChecked()) {
-            favoritesService.setAsFavorite(characterWithFavorite.getCharacter());
+            viewModel.setAsFavorite(characterWithFavorite.getCharacter());
         } else {
-            favoritesService.unsetAsFavorite(characterWithFavorite.getCharacter());
+            viewModel.unsetAsFavorite(characterWithFavorite.getCharacter());
         }
     }
 
