@@ -30,17 +30,17 @@ public class Personagem extends RealmObject{
     private String homeworld;
     @SerializedName("species")
     private RealmList<String> species;
-    private boolean favourite;
+//    private boolean favourite;
 
 
-    public boolean isFavourite() {
-        return favourite;
-    }
-
-
-    public void setFavourite(boolean favourite) {
-           this.favourite = favourite;
-    }
+//    public boolean isFavourite() {
+//        return favourite;
+//    }
+//
+//
+//    public void setFavourite(boolean favourite) {
+//           this.favourite = favourite;
+//    }
 
     public RealmList<String> getSpecies() {
         return species;

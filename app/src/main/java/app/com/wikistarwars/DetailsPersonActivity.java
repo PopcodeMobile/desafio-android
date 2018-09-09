@@ -37,10 +37,11 @@ public class DetailsPersonActivity extends AppCompatActivity {
     private String name = "";
     private String specie = "";
     private Service api;
-    private TextView pName,pHeight,pMass,pGender, pHair_color, pEye_color, pSkin_color, pBirth_year, pPlanet, pSpecie;
+    private TextView pName, pHeight, pMass, pGender, pHair_color, pEye_color, pSkin_color, pBirth_year, pPlanet, pSpecie;
     private ToggleButton buttonFavorite;
     private Context context;
     private Boolean favorite = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class DetailsPersonActivity extends AppCompatActivity {
             name = extras.getString(KEY_NAME);
         }
 
-        Personagem personagens =   PersonagemRealm.getRealmInstance(getApplicationContext()).getPersonagem(name);
+        Personagem personagens = PersonagemRealm.getRealmInstance(getApplicationContext()).getPersonagem(name);
 
         api = RetrofitConfig.getApiService();
 
@@ -74,7 +75,7 @@ public class DetailsPersonActivity extends AppCompatActivity {
 
         //Pegando o nome do Planeta
         loadPlanet(getIdFromUrl(personagens.getHomeworld()));
-        for ( String s : personagens.getSpecies() ){
+        for (String s : personagens.getSpecies()) {
             loadSpecies(getIdFromUrl(s));
         }
 
@@ -90,14 +91,14 @@ public class DetailsPersonActivity extends AppCompatActivity {
         pSpecie.setText(" - ");
 
 
-        favorite = PersonagemRealm.getRealmInstance(context).getPersonagem(personagens.getName()).isFavourite();
-        isFavorite(favorite);
+        if (PersonagemRealm.getRealmInstance(context).getFavouriteByName(personagens.getName()).size() == 0)
+            isFavorite(false);
+        else
+            isFavorite(true);
 
-        buttonFavorite.setOnClickListener(new OnClickListener()
-        {
+        buttonFavorite.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 try {
                     PersonagemRealm.getRealmInstance(context).addRemoveFavourite(name);
                     isFavorite(!favorite);
@@ -109,9 +110,9 @@ public class DetailsPersonActivity extends AppCompatActivity {
         });
     }
 
-    public void isFavorite(Boolean favorite){
-        if(favorite)
-             buttonFavorite.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
+    public void isFavorite(Boolean favorite) {
+        if (favorite)
+            buttonFavorite.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
         else
             buttonFavorite.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
 
@@ -129,7 +130,7 @@ public class DetailsPersonActivity extends AppCompatActivity {
     }
 
     private void loadPlanet(int id) {
-         api.getHomeworld(id).enqueue(new retrofit2.Callback<Planet>() {
+        api.getHomeworld(id).enqueue(new retrofit2.Callback<Planet>() {
             @Override
             public void onResponse(retrofit2.Call<Planet> call, retrofit2.Response<Planet> response) {
 
@@ -143,16 +144,17 @@ public class DetailsPersonActivity extends AppCompatActivity {
             }
         });
     }
+
     private void loadSpecies(int id) {
         api.getSpecie(id).enqueue(new retrofit2.Callback<Species>() {
             @Override
             public void onResponse(retrofit2.Call<Species> call, retrofit2.Response<Species> response) {
 
                 Species s = response.body();
-                if(specie.isEmpty())
+                if (specie.isEmpty())
                     specie = s.getName();
                 else
-                    specie += "\n"+s.getName();
+                    specie += "\n" + s.getName();
                 pSpecie.setText(specie);
             }
 
@@ -162,7 +164,8 @@ public class DetailsPersonActivity extends AppCompatActivity {
             }
         });
     }
-    private int getIdFromUrl(String url){
+
+    private int getIdFromUrl(String url) {
         URI uri = null;
         try {
             uri = new URI(url);
@@ -170,8 +173,8 @@ public class DetailsPersonActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         String[] segments = uri.getPath().split("/");
-        String idStr = segments[segments.length-1];
-        return  Integer.parseInt(idStr);
+        String idStr = segments[segments.length - 1];
+        return Integer.parseInt(idStr);
     }
 
 }

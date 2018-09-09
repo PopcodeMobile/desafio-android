@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         recyclerView = (RecyclerView) findViewById(R.id.rvPersonagens);
         progressBar = (ProgressBar) findViewById(R.id.progress);
 
@@ -115,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
         sp = getSharedPreferences(app_name, MODE_PRIVATE);
     }
 
-    protected boolean isConnected(){
+    protected boolean isConnected() {
         ConnectivityManager cm =
-                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
@@ -127,12 +126,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(isConnected()) {
+        if (isConnected()) {
 //            Toast.makeText(this, "Oba! Você está online ;)", Toast.LENGTH_SHORT).show();
             loadFirstPage();
 
-/*            Verificando se tem pendencias de favoritos para serem enviadas*/
-            if(sp.getBoolean("PendingSync",false)) {
+            /*            Verificando se tem pendencias de favoritos para serem enviadas*/
+            if (sp.getBoolean("PendingSync", false)) {
                 try {
                     PersonagemRealm.getRealmInstance(getApplicationContext()).addPendingFavourite();
                 } catch (IOException e) {
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-        }else {
+        } else {
 //            Toast.makeText(this, "Você está offline ;(", Toast.LENGTH_SHORT).show();
             loadFromDatabase();
         }
@@ -197,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
                 PersonagemResponse persons = response.body();
 
-                RealmList<Personagem> results =  persons.getResults();
+                RealmList<Personagem> results = persons.getResults();
 
                 try {
                     TOTAL_PAGES = (int) Math.ceil((double) persons.getCount() / persons.getResults().size());
@@ -215,19 +214,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 PersonagemRealm.getRealmInstance(getApplicationContext()).addOrUpdateRealmList(results);
-                RealmResults<Favorite> favorites =  PersonagemRealm.getRealmInstance(getApplicationContext()).getAllFavourite();
-               for(int i =0 ; i < results.size();i++){
-                   if(favorites.size()==0)
-                       break;
-                   Personagem p = results.get(i);
-                   for ( Favorite f : favorites){
-
-                       if(f.getName().equals(p.getName())){
-                           p.setFavourite(true);
-                           adapter.notifyDataSetChanged();
-                       }
-                   }
-               }
+                RealmResults<Favorite> favorites = PersonagemRealm.getRealmInstance(getApplicationContext()).getAllFavourite();
+                for (int i = 0; i < results.size(); i++) {
+                    if (favorites.size() == 0)
+                        break;
+                    Personagem p = results.get(i);
+                    for (Favorite f : favorites) {
+                        if (f.getName().equals(p.getName())) {
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                }
 
             }
 
@@ -241,31 +238,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void searchFromDatabase(String name) {
         clearSearch();
-        List<Personagem> results =   PersonagemRealm.getRealmInstance(getApplicationContext()).searchPersonagens(name);
-                 progressBar.setVisibility(View.GONE);
-                adapter.clear();
-                adapter.addAll(results);
-                adapter.notifyDataSetChanged();
+        List<Personagem> results = PersonagemRealm.getRealmInstance(getApplicationContext()).searchPersonagens(name);
+        progressBar.setVisibility(View.GONE);
+        adapter.clear();
+        adapter.addAll(results);
+        adapter.notifyDataSetChanged();
 
     }
+
     private void loadFromDatabase() {
         clearSearch();
-        List<Personagem> results =   PersonagemRealm.getRealmInstance(getApplicationContext()).getAllPersonagens();
-                 progressBar.setVisibility(View.GONE);
-                adapter.clear();
-                adapter.addAll(results);
-                adapter.notifyDataSetChanged();
+        List<Personagem> results = PersonagemRealm.getRealmInstance(getApplicationContext()).getAllPersonagens();
+        progressBar.setVisibility(View.GONE);
+        adapter.clear();
+        adapter.addAll(results);
+        adapter.notifyDataSetChanged();
 
-            }
-            private void loadFavouritesFromDatabase() {
+    }
+
+    private void loadFavouritesFromDatabase() {
         clearSearch();
-        List<Personagem> results =   PersonagemRealm.getRealmInstance(getApplicationContext()).getAllFavouritePersonagens();
-                 progressBar.setVisibility(View.GONE);
-                adapter.clear();
-                adapter.addAll(results);
-                adapter.notifyDataSetChanged();
-            }
-
+        List<Personagem> results = PersonagemRealm.getRealmInstance(getApplicationContext()).getAllFavouritePersonagens();
+        progressBar.setVisibility(View.GONE);
+        adapter.clear();
+        adapter.addAll(results);
+        adapter.notifyDataSetChanged();
+        isLastPage = true;
+    }
 
 
     private void loadNextPage() {
@@ -305,16 +304,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
 
-                isViewingFavourites=!isViewingFavourites;
-                if(isViewingFavourites) {
+                isViewingFavourites = !isViewingFavourites;
+                if (isViewingFavourites) {
                     loadFavouritesFromDatabase();
                     favorite.setIcon(R.drawable.ic_favorite_white_24dp);
-                }else{
+                } else {
                     favorite.setIcon(R.drawable.ic_favorite_border_white_24dp);
-                    if(isConnected()) {
-                             loadFirstPage();
-                    }else{
-                             loadFromDatabase();
+                    if (isConnected()) {
+                        loadFirstPage();
+                    } else {
+                        loadFromDatabase();
                     }
                 }
 
@@ -331,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-               final String mQueryString = newText;
+                final String mQueryString = newText;
 
                 mHandler.removeCallbacksAndMessages(null);
 
@@ -345,12 +344,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void callSearch(String query) {
-                if(isConnected()) {
+                if (isConnected()) {
                     if (!TextUtils.isEmpty(query))
-                    loadSearch(query);
-                else
-                    loadFirstPage();
-                }else{
+                        loadSearch(query);
+                    else
+                        loadFirstPage();
+                } else {
                     if (!TextUtils.isEmpty(query))
                         searchFromDatabase(query);
                     else
@@ -369,7 +368,6 @@ public class MainActivity extends AppCompatActivity {
     private Call<PersonagemResponse> callSearchApi(String name) {
         return api.searchPeople(name);
     }
-
 
 
 }

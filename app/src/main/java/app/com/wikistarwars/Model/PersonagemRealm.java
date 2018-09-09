@@ -12,14 +12,16 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-public class PersonagemRealm  {
+public class PersonagemRealm {
 
     private static PersonagemRealm dbManager;
     private static Realm realm;
     private String realmName = "RealmPersonagem";
     private Context context;
+
     private PersonagemRealm(Context context) {
 
         if (realm == null) {
@@ -30,7 +32,7 @@ public class PersonagemRealm  {
                     .deleteRealmIfMigrationNeeded()
                     .build();
             realm = Realm.getInstance(configuration);
-           this.context=context;
+            this.context = context;
         }
     }
 
@@ -42,7 +44,7 @@ public class PersonagemRealm  {
         return dbManager;
     }
 
-    public static String realmToJson(RealmResults results){
+    public static String realmToJson(RealmResults results) {
         realm.beginTransaction();
         String result = new Gson().toJson(realm.copyFromRealm(results));
         realm.commitTransaction();
@@ -51,10 +53,10 @@ public class PersonagemRealm  {
 
 
     public void addOrUpdateRealmList(RealmList personagem) {
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(personagem);
-            realm.commitTransaction();
-        }
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(personagem);
+        realm.commitTransaction();
+    }
 
     public void addOrUpdate(RealmList personagem) {
 
@@ -72,11 +74,10 @@ public class PersonagemRealm  {
     }
 
 
-
     public void createOrUpdateAllFromJson(String personagem) {
 
         realm.beginTransaction();
-        realm.createOrUpdateAllFromJson(Personagem.class,personagem);
+        realm.createOrUpdateAllFromJson(Personagem.class, personagem);
         realm.commitTransaction();
 
     }
@@ -87,11 +88,23 @@ public class PersonagemRealm  {
         realm.commitTransaction();
         return realmPersonagens;
     }
+
     public RealmResults getAllFavouritePersonagens() {
+        RealmResults<Favorite> favorites = getAllFavourite();
         realm.beginTransaction();
-        RealmResults realmPersonagens = realm.where(Personagem.class).equalTo("favourite",true).findAll();
+
+        RealmQuery<Personagem> favoritosQuery = realm.where(Personagem.class);
+        int i = 0;
+        for(Favorite f : favorites) {
+            if(i != 0) {
+                favoritosQuery  = favoritosQuery .or();
+            }
+            favoritosQuery  = favoritosQuery .equalTo("name", f.getName());
+            i++;
+        }
+          favoritosQuery.findAll();
         realm.commitTransaction();
-        return realmPersonagens;
+        return favoritosQuery.findAll();
     }
 
     public RealmResults getAllFavourite() {
@@ -100,49 +113,46 @@ public class PersonagemRealm  {
         realm.commitTransaction();
         return realmPersonagens;
     }
+
     public RealmResults getFavouriteByName(String name) {
         realm.beginTransaction();
-        RealmResults realmPersonagens = realm.where(Favorite.class).equalTo("name",name).findAll();
+        RealmResults realmPersonagens = realm.where(Favorite.class).equalTo("name", name).findAll();
         realm.commitTransaction();
         return realmPersonagens;
     }
 
     public RealmResults searchPersonagens(String name) {
         realm.beginTransaction();
-        RealmResults personagens = realm.where(Personagem.class).contains("name",name, Case.INSENSITIVE).findAll();
+        RealmResults personagens = realm.where(Personagem.class).contains("name", name, Case.INSENSITIVE).findAll();
         realm.commitTransaction();
         return personagens;
     }
 
     public Personagem getPersonagem(String name) {
         realm.beginTransaction();
-        Personagem personagens = realm.where(Personagem.class).equalTo("name",name).findFirst();
+        Personagem personagens = realm.where(Personagem.class).equalTo("name", name).findFirst();
         realm.commitTransaction();
         return personagens;
     }
 
 
     public void addRemoveFavourite(String name) throws IOException {
+        RealmResults favoritos = getFavouriteByName(name);
         realm.beginTransaction();
-        Personagem p = realm.where(Personagem.class).equalTo("name",name).findFirst();
-        p.setFavourite(!p.isFavourite());
-        if(p.isFavourite()){
-        Favorite f = new Favorite();
-        f.setName(p.getName());
-        realm.copyToRealmOrUpdate(f);
-        }else{
-        realm.where(Favorite.class).equalTo("name",p.getName()).findAll().deleteAllFromRealm();
+        if (favoritos.size() == 0) {
+            Favorite f = new Favorite();
+            f.setName(name);
+            realm.copyToRealmOrUpdate(f);
+        } else {
+            realm.where(Favorite.class).equalTo("name", name).findAll().deleteAllFromRealm();
         }
-
-        realm.copyToRealmOrUpdate(p);
         realm.commitTransaction();
-
-        if(p.isFavourite())
-        new FavouriteService(context).addFavourite(getAllFavouritePersonagens(),context);
+        if(favoritos.size() == 0)
+        new FavouriteService(context).addFavourite(getAllFavouritePersonagens(), context);
     }
 
     public void addPendingFavourite() throws IOException {
-             new FavouriteService(context).addFavourite(getAllFavouritePersonagens(),context);
+        new FavouriteService(context).addFavourite(getAllFavouritePersonagens(), context);
     }
 
 
