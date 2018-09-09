@@ -91,6 +91,8 @@ public class PersonagemRealm {
 
     public RealmResults getAllFavouritePersonagens() {
         RealmResults<Favorite> favorites = getAllFavourite();
+        if(favorites.size()==0)
+            return favorites;
         realm.beginTransaction();
 
         RealmQuery<Personagem> favoritosQuery = realm.where(Personagem.class);

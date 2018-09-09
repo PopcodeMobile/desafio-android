@@ -12,10 +12,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
+    private Menu menu;
     Handler mHandler;
 
     SharedPreferences sp;
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         loadNextPage();
                     }
-                }, 1000);
+                }, 300);
             }
 
             @Override
@@ -126,10 +129,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (isConnected()) {
-//            Toast.makeText(this, "Oba! Você está online ;)", Toast.LENGTH_SHORT).show();
+        if (isConnected() && !isViewingFavourites) {
             loadFirstPage();
-
             /*            Verificando se tem pendencias de favoritos para serem enviadas*/
             if (sp.getBoolean("PendingSync", false)) {
                 try {
@@ -139,8 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-        } else {
-//            Toast.makeText(this, "Você está offline ;(", Toast.LENGTH_SHORT).show();
+        } else if (!isViewingFavourites) {
             loadFromDatabase();
         }
     }
@@ -253,12 +253,17 @@ public class MainActivity extends AppCompatActivity {
         adapter.clear();
         adapter.addAll(results);
         adapter.notifyDataSetChanged();
-
+        isLastPage = true;
     }
 
     private void loadFavouritesFromDatabase() {
         clearSearch();
         List<Personagem> results = PersonagemRealm.getRealmInstance(getApplicationContext()).getAllFavouritePersonagens();
+        Log.d("results", results.toString());
+        if (results.size() == 0) {
+            Toast.makeText(getApplicationContext(), "Não há favoritos", Toast.LENGTH_SHORT).show();
+
+        }
         progressBar.setVisibility(View.GONE);
         adapter.clear();
         adapter.addAll(results);
@@ -268,23 +273,25 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void loadNextPage() {
-
-        callPersonsApi().enqueue(new Callback<PersonagemResponse>() {
+            callPersonsApi().enqueue(new Callback<PersonagemResponse>() {
             @Override
             public void onResponse(Call<PersonagemResponse> call, Response<PersonagemResponse> response) {
-                adapter.removeLoadingFooter();
-                isLoading = false;
 
-                RealmList<Personagem> results = fetchResults(response);
-                adapter.addAll(results);
-                adapter.notifyDataSetChanged();
-                PersonagemRealm.getRealmInstance(getApplicationContext()).addOrUpdateRealmList(results);
+               if(!isViewingFavourites) {
+                   adapter.removeLoadingFooter();
+                   isLoading = false;
 
-                if (currentPage != TOTAL_PAGES)
-                    adapter.addLoadingFooter();
-                else
-                    isLastPage = true;
-            }
+                   RealmList<Personagem> results = fetchResults(response);
+                   adapter.addAll(results);
+                   adapter.notifyDataSetChanged();
+                   PersonagemRealm.getRealmInstance(getApplicationContext()).addOrUpdateRealmList(results);
+
+                   if (currentPage != TOTAL_PAGES)
+                       adapter.addLoadingFooter();
+                   else
+                       isLastPage = true;
+               }
+               }
 
             @Override
             public void onFailure(Call<PersonagemResponse> call, Throwable t) {
@@ -324,12 +331,14 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //callSearch(query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                isViewingFavourites = false;
+                favorite.setIcon(R.drawable.ic_favorite_border_white_24dp);
                 final String mQueryString = newText;
 
                 mHandler.removeCallbacksAndMessages(null);
