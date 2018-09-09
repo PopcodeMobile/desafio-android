@@ -19,16 +19,19 @@ import android.widget.ProgressBar;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import app.com.wikistarwars.Adapter.PaginationAdapter;
 import app.com.wikistarwars.Api.RetrofitConfig;
 import app.com.wikistarwars.Api.Service;
+import app.com.wikistarwars.Model.Favorite;
 import app.com.wikistarwars.Model.Personagem;
 import app.com.wikistarwars.Model.PersonagemRealm;
 import app.com.wikistarwars.Model.PersonagemResponse;
 import app.com.wikistarwars.Util.PaginationScrollListener;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -162,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
                 PersonagemRealm.getRealmInstance(getApplicationContext()).addOrUpdateRealmList(results);
+
+
                 if (currentPage < TOTAL_PAGES)
                     adapter.addLoadingFooter();
                 else {
@@ -210,6 +215,19 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 PersonagemRealm.getRealmInstance(getApplicationContext()).addOrUpdateRealmList(results);
+                RealmResults<Favorite> favorites =  PersonagemRealm.getRealmInstance(getApplicationContext()).getAllFavourite();
+               for(int i =0 ; i < results.size();i++){
+                   if(favorites.size()==0)
+                       break;
+                   Personagem p = results.get(i);
+                   for ( Favorite f : favorites){
+
+                       if(f.getName().equals(p.getName())){
+                           p.setFavourite(true);
+                           adapter.notifyDataSetChanged();
+                       }
+                   }
+               }
 
             }
 
@@ -229,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                 adapter.addAll(results);
                 adapter.notifyDataSetChanged();
 
-            }
+    }
     private void loadFromDatabase() {
         clearSearch();
         List<Personagem> results =   PersonagemRealm.getRealmInstance(getApplicationContext()).getAllPersonagens();
@@ -281,18 +299,18 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem search = menu.findItem(R.id.action_search);
-        final MenuItem favourite = menu.findItem(R.id.action_favorite);
+        final MenuItem favorite = menu.findItem(R.id.action_favorite);
         searchView = (SearchView) MenuItemCompat.getActionView(search);
-        favourite.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        favorite.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
 
                 isViewingFavourites=!isViewingFavourites;
                 if(isViewingFavourites) {
                     loadFavouritesFromDatabase();
-                    favourite.setIcon(R.drawable.ic_favorite_white_24dp);
+                    favorite.setIcon(R.drawable.ic_favorite_white_24dp);
                 }else{
-                    favourite.setIcon(R.drawable.ic_favorite_border_white_24dp);
+                    favorite.setIcon(R.drawable.ic_favorite_border_white_24dp);
                     if(isConnected()) {
                              loadFirstPage();
                     }else{

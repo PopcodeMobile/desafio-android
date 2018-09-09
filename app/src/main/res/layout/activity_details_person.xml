@@ -7,15 +7,21 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="14dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="8dp">
 
@@ -23,192 +29,203 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name: "
-                android:textSize="20dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"/>
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
                 android:paddingLeft="65dp"
-                android:textSize="20dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:paddingBottom="8dp"/>
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/name"
                 android:text="Mass: "
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_below="@+id/name"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/mass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="65dp"
-                android:textSize="20dp"
+                android:layout_below="@+id/name"
                 android:paddingBottom="8dp"
-                android:layout_below="@+id/name" />
+                android:paddingLeft="65dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/mass"
                 android:text="Height: "
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_below="@+id/mass"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="70dp"
-                android:textSize="20dp"
+                android:layout_below="@+id/mass"
                 android:paddingBottom="8dp"
-                android:layout_below="@+id/mass" />
+                android:paddingLeft="70dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/height"
                 android:text="Hair Color: "
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_below="@+id/height"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/hair_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="105dp"
-                android:textSize="20dp"
+                android:layout_below="@+id/height"
                 android:paddingBottom="8dp"
-                android:layout_below="@+id/height" />
+                android:paddingLeft="105dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/hair_color"
                 android:text="Skin Color: "
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_below="@+id/hair_color"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/skin_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="105dp"
-                android:textSize="20dp"
+                android:layout_below="@+id/hair_color"
                 android:paddingBottom="8dp"
-                android:layout_below="@+id/hair_color" />
+                android:paddingLeft="105dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/skin_color"
                 android:text="Eye Color: "
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_below="@+id/skin_color"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/eye_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="105dp"
-                android:textSize="20dp"
+                android:layout_below="@+id/skin_color"
                 android:paddingBottom="8dp"
-                android:layout_below="@+id/skin_color" />
+                android:paddingLeft="105dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
 
             <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="Birth Year: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/eye_color"
+                android:text="Birth Year: "
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_below="@+id/eye_color"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/birth_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="105dp"
-                android:textSize="20dp"
+                android:layout_below="@+id/eye_color"
                 android:paddingBottom="8dp"
-                android:layout_below="@+id/eye_color" />
+                android:paddingLeft="105dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/birth_year"
                 android:text="Gender: "
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_below="@+id/birth_year"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="80dp"
-                android:textSize="20dp"
+                android:layout_below="@+id/birth_year"
                 android:paddingBottom="8dp"
-                android:layout_below="@+id/birth_year" />
+                android:paddingLeft="80dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/gender"
                 android:text="Planet: "
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_below="@+id/gender"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/planet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="70dp"
-                android:textSize="20dp"
+                android:layout_below="@+id/gender"
                 android:paddingBottom="8dp"
-                android:layout_below="@+id/gender" />
+                android:paddingLeft="70dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/planet"
                 android:text="Specie: "
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_below="@+id/planet"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/specie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:paddingLeft="70dp"
-                android:textSize="20dp"
+                android:layout_below="@+id/planet"
                 android:paddingBottom="8dp"
-                android:layout_below="@+id/planet" />
+                android:paddingLeft="70dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
+
+            <ToggleButton
+                android:id="@+id/favorite_button"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_favorite_border_black_24dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textOff=""
+                android:textOn="" />
 
         </RelativeLayout>
-
-
 
 
     </android.support.v7.widget.CardView>

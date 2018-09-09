@@ -5,15 +5,14 @@ import android.content.Context;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.List;
 
 import app.com.wikistarwars.Api.FavouriteService;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
-import okhttp3.Response;
 
 public class PersonagemRealm  {
 
@@ -52,11 +51,35 @@ public class PersonagemRealm  {
 
 
     public void addOrUpdateRealmList(RealmList personagem) {
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(personagem);
-        realm.commitTransaction();
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(personagem);
+            realm.commitTransaction();
+        }
+
+    public void addOrUpdate(RealmList personagem) {
+
+//        RealmResults<Personagem> p = dbManager.getAllPersonagens();
+//        realm.beginTransaction();
+//        for(int i =0; personagem.size() ;i++){
+//            if(p.contains(personagem.get(i)))
+//            {
+//
+//            }else{
+//                realm.copyToRealmOrUpdate(personagem.get(i));
+//            }
+//        }
+//        realm.commitTransaction();
     }
 
+
+
+    public void createOrUpdateAllFromJson(String personagem) {
+
+        realm.beginTransaction();
+        realm.createOrUpdateAllFromJson(Personagem.class,personagem);
+        realm.commitTransaction();
+
+    }
 
     public RealmResults getAllPersonagens() {
         realm.beginTransaction();
@@ -67,6 +90,19 @@ public class PersonagemRealm  {
     public RealmResults getAllFavouritePersonagens() {
         realm.beginTransaction();
         RealmResults realmPersonagens = realm.where(Personagem.class).equalTo("favourite",true).findAll();
+        realm.commitTransaction();
+        return realmPersonagens;
+    }
+
+    public RealmResults getAllFavourite() {
+        realm.beginTransaction();
+        RealmResults realmPersonagens = realm.where(Favorite.class).findAll();
+        realm.commitTransaction();
+        return realmPersonagens;
+    }
+    public RealmResults getFavouriteByName(String name) {
+        realm.beginTransaction();
+        RealmResults realmPersonagens = realm.where(Favorite.class).equalTo("name",name).findAll();
         realm.commitTransaction();
         return realmPersonagens;
     }
@@ -90,6 +126,14 @@ public class PersonagemRealm  {
         realm.beginTransaction();
         Personagem p = realm.where(Personagem.class).equalTo("name",name).findFirst();
         p.setFavourite(!p.isFavourite());
+        if(p.isFavourite()){
+        Favorite f = new Favorite();
+        f.setName(p.getName());
+        realm.copyToRealmOrUpdate(f);
+        }else{
+        realm.where(Favorite.class).equalTo("name",p.getName()).findAll().deleteAllFromRealm();
+        }
+
         realm.copyToRealmOrUpdate(p);
         realm.commitTransaction();
 

@@ -94,7 +94,8 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 });
 
-                 if(PersonagemRealm.getRealmInstance(context).getPersonagem(result.getName()).isFavourite())
+//                 if(PersonagemRealm.getRealmInstance(context).getPersonagem(result.getName()).isFavourite())
+                 if(PersonagemRealm.getRealmInstance(context).getFavouriteByName(result.getName()).size()>0)
                      personVH.favouriteButton.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
                  else
                      personVH.favouriteButton.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);

@@ -1,11 +1,14 @@
 package app.com.wikistarwars;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,6 +38,9 @@ public class DetailsPersonActivity extends AppCompatActivity {
     private String specie = "";
     private Service api;
     private TextView pName,pHeight,pMass,pGender, pHair_color, pEye_color, pSkin_color, pBirth_year, pPlanet, pSpecie;
+    private ToggleButton buttonFavorite;
+    private Context context;
+    private Boolean favorite = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +55,7 @@ public class DetailsPersonActivity extends AppCompatActivity {
             name = extras.getString(KEY_NAME);
         }
 
-       Personagem personagens =   PersonagemRealm.getRealmInstance(getApplicationContext()).getPersonagem(name);
-
+        Personagem personagens =   PersonagemRealm.getRealmInstance(getApplicationContext()).getPersonagem(name);
 
         api = RetrofitConfig.getApiService();
 
@@ -65,13 +70,13 @@ public class DetailsPersonActivity extends AppCompatActivity {
         pBirth_year = (TextView) findViewById(R.id.birth_year);
         pPlanet = (TextView) findViewById(R.id.planet);
         pSpecie = (TextView) findViewById(R.id.specie);
+        buttonFavorite = (ToggleButton) findViewById(R.id.favorite_button);
 
         //Pegando o nome do Planeta
         loadPlanet(getIdFromUrl(personagens.getHomeworld()));
         for ( String s : personagens.getSpecies() ){
             loadSpecies(getIdFromUrl(s));
         }
-
 
         pName.setText(personagens.getName());
         pMass.setText(personagens.getMass());
@@ -84,6 +89,31 @@ public class DetailsPersonActivity extends AppCompatActivity {
         pPlanet.setText(" - ");
         pSpecie.setText(" - ");
 
+
+        favorite = PersonagemRealm.getRealmInstance(context).getPersonagem(personagens.getName()).isFavourite();
+        isFavorite(favorite);
+
+        buttonFavorite.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    PersonagemRealm.getRealmInstance(context).addRemoveFavourite(name);
+                    isFavorite(!favorite);
+
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void isFavorite(Boolean favorite){
+        if(favorite)
+             buttonFavorite.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
+        else
+            buttonFavorite.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
 
     }
 
