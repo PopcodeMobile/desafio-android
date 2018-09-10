@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -33,6 +34,8 @@ public class DetailActivity extends AppCompatActivity  {
     private Integer peoplePlanetId;
     private Integer specieId;
 
+    private FloatingActionButton fabFavorite;
+
     private CharacterViewModel viewModel;
 
     @Override
@@ -45,6 +48,8 @@ public class DetailActivity extends AppCompatActivity  {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(CharacterViewModel.class);
+
+        fabFavorite = findViewById(R.id.fabFavorite);
 
         peopleId = getIntent().getExtras().getInt("PEOPLE_ID");
         peopleName = getIntent().getExtras().getString("PEOPLE_NAME");
@@ -63,6 +68,7 @@ public class DetailActivity extends AppCompatActivity  {
             public void onChanged(@Nullable CharacterElement characterElement) {
                 if (characterElement != null) {
                     binding.setIsLoading(false);
+                    viewModel.setLoved(characterElement.loved);
                     viewModel.setCharacter(characterElement);
                 } else {
                     binding.setIsLoading(false);
@@ -104,6 +110,13 @@ public class DetailActivity extends AppCompatActivity  {
                     viewModel.setSpecie("--");
                     Snackbar.make(findViewById(R.id.detail_layout), "Could not get the specie.", Snackbar.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        viewModel.getLovedObservable().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean loved) {
+                binding.setLovedCharacter(loved);
             }
         });
     }

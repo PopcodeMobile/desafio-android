@@ -11,6 +11,10 @@
         <variable
             name="isLoading"
             type="Boolean" />
+
+        <variable
+            name="lovedCharacter"
+            type="Boolean" />
     </data>
 
 
@@ -21,7 +25,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -193,5 +196,18 @@
                 android:layout_centerInParent="true"
                 app:visibleGone="@{isLoading}"/>
         </RelativeLayout>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            app:backgroundTint="@color/colorDetailListItem"
+            android:clickable="true"
+            loved="@{lovedCharacter}"
+            android:onClick="@{viewModel.onClickFavorite}"
+            android:src="@drawable/ic_favorite"
+            android:layout_margin="16dp" />
     </android.support.design.widget.CoordinatorLayout>
 </layout>

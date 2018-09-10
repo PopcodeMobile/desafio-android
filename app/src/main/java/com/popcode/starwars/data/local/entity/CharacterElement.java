@@ -12,6 +12,8 @@ import java.util.List;
 @Entity(tableName = "character_table")
 public class CharacterElement {
 
+    public Integer id;
+
     @PrimaryKey
     @NonNull
     @SerializedName("name")
@@ -25,6 +27,8 @@ public class CharacterElement {
 
     @SerializedName("eye_color")
     public String eyeColor;
+
+    public Boolean loved = false;
 
     @SerializedName("hair_color")
     public String hairColor;

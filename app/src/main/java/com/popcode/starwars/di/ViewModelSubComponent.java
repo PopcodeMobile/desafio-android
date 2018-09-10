@@ -1,7 +1,8 @@
 package com.popcode.starwars.di;
 
-import com.popcode.starwars.viewmodel.CharacterListViewModel;
 import com.popcode.starwars.viewmodel.CharacterViewModel;
+import com.popcode.starwars.viewmodel.CharactersViewModel;
+import com.popcode.starwars.viewmodel.MainViewModel;
 
 import dagger.Subcomponent;
 
@@ -12,6 +13,7 @@ public interface ViewModelSubComponent {
         ViewModelSubComponent build();
     }
 
-    CharacterListViewModel characterListViewModel();
     CharacterViewModel characterViewModel();
+    CharactersViewModel charactersViewModel();
+    MainViewModel mainViewModel();
 }

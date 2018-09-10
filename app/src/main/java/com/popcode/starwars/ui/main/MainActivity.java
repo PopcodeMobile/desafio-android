@@ -1,6 +1,5 @@
 package com.popcode.starwars.ui.main;
 
-import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
@@ -9,130 +8,71 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.popcode.starwars.R;
-import com.popcode.starwars.data.local.entity.CharacterElement;
 import com.popcode.starwars.data.remote.response.CharactersResponse;
 import com.popcode.starwars.databinding.ActivityMainBinding;
-import com.popcode.starwars.ui.common.listeners.EndlessRecyclerViewScrollListener;
 import com.popcode.starwars.ui.detail.DetailActivity;
-import com.popcode.starwars.viewmodel.CharacterListViewModel;
-
-import java.util.List;
+import com.popcode.starwars.ui.main.fragments.CharactersFragment;
+import com.popcode.starwars.viewmodel.MainViewModel;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
-public class MainActivity extends AppCompatActivity  implements HasActivityInjector {
+import static com.popcode.starwars.util.Converters.getIdFromUrl;
+
+public class MainActivity extends AppCompatActivity  implements HasSupportFragmentInjector {
 
     @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    private CharacterListAdapter characterListAdapter;
-    private CharacterListAdapter searchListAdapter;
     private ActivityMainBinding binding;
-    private EndlessRecyclerViewScrollListener scrollListener;
-    private CharacterListViewModel viewModel;
-    private Integer pageCount = 1;
-    private Boolean canShowLoading = true;
-    private Boolean offline = false;
+
+    // adapters
+    private CharacterListAdapter searchListAdapter;
+
+    // viewModels
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        characterListAdapter = new CharacterListAdapter(characterClickCallback);
+
+        // set search adapter
         searchListAdapter = new CharacterListAdapter(characterClickCallback);
-        binding.characterList.setAdapter(characterListAdapter);
-        binding.characterSearchList.setAdapter(searchListAdapter);
+        binding.searchList.setAdapter(searchListAdapter);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        binding.characterList.setLayoutManager(linearLayoutManager);
-        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (canShowLoading)
-                    binding.setIsLoading(true);
-            }
-        };
-
-        binding.setIsMainLoading(true);
-
-        binding.setSearching(false);
-
-        binding.characterList.addOnScrollListener(scrollListener);
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CharacterListViewModel.class);
-
-        viewModel.getCharactersOfflineObservable().observe(this, new Observer<List<CharacterElement>>() {
-            @Override
-            public void onChanged(@Nullable List<CharacterElement> characters) {
-                if (characters != null) {
-                    binding.setIsLoading(false);
-                    binding.setIsMainLoading(false);
-                    if (offline){
-                        if (characters.size() == 0){
-                            Snackbar.make(findViewById(R.id.main_layout), "Connect to the internet to get characters.", Snackbar.LENGTH_LONG).show();
-                        }
-                        characterListAdapter.setCharacterList(characters);
-                    }
-                }
-            }
-        });
-
-        viewModel.setPage(pageCount);
-
-        viewModel.getCharactersResponseObservable().observe(this, new Observer<CharactersResponse>() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
+        viewModel.getOnlineSearchQueryObservable().observe(this, new Observer<CharactersResponse>() {
             @Override
             public void onChanged(@Nullable CharactersResponse charactersResponse) {
-                binding.setIsLoading(false);
                 binding.setIsMainLoading(false);
-                if (charactersResponse != null) {
-                    viewModel.setElements(charactersResponse.results);
-                    characterListAdapter.addCharactersList(charactersResponse.results);
-                    if (charactersResponse.next != null){
-                        pageCount += 1;
-                        viewModel.setPage(pageCount);
-                    }
-                    else {
-                        canShowLoading = false;
-                    }
-                } else {
-                    offline = true;
-                    viewModel.setElements(null);
-                }
+                if (charactersResponse != null)
+                    searchListAdapter.setCharacterList(charactersResponse.results);
             }
 
         });
 
-        viewModel.getCharacterSearchObservable().observe(this, new Observer<CharactersResponse>() {
-            @Override
-            public void onChanged(@Nullable CharactersResponse charactersResponse) {
-                binding.setIsLoading(false);
-                binding.setIsMainLoading(false);
-                if (charactersResponse != null) {
-                    searchListAdapter.addCharactersList(charactersResponse.results);
-                }
-            }
+        // Add project list fragment if this is first creation
+        if (savedInstanceState == null) {
+            CharactersFragment fragment = new CharactersFragment();
 
-        });
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment, CharactersFragment.TAG).commit();
+        }
     }
 
     @Override
@@ -147,6 +87,7 @@ public class MainActivity extends AppCompatActivity  implements HasActivityInjec
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                binding.setIsSearching(true);
                 viewModel.setQuery(query);
                 binding.setIsMainLoading(true);
                 return false;
@@ -157,15 +98,19 @@ public class MainActivity extends AppCompatActivity  implements HasActivityInjec
                 return false;
             }
         });
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (!b){
-                    searchListAdapter.clear();
-                    binding.setSearching(false);
-                } else {
-                    binding.setSearching(true);
-                }
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                searchListAdapter.clear();
+                binding.setIsSearching(true);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                binding.setIsSearching(false);
+                return true;
             }
         });
 
@@ -200,13 +145,9 @@ public class MainActivity extends AppCompatActivity  implements HasActivityInjec
         }
     };
 
-    private Integer getIdFromUrl(String url) {
-        String[] splitted = url.split("/");
-        return Integer.valueOf(splitted[splitted.length - 1]);
-    }
 
     @Override
-    public AndroidInjector<Activity> activityInjector() {
+    public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
         return dispatchingAndroidInjector;
     }
 }

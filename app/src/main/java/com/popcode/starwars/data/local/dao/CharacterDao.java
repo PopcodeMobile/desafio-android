@@ -24,4 +24,7 @@ public interface CharacterDao {
 
     @Query("SELECT * from character_table WHERE name = :characterName")
     LiveData<CharacterElement> getCharacter(String characterName);
+
+    @Query("SELECT * from character_table WHERE id = :id")
+    LiveData<CharacterElement> getCharacterById(Integer id);
 }

@@ -8,7 +8,7 @@ import android.content.Context;
 import com.popcode.starwars.data.local.dao.CharacterDao;
 import com.popcode.starwars.data.local.entity.CharacterElement;
 
-@Database(entities = {CharacterElement.class}, version = 7, exportSchema = false)
+@Database(entities = {CharacterElement.class}, version = 10, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract CharacterDao characterDao();
 

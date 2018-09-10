@@ -2,6 +2,7 @@ package com.popcode.starwars.data.local;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 
 import com.popcode.starwars.data.local.dao.CharacterDao;
@@ -31,6 +32,17 @@ public class CharacterRepository {
         return characterDao.getCharacter(name);
     }
 
+    public LiveData<Boolean> favoriteCharacter(Integer characterId, Boolean loved) {
+        CharacterElement characterFounded = characterDao.getCharacterById(characterId).getValue();
+        if (characterFounded != null){
+            characterFounded.loved = loved;
+            characterDao.insert(characterFounded);
+        }
+        MutableLiveData<Boolean> newLoved = new MutableLiveData<>();
+        newLoved.setValue(loved);
+        return newLoved;
+    }
+
     private static class insertAsyncTask extends AsyncTask<List<CharacterElement>, Void, LiveData<List<CharacterElement>>> {
 
         private CharacterDao mAsyncTaskDao;
@@ -48,6 +60,8 @@ public class CharacterRepository {
                         if (element.species.size() > 0)
                             element.specie = element.species.get(0);
                     }
+                    String[] splitted = element.url.split("/");
+                    element.id = Integer.valueOf(splitted[splitted.length - 1]);
                     mAsyncTaskDao.insert(element);
                 }
 

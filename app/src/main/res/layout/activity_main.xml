@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="isLoading" type="boolean" />
-        <variable
-            name="isMainLoading"
-            type="boolean" />
-        <variable
-            name="searching"
-            type="boolean" />
+        <!-- variable to manage state from bottom progressbar -->
+        <variable name="isLoadingCharactersFound" type="boolean" />
+        <!-- variable to manage state from main progressbar -->
+        <variable name="isMainLoading" type="boolean" />
+        <!-- variable to manage state from fragment -->
+        <variable name="isSearching" type="boolean" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -22,48 +21,49 @@
             android:layout_width="match_parent"
             android:background="@color/backgroundActivity">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/character_list"
+            <FrameLayout
+                android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:scrollbars="none"
-                app:visibleGone="@{!searching}"
-                app:layoutManager="LinearLayoutManager"
-                android:layout_above="@id/item_progress_bar"
-                tools:listitem="@layout/character_list_item"
-                />
+                app:visibleGone="@{!isSearching}"
+                android:orientation="vertical">
+            </FrameLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/character_search_list"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:scrollbars="none"
-                app:visibleGone="@{searching}"
-                app:layoutManager="LinearLayoutManager"
-                android:layout_above="@id/item_progress_bar"
-                tools:listitem="@layout/character_list_item"
-                />
+                app:visibleGone="@{isSearching}">
 
-            <ProgressBar
-                android:id="@+id/main_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:visibleGone="@{isMainLoading}"
-                android:padding="@dimen/padding_5"
-                android:indeterminateTint="@color/colorPrimary"
-                android:layout_centerInParent="true"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/search_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:scrollbars="none"
+                    app:layoutManager="LinearLayoutManager"
+                    android:layout_above="@id/item_progress_bar"
+                    tools:listitem="@layout/character_list_item"
+                    />
 
-            <ProgressBar
-                android:id="@+id/item_progress_bar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:visibleGone="@{isLoading}"
-                android:padding="@dimen/padding_5"
-                android:indeterminateTint="@color/colorPrimary"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"/>
+                <ProgressBar
+                    android:id="@+id/main_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:visibleGone="@{isMainLoading}"
+                    android:padding="@dimen/padding_5"
+                    android:indeterminateTint="@color/colorPrimary"
+                    android:layout_centerInParent="true"/>
+
+                <ProgressBar
+                    android:id="@+id/item_progress_bar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:visibleGone="@{isLoadingCharactersFound}"
+                    android:padding="@dimen/padding_5"
+                    android:indeterminateTint="@color/colorPrimary"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"/>
+            </RelativeLayout>
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

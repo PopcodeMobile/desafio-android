@@ -33,10 +33,6 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
         notifyDataSetChanged();
     }
 
-    public List<? extends CharacterElement> getCharacterList() {
-        return characterList;
-    }
-
     public void setCharacterList(final List<? extends CharacterElement> characters) {
         if (this.characterList == null) {
             this.characterList = characters;

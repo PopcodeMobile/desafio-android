@@ -19,9 +19,9 @@ public class AppViewModelFactory implements ViewModelProvider.Factory {
     @Inject
     public AppViewModelFactory(ViewModelSubComponent viewModelSubComponent) {
         creators = new ArrayMap<>();
-
-        creators.put(CharacterListViewModel.class, () -> viewModelSubComponent.characterListViewModel());
         creators.put(CharacterViewModel.class, () -> viewModelSubComponent.characterViewModel());
+        creators.put(CharactersViewModel.class, () -> viewModelSubComponent.charactersViewModel());
+        creators.put(MainViewModel.class, () -> viewModelSubComponent.mainViewModel());
     }
 
     @Override
