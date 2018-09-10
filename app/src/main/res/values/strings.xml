@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Star Wars Wiki</string>
+    <string name="detail_activity_label">Character details</string>
+    <string name="search_bar">Search characters</string>
+</resources>

@@ -1,0 +1,45 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="StyleDetailTitleCharacter">
+        <item name="android:textColor">@color/colorDetailListItem</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="StyleDetailItemCharacter">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+    </style>
+
+    <style name="StyleNameCharacterList">
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="StyleGenderCharacterList">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorDetailListItem</item>
+    </style>
+
+    <style name="StyleDetailCharacterList">
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:textColor">@color/colorDetailListItem</item>
+    </style>
+
+    <style name="StyleDetailItemCharacterList">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorDetailListItem</item>
+    </style>
+
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_5">5dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="padding_15">15dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="card_detail_margin">20dp</dimen>
+    <dimen name="card_detail_padding">20dp</dimen>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!-- variable to manage state from bottom progressbar -->
+        <variable name="isLoadingCharacters" type="boolean" />
+        <!-- variable to manage state from main progressbar -->
+        <variable name="isMainLoading" type="boolean" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@color/backgroundActivity">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/character_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="none"
+                app:layoutManager="LinearLayoutManager"
+                android:layout_above="@id/item_progress_bar"
+                tools:listitem="@layout/character_list_item"
+                />
+
+            <ProgressBar
+                android:id="@+id/main_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:visibleGone="@{isMainLoading}"
+                android:padding="@dimen/padding_5"
+                android:indeterminateTint="@color/colorPrimary"
+                android:layout_centerInParent="true"/>
+
+            <ProgressBar
+                android:id="@+id/item_progress_bar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:visibleGone="@{isLoadingCharacters}"
+                android:padding="@dimen/padding_5"
+                android:indeterminateTint="@color/colorPrimary"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
