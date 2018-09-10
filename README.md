@@ -1,6 +1,6 @@
 # Desafio Android
 
-O desafio consiste em criar uma Wiki de Star Wars onde é mostrada uma lista de personagens e o usuário pode favoritar alguns deles. É recomendado a utilização de Java no projeto.
+O desafio consiste em criar uma Wiki de Star Wars onde é mostrada uma lista de personagens e o usuário pode favoritar alguns deles. É recomendado a utilização de Kotlin ou Java no projeto.
 
 O candidato deve dar **fork** neste repositório e após o termino do desenvolvimento, realizar um **pull request** para análise do time. Em casos especiais o candidato tambem pode enviar o projeto compactado para hugo@popcode.com.br, eric@popcode.com.br e railan@popcode.com.br. Prefira vários commits durante o projeto invés de um unico commit no final.
 
