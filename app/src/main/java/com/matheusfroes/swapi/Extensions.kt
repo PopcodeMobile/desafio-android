@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
 import android.support.v4.app.FragmentActivity
+import android.widget.Toast
 import com.matheusfroes.swapi.di.Injector
 import kotlinx.coroutines.experimental.async
 import kotlin.coroutines.experimental.CoroutineContext
@@ -19,6 +20,10 @@ fun extractIdFromUrl(url: String): Long {
     val uri = Uri.parse(url)
     val id = uri.lastPathSegment ?: "0"
     return id.toLong()
+}
+
+fun Activity.toast(message: String?) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
 /**
