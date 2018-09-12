@@ -1,4 +1,4 @@
-package com.matheusfroes.swapi
+package com.matheusfroes.swapi.extra
 
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.android.UI

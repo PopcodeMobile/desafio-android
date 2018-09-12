@@ -4,12 +4,12 @@ import com.google.gson.Gson
 import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.mapper.PersonMapper
 import com.matheusfroes.swapi.data.model.Person
-import com.matheusfroes.swapi.extractIdFromUrl
+import com.matheusfroes.swapi.extra.extractIdFromUrl
 import com.matheusfroes.swapi.network.ApiaryService
 import com.matheusfroes.swapi.network.PeopleService
 import com.matheusfroes.swapi.network.data.ApiaryFailureResponse
-import com.matheusfroes.swapi.networkContext
-import com.matheusfroes.swapi.parallelMap
+import com.matheusfroes.swapi.extra.networkContext
+import com.matheusfroes.swapi.extra.parallelMap
 import kotlinx.coroutines.experimental.withContext
 import javax.inject.Inject
 

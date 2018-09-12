@@ -3,12 +3,12 @@ package com.matheusfroes.swapi.ui.persondetail
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.matheusfroes.swapi.Result
-import com.matheusfroes.swapi.SingleLiveEvent
 import com.matheusfroes.swapi.data.AppRepository
 import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
-import com.matheusfroes.swapi.uiContext
+import com.matheusfroes.swapi.extra.Result
+import com.matheusfroes.swapi.extra.SingleLiveEvent
+import com.matheusfroes.swapi.extra.uiContext
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
@@ -65,6 +65,4 @@ class PersonDetailViewModel @Inject constructor(
             bookmarkedPersonEvent.value = bookmarkResponse
         }
     }
-
-
 }

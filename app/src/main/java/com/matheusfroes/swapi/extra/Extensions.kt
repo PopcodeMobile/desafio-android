@@ -1,4 +1,4 @@
-package com.matheusfroes.swapi
+package com.matheusfroes.swapi.extra
 
 import android.app.Activity
 import android.arch.lifecycle.ViewModel
@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
 import android.support.v4.app.FragmentActivity
 import android.widget.Toast
+import com.matheusfroes.swapi.SwapiApplication
 import com.matheusfroes.swapi.di.Injector
 import kotlinx.coroutines.experimental.async
 import kotlin.coroutines.experimental.CoroutineContext

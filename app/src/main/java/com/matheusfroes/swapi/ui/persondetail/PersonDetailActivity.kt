@@ -8,8 +8,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import com.matheusfroes.swapi.*
+import com.matheusfroes.swapi.R
 import com.matheusfroes.swapi.data.model.Person
+import com.matheusfroes.swapi.extra.Result
+import com.matheusfroes.swapi.extra.appInjector
+import com.matheusfroes.swapi.extra.toast
+import com.matheusfroes.swapi.extra.viewModelProvider
 import kotlinx.android.synthetic.main.activity_person_detail.*
 import javax.inject.Inject
 

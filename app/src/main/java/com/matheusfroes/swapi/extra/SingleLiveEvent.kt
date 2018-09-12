@@ -1,4 +1,4 @@
-package com.matheusfroes.swapi
+package com.matheusfroes.swapi.extra
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData

@@ -2,6 +2,7 @@ package com.matheusfroes.swapi.di.module
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.matheusfroes.swapi.ui.favorites.BookmarkedPeopleViewModel
 import com.matheusfroes.swapi.ui.peoplelist.PeopleListViewModel
 import com.matheusfroes.swapi.ui.persondetail.PersonDetailViewModel
 import dagger.Binds
@@ -39,4 +40,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PersonDetailViewModel::class)
     internal abstract fun personDetailViewModel(viewModel: PersonDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BookmarkedPeopleViewModel::class)
+    internal abstract fun bookmarkedPeopleViewModel(viewModel: BookmarkedPeopleViewModel): ViewModel
 }

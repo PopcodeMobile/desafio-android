@@ -1,4 +1,4 @@
-package com.matheusfroes.swapi
+package com.matheusfroes.swapi.network
 
 /*
  * Copyright (c) 2017 Emil Davtyan

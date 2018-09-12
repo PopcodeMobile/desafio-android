@@ -20,9 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.persondetail.PersonDetailActivity"
+            android:parentActivityName=".ui.peoplelist.PeopleListActivity" />
+
+        <activity
+            android:label="Bookmarked people"
+            android:name=".ui.favorites.BookmarkedPeopleActivity"
             android:parentActivityName=".ui.peoplelist.PeopleListActivity" />
     </application>
 

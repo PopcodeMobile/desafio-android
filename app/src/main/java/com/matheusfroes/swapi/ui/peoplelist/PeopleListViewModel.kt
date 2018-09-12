@@ -2,12 +2,12 @@ package com.matheusfroes.swapi.ui.peoplelist
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
-import com.matheusfroes.swapi.Connectivity
-import com.matheusfroes.swapi.SingleLiveEvent
 import com.matheusfroes.swapi.data.AppRepository
 import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
-import com.matheusfroes.swapi.uiContext
+import com.matheusfroes.swapi.extra.SingleLiveEvent
+import com.matheusfroes.swapi.extra.uiContext
+import com.matheusfroes.swapi.network.Connectivity
 import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 
@@ -15,7 +15,6 @@ class PeopleListViewModel @Inject constructor(
         private val repository: AppRepository,
         private val connectivity: Connectivity
 ) : ViewModel() {
-    private var apiPage: Int = 1
     val bookmarkEvent = SingleLiveEvent<BookmarkedEvent>()
     val searchQuery: String = ""
 
@@ -28,7 +27,6 @@ class PeopleListViewModel @Inject constructor(
     }
 
     fun fetchPeople(page: Int = 1) = launch(uiContext) {
-        apiPage = page
         if (connectivity.isConnected()) {
             repository.fetchPeople(page)
         }

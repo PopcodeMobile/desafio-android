@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData
 import com.matheusfroes.swapi.data.AppDatabase
 import com.matheusfroes.swapi.data.model.PendingBookmark
 import com.matheusfroes.swapi.data.model.Person
-import com.matheusfroes.swapi.ioContext
+import com.matheusfroes.swapi.extra.ioContext
 import kotlinx.coroutines.experimental.withContext
 import javax.inject.Inject
 

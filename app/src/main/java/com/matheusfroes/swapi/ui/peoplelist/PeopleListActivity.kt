@@ -2,6 +2,7 @@ package com.matheusfroes.swapi.ui.peoplelist
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -10,7 +11,12 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.matheusfroes.swapi.*
+import com.matheusfroes.swapi.R
+import com.matheusfroes.swapi.extra.appInjector
+import com.matheusfroes.swapi.extra.toast
+import com.matheusfroes.swapi.extra.viewModelProvider
+import com.matheusfroes.swapi.ui.EndlessScrollListener
+import com.matheusfroes.swapi.ui.favorites.BookmarkedPeopleActivity
 import com.matheusfroes.swapi.ui.persondetail.PersonDetailActivity
 import kotlinx.android.synthetic.main.activity_people_list.*
 import javax.inject.Inject
@@ -105,7 +111,7 @@ class PeopleListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.bookmarked -> {
-//                viewModel.toggleBookmarked(show = true)
+                startActivity(Intent(this, BookmarkedPeopleActivity::class.java))
             }
         }
 

@@ -1,7 +1,7 @@
 package com.matheusfroes.swapi.data.mapper
 
 import com.matheusfroes.swapi.data.model.Person
-import com.matheusfroes.swapi.extractIdFromUrl
+import com.matheusfroes.swapi.extra.extractIdFromUrl
 import com.matheusfroes.swapi.network.data.PersonResponse
 
 class PersonMapper {
