@@ -10,7 +10,6 @@ class SwapiApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         setupDagger()
     }
 

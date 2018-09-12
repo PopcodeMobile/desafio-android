@@ -1,11 +1,13 @@
 package com.matheusfroes.swapi.data.source
 
-import android.util.Log
+import com.google.gson.Gson
+import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.mapper.PersonMapper
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.extractIdFromUrl
 import com.matheusfroes.swapi.network.ApiaryService
 import com.matheusfroes.swapi.network.PeopleService
+import com.matheusfroes.swapi.network.data.ApiaryFailureResponse
 import com.matheusfroes.swapi.networkContext
 import com.matheusfroes.swapi.parallelMap
 import kotlinx.coroutines.experimental.withContext
@@ -13,24 +15,19 @@ import javax.inject.Inject
 
 class RemoteSource @Inject constructor(
         private val peopleService: PeopleService,
-        private val apiaryService: ApiaryService
+        private val apiaryService: ApiaryService,
+        private val gson: Gson
 ) {
 
-    suspend fun getPeople(page: Int): List<Person> = withContext(networkContext) {
-        val getPeopleResponse = peopleService.getPeople(page).await()
+    suspend fun getPeople(page: Int = 1): List<Person> = withContext(networkContext) {
+        try {
+            val getPeopleResponse = peopleService.getPeople(page).await()
+            val peopleList = getPeopleResponse.results
 
-        val peopleList = getPeopleResponse.results
-        Log.d("SWAPI", peopleList.toString())
-        val people = peopleList.parallelMap { peopleResponse ->
-            // Obtendo species e homeworld assincronamente
-//            val species = async { peopleResponse.species.map { getSpecie(it) } }
-//            val homeworld = async { getPlanet(peopleResponse.homeworld) }
-
-//            return@parallelMap PersonMapper.map(peopleResponse, species.await(), homeworld.await())
-            return@parallelMap PersonMapper.map(peopleResponse, listOf(), "")
+            return@withContext PersonMapper.map(peopleList)
+        } catch (e: Exception) {
+            return@withContext listOf<Person>()
         }
-
-        return@withContext people
     }
 
     private suspend fun getSpecie(specieUrl: String): String = withContext(networkContext) {
@@ -41,7 +38,13 @@ class RemoteSource @Inject constructor(
         return@withContext specieResponse.name
     }
 
-    private suspend fun getPlanet(planetUrl: String): String = withContext(networkContext) {
+    suspend fun getSpecies(speciesUrl: List<String>): List<String> = withContext(networkContext) {
+        return@withContext speciesUrl.parallelMap { url ->
+            getSpecie(url)
+        }
+    }
+
+    suspend fun getPlanet(planetUrl: String): String = withContext(networkContext) {
         val planetId = extractIdFromUrl(planetUrl)
 
         val planetResponse = peopleService.getPlanet(planetId).await()
@@ -49,10 +52,16 @@ class RemoteSource @Inject constructor(
         return@withContext planetResponse.name
     }
 
-    fun bookmarkPerson(personId: Long) {
-        apiaryService.bookmarkPerson(personId)
+    suspend fun bookmarkPerson(personId: Long) = withContext(networkContext) {
+        val bookmarkResponse = apiaryService.bookmarkPerson(personId).await()
 
-        // TODO Handle different responses
+        return@withContext if (bookmarkResponse.isSuccessful) {
+            BookmarkedEvent(true, bookmarkResponse.body()?.message ?: "")
+        } else {
+            val error = bookmarkResponse.errorBody()?.string()
+            val errorResponse = gson.fromJson(error, ApiaryFailureResponse::class.java)
+            BookmarkedEvent(false, errorResponse.errorMessage)
+        }
     }
 
 }

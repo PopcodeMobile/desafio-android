@@ -60,8 +60,27 @@ class PersonDetailActivity : AppCompatActivity() {
             viewModel.toggleBookmarkPerson()
         }
 
-        viewModel.bookmarkedPersonEvent.observe(this, Observer { bookmarkMessage ->
-            toast(bookmarkMessage)
+        viewModel.unbookmarkedPersonEvent.observe(this, Observer {
+            btnBookmarkPerson.setImageResource(R.drawable.ic_bookmark)
+        })
+
+        viewModel.bookmarkedPersonEvent.observe(this, Observer { bookmarkResponse ->
+            if (bookmarkResponse != null) {
+                if (bookmarkResponse.bookmarked) {
+                    btnBookmarkPerson.setImageResource(R.drawable.ic_bookmarked)
+                } else {
+                    btnBookmarkPerson.setImageResource(R.drawable.ic_bookmark)
+                }
+                toast(bookmarkResponse.message)
+            }
+        })
+
+        viewModel.homeworldObservable.observe(this, Observer { homeworld ->
+            tvHomeworld.text = homeworld
+        })
+
+        viewModel.speciesObservable.observe(this, Observer { species ->
+            tvSpecies.text = species
         })
     }
 
@@ -76,8 +95,6 @@ class PersonDetailActivity : AppCompatActivity() {
         tvEyeColor.text = person.eyeColor
         tvBirthYear.text = person.birthYear
         tvGender.text = person.gender
-        tvHomeworld.text = person.homeworld
-        tvSpecies.text = person.species
 
         if (person.isBookmarked) {
             btnBookmarkPerson.setImageResource(R.drawable.ic_bookmarked)

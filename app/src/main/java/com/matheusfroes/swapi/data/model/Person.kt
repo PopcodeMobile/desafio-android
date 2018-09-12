@@ -17,4 +17,4 @@ data class Person(
         val gender: String,
         val homeworld: String,
         val species: String,
-        val isBookmarked: Boolean)
+        var isBookmarked: Boolean)

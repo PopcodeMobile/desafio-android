@@ -2,6 +2,7 @@ package com.matheusfroes.swapi.data.source
 
 import android.arch.lifecycle.LiveData
 import com.matheusfroes.swapi.data.AppDatabase
+import com.matheusfroes.swapi.data.model.PendingBookmark
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.ioContext
 import kotlinx.coroutines.experimental.withContext
@@ -11,8 +12,24 @@ class LocalSource @Inject constructor(
         private val database: AppDatabase
 ) {
 
-    suspend fun getPeople(): List<Person> = withContext(ioContext) {
-        return@withContext database.personDAO().getPeople()
+    fun getPeople(): LiveData<List<Person>> {
+        return database.personDAO().getPeople()
+    }
+
+    fun getBookmarkedPeople(): LiveData<List<Person>> {
+        return database.personDAO().getBookmarkedPeople()
+    }
+
+    suspend fun getPendingBookmarks(): List<PendingBookmark> = withContext(ioContext) {
+        return@withContext database.personDAO().getPendingBookmarks()
+    }
+
+    suspend fun addPendingBookmark(personId: Long) = withContext(ioContext) {
+        database.personDAO().addPendingBookmark(PendingBookmark(personId))
+    }
+
+    suspend fun removePendingBookmark(personId: Long) = withContext(ioContext) {
+        database.personDAO().removePendingBookmark(personId)
     }
 
     suspend fun savePeople(people: List<Person>) = withContext(ioContext) {
@@ -21,10 +38,6 @@ class LocalSource @Inject constructor(
 
     suspend fun getPerson(personId: Long): Person = withContext(ioContext) {
         return@withContext database.personDAO().getPerson(personId)
-    }
-
-    suspend fun getBookmarkedPeople() = withContext(ioContext) {
-        return@withContext database.personDAO().getBookmarkedPeople()
     }
 
     suspend fun bookmarkPerson(personId: Long) = withContext(ioContext) {

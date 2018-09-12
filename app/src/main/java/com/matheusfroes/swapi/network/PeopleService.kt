@@ -15,6 +15,12 @@ interface PeopleService {
             @Query("page") page: Int = 1
     ): Deferred<GetPeopleResponse>
 
+    @GET("people")
+    fun searchPeople(
+            @Query("search") query: String,
+            @Query("page") page: Int = 1
+    ): Deferred<GetPeopleResponse>
+
     @GET("species/{id}")
     fun getSpecie(
             @Path("id") specieId: Long

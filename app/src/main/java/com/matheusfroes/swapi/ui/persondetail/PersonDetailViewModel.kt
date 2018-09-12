@@ -6,12 +6,12 @@ import android.arch.lifecycle.ViewModel
 import com.matheusfroes.swapi.Result
 import com.matheusfroes.swapi.SingleLiveEvent
 import com.matheusfroes.swapi.data.AppRepository
+import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.uiContext
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
-
-typealias BookmarkedMessage = String
 
 class PersonDetailViewModel @Inject constructor(
         private val repository: AppRepository
@@ -19,7 +19,14 @@ class PersonDetailViewModel @Inject constructor(
     private val _personDetailObservable = MutableLiveData<Result<Person>>()
     val personDetailObservable: LiveData<Result<Person>> = _personDetailObservable
 
-    val bookmarkedPersonEvent = SingleLiveEvent<BookmarkedMessage>()
+    private val _homeworldObservable = MutableLiveData<String>()
+    val homeworldObservable: LiveData<String> = _homeworldObservable
+
+    private val _speciesObservable = MutableLiveData<String>()
+    val speciesObservable: LiveData<String> = _speciesObservable
+
+    val bookmarkedPersonEvent = SingleLiveEvent<BookmarkedEvent>()
+    val unbookmarkedPersonEvent = SingleLiveEvent<Unit>()
 
     lateinit var person: Person
     var personId: Long = 0
@@ -33,8 +40,14 @@ class PersonDetailViewModel @Inject constructor(
 
         try {
             person = repository.getPerson(personId)
-
             _personDetailObservable.value = Result.Complete(person)
+
+            val homeworld = async { repository.getHomeworld(person.homeworld) }
+            if (person.species.isNotEmpty()) {
+                val species = async { repository.getSpecies(person.species.split(",")).joinToString() }
+                _speciesObservable.value = species.await()
+            }
+            _homeworldObservable.value = homeworld.await()
         } catch (e: Exception) {
             _personDetailObservable.value = Result.Error(e)
         }
@@ -43,8 +56,15 @@ class PersonDetailViewModel @Inject constructor(
     fun toggleBookmarkPerson() = launch(uiContext) {
         if (person.isBookmarked) {
             repository.unbookmarkPerson(personId)
+            person.isBookmarked = false
+            unbookmarkedPersonEvent.call()
         } else {
-            repository.bookmarkPerson(personId)
+            val bookmarkResponse = repository.bookmarkPerson(personId)
+            person.isBookmarked = bookmarkResponse.bookmarked
+
+            bookmarkedPersonEvent.value = bookmarkResponse
         }
     }
+
+
 }
