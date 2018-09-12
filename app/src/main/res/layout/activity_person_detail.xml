@@ -138,6 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/ic_bookmark"
+            app:backgroundTint="@android:color/darker_gray"
             app:fabSize="normal"
             app:useCompatPadding="true" />
     </LinearLayout>

@@ -78,6 +78,12 @@ class PersonDetailActivity : AppCompatActivity() {
         tvGender.text = person.gender
         tvHomeworld.text = person.homeworld
         tvSpecies.text = person.species
+
+        if (person.isBookmarked) {
+            btnBookmarkPerson.setImageResource(R.drawable.ic_bookmarked)
+        } else {
+            btnBookmarkPerson.setImageResource(R.drawable.ic_bookmark)
+        }
     }
 
     private fun showLoadingIndicator() {
