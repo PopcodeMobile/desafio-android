@@ -57,6 +57,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/ivBookmark"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:contentDescription="@string/bookmark_person"

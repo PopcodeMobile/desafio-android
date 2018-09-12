@@ -9,7 +9,7 @@ import com.matheusfroes.swapi.data.model.Person
 @Dao
 interface PersonDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(people: List<Person>)
 
     @Query("SELECT * FROM people WHERE isBookmarked = 1")
@@ -26,4 +26,7 @@ interface PersonDAO {
 
     @Query("SELECT * FROM people WHERE name LIKE '%' || :name || '%'")
     fun searchPeopleByName(name: String): List<Person>
+
+    @Query("SELECT * FROM people")
+    fun getPeople(): List<Person>
 }

@@ -7,8 +7,16 @@ import javax.inject.Inject
 
 class AppRepository @Inject constructor(
         private val local: LocalSource,
-        private val remote: RemoteSource
-) {
+        private val remote: RemoteSource) {
+
+    suspend fun getPeople(): List<Person> {
+        return local.getPeople()
+    }
+
+    suspend fun fetchPeople(page: Int) {
+        val people = remote.getPeople(page)
+        local.savePeople(people)
+    }
 
     suspend fun getPerson(personId: Long): Person {
         return local.getPerson(personId)

@@ -1,6 +1,6 @@
 package com.matheusfroes.swapi.data.source
 
-import com.matheusfroes.swapi.NextPageUrl
+import android.util.Log
 import com.matheusfroes.swapi.data.mapper.PersonMapper
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.extractIdFromUrl
@@ -8,7 +8,6 @@ import com.matheusfroes.swapi.network.ApiaryService
 import com.matheusfroes.swapi.network.PeopleService
 import com.matheusfroes.swapi.networkContext
 import com.matheusfroes.swapi.parallelMap
-import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.withContext
 import javax.inject.Inject
 
@@ -17,21 +16,21 @@ class RemoteSource @Inject constructor(
         private val apiaryService: ApiaryService
 ) {
 
-    suspend fun getPeople(page: Int): Pair<NextPageUrl, List<Person>> = withContext(networkContext) {
+    suspend fun getPeople(page: Int): List<Person> = withContext(networkContext) {
         val getPeopleResponse = peopleService.getPeople(page).await()
-        val nextPageUrl = getPeopleResponse.next
 
         val peopleList = getPeopleResponse.results
-
+        Log.d("SWAPI", peopleList.toString())
         val people = peopleList.parallelMap { peopleResponse ->
             // Obtendo species e homeworld assincronamente
-            val species = async { peopleResponse.species.map { getSpecie(it) } }
-            val homeworld = async { getPlanet(peopleResponse.homeworld) }
+//            val species = async { peopleResponse.species.map { getSpecie(it) } }
+//            val homeworld = async { getPlanet(peopleResponse.homeworld) }
 
-            return@parallelMap PersonMapper.map(peopleResponse, species.await(), homeworld.await())
+//            return@parallelMap PersonMapper.map(peopleResponse, species.await(), homeworld.await())
+            return@parallelMap PersonMapper.map(peopleResponse, listOf(), "")
         }
 
-        return@withContext Pair(nextPageUrl, people)
+        return@withContext people
     }
 
     private suspend fun getSpecie(specieUrl: String): String = withContext(networkContext) {

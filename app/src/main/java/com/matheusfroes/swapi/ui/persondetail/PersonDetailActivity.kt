@@ -2,6 +2,8 @@ package com.matheusfroes.swapi.ui.persondetail
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -14,6 +16,12 @@ import javax.inject.Inject
 class PersonDetailActivity : AppCompatActivity() {
     companion object {
         const val PERSON_ID = "com.matheusfroes.swapi.person_id"
+
+        fun start(context: Context, personId: Long) {
+            val intent = Intent(context, PersonDetailActivity::class.java)
+            intent.putExtra(PERSON_ID, personId)
+            context.startActivity(intent)
+        }
     }
 
     @Inject
@@ -58,6 +66,8 @@ class PersonDetailActivity : AppCompatActivity() {
     }
 
     private fun updateUI(person: Person) {
+        title = person.name
+
         tvName.text = person.name
         tvHeight.text = person.height
         tvMass.text = person.mass

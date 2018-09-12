@@ -1,5 +1,6 @@
 package com.matheusfroes.swapi.data.source
 
+import android.arch.lifecycle.LiveData
 import com.matheusfroes.swapi.data.AppDatabase
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.ioContext
@@ -9,6 +10,10 @@ import javax.inject.Inject
 class LocalSource @Inject constructor(
         private val database: AppDatabase
 ) {
+
+    suspend fun getPeople(): List<Person> = withContext(ioContext) {
+        return@withContext database.personDAO().getPeople()
+    }
 
     suspend fun savePeople(people: List<Person>) = withContext(ioContext) {
         database.personDAO().insert(people)
