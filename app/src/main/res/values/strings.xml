@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Star Wars Characters</string>
+    <string name="detail_activity_label">Character Details</string>
+    <string name="query_format">json</string>
+    <string name="height">Height:</string>
+    <string name="gender">Gender:</string>
+    <string name="weight">Mass:</string>
+    <string name="height_detail">Height</string>
+    <string name="gender_detail">Gender</string>
+    <string name="weight_detail">Mass</string>
+    <string name="hair_color">Hair color</string>
+    <string name="skin_color">Skin color</string>
+    <string name="eye_color">Eye color</string>
+    <string name="birth_year">Birth year</string>
+    <string name="home_planet">Home planet</string>
+    <string name="Specie">Specie</string>
+</resources>
