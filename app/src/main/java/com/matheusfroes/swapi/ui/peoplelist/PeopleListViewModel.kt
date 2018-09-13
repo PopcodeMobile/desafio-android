@@ -16,7 +16,6 @@ class PeopleListViewModel @Inject constructor(
         private val connectivity: Connectivity
 ) : ViewModel() {
     val bookmarkEvent = SingleLiveEvent<BookmarkedEvent>()
-    val searchQuery: String = ""
 
     init {
         launch { repository.sendPendingBookmarks() }

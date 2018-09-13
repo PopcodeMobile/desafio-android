@@ -50,6 +50,7 @@ class AppRepository @Inject constructor(
     suspend fun bookmarkPerson(personId: Long): BookmarkedEvent {
         local.bookmarkPerson(personId)
 
+        // Checking if connection is available, if it's not, save personId as a pending bookmark request
         if (connectivity.isConnected()) {
             val response = remote.bookmarkPerson(personId)
             if (!response.bookmarked) {
