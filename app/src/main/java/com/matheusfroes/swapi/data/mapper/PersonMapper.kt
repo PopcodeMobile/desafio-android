@@ -4,10 +4,13 @@ import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.extra.extractIdFromUrl
 import com.matheusfroes.swapi.network.data.PersonResponse
 
+/**
+ * Converts a [PersonResponse] to [Person]
+ */
 class PersonMapper {
     companion object {
-        fun map(personResponse: PersonResponse): Person {
-            val person = Person(
+        private fun map(personResponse: PersonResponse): Person {
+            return Person(
                     id = extractIdFromUrl(personResponse.url),
                     name = personResponse.name,
                     height = personResponse.height,
@@ -21,7 +24,6 @@ class PersonMapper {
                     gender = personResponse.gender,
                     isBookmarked = false
             )
-            return person
         }
 
         fun map(peopleResponse: List<PersonResponse>): List<Person> {

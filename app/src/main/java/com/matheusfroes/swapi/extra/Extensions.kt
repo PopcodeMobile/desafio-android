@@ -15,8 +15,6 @@ import kotlin.coroutines.experimental.CoroutineContext
 val Activity.app: SwapiApplication get() = application as SwapiApplication
 val Activity.appInjector: Injector get() = app.injector
 
-typealias NextPageUrl = String?
-
 fun extractIdFromUrl(url: String): Long {
     val uri = Uri.parse(url)
     val id = uri.lastPathSegment ?: "0"

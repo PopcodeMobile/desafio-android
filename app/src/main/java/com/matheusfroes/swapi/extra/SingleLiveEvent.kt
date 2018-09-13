@@ -8,6 +8,9 @@ import android.util.Log
 import java.util.concurrent.atomic.AtomicBoolean
 
 
+/**
+ * Represents an one-time LiveData, only sends an event when explicitly called
+ */
 class SingleLiveEvent<T> : MutableLiveData<T>() {
 
     private val pending = AtomicBoolean(false)

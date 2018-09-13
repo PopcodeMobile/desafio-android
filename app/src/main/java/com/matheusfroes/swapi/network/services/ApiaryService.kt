@@ -1,4 +1,4 @@
-package com.matheusfroes.swapi.network
+package com.matheusfroes.swapi.network.services
 
 import com.matheusfroes.swapi.network.data.ApiarySuccessResponse
 import kotlinx.coroutines.experimental.Deferred

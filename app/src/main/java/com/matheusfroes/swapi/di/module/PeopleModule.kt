@@ -3,7 +3,7 @@ package com.matheusfroes.swapi.di.module
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.matheusfroes.swapi.BuildConfig
 import com.matheusfroes.swapi.di.People
-import com.matheusfroes.swapi.network.PeopleService
+import com.matheusfroes.swapi.network.services.PeopleService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

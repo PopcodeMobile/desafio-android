@@ -7,9 +7,9 @@ import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.extra.extractIdFromUrl
 import com.matheusfroes.swapi.extra.networkContext
 import com.matheusfroes.swapi.extra.parallelMap
-import com.matheusfroes.swapi.network.ApiaryService
-import com.matheusfroes.swapi.network.PeopleService
 import com.matheusfroes.swapi.network.data.ApiaryFailureResponse
+import com.matheusfroes.swapi.network.services.ApiaryService
+import com.matheusfroes.swapi.network.services.PeopleService
 import kotlinx.coroutines.experimental.withContext
 import javax.inject.Inject
 
@@ -65,6 +65,7 @@ class RemoteSource @Inject constructor(
     suspend fun bookmarkPerson(personId: Long) = withContext(networkContext) {
         val bookmarkResponse = apiaryService.bookmarkPerson(personId).await()
 
+        // Handling apiary dynamic JSON response
         return@withContext if (bookmarkResponse.isSuccessful) {
             BookmarkedEvent(true, bookmarkResponse.body()?.message ?: "")
         } else {

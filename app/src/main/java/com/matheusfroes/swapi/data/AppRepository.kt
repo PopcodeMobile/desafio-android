@@ -14,6 +14,7 @@ class AppRepository @Inject constructor(
         private val remote: RemoteSource,
         private val connectivity: Connectivity) {
 
+    // UI observes changes to the Person table
     fun getPeople(): LiveData<List<Person>> {
         return local.getPeople()
     }
@@ -22,6 +23,7 @@ class AppRepository @Inject constructor(
         return local.getBookmarkedPeople()
     }
 
+    // Trying to resend pending bookmark requests
     suspend fun sendPendingBookmarks() {
         val pending = local.getPendingBookmarks()
 
@@ -35,6 +37,7 @@ class AppRepository @Inject constructor(
         }
     }
 
+    // Fetches new page from API and saves response to database. UI observes database changes
     suspend fun fetchPeople(page: Int) {
         val people = remote.getPeople(page)
         local.savePeople(people)
@@ -50,6 +53,7 @@ class AppRepository @Inject constructor(
         if (connectivity.isConnected()) {
             val response = remote.bookmarkPerson(personId)
             if (!response.bookmarked) {
+                // If the request wasn't successful, save personId as a pending bookmark request
                 local.unbookmarkPerson(personId)
                 local.addPendingBookmark(personId)
             } else {

@@ -5,6 +5,11 @@ import okhttp3.Response
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * OkHttp request interceptor used to modify requests sent to the apiary API
+ * Adds 'Prefer:status=400' header to roughly half of the requests
+ * Uses a random number generator to generate a number between 0 and 1 and add the header accordingly
+ */
 class PreferInterceptor @Inject constructor(
         private val randomNumberGenerator: Random
 ) : Interceptor {

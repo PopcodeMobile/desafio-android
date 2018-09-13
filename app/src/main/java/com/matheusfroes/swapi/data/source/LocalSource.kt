@@ -20,18 +20,6 @@ class LocalSource @Inject constructor(
         return database.personDAO().getBookmarkedPeople()
     }
 
-    suspend fun getPendingBookmarks(): List<PendingBookmark> = withContext(ioContext) {
-        return@withContext database.personDAO().getPendingBookmarks()
-    }
-
-    suspend fun addPendingBookmark(personId: Long) = withContext(ioContext) {
-        database.personDAO().addPendingBookmark(PendingBookmark(personId))
-    }
-
-    suspend fun removePendingBookmark(personId: Long) = withContext(ioContext) {
-        database.personDAO().removePendingBookmark(personId)
-    }
-
     suspend fun savePeople(people: List<Person>) = withContext(ioContext) {
         database.personDAO().insert(people)
     }
@@ -48,7 +36,15 @@ class LocalSource @Inject constructor(
         database.personDAO().unbookmarkPerson(personId)
     }
 
-    fun searchPeople(query: String): List<Person> {
-        return database.personDAO().searchPeople(query)
+    suspend fun getPendingBookmarks(): List<PendingBookmark> = withContext(ioContext) {
+        return@withContext database.personDAO().getPendingBookmarks()
+    }
+
+    suspend fun addPendingBookmark(personId: Long) = withContext(ioContext) {
+        database.personDAO().addPendingBookmark(PendingBookmark(personId))
+    }
+
+    suspend fun removePendingBookmark(personId: Long) = withContext(ioContext) {
+        database.personDAO().removePendingBookmark(personId)
     }
 }

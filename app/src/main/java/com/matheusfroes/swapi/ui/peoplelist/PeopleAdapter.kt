@@ -47,7 +47,6 @@ class PeopleAdapter
         }
 
         fun bind(person: Person) {
-
             itemView.tvPersonName.text = person.name
             itemView.tvPersonGender.text = person.gender
             itemView.tvPersonHeight.text = person.height
