@@ -47,4 +47,8 @@ class LocalSource @Inject constructor(
     suspend fun unbookmarkPerson(personId: Long) = withContext(ioContext) {
         database.personDAO().unbookmarkPerson(personId)
     }
+
+    fun searchPeople(query: String): List<Person> {
+        return database.personDAO().searchPeople(query)
+    }
 }

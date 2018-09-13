@@ -9,7 +9,6 @@ import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.extra.Result
 import com.matheusfroes.swapi.extra.SingleLiveEvent
 import com.matheusfroes.swapi.extra.uiContext
-import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 
@@ -42,12 +41,12 @@ class PersonDetailViewModel @Inject constructor(
             person = repository.getPerson(personId)
             _personDetailObservable.value = Result.Complete(person)
 
-            val homeworld = async { repository.getHomeworld(person.homeworld) }
+            val homeworld = repository.getHomeworld(person.homeworld)
             if (person.species.isNotEmpty()) {
-                val species = async { repository.getSpecies(person.species.split(",")).joinToString() }
-                _speciesObservable.value = species.await()
+                val species = repository.getSpecies(person.species.split(",")).joinToString()
+                _speciesObservable.value = species
             }
-            _homeworldObservable.value = homeworld.await()
+            _homeworldObservable.value = homeworld
         } catch (e: Exception) {
             _personDetailObservable.value = Result.Error(e)
         }

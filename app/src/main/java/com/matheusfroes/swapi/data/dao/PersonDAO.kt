@@ -37,4 +37,7 @@ interface PersonDAO {
 
     @Query("DELETE FROM pending_bookmarks WHERE personId = :personId")
     fun removePendingBookmark(personId: Long)
+
+    @Query("SELECT * FROM people WHERE lower(name) LIKE '%' || lower(:query) || '%'")
+    fun searchPeople(query: String): List<Person>
 }

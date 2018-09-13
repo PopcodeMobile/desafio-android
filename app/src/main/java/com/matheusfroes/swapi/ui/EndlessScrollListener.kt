@@ -1,14 +1,15 @@
 package com.matheusfroes.swapi.ui
 
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 
-abstract class EndlessScrollListener(layoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
+abstract class EndlessScrollListener : RecyclerView.OnScrollListener {
     // The minimum amount of items to have below your current scroll position
     // before loading more.
     private var visibleThreshold = 5
     // The current offset index of data you have loaded
-    private var currentPage = 1
+    private var currentPage = 0
     // The total number of items in the dataset after the last load
     private var previousTotalItemCount = 0
     // True if we are still waiting for the last set of data to load.
@@ -16,7 +17,16 @@ abstract class EndlessScrollListener(layoutManager: LinearLayoutManager) : Recyc
     // Sets the starting page index
     private val startingPageIndex = 0
 
-    private var mLayoutManager: RecyclerView.LayoutManager = layoutManager
+    internal var mLayoutManager: RecyclerView.LayoutManager
+
+    constructor(layoutManager: LinearLayoutManager) {
+        this.mLayoutManager = layoutManager
+    }
+
+    constructor(layoutManager: GridLayoutManager) {
+        this.mLayoutManager = layoutManager
+        visibleThreshold *= layoutManager.spanCount
+    }
 
     fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {
         var maxSize = 0
@@ -37,7 +47,9 @@ abstract class EndlessScrollListener(layoutManager: LinearLayoutManager) : Recyc
         var lastVisibleItemPosition = 0
         val totalItemCount = mLayoutManager.itemCount
 
-        if (mLayoutManager is LinearLayoutManager) {
+        if (mLayoutManager is GridLayoutManager) {
+            lastVisibleItemPosition = (mLayoutManager as GridLayoutManager).findLastVisibleItemPosition()
+        } else if (mLayoutManager is LinearLayoutManager) {
             lastVisibleItemPosition = (mLayoutManager as LinearLayoutManager).findLastVisibleItemPosition()
         }
 
@@ -78,4 +90,5 @@ abstract class EndlessScrollListener(layoutManager: LinearLayoutManager) : Recyc
 
     // Defines the process for actually loading more data based on page
     abstract fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?)
+
 }

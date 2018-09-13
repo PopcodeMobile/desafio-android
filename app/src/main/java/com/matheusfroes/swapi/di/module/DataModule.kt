@@ -15,6 +15,7 @@ class DataModule {
     fun database(context: Context): AppDatabase {
         return Room
                 .databaseBuilder(context, AppDatabase::class.java, "swapi.db")
+                .allowMainThreadQueries()
                 .build()
     }
 }

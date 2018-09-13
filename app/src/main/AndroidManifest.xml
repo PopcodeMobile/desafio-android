@@ -23,10 +23,12 @@
         <activity
             android:name=".ui.persondetail.PersonDetailActivity"
             android:parentActivityName=".ui.peoplelist.PeopleListActivity" />
-
         <activity
-            android:label="Bookmarked people"
             android:name=".ui.favorites.BookmarkedPeopleActivity"
+            android:label="Bookmarked people"
+            android:parentActivityName=".ui.peoplelist.PeopleListActivity" />
+        <activity
+            android:name=".ui.searchpeople.SearchPeopleActivity"
             android:parentActivityName=".ui.peoplelist.PeopleListActivity" />
     </application>
 

@@ -5,11 +5,11 @@ import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.mapper.PersonMapper
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.extra.extractIdFromUrl
+import com.matheusfroes.swapi.extra.networkContext
+import com.matheusfroes.swapi.extra.parallelMap
 import com.matheusfroes.swapi.network.ApiaryService
 import com.matheusfroes.swapi.network.PeopleService
 import com.matheusfroes.swapi.network.data.ApiaryFailureResponse
-import com.matheusfroes.swapi.extra.networkContext
-import com.matheusfroes.swapi.extra.parallelMap
 import kotlinx.coroutines.experimental.withContext
 import javax.inject.Inject
 
@@ -18,6 +18,16 @@ class RemoteSource @Inject constructor(
         private val apiaryService: ApiaryService,
         private val gson: Gson
 ) {
+    suspend fun searchPeople(page: Int = 1, query: String): List<Person> = withContext(networkContext) {
+        try {
+            val getPeopleResponse = peopleService.searchPeople(query, page).await()
+            val peopleList = getPeopleResponse.results
+
+            return@withContext PersonMapper.map(peopleList)
+        } catch (e: Exception) {
+            return@withContext listOf<Person>()
+        }
+    }
 
     suspend fun getPeople(page: Int = 1): List<Person> = withContext(networkContext) {
         try {

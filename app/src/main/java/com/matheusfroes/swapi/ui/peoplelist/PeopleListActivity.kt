@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +17,7 @@ import com.matheusfroes.swapi.extra.viewModelProvider
 import com.matheusfroes.swapi.ui.EndlessScrollListener
 import com.matheusfroes.swapi.ui.favorites.BookmarkedPeopleActivity
 import com.matheusfroes.swapi.ui.persondetail.PersonDetailActivity
+import com.matheusfroes.swapi.ui.searchpeople.SearchPeopleActivity
 import kotlinx.android.synthetic.main.activity_people_list.*
 import javax.inject.Inject
 
@@ -43,21 +43,6 @@ class PeopleListActivity : AppCompatActivity() {
         })
 
         viewModel.fetchPeople()
-
-//        viewModel.peopleObservable.observe(this, Observer { result ->
-//            when (result) {
-//                is Result.Complete -> {
-//                    adapter.items = result.data
-//                    hideLoadingIndicator()
-//                }
-//                is Result.InProgress -> {
-//                    showLoadingIndicator()
-//                }
-//                is Result.Error -> {
-//                    hideLoadingIndicator()
-//                }
-//            }
-//        })
 
         adapter.personClickEvent = { personId ->
             PersonDetailActivity.start(this, personId)
@@ -85,27 +70,7 @@ class PeopleListActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
-
-        val searchItem = menu.findItem(R.id.search)
-        val searchView = searchItem.actionView as SearchView
-        searchView.maxWidth = Integer.MAX_VALUE
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                filterPeople(newText)
-                return true
-            }
-        })
-
         return true
-    }
-
-    private fun filterPeople(newText: String) {
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -113,10 +78,10 @@ class PeopleListActivity : AppCompatActivity() {
             R.id.bookmarked -> {
                 startActivity(Intent(this, BookmarkedPeopleActivity::class.java))
             }
+            R.id.search -> {
+                startActivity(Intent(this, SearchPeopleActivity::class.java))
+            }
         }
-
-
-
         return super.onOptionsItemSelected(item)
     }
 }

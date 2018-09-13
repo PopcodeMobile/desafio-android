@@ -5,11 +5,14 @@ import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.data.source.LocalSource
 import com.matheusfroes.swapi.data.source.RemoteSource
+import com.matheusfroes.swapi.network.Connectivity
 import javax.inject.Inject
 
+// Local database as the single source of truth. Every data presented on the UI is from the local database
 class AppRepository @Inject constructor(
         private val local: LocalSource,
-        private val remote: RemoteSource) {
+        private val remote: RemoteSource,
+        private val connectivity: Connectivity) {
 
     fun getPeople(): LiveData<List<Person>> {
         return local.getPeople()
@@ -44,15 +47,26 @@ class AppRepository @Inject constructor(
     suspend fun bookmarkPerson(personId: Long): BookmarkedEvent {
         local.bookmarkPerson(personId)
 
-        val response = remote.bookmarkPerson(personId)
-        if (!response.bookmarked) {
-            local.unbookmarkPerson(personId)
-            local.addPendingBookmark(personId)
-        } else {
-            local.removePendingBookmark(personId)
-        }
+        if (connectivity.isConnected()) {
+            val response = remote.bookmarkPerson(personId)
+            if (!response.bookmarked) {
+                local.unbookmarkPerson(personId)
+                local.addPendingBookmark(personId)
+            } else {
+                local.removePendingBookmark(personId)
+            }
 
-        return response
+            return response
+        } else {
+            local.addPendingBookmark(personId)
+            return BookmarkedEvent(false, "Bookmark will be sent when connection available")
+        }
+    }
+
+    suspend fun searchPeople(page: Int, query: String): List<Person> {
+        val people = remote.searchPeople(page, query)
+        local.savePeople(people)
+        return people
     }
 
     suspend fun unbookmarkPerson(personId: Long) {
