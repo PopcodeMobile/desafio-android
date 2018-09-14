@@ -24,8 +24,8 @@
             android:name=".ui.persondetail.PersonDetailActivity"
             android:parentActivityName=".ui.peoplelist.PeopleListActivity" />
         <activity
-            android:name=".ui.favorites.BookmarkedPeopleActivity"
-            android:label="Bookmarked people"
+            android:name=".ui.bookmarks.BookmarkedPeopleActivity"
+            android:label="Bookmarks"
             android:parentActivityName=".ui.peoplelist.PeopleListActivity" />
         <activity
             android:name=".ui.searchpeople.SearchPeopleActivity"

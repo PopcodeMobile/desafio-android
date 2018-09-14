@@ -2,7 +2,6 @@ package com.matheusfroes.swapi.ui.peoplelist
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -10,12 +9,14 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.matheusfroes.swapi.R
+import com.matheusfroes.swapi.extra.Result
 import com.matheusfroes.swapi.extra.appInjector
 import com.matheusfroes.swapi.extra.toast
 import com.matheusfroes.swapi.extra.viewModelProvider
 import com.matheusfroes.swapi.ui.EndlessScrollListener
-import com.matheusfroes.swapi.ui.favorites.BookmarkedPeopleActivity
+import com.matheusfroes.swapi.ui.bookmarks.BookmarkedPeopleActivity
 import com.matheusfroes.swapi.ui.persondetail.PersonDetailActivity
 import com.matheusfroes.swapi.ui.searchpeople.SearchPeopleActivity
 import kotlinx.android.synthetic.main.activity_people_list.*
@@ -36,14 +37,36 @@ class PeopleListActivity : AppCompatActivity() {
 
         viewModel = viewModelProvider(viewModelFactory)
 
-        viewModel.getPeople().observe(this, Observer { people ->
+        viewModel.fetchPeople()
+
+        // ViewModel observers
+        viewModel.peopleObservable.observe(this, Observer { people ->
             if (people != null) {
                 adapter.items = people
             }
         })
 
-        viewModel.fetchPeople()
+        viewModel.dataFetchEvent.observe(this, Observer { result ->
+            when (result) {
+                is Result.Complete -> {
+                    hideLoadingIndicator()
+                }
+                is Result.InProgress -> {
+                    showLoadingIndicator()
+                }
+                is Result.Error -> {
+                    toast("Error fetching people list")
+                    hideLoadingIndicator()
+                }
+            }
+        })
 
+        viewModel.bookmarkEvent.observe(this, Observer { bookmarkEvent ->
+            toast(bookmarkEvent?.message)
+        })
+
+
+        // Adapter click events
         adapter.personClickEvent = { personId ->
             PersonDetailActivity.start(this, personId)
         }
@@ -52,10 +75,10 @@ class PeopleListActivity : AppCompatActivity() {
             viewModel.toggleBookmark(personId)
         }
 
-        viewModel.bookmarkEvent.observe(this, Observer { bookmarkEvent ->
-            toast(bookmarkEvent?.message)
-        })
+        setupRecyclerView()
+    }
 
+    private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(this)
         rvPeople.layoutManager = layoutManager
         rvPeople.adapter = adapter
@@ -68,6 +91,19 @@ class PeopleListActivity : AppCompatActivity() {
         })
     }
 
+    private fun showLoadingIndicator() {
+        if (adapter.itemCount == 0) {
+            initialLoadingIndicator.visibility = View.VISIBLE
+        } else {
+            pageLoadingIndicator.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideLoadingIndicator() {
+        initialLoadingIndicator.visibility = View.GONE
+        pageLoadingIndicator.visibility = View.GONE
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
@@ -76,10 +112,10 @@ class PeopleListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.bookmarked -> {
-                startActivity(Intent(this, BookmarkedPeopleActivity::class.java))
+                BookmarkedPeopleActivity.start(this)
             }
             R.id.search -> {
-                startActivity(Intent(this, SearchPeopleActivity::class.java))
+                SearchPeopleActivity.start(this)
             }
         }
         return super.onOptionsItemSelected(item)

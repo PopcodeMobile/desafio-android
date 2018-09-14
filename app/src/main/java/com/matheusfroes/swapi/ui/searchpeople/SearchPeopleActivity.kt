@@ -2,6 +2,8 @@ package com.matheusfroes.swapi.ui.searchpeople
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
@@ -18,6 +20,12 @@ import kotlinx.android.synthetic.main.activity_search_people.*
 import javax.inject.Inject
 
 class SearchPeopleActivity : AppCompatActivity() {
+
+    companion object {
+        fun start(context: Context) {
+            context.startActivity(Intent(context, SearchPeopleActivity::class.java))
+        }
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

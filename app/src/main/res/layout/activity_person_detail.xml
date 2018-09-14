@@ -6,142 +6,149 @@
     android:layout_height="match_parent"
     tools:context=".ui.persondetail.PersonDetailActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="6dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/name"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:padding="6dp">
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Person name" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/height"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Person name" />
 
-        <TextView
-            android:id="@+id/tvHeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="1.90m" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/height"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mass"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="1.90m" />
 
-        <TextView
-            android:id="@+id/tvMass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="110" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mass"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hair_color"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvMass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="110" />
 
-        <TextView
-            android:id="@+id/tvHairColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Blue" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hair_color"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/skin_color"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvHairColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Blue" />
 
-        <TextView
-            android:id="@+id/tvSkinColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="White" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skin_color"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/eye_color"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvSkinColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="White" />
 
-        <TextView
-            android:id="@+id/tvEyeColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Red" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/eye_color"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/birth_year"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvEyeColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Red" />
 
-        <TextView
-            android:id="@+id/tvBirthYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="1985" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/birth_year"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/gender"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvBirthYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="1985" />
 
-        <TextView
-            android:id="@+id/tvGender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Male" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/homeworld"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Male" />
 
-        <TextView
-            android:id="@+id/tvHomeworld"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Tuscan" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/homeworld"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/species"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvHomeworld"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Tuscan" />
 
-        <TextView
-            android:id="@+id/tvSpecies"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="\???" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/species"
+                android:textStyle="bold" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btnBookmarkPerson"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_bookmark"
-            app:backgroundTint="@android:color/darker_gray"
-            app:fabSize="normal"
-            app:useCompatPadding="true" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvSpecies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="\???" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnBookmarkPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_bookmark"
+        app:backgroundTint="@android:color/darker_gray"
+        app:fabSize="normal"
+        app:useCompatPadding="true" />
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -1,7 +1,7 @@
 package com.matheusfroes.swapi.di
 
 import com.matheusfroes.swapi.di.module.*
-import com.matheusfroes.swapi.ui.favorites.BookmarkedPeopleActivity
+import com.matheusfroes.swapi.ui.bookmarks.BookmarkedPeopleActivity
 import com.matheusfroes.swapi.ui.peoplelist.PeopleListActivity
 import com.matheusfroes.swapi.ui.persondetail.PersonDetailActivity
 import com.matheusfroes.swapi.ui.searchpeople.SearchPeopleActivity

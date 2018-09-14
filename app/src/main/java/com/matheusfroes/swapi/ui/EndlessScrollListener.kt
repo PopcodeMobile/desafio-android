@@ -4,6 +4,9 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 
+/**
+ * [RecyclerView] OnScrollListener used to create an infinite scroll effect
+ */
 abstract class EndlessScrollListener : RecyclerView.OnScrollListener {
     // The minimum amount of items to have below your current scroll position
     // before loading more.

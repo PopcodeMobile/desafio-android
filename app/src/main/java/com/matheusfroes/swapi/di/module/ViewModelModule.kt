@@ -2,7 +2,7 @@ package com.matheusfroes.swapi.di.module
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.matheusfroes.swapi.ui.favorites.BookmarkedPeopleViewModel
+import com.matheusfroes.swapi.ui.bookmarks.BookmarkedPeopleViewModel
 import com.matheusfroes.swapi.ui.peoplelist.PeopleListViewModel
 import com.matheusfroes.swapi.ui.persondetail.PersonDetailViewModel
 import com.matheusfroes.swapi.ui.searchpeople.SearchPeopleViewModel

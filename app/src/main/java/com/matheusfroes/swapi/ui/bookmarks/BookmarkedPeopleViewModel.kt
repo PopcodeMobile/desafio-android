@@ -1,4 +1,4 @@
-package com.matheusfroes.swapi.ui.favorites
+package com.matheusfroes.swapi.ui.bookmarks
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel

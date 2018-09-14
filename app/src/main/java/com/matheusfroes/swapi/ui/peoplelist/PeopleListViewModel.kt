@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import com.matheusfroes.swapi.data.AppRepository
 import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
+import com.matheusfroes.swapi.extra.Result
 import com.matheusfroes.swapi.extra.SingleLiveEvent
 import com.matheusfroes.swapi.extra.uiContext
 import com.matheusfroes.swapi.network.Connectivity
@@ -16,18 +17,23 @@ class PeopleListViewModel @Inject constructor(
         private val connectivity: Connectivity
 ) : ViewModel() {
     val bookmarkEvent = SingleLiveEvent<BookmarkedEvent>()
+    val dataFetchEvent = SingleLiveEvent<Result<Any>>()
+
+    val peopleObservable: LiveData<List<Person>> = repository.getPeople()
 
     init {
         launch { repository.sendPendingBookmarks() }
     }
 
-    fun getPeople(): LiveData<List<Person>> {
-        return repository.getPeople()
-    }
-
     fun fetchPeople(page: Int = 1) = launch(uiContext) {
         if (connectivity.isConnected()) {
-            repository.fetchPeople(page)
+            dataFetchEvent.value = Result.InProgress()
+            try {
+                repository.fetchPeople(page)
+                dataFetchEvent.value = Result.Complete(Any())
+            } catch (e: Exception) {
+                dataFetchEvent.value = Result.Error(e)
+            }
         }
     }
 
