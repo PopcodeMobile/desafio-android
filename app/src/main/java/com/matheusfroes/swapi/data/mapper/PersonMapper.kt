@@ -6,6 +6,7 @@ import com.matheusfroes.swapi.network.data.PersonResponse
 
 /**
  * Converts a [PersonResponse] to [Person]
+ * Used to separate responsabilities between response objects and data models
  */
 class PersonMapper {
     companion object {

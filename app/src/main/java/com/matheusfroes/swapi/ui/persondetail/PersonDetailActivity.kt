@@ -21,6 +21,7 @@ class PersonDetailActivity : AppCompatActivity() {
     companion object {
         const val PERSON_ID = "com.matheusfroes.swapi.person_id"
 
+        // Entry point for the PersonDetailActivity
         fun start(context: Context, personId: Long) {
             val intent = Intent(context, PersonDetailActivity::class.java)
             intent.putExtra(PERSON_ID, personId)

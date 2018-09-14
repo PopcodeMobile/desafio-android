@@ -50,6 +50,10 @@ class SearchPeopleActivity : AppCompatActivity() {
             PersonDetailActivity.start(this, personId)
         }
 
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() {
         val layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
         rvSearchResult.layoutManager = layoutManager
         rvSearchResult.adapter = adapter
@@ -70,6 +74,7 @@ class SearchPeopleActivity : AppCompatActivity() {
         val searchView = searchItem.actionView as SearchView
         searchView.maxWidth = Integer.MAX_VALUE
         searchView.setIconifiedByDefault(false)
+        searchView.requestFocus()
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
