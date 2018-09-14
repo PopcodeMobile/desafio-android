@@ -2,8 +2,8 @@ package com.matheusfroes.swapi.data
 
 import android.arch.lifecycle.LiveData
 import android.arch.paging.LivePagedListBuilder
-import com.matheusfroes.swapi.CustomBoundaryCallback
-import com.matheusfroes.swapi.Listing
+import com.matheusfroes.swapi.network.CustomBoundaryCallback
+import com.matheusfroes.swapi.ui.peoplelist.Listing
 import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.data.source.LocalSource

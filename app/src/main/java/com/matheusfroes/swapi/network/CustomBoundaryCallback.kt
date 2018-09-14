@@ -1,4 +1,4 @@
-package com.matheusfroes.swapi
+package com.matheusfroes.swapi.network
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PagedList

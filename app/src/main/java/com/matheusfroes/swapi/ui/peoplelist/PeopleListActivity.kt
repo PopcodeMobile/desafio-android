@@ -58,7 +58,6 @@ class PeopleListActivity : AppCompatActivity() {
             toast(bookmarkEvent?.message)
         })
 
-
         // Adapter click events
         adapter.personClickEvent = { personId ->
             PersonDetailActivity.start(this, personId)

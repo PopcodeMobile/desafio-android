@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.PagedList
-import com.matheusfroes.swapi.Listing
 import com.matheusfroes.swapi.data.AppRepository
 import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
