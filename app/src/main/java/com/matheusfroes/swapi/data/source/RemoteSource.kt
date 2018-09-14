@@ -62,7 +62,7 @@ class RemoteSource @Inject constructor(
         return@withContext planetResponse.name
     }
 
-    suspend fun bookmarkPerson(personId: Long) = withContext(networkContext) {
+    suspend fun bookmarkPerson(personId: Int) = withContext(networkContext) {
         val bookmarkResponse = apiaryService.bookmarkPerson(personId).await()
 
         // Handling apiary dynamic JSON response

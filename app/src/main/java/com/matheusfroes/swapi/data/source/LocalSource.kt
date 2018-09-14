@@ -1,6 +1,7 @@
 package com.matheusfroes.swapi.data.source
 
 import android.arch.lifecycle.LiveData
+import android.arch.paging.DataSource
 import com.matheusfroes.swapi.data.AppDatabase
 import com.matheusfroes.swapi.data.model.PendingBookmark
 import com.matheusfroes.swapi.data.model.Person
@@ -12,7 +13,11 @@ class LocalSource @Inject constructor(
         private val database: AppDatabase
 ) {
 
-    fun getPeople(): LiveData<List<Person>> {
+    fun deletePeople() {
+        database.personDAO().deletePeople()
+    }
+
+    fun getPeople(): DataSource.Factory<Int, Person> {
         return database.personDAO().getPeople()
     }
 
@@ -24,15 +29,15 @@ class LocalSource @Inject constructor(
         database.personDAO().insert(people)
     }
 
-    suspend fun getPerson(personId: Long): Person = withContext(ioContext) {
+    suspend fun getPerson(personId: Int): Person = withContext(ioContext) {
         return@withContext database.personDAO().getPerson(personId)
     }
 
-    suspend fun bookmarkPerson(personId: Long) = withContext(ioContext) {
+    suspend fun bookmarkPerson(personId: Int) = withContext(ioContext) {
         database.personDAO().bookmarkPerson(personId)
     }
 
-    suspend fun unbookmarkPerson(personId: Long) = withContext(ioContext) {
+    suspend fun unbookmarkPerson(personId: Int) = withContext(ioContext) {
         database.personDAO().unbookmarkPerson(personId)
     }
 
@@ -40,11 +45,11 @@ class LocalSource @Inject constructor(
         return@withContext database.personDAO().getPendingBookmarks()
     }
 
-    suspend fun addPendingBookmark(personId: Long) = withContext(ioContext) {
+    suspend fun addPendingBookmark(personId: Int) = withContext(ioContext) {
         database.personDAO().addPendingBookmark(PendingBookmark(personId))
     }
 
-    suspend fun removePendingBookmark(personId: Long) = withContext(ioContext) {
+    suspend fun removePendingBookmark(personId: Int) = withContext(ioContext) {
         database.personDAO().removePendingBookmark(personId)
     }
 }

@@ -52,7 +52,10 @@ dependencies {
     // Architecture Components
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation "android.arch.persistence.room:runtime:$room_version"
+    implementation "android.arch.paging:runtime:$paging_version"
     kapt "android.arch.persistence.room:compiler:$room_version"
+
+    implementation 'com.facebook.stetho:stetho:1.5.0'
 }
 kotlin {
     experimental {

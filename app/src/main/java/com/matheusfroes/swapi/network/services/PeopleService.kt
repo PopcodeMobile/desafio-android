@@ -23,11 +23,11 @@ interface PeopleService {
 
     @GET("species/{id}")
     fun getSpecie(
-            @Path("id") specieId: Long
+            @Path("id") specieId: Int
     ): Deferred<SpecieResponse>
 
     @GET("planets/{id}")
     fun getPlanet(
-            @Path("id") planetId: Long
+            @Path("id") planetId: Int
     ): Deferred<PlanetResponse>
 }

@@ -1,43 +1,35 @@
 package com.matheusfroes.swapi.ui.peoplelist
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
+import android.arch.paging.PagedList
+import com.matheusfroes.swapi.Listing
 import com.matheusfroes.swapi.data.AppRepository
 import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.extra.Result
 import com.matheusfroes.swapi.extra.SingleLiveEvent
 import com.matheusfroes.swapi.extra.uiContext
-import com.matheusfroes.swapi.network.Connectivity
 import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 
 class PeopleListViewModel @Inject constructor(
-        private val repository: AppRepository,
-        private val connectivity: Connectivity
-) : ViewModel() {
+        private val repository: AppRepository) : ViewModel() {
     val bookmarkEvent = SingleLiveEvent<BookmarkedEvent>()
-    val dataFetchEvent = SingleLiveEvent<Result<Any>>()
 
-    val peopleObservable: LiveData<List<Person>> = repository.getPeople()
+    private val initState = SingleLiveEvent<Any>()
+
+    private val peopleResult: LiveData<Listing<Person>> = Transformations.map(initState) { repository.getPeople() }
+    val people: LiveData<PagedList<Person>> = Transformations.switchMap(peopleResult) { it.pagedList }
+    val networkState: LiveData<Result<Any>> = Transformations.switchMap(peopleResult) { it.networkState }
 
     init {
+        initState.call()
         launch { repository.sendPendingBookmarks() }
     }
 
-    fun fetchPeople(page: Int = 1) = launch(uiContext) {
-        if (connectivity.isConnected()) {
-            dataFetchEvent.value = Result.InProgress()
-            try {
-                repository.fetchPeople(page)
-                dataFetchEvent.value = Result.Complete(Any())
-            } catch (e: Exception) {
-                dataFetchEvent.value = Result.Error(e)
-            }
-        }
-    }
-
-    fun toggleBookmark(personId: Long) = launch(uiContext) {
+    fun toggleBookmark(personId: Int) = launch(uiContext) {
         val person = repository.getPerson(personId)
 
         if (!person.isBookmarked) {

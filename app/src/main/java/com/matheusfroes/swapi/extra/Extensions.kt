@@ -15,10 +15,10 @@ import kotlin.coroutines.experimental.CoroutineContext
 val Activity.app: SwapiApplication get() = application as SwapiApplication
 val Activity.appInjector: Injector get() = app.injector
 
-fun extractIdFromUrl(url: String): Long {
+fun extractIdFromUrl(url: String): Int {
     val uri = Uri.parse(url)
     val id = uri.lastPathSegment ?: "0"
-    return id.toLong()
+    return id.toInt()
 }
 
 fun Activity.toast(message: String?) {

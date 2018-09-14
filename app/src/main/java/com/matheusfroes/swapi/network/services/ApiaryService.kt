@@ -10,6 +10,6 @@ interface ApiaryService {
 
     @POST("favorite/{id}")
     fun bookmarkPerson(
-            @Path("id") personId: Long
+            @Path("id") personId: Int
     ): Deferred<Response<ApiarySuccessResponse>>
 }

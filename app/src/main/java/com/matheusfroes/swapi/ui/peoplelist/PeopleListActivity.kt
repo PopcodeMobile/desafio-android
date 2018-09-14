@@ -5,8 +5,6 @@ import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,7 +13,6 @@ import com.matheusfroes.swapi.extra.Result
 import com.matheusfroes.swapi.extra.appInjector
 import com.matheusfroes.swapi.extra.toast
 import com.matheusfroes.swapi.extra.viewModelProvider
-import com.matheusfroes.swapi.ui.EndlessScrollListener
 import com.matheusfroes.swapi.ui.bookmarks.BookmarkedPeopleActivity
 import com.matheusfroes.swapi.ui.persondetail.PersonDetailActivity
 import com.matheusfroes.swapi.ui.searchpeople.SearchPeopleActivity
@@ -37,17 +34,13 @@ class PeopleListActivity : AppCompatActivity() {
 
         viewModel = viewModelProvider(viewModelFactory)
 
-        viewModel.fetchPeople()
-
         // ViewModel observers
-        viewModel.peopleObservable.observe(this, Observer { people ->
-            if (people != null) {
-                adapter.items = people
-            }
+        viewModel.people.observe(this, Observer { people ->
+            adapter.submitList(people)
         })
 
-        viewModel.dataFetchEvent.observe(this, Observer { result ->
-            when (result) {
+        viewModel.networkState.observe(this, Observer { networkState ->
+            when (networkState) {
                 is Result.Complete -> {
                     hideLoadingIndicator()
                 }
@@ -82,13 +75,6 @@ class PeopleListActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         rvPeople.layoutManager = layoutManager
         rvPeople.adapter = adapter
-
-        rvPeople.addOnScrollListener(object : EndlessScrollListener(layoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                viewModel.fetchPeople(page)
-                Log.d("SWAPI", "Page = $page")
-            }
-        })
     }
 
     private fun showLoadingIndicator() {

@@ -1,6 +1,7 @@
 package com.matheusfroes.swapi.data.dao
 
 import android.arch.lifecycle.LiveData
+import android.arch.paging.DataSource
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
@@ -18,16 +19,16 @@ interface PersonDAO {
     fun getBookmarkedPeople(): LiveData<List<Person>>
 
     @Query("SELECT * FROM people WHERE id = :personId")
-    fun getPerson(personId: Long): Person
+    fun getPerson(personId: Int): Person
 
     @Query("UPDATE people SET isBookmarked = 1 WHERE id = :personId")
-    fun bookmarkPerson(personId: Long)
+    fun bookmarkPerson(personId: Int)
 
     @Query("UPDATE people SET isBookmarked = 0 WHERE id = :personId")
-    fun unbookmarkPerson(personId: Long)
+    fun unbookmarkPerson(personId: Int)
 
     @Query("SELECT * FROM people")
-    fun getPeople(): LiveData<List<Person>>
+    fun getPeople(): DataSource.Factory<Int, Person>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addPendingBookmark(pendingBookmark: PendingBookmark)
@@ -36,8 +37,11 @@ interface PersonDAO {
     fun getPendingBookmarks(): List<PendingBookmark>
 
     @Query("DELETE FROM pending_bookmarks WHERE personId = :personId")
-    fun removePendingBookmark(personId: Long)
+    fun removePendingBookmark(personId: Int)
 
     @Query("SELECT * FROM people WHERE lower(name) LIKE '%' || lower(:query) || '%'")
     fun searchPeople(query: String): List<Person>
+
+    @Query("DELETE FROM people")
+    fun deletePeople()
 }

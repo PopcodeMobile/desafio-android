@@ -22,7 +22,7 @@ class PersonDetailActivity : AppCompatActivity() {
         const val PERSON_ID = "com.matheusfroes.swapi.person_id"
 
         // Entry point for the PersonDetailActivity
-        fun start(context: Context, personId: Long) {
+        fun start(context: Context, personId: Int) {
             val intent = Intent(context, PersonDetailActivity::class.java)
             intent.putExtra(PERSON_ID, personId)
             context.startActivity(intent)
@@ -33,7 +33,7 @@ class PersonDetailActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: PersonDetailViewModel
 
-    private val personId: Long by lazy { intent.getLongExtra(PERSON_ID, 0) }
+    private val personId: Int by lazy { intent.getIntExtra(PERSON_ID, 0) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

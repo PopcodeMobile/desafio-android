@@ -15,7 +15,7 @@ class BookmarkedPeopleViewModel @Inject constructor(
         return repository.getBookmarkedPeople()
     }
 
-    fun unbookmarkPerson(personId: Long) = launch(uiContext) {
+    fun unbookmarkPerson(personId: Int) = launch(uiContext) {
         repository.unbookmarkPerson(personId)
     }
 }

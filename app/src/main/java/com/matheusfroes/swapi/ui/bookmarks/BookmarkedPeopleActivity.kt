@@ -11,7 +11,6 @@ import android.view.View
 import com.matheusfroes.swapi.R
 import com.matheusfroes.swapi.extra.appInjector
 import com.matheusfroes.swapi.extra.viewModelProvider
-import com.matheusfroes.swapi.ui.peoplelist.PeopleAdapter
 import com.matheusfroes.swapi.ui.persondetail.PersonDetailActivity
 import kotlinx.android.synthetic.main.activity_bookmarked_people.*
 import javax.inject.Inject
@@ -28,7 +27,7 @@ class BookmarkedPeopleActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: BookmarkedPeopleViewModel
 
-    private val adapter = PeopleAdapter()
+    private val adapter = BookmarkAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

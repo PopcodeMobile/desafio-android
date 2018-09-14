@@ -1,6 +1,9 @@
 package com.matheusfroes.swapi.data
 
 import android.arch.lifecycle.LiveData
+import android.arch.paging.LivePagedListBuilder
+import com.matheusfroes.swapi.CustomBoundaryCallback
+import com.matheusfroes.swapi.Listing
 import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.data.source.LocalSource
@@ -15,8 +18,24 @@ class AppRepository @Inject constructor(
         private val connectivity: Connectivity) {
 
     // UI observes changes to the Person table
-    fun getPeople(): LiveData<List<Person>> {
-        return local.getPeople()
+    fun getPeople(): Listing<Person> {
+        // If connection is available, delete current people list from database
+        if (connectivity.isConnected()) {
+            local.deletePeople()
+        }
+
+        val dataSourceFactory = local.getPeople()
+
+        val boundaryCallback = CustomBoundaryCallback(remote, local)
+
+        val pagedList = LivePagedListBuilder<Int, Person>(dataSourceFactory, 20)
+                .setBoundaryCallback(boundaryCallback)
+                .build()
+
+        return Listing(
+                pagedList,
+                boundaryCallback.networkState
+        )
     }
 
     fun getBookmarkedPeople(): LiveData<List<Person>> {
@@ -37,17 +56,11 @@ class AppRepository @Inject constructor(
         }
     }
 
-    // Fetches new page from API and saves response to database. UI observes database changes
-    suspend fun fetchPeople(page: Int) {
-        val people = remote.getPeople(page)
-        local.savePeople(people)
-    }
-
-    suspend fun getPerson(personId: Long): Person {
+    suspend fun getPerson(personId: Int): Person {
         return local.getPerson(personId)
     }
 
-    suspend fun bookmarkPerson(personId: Long): BookmarkedEvent {
+    suspend fun bookmarkPerson(personId: Int): BookmarkedEvent {
         local.bookmarkPerson(personId)
 
         // Send bookmark request if connection is available, if it's not, save personId as a pending bookmark request
@@ -74,7 +87,7 @@ class AppRepository @Inject constructor(
         return people
     }
 
-    suspend fun unbookmarkPerson(personId: Long) {
+    suspend fun unbookmarkPerson(personId: Int) {
         local.unbookmarkPerson(personId)
     }
 

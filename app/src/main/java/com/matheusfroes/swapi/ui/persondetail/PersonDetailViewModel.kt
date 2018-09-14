@@ -28,13 +28,13 @@ class PersonDetailViewModel @Inject constructor(
     val unbookmarkedPersonEvent = SingleLiveEvent<Unit>()
 
     lateinit var person: Person
-    var personId: Long = 0
+    var personId: Int = 0
         set(value) {
             field = value
             getPerson(personId)
         }
 
-    private fun getPerson(personId: Long) = launch(uiContext) {
+    private fun getPerson(personId: Int) = launch(uiContext) {
         _personDetailObservable.value = Result.InProgress()
 
         try {

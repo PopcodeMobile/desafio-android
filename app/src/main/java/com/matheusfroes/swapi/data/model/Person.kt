@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "people")
 data class Person(
         @PrimaryKey
-        val id: Long,
+        val id: Int,
         val name: String,
         val height: String,
         val mass: String,
