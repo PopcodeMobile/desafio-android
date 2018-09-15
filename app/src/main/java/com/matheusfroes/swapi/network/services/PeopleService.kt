@@ -12,7 +12,8 @@ interface PeopleService {
 
     @GET("people")
     fun getPeople(
-            @Query("page") page: Int = 1
+            @Query("page") page: Int = 1,
+            @Query("search") query: String?
     ): Deferred<GetPeopleResponse>
 
     @GET("people")

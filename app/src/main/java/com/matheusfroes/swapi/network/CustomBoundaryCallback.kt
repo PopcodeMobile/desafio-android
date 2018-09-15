@@ -10,9 +10,10 @@ import kotlinx.coroutines.experimental.launch
 
 class CustomBoundaryCallback(
         private val remote: RemoteSource,
-        private val local: LocalSource
+        private val local: LocalSource,
+        private val query: String? = null
 ) : PagedList.BoundaryCallback<Person>() {
-    var apiPage = 1
+    private var apiPage = 1
 
     val networkState = MutableLiveData<Result<Any>>()
 
@@ -28,7 +29,7 @@ class CustomBoundaryCallback(
         launch {
             try {
                 networkState.postValue(Result.InProgress())
-                val people = remote.getPeople(apiPage)
+                val people = remote.getPeople(apiPage, query)
                 local.savePeople(people)
                 apiPage++
                 networkState.postValue(Result.Complete(Any()))

@@ -1,4 +1,4 @@
-package com.matheusfroes.swapi.ui.peoplelist
+package com.matheusfroes.swapi.ui
 
 import android.arch.lifecycle.LiveData
 import android.arch.paging.PagedList

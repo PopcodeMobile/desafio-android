@@ -2,13 +2,13 @@ package com.matheusfroes.swapi.data
 
 import android.arch.lifecycle.LiveData
 import android.arch.paging.LivePagedListBuilder
-import com.matheusfroes.swapi.network.CustomBoundaryCallback
-import com.matheusfroes.swapi.ui.peoplelist.Listing
 import com.matheusfroes.swapi.data.dto.BookmarkedEvent
 import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.data.source.LocalSource
 import com.matheusfroes.swapi.data.source.RemoteSource
 import com.matheusfroes.swapi.network.Connectivity
+import com.matheusfroes.swapi.network.CustomBoundaryCallback
+import com.matheusfroes.swapi.ui.Listing
 import javax.inject.Inject
 
 // Local database as the single source of truth. Every data presented on the UI is from the local database
@@ -81,10 +81,19 @@ class AppRepository @Inject constructor(
         }
     }
 
-    suspend fun searchPeople(page: Int, query: String): List<Person> {
-        val people = remote.searchPeople(page, query)
-        local.savePeople(people)
-        return people
+    fun searchPeople(query: String): Listing<Person> {
+        val dataSourceFactory = local.searchPeople(query)
+
+        val boundaryCallback = CustomBoundaryCallback(remote, local, query)
+
+        val pagedList = LivePagedListBuilder<Int, Person>(dataSourceFactory, 20)
+                .setBoundaryCallback(boundaryCallback)
+                .build()
+
+        return Listing(
+                pagedList,
+                boundaryCallback.networkState
+        )
     }
 
     suspend fun unbookmarkPerson(personId: Int) {

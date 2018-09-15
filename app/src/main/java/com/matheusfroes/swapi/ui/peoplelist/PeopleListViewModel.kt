@@ -10,6 +10,7 @@ import com.matheusfroes.swapi.data.model.Person
 import com.matheusfroes.swapi.extra.Result
 import com.matheusfroes.swapi.extra.SingleLiveEvent
 import com.matheusfroes.swapi.extra.uiContext
+import com.matheusfroes.swapi.ui.Listing
 import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
 

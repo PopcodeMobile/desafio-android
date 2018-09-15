@@ -40,7 +40,7 @@ interface PersonDAO {
     fun removePendingBookmark(personId: Int)
 
     @Query("SELECT * FROM people WHERE lower(name) LIKE '%' || lower(:query) || '%'")
-    fun searchPeople(query: String): List<Person>
+    fun searchPeople(query: String): DataSource.Factory<Int, Person>
 
     @Query("DELETE FROM people")
     fun deletePeople()

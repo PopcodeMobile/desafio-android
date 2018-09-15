@@ -21,6 +21,10 @@ class LocalSource @Inject constructor(
         return database.personDAO().getPeople()
     }
 
+    fun searchPeople(query: String): DataSource.Factory<Int, Person> {
+        return database.personDAO().searchPeople(query)
+    }
+
     fun getBookmarkedPeople(): LiveData<List<Person>> {
         return database.personDAO().getBookmarkedPeople()
     }

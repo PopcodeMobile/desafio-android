@@ -29,9 +29,9 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    suspend fun getPeople(page: Int = 1): List<Person> = withContext(networkContext) {
+    suspend fun getPeople(page: Int = 1, query: String?): List<Person> = withContext(networkContext) {
         try {
-            val getPeopleResponse = peopleService.getPeople(page).await()
+            val getPeopleResponse = peopleService.getPeople(page, query).await()
             val peopleList = getPeopleResponse.results
 
             return@withContext PersonMapper.map(peopleList)

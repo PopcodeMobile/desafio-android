@@ -1,22 +1,18 @@
 package com.matheusfroes.swapi.ui.searchpeople
 
+import android.arch.paging.PagedListAdapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.matheusfroes.swapi.R
 import com.matheusfroes.swapi.data.model.Person
+import com.matheusfroes.swapi.ui.peoplelist.PeopleAdapter
 import com.matheusfroes.swapi.ui.peoplelist.PersonClickEvent
 import kotlinx.android.synthetic.main.person_search_view.view.*
 
 class PeopleSearchAdapter
-    : RecyclerView.Adapter<PeopleSearchAdapter.PeopleViewHolder>() {
-    var items = mutableListOf<Person>()
-        set(value) {
-            field.addAll(value)
-            notifyDataSetChanged()
-        }
-
+    : PagedListAdapter<Person, PeopleSearchAdapter.PeopleViewHolder>(PeopleAdapter.PERSON_DIFF) {
     var personClickEvent: PersonClickEvent? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): PeopleViewHolder {
@@ -24,10 +20,8 @@ class PeopleSearchAdapter
         return PeopleViewHolder(view)
     }
 
-    override fun getItemCount() = items.size
-
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
-        val person = items[position]
+        val person = getItem(position)
 
         holder.bind(person)
     }
@@ -35,15 +29,18 @@ class PeopleSearchAdapter
     inner class PeopleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
-                personClickEvent?.invoke(items[adapterPosition].id)
+                personClickEvent?.invoke(getItem(adapterPosition)?.id ?: 0)
             }
         }
 
-        fun bind(person: Person) {
-            itemView.tvPersonName.text = person.name
-            itemView.tvPersonGender.text = person.gender
-            itemView.tvPersonHeight.text = person.height
-            itemView.tvPersonMass.text = person.mass
+        fun bind(person: Person?) {
+            if (person != null) {
+                itemView.tvPersonName.text = person.name
+                itemView.tvPersonGender.text = person.gender
+                itemView.tvPersonHeight.text = person.height
+                itemView.tvPersonMass.text = person.mass
+            }
+
         }
     }
 }
