@@ -1,5 +1,7 @@
 package com.example.administrador.starwarswiki;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -12,5 +14,8 @@ public interface Webservice {
      */
     @GET("api/people/{id}")
     Call<StarWarsCharacter> getStarWarsCharacter(@Path("id") int id);
+    @GET("api/people")
+    Call<PeopleList> getStarWarsCharacters();
+
 }
 

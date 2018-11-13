@@ -1,6 +1,7 @@
 package com.example.administrador.starwarswiki;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.List;
+import java.util.concurrent.Executor;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,27 +39,36 @@ public class CharacterFragment extends Fragment {
         //mViewModel = new CharacterViewModel(new CharacterRepository());
         // mViewModel = ViewModelProviders.of(this).get(CharacterViewModel.class);
         //mViewModel.init(1);
+        CharacterRepository characterRepository = new CharacterRepository(getActivity().getApplicationContext());
+
         final TextView textViewName = getView().findViewById(R.id.name);
         final TextView textViewMass = getView().findViewById(R.id.mass);
         final TextView textViewHeight = getView().findViewById(R.id.height);
         final TextView textViewGender = getView().findViewById(R.id.gender);
 
-        Call<StarWarsCharacter> call = new RetrofitConfig().getService().getStarWarsCharacter(1);
-        call.enqueue(new Callback<StarWarsCharacter>() {
+        Call<PeopleList> call = new RetrofitConfig().getService().getStarWarsCharacters();
+        call.enqueue(new Callback<PeopleList>() {
             @Override
-            public void onResponse(Call<StarWarsCharacter> call, Response<StarWarsCharacter> response) {
-                textViewName.setText(response.body().getName());
-                textViewMass.setText(String.valueOf(response.body().getMass()));
-                textViewHeight.setText(String.valueOf(response.body().getHeight()));
-                textViewGender.setText(response.body().getGender());
+            public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {
+                textViewName.setText(response.body().getResults().get(9).getName());
+                textViewMass.setText(String.valueOf(response.body().getResults().get(9).getMass()));
+                textViewHeight.setText(String.valueOf(response.body().getResults().get(9).getHeight()));
+                textViewGender.setText(response.body().getResults().get(9).getGender());
+
+                for (StarWarsCharacter starWarsCharacter : response.body().getResults()){
+                    characterRepository.insertCharacter(starWarsCharacter);
+                    //textViewName.setText(starWarsCharacter.getName());
+                }
 
             }
 
             @Override
-            public void onFailure(Call<StarWarsCharacter> call, Throwable t) {
+            public void onFailure(Call<PeopleList> call, Throwable t) {
                 Log.d("ERROR", "deu erro",t);
             }
         });
+
+
 
 /*TODO
 se ficar assim deletar CharacterRepository e viewmodel

@@ -16,7 +16,7 @@ public class CharacterViewModel extends ViewModel {
     public CharacterViewModel(CharacterRepository characterRepository){
         this.characterRepository = characterRepository;
     }
-
+/*
     public void init(int id) {
         if (this.starWarsCharacter != null) {
             // ViewModel is created on a per-Fragment basis, so the userId
@@ -30,4 +30,5 @@ public class CharacterViewModel extends ViewModel {
     public LiveData<StarWarsCharacter> getStarWarsCharacter() {
         return starWarsCharacter;
     }
+    */
 }
