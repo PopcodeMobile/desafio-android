@@ -21,8 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class StarWarsCharacter {
     @PrimaryKey@NonNull
     private String name;
-    private int height;
-    private int mass;
+    private String height;
+    private String mass;
     private String gender;
     private String hair_color;
     private String skin_color;
@@ -37,19 +37,19 @@ public class StarWarsCharacter {
         this.name = name;
     }
 
-    public int getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public int getMass() {
+    public String getMass() {
         return mass;
     }
 
-    public void setMass(int mass) {
+    public void setMass(String mass) {
         this.mass = mass;
     }
 

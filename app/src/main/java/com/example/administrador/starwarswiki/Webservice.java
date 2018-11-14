@@ -5,6 +5,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface Webservice {
     /**
@@ -18,7 +19,7 @@ public interface Webservice {
     @GET("api/people")
     Call<PeopleList> getStarWarsCharacters();
 
-    @GET("api/people/?page={pageNum}")
-    Call<PeopleList> getStarWarsCharacters(@Path("pageNum") int pageNum);
+    @GET("api/people/")
+    Call<PeopleList> getStarWarsCharacters(@Query("page") int pageNum);
 }
 

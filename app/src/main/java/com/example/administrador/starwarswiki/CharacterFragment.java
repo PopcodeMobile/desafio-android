@@ -39,12 +39,12 @@ public class CharacterFragment extends Fragment {
         //mViewModel = new CharacterViewModel(new CharacterRepository());
         // mViewModel = ViewModelProviders.of(this).get(CharacterViewModel.class);
         //mViewModel.init(1);
-        CharacterRepository characterRepository = new CharacterRepository(getActivity().getApplicationContext());
-
         final TextView textViewName = getView().findViewById(R.id.name);
         final TextView textViewMass = getView().findViewById(R.id.mass);
         final TextView textViewHeight = getView().findViewById(R.id.height);
         final TextView textViewGender = getView().findViewById(R.id.gender);
+
+        CharacterRepository characterRepository = new CharacterRepository(getActivity().getApplicationContext());
 
         Call<PeopleList> call = new RetrofitConfig().getService().getStarWarsCharacters();
         call.enqueue(new Callback<PeopleList>() {
