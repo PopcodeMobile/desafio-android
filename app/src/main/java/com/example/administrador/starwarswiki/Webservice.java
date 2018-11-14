@@ -14,8 +14,11 @@ public interface Webservice {
      */
     @GET("api/people/{id}")
     Call<StarWarsCharacter> getStarWarsCharacter(@Path("id") int id);
+
     @GET("api/people")
     Call<PeopleList> getStarWarsCharacters();
 
+    @GET("api/people/?page={pageNum}")
+    Call<PeopleList> getStarWarsCharacters(@Path("pageNum") int pageNum);
 }
 
