@@ -18,11 +18,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public View mView;
-        public TextView name;
-        public MyViewHolder(View v, TextView tv) {
+        public TextView textViewName;
+        public TextView textViewGender;
+        public TextView textViewHeight;
+        public TextView textViewMass;
+
+        public MyViewHolder(View v, TextView textViewName, TextView textViewGender, TextView textViewHeight, TextView textViewMass) {
             super(v);
             mView = v;
-            name = tv;
+            this.textViewName = textViewName;
+            this.textViewGender = textViewGender;
+            this.textViewHeight = textViewHeight;
+            this.textViewMass = textViewMass;
         }
     }
 
@@ -39,7 +46,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.character_fragment, parent, false);
         TextView textViewName = v.findViewById(R.id.name);
-        MyViewHolder vh = new MyViewHolder(v,textViewName);
+        TextView textViewGender = v.findViewById(R.id.gender);
+        TextView textViewHeight = v.findViewById(R.id.height);
+        TextView textViewMass = v.findViewById(R.id.mass);
+        MyViewHolder vh = new MyViewHolder(v,textViewName, textViewGender, textViewHeight, textViewMass);
         return vh;
     }
 
@@ -48,8 +58,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.name.setText(mDataset.get(position).getName());
-
+        holder.textViewName.setText(mDataset.get(position).getName());
+        holder.textViewGender.setText(mDataset.get(position).getGender());
+        holder.textViewHeight.setText(mDataset.get(position).getHeight());
+        holder.textViewMass.setText(mDataset.get(position).getMass());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
