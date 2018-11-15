@@ -3,4 +3,6 @@
     <string name="gender">Gender: </string>
     <string name="mass">Mass: </string>
     <string name="height">Height: </string>
+    <string name="search_hint"> Yoda </string>
+    <string name="action_search"> Search </string>
 </resources>

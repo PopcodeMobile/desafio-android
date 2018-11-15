@@ -4,12 +4,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
     private List<StarWarsCharacter> mDataset;
+    private List<StarWarsCharacter> characterListFiltered;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -36,9 +40,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // Provide a suitable constructor (depends on the kind of dataset)
     public RecyclerViewAdapter(List<StarWarsCharacter> myDataset) {
         mDataset = myDataset;
+        characterListFiltered = myDataset;
     }
 
-    // Create new views (invoked by the layout manager)
+     // Create new views (invoked by the layout manager)
     @Override
     public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
@@ -58,16 +63,53 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.textViewName.setText(mDataset.get(position).getName());
-        holder.textViewGender.setText(mDataset.get(position).getGender());
-        holder.textViewHeight.setText(mDataset.get(position).getHeight());
-        holder.textViewMass.setText(mDataset.get(position).getMass());
+        holder.textViewName.setText(characterListFiltered.get(position).getName());
+        holder.textViewGender.setText(characterListFiltered.get(position).getGender());
+        holder.textViewHeight.setText(characterListFiltered.get(position).getHeight());
+        holder.textViewMass.setText(characterListFiltered.get(position).getMass());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        if (characterListFiltered != null)
+            return characterListFiltered.size();
+        else
+            return mDataset.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    characterListFiltered = mDataset;
+                } else {
+                    List<StarWarsCharacter> filteredList = new ArrayList<>();
+                    for (StarWarsCharacter row : mDataset) {
+
+                        // name match condition.
+                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    characterListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = characterListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                characterListFiltered = (ArrayList<StarWarsCharacter>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }
 
