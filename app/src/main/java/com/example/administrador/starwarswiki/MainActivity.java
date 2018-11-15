@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter mAdapter;
     private CharacterViewModel characterViewModel;
     private RetrofitConfig retrofit;
+    private PeopleList lastList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
                 Log.d("page=>>>>>>>>>>>>>>>>>>>>", String.valueOf(page));
-                loadNextDataFromApi(page+1);
+                if(lastList.getNext() != null)
+                    loadNextDataFromApi(page);
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -64,12 +66,8 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<PeopleList>() {
             @Override
             public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {
-                /*textViewName.setText(response.body().getResults().get(9).getName());
-                textViewMass.setText(String.valueOf(response.body().getResults().get(9).getMass()));
-                textViewHeight.setText(String.valueOf(response.body().getResults().get(9).getHeight()));
-                textViewGender.setText(response.body().getResults().get(9).getGender());*/
-
-                for (StarWarsCharacter starWarsCharacter : response.body().getResults()) {
+               lastList = response.body();
+               for (StarWarsCharacter starWarsCharacter : response.body().getResults()) {
                     characterRepository.insertCharacter(starWarsCharacter);
                     myDataset.add(starWarsCharacter);
                     //textViewName.setText(starWarsCharacter.getName());
@@ -99,11 +97,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<PeopleList>() {
             @Override
             public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {
-                /*textViewName.setText(response.body().getResults().get(9).getName());
-                textViewMass.setText(String.valueOf(response.body().getResults().get(9).getMass()));
-                textViewHeight.setText(String.valueOf(response.body().getResults().get(9).getHeight()));
-                textViewGender.setText(response.body().getResults().get(9).getGender());*/
-
+                lastList = response.body();
                 for (StarWarsCharacter starWarsCharacter : response.body().getResults()) {
                     characterRepository.insertCharacter(starWarsCharacter);
                     myDataset.add(starWarsCharacter);
@@ -117,18 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("ERROR", "deu erro",t);
             }
         });
-        /*try {
-            PeopleList response = call.execute().body();
-            for (StarWarsCharacter starWarsCharacter : response.getResults()) {
-                characterRepository.insertCharacter(starWarsCharacter);
-                myDataset.add(starWarsCharacter);
-                Log.d("aqui","auiiiii");
-                //textViewName.setText(starWarsCharacter.getName());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
     }
 }
 
