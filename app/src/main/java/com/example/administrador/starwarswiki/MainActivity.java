@@ -20,7 +20,7 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     private EndlessRecyclerViewScrollListener scrollListener;
-    private List<StarWarsCharacter> myDataset;
+    //private List<StarWarsCharacter> myDataset;
     private RecyclerViewAdapter mAdapter;
     private CharacterViewModel characterViewModel;
     private RetrofitConfig retrofit;
@@ -31,12 +31,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myDataset = new ArrayList<>();
-        loadDatabase();
+        //myDataset = new ArrayList<>();
+        CharacterViewModel mViewModel = new CharacterViewModel(getApplicationContext());
+        mAdapter = new RecyclerViewAdapter(mViewModel.getStarWarsCharactersList());
+        mViewModel.loadDatabase(mAdapter);
         // Configure the RecyclerView
-        RecyclerView rvItems = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerViewItems = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvItems.setLayoutManager(linearLayoutManager);
+        recyclerViewItems.setLayoutManager(linearLayoutManager);
         // Retain an instance so that you can call `resetState()` for fresh searches
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
@@ -44,73 +46,16 @@ public class MainActivity extends AppCompatActivity {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
                 Log.d("page=>>>>>>>>>>>>>>>>>>>>", String.valueOf(page));
-                if(lastList.getNext() != null)
-                    loadNextDataFromApi(page);
+                if(mViewModel.getLastList().getNext() != null)
+                    mViewModel.loadNextDataFromApi(page, mAdapter);
             }
         };
         // Adds the scroll listener to RecyclerView
-        rvItems.addOnScrollListener(scrollListener);
-        mAdapter = new RecyclerViewAdapter(myDataset);
-        rvItems.setAdapter(mAdapter);
+        recyclerViewItems.addOnScrollListener(scrollListener);
+        recyclerViewItems.setAdapter(mAdapter);
 
     }
 
-    // Append the next page of data into the adapter
-    // This method probably sends out a network request and appends new data items to your adapter.
-    public void loadNextDataFromApi(int offset) {
-        // Send an API request to retrieve appropriate paginated data
-        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        CharacterRepository characterRepository = new CharacterRepository(getApplicationContext());
 
-        Call<PeopleList> call = retrofit.getService().getStarWarsCharacters(offset);
-        call.enqueue(new Callback<PeopleList>() {
-            @Override
-            public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {
-               lastList = response.body();
-               for (StarWarsCharacter starWarsCharacter : response.body().getResults()) {
-                    characterRepository.insertCharacter(starWarsCharacter);
-                    myDataset.add(starWarsCharacter);
-                    //textViewName.setText(starWarsCharacter.getName());
-                }
-               mAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onFailure(Call<PeopleList> call, Throwable t) {
-                Log.d("ERROR", "deu erro",t);
-            }
-        });
-
-            //  --> Deserialize and construct new model objects from the API response
-            //  --> Append the new data objects to the existing set of items inside the array of items
-            //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-    }
-
-    public void loadDatabase(){
-
-        Log.d("aqui","auiiiii1");
-        CharacterRepository characterRepository = new CharacterRepository(getApplicationContext());
-        characterViewModel = new CharacterViewModel(characterRepository);
-        retrofit = new RetrofitConfig();
-        Call<PeopleList> call = retrofit.getService().getStarWarsCharacters();
-        call.enqueue(new Callback<PeopleList>() {
-            @Override
-            public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {
-                lastList = response.body();
-                for (StarWarsCharacter starWarsCharacter : response.body().getResults()) {
-                    characterRepository.insertCharacter(starWarsCharacter);
-                    myDataset.add(starWarsCharacter);
-                    //textViewName.setText(starWarsCharacter.getName());
-                }
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<PeopleList> call, Throwable t) {
-                Log.d("ERROR", "deu erro",t);
-            }
-        });
-    }
 }
 
