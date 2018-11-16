@@ -37,10 +37,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public RecyclerViewAdapter(List<StarWarsCharacter> myDataset) {
         mDataset = myDataset;
         characterListFiltered = myDataset;
+    }
+
+    void setStarWarsCharacters(List<StarWarsCharacter> starWarsCharacters){
+        mDataset = starWarsCharacters;
+        notifyDataSetChanged();
     }
 
      // Create new views (invoked by the layout manager)
@@ -49,7 +53,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                                      int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.character_fragment, parent, false);
+                .inflate(R.layout.recycler_item, parent, false);
         TextView textViewName = v.findViewById(R.id.name);
         TextView textViewGender = v.findViewById(R.id.gender);
         TextView textViewHeight = v.findViewById(R.id.height);
@@ -62,11 +66,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.textViewName.setText(characterListFiltered.get(position).getName());
-        holder.textViewGender.setText(characterListFiltered.get(position).getGender());
-        holder.textViewHeight.setText(characterListFiltered.get(position).getHeight());
-        holder.textViewMass.setText(characterListFiltered.get(position).getMass());
+    // - replace the contents of the view with that element
+        if (characterListFiltered != null) {
+            holder.textViewName.setText(characterListFiltered.get(position).getName());
+            holder.textViewGender.setText(characterListFiltered.get(position).getGender());
+            holder.textViewHeight.setText(characterListFiltered.get(position).getHeight());
+            holder.textViewMass.setText(characterListFiltered.get(position).getMass());
+        }else if(mDataset != null){
+            holder.textViewName.setText(mDataset.get(position).getName());
+            holder.textViewGender.setText(mDataset.get(position).getGender());
+            holder.textViewHeight.setText(mDataset.get(position).getHeight());
+            holder.textViewMass.setText(mDataset.get(position).getMass());
+
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -74,8 +86,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
         if (characterListFiltered != null)
             return characterListFiltered.size();
-        else
+        else if(mDataset != null)
             return mDataset.size();
+        else
+            return 0;
     }
 
     @Override

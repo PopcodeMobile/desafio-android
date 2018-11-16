@@ -15,11 +15,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
         "starships",
         "created",
         "edited",
-        "url"})
+        })
 
 @Entity
 public class StarWarsCharacter {
     @PrimaryKey@NonNull
+    private String url;
     private String name;
     private String height;
     private String mass;
@@ -28,6 +29,15 @@ public class StarWarsCharacter {
     private String skin_color;
     private String eye_color;
     private String birth_year;
+
+    @NonNull
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(@NonNull String url) {
+        this.url = url;
+    }
 
     public String getName() {
         return name;

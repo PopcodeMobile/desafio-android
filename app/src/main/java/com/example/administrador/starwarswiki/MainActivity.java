@@ -1,31 +1,29 @@
 package com.example.administrador.starwarswiki;
 
 import android.app.SearchManager;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     private EndlessRecyclerViewScrollListener scrollListener;
     private RecyclerViewAdapter mAdapter;
     private SearchView searchView;
+    private CharacterViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,28 +31,44 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //myDataset = new ArrayList<>();
-        CharacterViewModel mViewModel = new CharacterViewModel(getApplicationContext());
-        mAdapter = new RecyclerViewAdapter(mViewModel.getStarWarsCharactersList());
-        mViewModel.loadDatabase(mAdapter);
-        // Configure the RecyclerView
-        RecyclerView recyclerViewItems = (RecyclerView) findViewById(R.id.recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerViewItems.setLayoutManager(linearLayoutManager);
-        // Retain an instance so that you can call `resetState()` for fresh searches
-        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                Log.d("page=>>>>>>>>>>>>>>>>>>>>", String.valueOf(page));
-                if(mViewModel.getLastList().getNext() != null)
-                    mViewModel.loadNextDataFromApi(page, mAdapter);
-            }
-        };
-        // Adds the scroll listener to RecyclerView
-        recyclerViewItems.addOnScrollListener(scrollListener);
-        recyclerViewItems.setAdapter(mAdapter);
+        mViewModel = ViewModelProviders.of(this).get(CharacterViewModel.class);
+        final ProgressBar simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        simpleProgressBar.setVisibility(View.VISIBLE);
 
+        //checks internet connection
+        if(isOnline()) {
+            mViewModel.loadDatabase();
+        }
+
+        //ROOM is responsible for caching the DATA, so if there's no internet we check if there's any data in the db
+        if(mViewModel.getStarWarsCharactersList() != null) {
+            simpleProgressBar.setVisibility(View.INVISIBLE);
+            mAdapter = new RecyclerViewAdapter(mViewModel.getStarWarsCharactersList().getValue());
+            mViewModel.getStarWarsCharactersList().observe(this, new Observer<List<StarWarsCharacter>>() {
+                @Override
+                public void onChanged(@Nullable final List<StarWarsCharacter> starWarsCharacters) {
+                    mAdapter.setStarWarsCharacters(starWarsCharacters);
+                    Log.d("=>>>>>>>>>>>", "mudou");
+                }
+            });
+
+            // Configure the RecyclerView
+            RecyclerView recyclerViewItems = (RecyclerView) findViewById(R.id.recycler_view);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            recyclerViewItems.setLayoutManager(linearLayoutManager);
+            // Retain an instance so that you can call `resetState()` for fresh searches
+            scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                    // Triggered only when new data needs to be appended to the list
+                    Log.d("page=>>>>>>>>>>>>>>>>>>>>", String.valueOf(page));
+                    mViewModel.loadNextDataFromApi(page);
+                }
+            };
+            // Adds the scroll listener to RecyclerView
+            recyclerViewItems.addOnScrollListener(scrollListener);
+            recyclerViewItems.setAdapter(mAdapter);
+        }
     }
 
     @Override
@@ -97,6 +111,19 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        }
+        catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+
+        return false;
     }
 
 }

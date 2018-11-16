@@ -5,6 +5,8 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import java.util.List;
+
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 @Dao
@@ -13,6 +15,8 @@ public interface StarWarsCharacterDao {
     void save(StarWarsCharacter starWarsCharacter);
     @Query("SELECT * FROM starwarscharacter WHERE name = :characterName")
     LiveData<StarWarsCharacter> load(String characterName);
-    //@Query("SELECT count(1) FROM starwarscharacter WHERE id = :characterId ")
+    @Query("SELECT * FROM starwarscharacter")
+    LiveData<List<StarWarsCharacter>> getAllCharacters();
+      //@Query("SELECT count(1) FROM starwarscharacter WHERE id = :characterId ")
     //int checkExist(int characterId);
 }
