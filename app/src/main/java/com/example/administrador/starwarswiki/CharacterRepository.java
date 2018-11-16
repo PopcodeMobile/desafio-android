@@ -47,6 +47,7 @@ public class CharacterRepository {
             public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {
                 if(response.isSuccessful()) {
                     for (StarWarsCharacter starWarsCharacter : response.body().getResults()) {
+                        starWarsCharacter.setId(Integer.parseInt(starWarsCharacter.getUrl().replaceAll("[^\\d]", "")));
                         insertCharacter(starWarsCharacter);
                         Log.d("debug", "fetching initial data");
                     }
@@ -69,6 +70,7 @@ public class CharacterRepository {
             public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {
                 if (response.isSuccessful()) {
                     for (StarWarsCharacter starWarsCharacter : response.body().getResults()) {
+                        starWarsCharacter.setId(Integer.parseInt(starWarsCharacter.getUrl().replaceAll("[^\\d]", "")));
                         insertCharacter(starWarsCharacter);
                     }
                     Log.d("debug", "loading next page");

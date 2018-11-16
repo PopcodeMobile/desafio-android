@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class StarWarsCharacter {
-    @PrimaryKey@NonNull
+    @PrimaryKey
+    private int id;
     private String url;
     private String name;
     private String height;
@@ -30,12 +31,20 @@ public class StarWarsCharacter {
     private String eye_color;
     private String birth_year;
 
-    @NonNull
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(@NonNull String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
