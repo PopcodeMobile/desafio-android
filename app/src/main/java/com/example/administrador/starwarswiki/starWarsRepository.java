@@ -3,23 +3,25 @@ package com.example.administrador.starwarswiki;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.os.RecoverySystem;
 import android.util.Log;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CharacterRepository {
-    private String next_list;
+public class starWarsRepository {
     private String DATABASE_NAME = "starwars_db";
     private StarWarsDatabase starWarsDatabase;
     private Webservice webservice;
     private LiveData<List<StarWarsCharacter>> starWarsCharacterlist;
+    private LiveData<List<Favorite>> favoriteList;
 
-    public CharacterRepository(Application application, Webservice webservice) {
+    public starWarsRepository(Application application, Webservice webservice) {
         starWarsDatabase = StarWarsDatabase.getDatabase(application);
         this.webservice = webservice;
         this.starWarsCharacterlist = starWarsDatabase.starWarsCharacterDao().getAllCharacters();
+        this.favoriteList = starWarsDatabase.favoriteDao().getAllFavorites();
     }
 
     public void insertCharacter(StarWarsCharacter starWarsCharacter) {
@@ -32,12 +34,32 @@ public class CharacterRepository {
         }.execute();
     }
 
-    public String getNext_list() {
-        return next_list;
+    public void insertFavorite(Integer id) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                starWarsDatabase.favoriteDao().save(new Favorite(id));
+                return null;
+            }
+        }.execute();
     }
 
     public LiveData<List<StarWarsCharacter>> getCharacters(){
         return starWarsCharacterlist;
+    }
+
+    public LiveData<List<Favorite>> getFavoriteList() {
+        return favoriteList;
+    }
+
+    public void deleteFavorite(int i){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                starWarsDatabase.favoriteDao().deleteFavorite(i);
+                return null;
+            }
+        }.execute();
     }
 
     public void fetchInitialData(){

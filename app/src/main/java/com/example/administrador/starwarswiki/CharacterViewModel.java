@@ -7,15 +7,17 @@ import java.util.List;
 
 public class CharacterViewModel extends AndroidViewModel {
     private LiveData<List<StarWarsCharacter>> starWarsCharactersList;
-    private CharacterRepository characterRepository;
+    private starWarsRepository starWarsRepository;
     private Application application;
     private RetrofitConfig retrofit;
+    private LiveData<List<Favorite>> favoritelist;
 
     public CharacterViewModel(Application application){
         super(application);
         retrofit = new RetrofitConfig();
-        this.characterRepository = new CharacterRepository(application, retrofit.getService());
-        this.starWarsCharactersList = characterRepository.getCharacters();
+        this.starWarsRepository = new starWarsRepository(application, retrofit.getService());
+        this.starWarsCharactersList = starWarsRepository.getCharacters();
+        this.favoritelist = starWarsRepository.getFavoriteList();
 
     }
 
@@ -23,21 +25,29 @@ public class CharacterViewModel extends AndroidViewModel {
         return starWarsCharactersList;
     }
 
-    public String getNextList() {
-        return characterRepository.getNext_list();
-    }
-
     // Append the next page of data into the adapter
     // This method probably sends out a network request and appends new data items to your adapter.
     public void loadNextDataFromApi(int offset) {
         // Send an API request to retrieve appropriate paginated data
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        characterRepository.loadNextDataFromApi(offset);
+        starWarsRepository.loadNextDataFromApi(offset);
     }
 
     public void loadDatabase(){
-        characterRepository.fetchInitialData();
+        starWarsRepository.fetchInitialData();
 
+    }
+
+    public LiveData<List<Favorite>> getFavoritelist() {
+        return favoritelist;
+    }
+
+    public void insertFavorite(int id){
+        starWarsRepository.insertFavorite(id);
+    }
+
+    public void removeFavorite(int id){
+        starWarsRepository.deleteFavorite(id);
     }
 
 }
