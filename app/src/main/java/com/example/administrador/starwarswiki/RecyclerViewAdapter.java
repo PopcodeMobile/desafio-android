@@ -1,12 +1,16 @@
 package com.example.administrador.starwarswiki;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,32 +18,14 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
     private List<StarWarsCharacter> mDataset;
     private List<StarWarsCharacter> characterListFiltered;
+    private List<Favorite> favoriteList;
+    private CharacterViewModel viewModel;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views fo
-    // r a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public View mView;
-        public TextView textViewName;
-        public TextView textViewGender;
-        public TextView textViewHeight;
-        public TextView textViewMass;
-
-        public MyViewHolder(View v, TextView textViewName, TextView textViewGender, TextView textViewHeight, TextView textViewMass) {
-            super(v);
-            mView = v;
-            this.textViewName = textViewName;
-            this.textViewGender = textViewGender;
-            this.textViewHeight = textViewHeight;
-            this.textViewMass = textViewMass;
-        }
-    }
-
-    public RecyclerViewAdapter(List<StarWarsCharacter> myDataset) {
-        mDataset = myDataset;
-        characterListFiltered = myDataset;
+    public RecyclerViewAdapter(CharacterViewModel viewModel) {
+        this.viewModel = viewModel;
+        mDataset = viewModel.getStarWarsCharactersList().getValue();
+        characterListFiltered = mDataset;
+        favoriteList = viewModel.getFavoritelist().getValue();
     }
 
     void setStarWarsCharacters(List<StarWarsCharacter> starWarsCharacters){
@@ -47,6 +33,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyDataSetChanged();
     }
 
+    void setFavoriteList(List<Favorite> favoriteList){
+        this.favoriteList = favoriteList;
+        notifyDataSetChanged();
+    }
+
+    // Provide a reference to the views for each data item
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public View mView;
+        public TextView textViewName;
+        public TextView textViewGender;
+        public TextView textViewHeight;
+        public TextView textViewMass;
+        public ToggleButton favoriteButton;
+
+        public MyViewHolder(View v, TextView textViewName, TextView textViewGender, TextView textViewHeight, TextView textViewMass,  ToggleButton favoriteButton) {
+            super(v);
+            mView = v;
+            this.textViewName = textViewName;
+            this.textViewGender = textViewGender;
+            this.textViewHeight = textViewHeight;
+            this.textViewMass = textViewMass;
+            this.favoriteButton = favoriteButton;
+        }
+    }
      // Create new views (invoked by the layout manager)
     @Override
     public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
@@ -54,11 +65,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_item, parent, false);
+
         TextView textViewName = v.findViewById(R.id.name);
         TextView textViewGender = v.findViewById(R.id.gender);
         TextView textViewHeight = v.findViewById(R.id.height);
         TextView textViewMass = v.findViewById(R.id.mass);
-        MyViewHolder vh = new MyViewHolder(v,textViewName, textViewGender, textViewHeight, textViewMass);
+        ToggleButton favbtn = (ToggleButton) v.findViewById(R.id.favorite_button);
+
+        MyViewHolder vh = new MyViewHolder(v,textViewName, textViewGender, textViewHeight, textViewMass, favbtn);
         return vh;
     }
 
@@ -68,16 +82,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // - get element from your dataset at this position
     // - replace the contents of the view with that element
         if (characterListFiltered != null) {
-            holder.textViewName.setText(characterListFiltered.get(position).getName());
-            holder.textViewGender.setText(characterListFiltered.get(position).getGender());
-            holder.textViewHeight.setText(characterListFiltered.get(position).getHeight());
-            holder.textViewMass.setText(characterListFiltered.get(position).getMass());
+            viewHolderDataBinder(holder, position, characterListFiltered);
         }else if(mDataset != null){
-            holder.textViewName.setText(mDataset.get(position).getName());
-            holder.textViewGender.setText(mDataset.get(position).getGender());
-            holder.textViewHeight.setText(mDataset.get(position).getHeight());
-            holder.textViewMass.setText(mDataset.get(position).getMass());
-
+           viewHolderDataBinder(holder, position, mDataset);
         }
     }
 
@@ -125,5 +132,44 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         };
     }
+
+    private void viewHolderDataBinder(MyViewHolder holder, int position, List<StarWarsCharacter> dataList){
+        holder.textViewName.setText(dataList.get(position).getName());
+        holder.textViewGender.setText(dataList.get(position).getGender());
+        holder.textViewHeight.setText(dataList.get(position).getHeight());
+        holder.textViewMass.setText(dataList.get(position).getMass());
+        
+        if (favoriteList != null && isInFavorite(favoriteList, dataList.get(position).getId())) {
+            holder.favoriteButton.setChecked(true);
+            Log.d(">>>>>>>>>", "tem favorito");
+        }else{
+            holder.favoriteButton.setChecked(false);
+        }
+
+        holder.favoriteButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    Log.d(">>>>>>>>>", "inserindo favorito");
+                    viewModel.insertFavorite(dataList.get(position).getId());
+                } else {
+                    // The toggle is disabled
+                    viewModel.removeFavorite(dataList.get(position).getId());
+                }
+            }
+        });
+    }
+
+    public static boolean isInFavorite(List<Favorite> favlist, int id) {
+        for (Favorite row : favlist) {
+            // name match condition.
+            Log.d("==================================", row.toString());
+            if (row.getStarWarsCharacterId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 

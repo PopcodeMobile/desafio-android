@@ -43,15 +43,22 @@ public class MainActivity extends AppCompatActivity {
         //ROOM is responsible for caching the DATA, so if there's no internet we check if there's any data in the db
         if(mViewModel.getStarWarsCharactersList() != null) {
             simpleProgressBar.setVisibility(View.INVISIBLE);
-            mAdapter = new RecyclerViewAdapter(mViewModel.getStarWarsCharactersList().getValue());
+            mAdapter = new RecyclerViewAdapter(mViewModel);
             mViewModel.getStarWarsCharactersList().observe(this, new Observer<List<StarWarsCharacter>>() {
                 @Override
                 public void onChanged(@Nullable final List<StarWarsCharacter> starWarsCharacters) {
                     mAdapter.setStarWarsCharacters(starWarsCharacters);
-                    Log.d("=>>>>>>>>>>>", "mudou");
+                    int tmp = mViewModel.getStarWarsCharactersList().getValue().size()/10;
+                    scrollListener.setCurrentPage(tmp);
+                    Log.d("=>>>>>>>>>>>", "mudou "+ tmp );
                 }
             });
-
+            mViewModel.getFavoritelist().observe(this, new Observer<List<Favorite>>() {
+                @Override
+                public void onChanged(@Nullable List<Favorite> favorites) {
+                    mAdapter.setFavoriteList(favorites);
+                }
+            });
             // Configure the RecyclerView
             RecyclerView recyclerViewItems = (RecyclerView) findViewById(R.id.recycler_view);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -61,10 +68,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                     // Triggered only when new data needs to be appended to the list
+
                     Log.d("page=>>>>>>>>>>>>>>>>>>>>", String.valueOf(page));
                     mViewModel.loadNextDataFromApi(page);
                 }
             };
+            //uṕdates page value in case there were cached data
+
             // Adds the scroll listener to RecyclerView
             recyclerViewItems.addOnScrollListener(scrollListener);
             recyclerViewItems.setAdapter(mAdapter);

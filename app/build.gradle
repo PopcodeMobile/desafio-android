@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.4.0'
     implementation 'javax.inject:javax.inject:1@jar'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.+'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
