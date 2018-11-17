@@ -30,7 +30,15 @@ public class StarWarsCharacter {
     private String skin_color;
     private String eye_color;
     private String birth_year;
+    private boolean favorite;
 
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 
     public int getId() {
         return id;

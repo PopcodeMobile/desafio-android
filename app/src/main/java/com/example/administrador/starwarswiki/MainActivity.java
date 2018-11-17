@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
         simpleProgressBar.setVisibility(View.VISIBLE);
 
         //checks internet connection
-        if(isOnline()) {
+        //if(isOnline()) {
             mViewModel.loadDatabase();
-        }
+        //}
 
         //ROOM is responsible for caching the DATA, so if there's no internet we check if there's any data in the db
         if(mViewModel.getStarWarsCharactersList() != null) {
@@ -49,14 +49,13 @@ public class MainActivity extends AppCompatActivity {
                 public void onChanged(@Nullable final List<StarWarsCharacter> starWarsCharacters) {
                     mAdapter.setStarWarsCharacters(starWarsCharacters);
                     int tmp = mViewModel.getStarWarsCharactersList().getValue().size()/10;
-                    scrollListener.setCurrentPage(tmp);
+                    Log.d("size >>>>>>", String.valueOf(mViewModel.getStarWarsCharactersList().getValue().size()));
+                    if (tmp == 0) {
+                        scrollListener.setCurrentPage(1);
+                    }else{
+                        scrollListener.setCurrentPage(tmp);
+                    }
                     Log.d("=>>>>>>>>>>>", "mudou "+ tmp );
-                }
-            });
-            mViewModel.getFavoritelist().observe(this, new Observer<List<Favorite>>() {
-                @Override
-                public void onChanged(@Nullable List<Favorite> favorites) {
-                    mAdapter.setFavoriteList(favorites);
                 }
             });
             // Configure the RecyclerView
@@ -68,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                     // Triggered only when new data needs to be appended to the list
-
                     Log.d("page=>>>>>>>>>>>>>>>>>>>>", String.valueOf(page));
                     mViewModel.loadNextDataFromApi(page);
                 }

@@ -18,23 +18,16 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
     private List<StarWarsCharacter> mDataset;
     private List<StarWarsCharacter> characterListFiltered;
-    private List<Favorite> favoriteList;
     private CharacterViewModel viewModel;
 
     public RecyclerViewAdapter(CharacterViewModel viewModel) {
         this.viewModel = viewModel;
         mDataset = viewModel.getStarWarsCharactersList().getValue();
         characterListFiltered = mDataset;
-        favoriteList = viewModel.getFavoritelist().getValue();
     }
 
     void setStarWarsCharacters(List<StarWarsCharacter> starWarsCharacters){
         mDataset = starWarsCharacters;
-        notifyDataSetChanged();
-    }
-
-    void setFavoriteList(List<Favorite> favoriteList){
-        this.favoriteList = favoriteList;
         notifyDataSetChanged();
     }
 
@@ -138,37 +131,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.textViewGender.setText(dataList.get(position).getGender());
         holder.textViewHeight.setText(dataList.get(position).getHeight());
         holder.textViewMass.setText(dataList.get(position).getMass());
-        
-        if (favoriteList != null && isInFavorite(favoriteList, dataList.get(position).getId())) {
-            holder.favoriteButton.setChecked(true);
-            Log.d(">>>>>>>>>", "tem favorito");
-        }else{
-            holder.favoriteButton.setChecked(false);
-        }
 
-        holder.favoriteButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+        holder.favoriteButton.setChecked(dataList.get(position).isFavorite());
+        holder.favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.favoriteButton.isChecked()) {
                     // The toggle is enabled
-                    Log.d(">>>>>>>>>", "inserindo favorito");
-                    viewModel.insertFavorite(dataList.get(position).getId());
+                    Log.d(">>>>>>>>>", "inserindo favorito" + dataList.get(position).getId());
+                    viewModel.updateFavorite(true, dataList.get(position).getId());
                 } else {
                     // The toggle is disabled
-                    viewModel.removeFavorite(dataList.get(position).getId());
+                    Log.d(">>>>>>>>>", "removendo favorito");
+                    viewModel.updateFavorite(false, dataList.get(position).getId());
                 }
             }
         });
-    }
-
-    public static boolean isInFavorite(List<Favorite> favlist, int id) {
-        for (Favorite row : favlist) {
-            // name match condition.
-            Log.d("==================================", row.toString());
-            if (row.getStarWarsCharacterId() == id) {
-                return true;
+                /*.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    Log.d(">>>>>>>>>", "inserindo favorito" + dataList.get(position).getId());
+                    viewModel.updateFavorite(true, dataList.get(position).getId());
+                } else {
+                    // The toggle is disabled
+                    Log.d(">>>>>>>>>", "removendo favorito");
+                    viewModel.updateFavorite(false, dataList.get(position).getId());
+                }
             }
-        }
-        return false;
+        });*/
+
     }
 
 }
