@@ -17,11 +17,22 @@ public class StarWarsRepository {
     private StarWarsDatabase starWarsDatabase;
     private Webservice webservice;
     private LiveData<List<StarWarsCharacter>> starWarsCharacterlist;
+    private LiveData<StarWarsCharacter> starWarsCharacterLiveData;
 
     public StarWarsRepository(Application application, Webservice webservice) {
         starWarsDatabase = StarWarsDatabase.getDatabase(application);
         this.webservice = webservice;
         this.starWarsCharacterlist = starWarsDatabase.starWarsCharacterDao().getAllCharacters();
+    }
+
+    public StarWarsRepository(Application application, Webservice webservice, int id) {
+        starWarsDatabase = StarWarsDatabase.getDatabase(application);
+        this.webservice = webservice;
+        this.starWarsCharacterLiveData = starWarsDatabase.starWarsCharacterDao().getCharcter(id);
+    }
+
+    public void getCharacterById(int id){
+        new getCharacterAsyncTask(starWarsDatabase.starWarsCharacterDao()).execute(id);
     }
 
     public void upsertCharacter(StarWarsCharacter starWarsCharacter) {
@@ -39,6 +50,10 @@ public class StarWarsRepository {
 
     public LiveData<List<StarWarsCharacter>> getCharacters(){
         return starWarsCharacterlist;
+    }
+
+    public LiveData<StarWarsCharacter> getCharacter(){
+        return starWarsCharacterLiveData;
     }
 
     public void fetchInitialData(){
@@ -125,6 +140,18 @@ public class StarWarsRepository {
         protected Void doInBackground(MyParams... params) {
            mAsyncTaskDao.updateFavorite( params[0].isB(), params[0].getI());
            return null;
+        }
+    }
+
+    private static class getCharacterAsyncTask extends AsyncTask<Integer, Void , Void> {
+        private StarWarsCharacterDao mAsyncTaskDao;
+        getCharacterAsyncTask(StarWarsCharacterDao dao) {
+            mAsyncTaskDao = dao;
+        }
+        @Override
+        protected Void doInBackground(Integer... params) {
+            mAsyncTaskDao.load(params[0]);
+            return null;
         }
     }
 

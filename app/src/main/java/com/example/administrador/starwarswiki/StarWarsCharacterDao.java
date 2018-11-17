@@ -20,6 +20,8 @@ public interface StarWarsCharacterDao {
     LiveData<StarWarsCharacter> load(String characterName);
     @Query("SELECT * FROM starwarscharacter")
     LiveData<List<StarWarsCharacter>> getAllCharacters();
+    @Query("SELECT * FROM starwarscharacter WHERE id = :id")
+    LiveData<StarWarsCharacter> getCharcter(int id);
     //@Query("SELECT * FROM starwarscharacter WHERE id BETWEEN :v1 and :v2")
     //LiveData<List<StarWarsCharacter>> getCharactersRange(int v1, int v2);
     //@Query("SELECT count(1) FROM starwarscharacter WHERE id = :characterId ")

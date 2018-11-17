@@ -7,15 +7,15 @@ import java.util.List;
 
 public class CharacterViewModel extends AndroidViewModel {
     private LiveData<List<StarWarsCharacter>> starWarsCharactersList;
-    private StarWarsRepository StarWarsRepository;
+    private StarWarsRepository starWarsRepository;
     private Application application;
     private RetrofitConfig retrofit;
 
     public CharacterViewModel(Application application){
         super(application);
         retrofit = new RetrofitConfig();
-        this.StarWarsRepository = new StarWarsRepository(application, retrofit.getService());
-        this.starWarsCharactersList = StarWarsRepository.getCharacters();
+        this.starWarsRepository = new StarWarsRepository(application, retrofit.getService());
+        this.starWarsCharactersList = starWarsRepository.getCharacters();
 
     }
 
@@ -28,16 +28,16 @@ public class CharacterViewModel extends AndroidViewModel {
     public void loadNextDataFromApi(int offset) {
         // Send an API request to retrieve appropriate paginated data
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        StarWarsRepository.loadNextDataFromApi(offset);
+        starWarsRepository.loadNextDataFromApi(offset);
     }
 
     public void loadDatabase(){
-        StarWarsRepository.fetchInitialData();
+        starWarsRepository.fetchInitialData();
 
     }
 
     public void updateFavorite(boolean b, int id){
-        StarWarsRepository.updateFavorite(b,id);
+        starWarsRepository.updateFavorite(b,id);
     }
 
 }

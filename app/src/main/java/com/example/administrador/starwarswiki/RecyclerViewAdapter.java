@@ -1,5 +1,7 @@
 package com.example.administrador.starwarswiki;
 
+import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,26 +34,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyDataSetChanged();
     }
 
-    // Provide a reference to the views for each data item
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public View mView;
-        public TextView textViewName;
-        public TextView textViewGender;
-        public TextView textViewHeight;
-        public TextView textViewMass;
-        public ToggleButton favoriteButton;
-
-        public MyViewHolder(View v, TextView textViewName, TextView textViewGender, TextView textViewHeight, TextView textViewMass,  ToggleButton favoriteButton) {
-            super(v);
-            mView = v;
-            this.textViewName = textViewName;
-            this.textViewGender = textViewGender;
-            this.textViewHeight = textViewHeight;
-            this.textViewMass = textViewMass;
-            this.favoriteButton = favoriteButton;
-        }
-    }
      // Create new views (invoked by the layout manager)
     @Override
     public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
@@ -63,10 +46,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView textViewGender = v.findViewById(R.id.gender);
         TextView textViewHeight = v.findViewById(R.id.height);
         TextView textViewMass = v.findViewById(R.id.mass);
-        ToggleButton favbtn = (ToggleButton) v.findViewById(R.id.favorite_button);
+        ToggleButton favbtn =  v.findViewById(R.id.favorite_button);
+        ConstraintLayout constraintLayout = v.findViewById(R.id.constraint_layout);
 
-        MyViewHolder vh = new MyViewHolder(v,textViewName, textViewGender, textViewHeight, textViewMass, favbtn);
+        MyViewHolder vh = new MyViewHolder(v,textViewName, textViewGender, textViewHeight, textViewMass, favbtn, constraintLayout);
         return vh;
+    }
+
+    private void viewHolderDataBinder(MyViewHolder holder, int position, List<StarWarsCharacter> dataList){
+        holder.textViewName.setText(dataList.get(position).getName());
+        holder.textViewGender.setText(dataList.get(position).getGender());
+        holder.textViewHeight.setText(dataList.get(position).getHeight());
+        holder.textViewMass.setText(dataList.get(position).getMass());
+
+        holder.favoriteButton.setChecked(dataList.get(position).isFavorite());
+        holder.favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.favoriteButton.isChecked()) {
+                    // The toggle is enabled
+                    Log.d(">>>>>>>>>", "inserindo favorito" + dataList.get(position).getId());
+                    viewModel.updateFavorite(true, dataList.get(position).getId());
+                } else {
+                    // The toggle is disabled
+                    Log.d(">>>>>>>>>", "removendo favorito");
+                    viewModel.updateFavorite(false, dataList.get(position).getId());
+                }
+            }
+        });
+        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), DetailsActivity.class);
+                intent.putExtra("id", dataList.get(position).getId());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -126,41 +141,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         };
     }
 
-    private void viewHolderDataBinder(MyViewHolder holder, int position, List<StarWarsCharacter> dataList){
-        holder.textViewName.setText(dataList.get(position).getName());
-        holder.textViewGender.setText(dataList.get(position).getGender());
-        holder.textViewHeight.setText(dataList.get(position).getHeight());
-        holder.textViewMass.setText(dataList.get(position).getMass());
+    // Provide a reference to the views for each data item
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public View mView;
+        public TextView textViewName;
+        public TextView textViewGender;
+        public TextView textViewHeight;
+        public TextView textViewMass;
+        public ToggleButton favoriteButton;
+        public ConstraintLayout constraintLayout;
 
-        holder.favoriteButton.setChecked(dataList.get(position).isFavorite());
-        holder.favoriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.favoriteButton.isChecked()) {
-                    // The toggle is enabled
-                    Log.d(">>>>>>>>>", "inserindo favorito" + dataList.get(position).getId());
-                    viewModel.updateFavorite(true, dataList.get(position).getId());
-                } else {
-                    // The toggle is disabled
-                    Log.d(">>>>>>>>>", "removendo favorito");
-                    viewModel.updateFavorite(false, dataList.get(position).getId());
-                }
-            }
-        });
-                /*.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                    Log.d(">>>>>>>>>", "inserindo favorito" + dataList.get(position).getId());
-                    viewModel.updateFavorite(true, dataList.get(position).getId());
-                } else {
-                    // The toggle is disabled
-                    Log.d(">>>>>>>>>", "removendo favorito");
-                    viewModel.updateFavorite(false, dataList.get(position).getId());
-                }
-            }
-        });*/
-
+        public MyViewHolder(View v, TextView textViewName, TextView textViewGender, TextView textViewHeight,
+                            TextView textViewMass,  ToggleButton favoriteButton, ConstraintLayout constraintLayout) {
+            super(v);
+            mView = v;
+            this.textViewName = textViewName;
+            this.textViewGender = textViewGender;
+            this.textViewHeight = textViewHeight;
+            this.textViewMass = textViewMass;
+            this.favoriteButton = favoriteButton;
+            this.constraintLayout = constraintLayout;
+        }
     }
 
 }

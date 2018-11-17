@@ -5,4 +5,14 @@
     <string name="height">Height: </string>
     <string name="search_hint"> Yoda </string>
     <string name="action_search"> Search </string>
+    <string name="species">Species: </string>
+    <string name="birth_place">Birth Place: </string>
+    <string name="birth_year">Birth year: </string>
+    <string name="eye_color">Eye color: </string>
+    <string name="skin_color">Skin Color: </string>
+    <string name="hair_color">Hair color: </string>
+    <string name="text_on" />
+    <string name="text_off" />
+    <string name="name">name</string>
+    <string name="textview">TextView</string>
 </resources>

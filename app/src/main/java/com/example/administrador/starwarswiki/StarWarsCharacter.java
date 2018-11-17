@@ -1,11 +1,10 @@
 package com.example.administrador.starwarswiki;
 
-//import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @JsonIgnoreProperties({
         "homeworld",
