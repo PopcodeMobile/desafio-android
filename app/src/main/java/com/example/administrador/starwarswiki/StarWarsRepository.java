@@ -2,11 +2,10 @@ package com.example.administrador.starwarswiki;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.util.Pair;
 
-import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,6 +17,8 @@ public class StarWarsRepository {
     private Webservice webservice;
     private LiveData<List<StarWarsCharacter>> starWarsCharacterlist;
     private LiveData<StarWarsCharacter> starWarsCharacterLiveData;
+    private MutableLiveData<String> specie;
+    private MutableLiveData<String> planet;
 
     public StarWarsRepository(Application application, Webservice webservice) {
         starWarsDatabase = StarWarsDatabase.getDatabase(application);
@@ -29,6 +30,48 @@ public class StarWarsRepository {
         starWarsDatabase = StarWarsDatabase.getDatabase(application);
         this.webservice = webservice;
         this.starWarsCharacterLiveData = starWarsDatabase.starWarsCharacterDao().getCharcter(id);
+        this.specie = new MutableLiveData<String>();
+        this.planet = new MutableLiveData<String>();
+    }
+
+    public void getSpecie(int id){
+        Call<Specie> call = webservice.getSpecies(id);
+        //PARALLEL
+        //THIS CALL IS AN ASYNC CALL
+        call.enqueue(new Callback<Specie>() {
+            @Override
+            public void onResponse(Call<Specie> call, Response<Specie> response) {
+                if(response.isSuccessful()) {
+                   Log.d("debug", "fetching specie");
+                   specie.setValue(response.body().getName());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Specie> call, Throwable t) {
+                Log.d("ERROR", t.getMessage(), t);
+            }
+        });
+    }
+
+    public void getPlanet(int id){
+        Call<Planet> call = webservice.getPlanet(id);
+        //PARALLEL
+        //THIS CALL IS AN ASYNC CALL
+        call.enqueue(new Callback<Planet>() {
+            @Override
+            public void onResponse(Call<Planet> call, Response<Planet> response) {
+                if(response.isSuccessful()) {
+                    Log.d("debug", "fetching specie");
+                    planet.setValue(response.body().getName());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Planet> call, Throwable t) {
+                Log.d("ERROR", t.getMessage(), t);
+            }
+        });
     }
 
     public void getCharacterById(int id){
@@ -56,18 +99,29 @@ public class StarWarsRepository {
         return starWarsCharacterLiveData;
     }
 
+    public MutableLiveData<String> getSpecie() {
+        return specie;
+    }
+
+    public MutableLiveData<String> getPlanet() {
+        return planet;
+    }
+
+
+
     public void fetchInitialData(){
         Call<PeopleList> call = webservice.getStarWarsCharacters();
         call.enqueue(new Callback<PeopleList>() {
             @Override
             public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {
+                Log.d("debug", "fetching initial data");
                 if(response.isSuccessful()) {
                     for (StarWarsCharacter starWarsCharacter : response.body().getResults()) {
                         starWarsCharacter.setId(Integer.parseInt(starWarsCharacter.getUrl().replaceAll("[^\\d]", "")));
                         starWarsCharacter.setFavorite(false);
                         upsertCharacter(starWarsCharacter);
-                        Log.d("debug", "fetching initial data");
                     }
+                    Log.d("debug", "success");
                 }
             }
 

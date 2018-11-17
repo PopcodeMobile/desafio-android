@@ -21,5 +21,12 @@ public interface Webservice {
 
     @GET("api/people/")
     Call<PeopleList> getStarWarsCharacters(@Query("page") int pageNum);
+
+    @GET("api/species/{id}")
+    Call<Specie> getSpecies(@Path("id") int id);
+
+    @GET("api/planets/{id}")
+    Call<Planet> getPlanet(@Path("id") int id);
+
 }
 

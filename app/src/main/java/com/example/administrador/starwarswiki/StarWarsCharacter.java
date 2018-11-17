@@ -2,14 +2,16 @@ package com.example.administrador.starwarswiki;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
+
 
 @JsonIgnoreProperties({
-        "homeworld",
         "films",
-        "species",
         "vehicles",
         "starships",
         "created",
@@ -30,6 +32,25 @@ public class StarWarsCharacter {
     private String eye_color;
     private String birth_year;
     private boolean favorite;
+    private String homeworld;
+    @TypeConverters(SpeciesConverter.class)
+    private ArrayList<String> species;
+
+    public ArrayList<String> getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(ArrayList<String> species) {
+        this.species = species;
+    }
+
+    public String getHomeworld() {
+        return homeworld;
+    }
+
+    public void setHomeworld(String homeworld) {
+        this.homeworld = homeworld;
+    }
 
     public boolean isFavorite() {
         return favorite;

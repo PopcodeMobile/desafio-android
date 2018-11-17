@@ -47,8 +47,28 @@ public class DetailsActivity extends AppCompatActivity {
                 textViewHairColor.setText(starWarsCharacter.getHair_color());
                 textViewSkinColor.setText(starWarsCharacter.getSkin_color());
                 textViewBirthYear.setText(starWarsCharacter.getBirth_year());
+                favbtn.setChecked(starWarsCharacter.isFavorite());
+                detailsViewModel.getPlanetAndSpecies(
+                        Integer.valueOf(starWarsCharacter.getHomeworld().replaceAll("[^\\d]", "")),
+                        Integer.valueOf(starWarsCharacter.getSpecies().get(0).replaceAll("[^\\d]", ""))
+                );
             }
         });
+
+        detailsViewModel.getPlanet().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                textViewBirthPlace.setText(s);
+            }
+        });
+
+        detailsViewModel.getSpecie().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                textViewSpecies.setText(s);
+            }
+        });
+
 
         favbtn.setOnClickListener(new View.OnClickListener() {
             @Override
