@@ -115,17 +115,29 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
                     characterListFiltered = mDataset;
-                } else {
-                    List<StarWarsCharacter> filteredList = new ArrayList<>();
-                    for (StarWarsCharacter row : mDataset) {
+                }else{
+                    if(charString.toLowerCase().contains("favorites") ){
 
-                        // name match condition.
-                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(row);
+                        List<StarWarsCharacter> filteredList = new ArrayList<>();
+                        for (StarWarsCharacter row : mDataset) {
+                            // isfavorite condition.
+                            if (row.isFavorite()) {
+                                filteredList.add(row);
+                            }
                         }
-                    }
+                        characterListFiltered = filteredList;
 
-                    characterListFiltered = filteredList;
+                    }else{
+
+                        List<StarWarsCharacter> filteredList = new ArrayList<>();
+                        for (StarWarsCharacter row : mDataset) {
+                            // name match condition.
+                            if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(row);
+                            }
+                        }
+                        characterListFiltered = filteredList;
+                    }
                 }
 
                 FilterResults filterResults = new FilterResults();

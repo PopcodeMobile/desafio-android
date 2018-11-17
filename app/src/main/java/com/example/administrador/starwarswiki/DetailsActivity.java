@@ -3,19 +3,26 @@ package com.example.administrador.starwarswiki;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class DetailsActivity extends AppCompatActivity {
+    private boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //getSupportActionBar().hide();
         setContentView(R.layout.activity_details);
 
         Intent intent = getIntent();
@@ -23,9 +30,9 @@ public class DetailsActivity extends AppCompatActivity {
         DetailsViewModel detailsViewModel = new DetailsViewModel(getApplication(),id );
         View view =  this.findViewById(R.id.activity_details);
 
-        ToggleButton favbtn =  view.findViewById(R.id.details_favorite_button);
+        FloatingActionButton favbtn =  view.findViewById(R.id.floatingActionButton);
 
-        TextView textViewName = view.findViewById(R.id.details_name);
+        //TextView textViewName = view.findViewById(R.id.details_name);
         TextView textViewGender = view.findViewById(R.id.details_gender);
         TextView textViewHeight = view.findViewById(R.id.details_height);
         TextView textViewMass = view.findViewById(R.id.details_mass);
@@ -39,7 +46,8 @@ public class DetailsActivity extends AppCompatActivity {
         detailsViewModel.getCharacter().observe(this, new Observer<StarWarsCharacter>() {
             @Override
             public void onChanged(@Nullable StarWarsCharacter starWarsCharacter) {
-                textViewName.setText(starWarsCharacter.getName());
+//                textViewName.setText(starWarsCharacter.getName());
+                getSupportActionBar().setTitle(starWarsCharacter.getName());
                 textViewGender.setText(starWarsCharacter.getGender());
                 textViewHeight.setText(starWarsCharacter.getHeight());
                 textViewMass.setText(starWarsCharacter.getMass());
@@ -47,7 +55,11 @@ public class DetailsActivity extends AppCompatActivity {
                 textViewHairColor.setText(starWarsCharacter.getHair_color());
                 textViewSkinColor.setText(starWarsCharacter.getSkin_color());
                 textViewBirthYear.setText(starWarsCharacter.getBirth_year());
-                favbtn.setChecked(starWarsCharacter.isFavorite());
+                if(starWarsCharacter.isFavorite()){
+                    flag = starWarsCharacter.isFavorite();
+                    favbtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_on));
+                }
+                //favbtn.setChecked(starWarsCharacter.isFavorite());
                 detailsViewModel.getPlanetAndSpecies(
                         Integer.valueOf(starWarsCharacter.getHomeworld().replaceAll("[^\\d]", "")),
                         Integer.valueOf(starWarsCharacter.getSpecies().get(0).replaceAll("[^\\d]", ""))
@@ -73,14 +85,16 @@ public class DetailsActivity extends AppCompatActivity {
         favbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (favbtn.isChecked()) {
-                    // The toggle is enabled
+                if (!flag) {
                     Log.d(">>>>>>>>>", "inserindo favorito" + id);
                     detailsViewModel.updateFavorite(true, id);
+                    favbtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_on));
+                    flag = true;
                 } else {
-                    // The toggle is disabled
                     Log.d(">>>>>>>>>", "removendo favorito");
                     detailsViewModel.updateFavorite(false, id);
+                    favbtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_off));
+                    flag = false;
                 }
             }
         });
