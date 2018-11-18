@@ -3,7 +3,7 @@
     <string name="gender">Gender: </string>
     <string name="mass">Mass: </string>
     <string name="height">Height: </string>
-    <string name="search_hint"> Yoda </string>
+    <string name="search_hint"> Type "favorites" to filter by favorites </string>
     <string name="action_search"> Search </string>
     <string name="species">Species: </string>
     <string name="birth_place">Birth Place: </string>

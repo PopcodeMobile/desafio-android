@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,11 +38,17 @@ public class CharacterListActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this).get(CharacterListViewModel.class);
         final ProgressBar simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         simpleProgressBar.setVisibility(View.VISIBLE);
+        View view = findViewById(R.id.activity_main);
 
-        //checks internet connection
-        //if(isOnline()) {
-            mViewModel.loadDatabase();
-        //}
+        mViewModel.loadDatabase();
+
+        mViewModel.getFavoriteResponseMessage().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                Snackbar snackbar = Snackbar.make(view, s, Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        });
 
         //ROOM is responsible for caching the DATA, so if there's no internet we check if there's any data in the db
         if(mViewModel.getStarWarsCharactersList() != null) {
@@ -122,19 +129,6 @@ public class CharacterListActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
-    }
-
-    public boolean isOnline() {
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-            int     exitValue = ipProcess.waitFor();
-            return (exitValue == 0);
-        }
-        catch (IOException e)          { e.printStackTrace(); }
-        catch (InterruptedException e) { e.printStackTrace(); }
-
-        return false;
     }
 
 }

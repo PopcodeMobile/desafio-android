@@ -16,15 +16,17 @@ public class CharacterDetailsViewModel extends AndroidViewModel {
     private LiveData<StarWarsCharacter> starWarsCharacterLiveData;
     private MutableLiveData<String> specie;
     private MutableLiveData<String> planet;
+    private MutableLiveData<String> favoriteResponseMessage;
 
 
     public CharacterDetailsViewModel(Application application, int id){
         super(application);
         retrofit = new RetrofitConfig();
-        this.starWarsRepository = new StarWarsRepository(application, retrofit.getService(), id);
+        this.starWarsRepository = new StarWarsRepository(application, retrofit, id);
         this.starWarsCharacterLiveData = starWarsRepository.getCharacter();
         this.specie = starWarsRepository.getSpecie();
         this.planet = starWarsRepository.getPlanet();
+        this.favoriteResponseMessage = starWarsRepository.getFavoriteResponseMessage();
 
     }
 
@@ -52,5 +54,9 @@ public class CharacterDetailsViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> getPlanet() {
         return planet;
+    }
+
+    public MutableLiveData<String> getFavoriteResponseMessage() {
+        return favoriteResponseMessage;
     }
 }

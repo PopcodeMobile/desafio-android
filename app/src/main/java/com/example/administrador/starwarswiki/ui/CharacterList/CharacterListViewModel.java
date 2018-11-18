@@ -3,6 +3,7 @@ package com.example.administrador.starwarswiki.ui.CharacterList;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 
 import com.example.administrador.starwarswiki.network.RetrofitConfig;
 import com.example.administrador.starwarswiki.data.StarWarsRepository;
@@ -15,13 +16,18 @@ public class CharacterListViewModel extends AndroidViewModel {
     private StarWarsRepository starWarsRepository;
     private Application application;
     private RetrofitConfig retrofit;
+    private MutableLiveData<String> favoriteResponseMessage;
 
     public CharacterListViewModel(Application application){
         super(application);
         retrofit = new RetrofitConfig();
-        this.starWarsRepository = new StarWarsRepository(application, retrofit.getService());
+        this.starWarsRepository = new StarWarsRepository(application, retrofit);
         this.starWarsCharactersList = starWarsRepository.getCharacters();
+        this.favoriteResponseMessage = starWarsRepository.getFavoriteResponseMessage();
+    }
 
+    public MutableLiveData<String> getFavoriteResponseMessage() {
+        return favoriteResponseMessage;
     }
 
     public LiveData<List<StarWarsCharacter>> getStarWarsCharactersList() {
