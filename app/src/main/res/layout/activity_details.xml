@@ -5,7 +5,7 @@
     android:id="@+id/activity_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsActivity">
+    tools:context=".ui.CharacterDetails.CharacterDetailsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

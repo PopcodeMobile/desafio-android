@@ -1,4 +1,4 @@
-package com.example.administrador.starwarswiki;
+package com.example.administrador.starwarswiki.ui.CharacterList;
 
 import android.app.SearchManager;
 import android.arch.lifecycle.Observer;
@@ -15,15 +15,18 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
+import com.example.administrador.starwarswiki.R;
+import com.example.administrador.starwarswiki.data.model.StarWarsCharacter;
+
 import java.io.IOException;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class CharacterListActivity extends AppCompatActivity {
     private EndlessRecyclerViewScrollListener scrollListener;
     private RecyclerViewAdapter mAdapter;
     private SearchView searchView;
-    private CharacterViewModel mViewModel;
+    private CharacterListViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //myDataset = new ArrayList<>();
-        mViewModel = ViewModelProviders.of(this).get(CharacterViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(CharacterListViewModel.class);
         final ProgressBar simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         simpleProgressBar.setVisibility(View.VISIBLE);
 

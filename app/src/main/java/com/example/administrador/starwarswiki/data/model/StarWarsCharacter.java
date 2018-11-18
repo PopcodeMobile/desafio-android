@@ -1,10 +1,10 @@
-package com.example.administrador.starwarswiki;
+package com.example.administrador.starwarswiki.data.model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
 
+import com.example.administrador.starwarswiki.data.converter.SpeciesConverter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;

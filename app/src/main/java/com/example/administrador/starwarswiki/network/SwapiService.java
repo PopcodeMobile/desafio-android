@@ -1,13 +1,16 @@
-package com.example.administrador.starwarswiki;
+package com.example.administrador.starwarswiki.network;
 
-import java.util.List;
+import com.example.administrador.starwarswiki.data.model.PeopleList;
+import com.example.administrador.starwarswiki.data.model.Planet;
+import com.example.administrador.starwarswiki.data.model.Specie;
+import com.example.administrador.starwarswiki.data.model.StarWarsCharacter;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface Webservice {
+public interface SwapiService {
     /**
      * @GET declares an HTTP GET request
      * @Path("id") annotation on the id parameter marks it as a

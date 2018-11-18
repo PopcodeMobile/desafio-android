@@ -1,4 +1,4 @@
-package com.example.administrador.starwarswiki;
+package com.example.administrador.starwarswiki.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -13,7 +13,7 @@ public class RetrofitConfig {
                 .build();
     }
 
-    public Webservice getService() {
-        return this.retrofit.create(Webservice.class);
+    public SwapiService getService() {
+        return this.retrofit.create(SwapiService.class);
     }
 }

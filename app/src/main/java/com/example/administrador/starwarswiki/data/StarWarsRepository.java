@@ -1,10 +1,17 @@
-package com.example.administrador.starwarswiki;
+package com.example.administrador.starwarswiki.data;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.administrador.starwarswiki.data.dao.StarWarsCharacterDao;
+import com.example.administrador.starwarswiki.network.SwapiService;
+import com.example.administrador.starwarswiki.data.model.PeopleList;
+import com.example.administrador.starwarswiki.data.model.Planet;
+import com.example.administrador.starwarswiki.data.model.Specie;
+import com.example.administrador.starwarswiki.data.model.StarWarsCharacter;
 
 import java.util.List;
 import retrofit2.Call;
@@ -14,28 +21,28 @@ import retrofit2.Response;
 public class StarWarsRepository {
     private String DATABASE_NAME = "starwars_db";
     private StarWarsDatabase starWarsDatabase;
-    private Webservice webservice;
+    private SwapiService swapiService;
     private LiveData<List<StarWarsCharacter>> starWarsCharacterlist;
     private LiveData<StarWarsCharacter> starWarsCharacterLiveData;
     private MutableLiveData<String> specie;
     private MutableLiveData<String> planet;
 
-    public StarWarsRepository(Application application, Webservice webservice) {
+    public StarWarsRepository(Application application, SwapiService swapiService) {
         starWarsDatabase = StarWarsDatabase.getDatabase(application);
-        this.webservice = webservice;
+        this.swapiService = swapiService;
         this.starWarsCharacterlist = starWarsDatabase.starWarsCharacterDao().getAllCharacters();
     }
 
-    public StarWarsRepository(Application application, Webservice webservice, int id) {
+    public StarWarsRepository(Application application, SwapiService swapiService, int id) {
         starWarsDatabase = StarWarsDatabase.getDatabase(application);
-        this.webservice = webservice;
+        this.swapiService = swapiService;
         this.starWarsCharacterLiveData = starWarsDatabase.starWarsCharacterDao().getCharcter(id);
         this.specie = new MutableLiveData<String>();
         this.planet = new MutableLiveData<String>();
     }
 
     public void getSpecie(int id){
-        Call<Specie> call = webservice.getSpecies(id);
+        Call<Specie> call = swapiService.getSpecies(id);
         //PARALLEL
         //THIS CALL IS AN ASYNC CALL
         call.enqueue(new Callback<Specie>() {
@@ -55,7 +62,7 @@ public class StarWarsRepository {
     }
 
     public void getPlanet(int id){
-        Call<Planet> call = webservice.getPlanet(id);
+        Call<Planet> call = swapiService.getPlanet(id);
         //PARALLEL
         //THIS CALL IS AN ASYNC CALL
         call.enqueue(new Callback<Planet>() {
@@ -110,7 +117,7 @@ public class StarWarsRepository {
 
 
     public void fetchInitialData(){
-        Call<PeopleList> call = webservice.getStarWarsCharacters();
+        Call<PeopleList> call = swapiService.getStarWarsCharacters();
         call.enqueue(new Callback<PeopleList>() {
             @Override
             public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {
@@ -135,7 +142,7 @@ public class StarWarsRepository {
     public void loadNextDataFromApi(int offset) {
         // Send an API request to retrieve appropriate paginated data
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        Call<PeopleList> call = webservice.getStarWarsCharacters(offset);
+        Call<PeopleList> call = swapiService.getStarWarsCharacters(offset);
         call.enqueue(new Callback<PeopleList>() {
             @Override
             public void onResponse(Call<PeopleList> call, Response<PeopleList> response) {

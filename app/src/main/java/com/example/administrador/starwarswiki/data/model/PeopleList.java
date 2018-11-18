@@ -1,4 +1,6 @@
-package com.example.administrador.starwarswiki;
+package com.example.administrador.starwarswiki.data.model;
+
+import com.example.administrador.starwarswiki.data.model.StarWarsCharacter;
 
 import java.util.List;
 

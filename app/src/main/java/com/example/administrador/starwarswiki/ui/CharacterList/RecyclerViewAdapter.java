@@ -1,4 +1,4 @@
-package com.example.administrador.starwarswiki;
+package com.example.administrador.starwarswiki.ui.CharacterList;
 
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
@@ -7,23 +7,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.io.Serializable;
+import com.example.administrador.starwarswiki.R;
+import com.example.administrador.starwarswiki.data.model.StarWarsCharacter;
+import com.example.administrador.starwarswiki.ui.CharacterDetails.CharacterDetailsActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
     private List<StarWarsCharacter> mDataset;
     private List<StarWarsCharacter> characterListFiltered;
-    private CharacterViewModel viewModel;
+    private CharacterListViewModel viewModel;
 
-    public RecyclerViewAdapter(CharacterViewModel viewModel) {
+    public RecyclerViewAdapter(CharacterListViewModel viewModel) {
         this.viewModel = viewModel;
         mDataset = viewModel.getStarWarsCharactersList().getValue();
         characterListFiltered = mDataset;
@@ -77,7 +78,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DetailsActivity.class);
+                Intent intent = new Intent(v.getContext(), CharacterDetailsActivity.class);
                 intent.putExtra("id", dataList.get(position).getId());
                 v.getContext().startActivity(intent);
             }

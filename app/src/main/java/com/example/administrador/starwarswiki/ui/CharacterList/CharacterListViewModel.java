@@ -1,17 +1,22 @@
-package com.example.administrador.starwarswiki;
+package com.example.administrador.starwarswiki.ui.CharacterList;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+
+import com.example.administrador.starwarswiki.network.RetrofitConfig;
+import com.example.administrador.starwarswiki.data.StarWarsRepository;
+import com.example.administrador.starwarswiki.data.model.StarWarsCharacter;
+
 import java.util.List;
 
-public class CharacterViewModel extends AndroidViewModel {
+public class CharacterListViewModel extends AndroidViewModel {
     private LiveData<List<StarWarsCharacter>> starWarsCharactersList;
     private StarWarsRepository starWarsRepository;
     private Application application;
     private RetrofitConfig retrofit;
 
-    public CharacterViewModel(Application application){
+    public CharacterListViewModel(Application application){
         super(application);
         retrofit = new RetrofitConfig();
         this.starWarsRepository = new StarWarsRepository(application, retrofit.getService());

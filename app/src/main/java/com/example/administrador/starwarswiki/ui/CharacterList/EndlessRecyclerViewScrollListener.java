@@ -1,4 +1,4 @@
-package com.example.administrador.starwarswiki;
+package com.example.administrador.starwarswiki.ui.CharacterList;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
