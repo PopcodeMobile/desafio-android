@@ -41,6 +41,7 @@ public class CharacterListActivity extends AppCompatActivity {
         View view = findViewById(R.id.activity_main);
 
         mViewModel.loadDatabase();
+        mViewModel.dispatchPendingFavorites();
 
         mViewModel.getFavoriteResponseMessage().observe(this, new Observer<String>() {
             @Override
@@ -59,13 +60,12 @@ public class CharacterListActivity extends AppCompatActivity {
                 public void onChanged(@Nullable final List<StarWarsCharacter> starWarsCharacters) {
                     mAdapter.setStarWarsCharacters(starWarsCharacters);
                     int tmp = mViewModel.getStarWarsCharactersList().getValue().size()/10;
-                    Log.d("size >>>>>>", String.valueOf(mViewModel.getStarWarsCharactersList().getValue().size()));
                     if (tmp == 0) {
                         scrollListener.setCurrentPage(1);
                     }else{
                         scrollListener.setCurrentPage(tmp);
                     }
-                    Log.d("=>>>>>>>>>>>", "mudou "+ tmp );
+                    Log.d("=>>>>>>>>>>>", "characterlist updated, new page number: "+ tmp );
                 }
             });
             // Configure the RecyclerView
@@ -100,6 +100,7 @@ public class CharacterListActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager
                 .getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint("Type 'favorites' to see your favs");
 
         // listening to search query text change
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

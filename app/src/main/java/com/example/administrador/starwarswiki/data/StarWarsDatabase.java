@@ -5,13 +5,16 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.example.administrador.starwarswiki.data.dao.PendingFavoriteDao;
 import com.example.administrador.starwarswiki.data.dao.StarWarsCharacterDao;
+import com.example.administrador.starwarswiki.data.model.PendingFavorite;
 import com.example.administrador.starwarswiki.data.model.StarWarsCharacter;
 
-@Database(entities = {StarWarsCharacter.class}, version = 1)
+@Database(entities = {StarWarsCharacter.class, PendingFavorite.class}, version = 1)
 public abstract class StarWarsDatabase extends RoomDatabase {
 
     public abstract StarWarsCharacterDao starWarsCharacterDao();
+    public abstract PendingFavoriteDao pendingFavoriteDao();
 
     private static volatile StarWarsDatabase INSTANCE;
 

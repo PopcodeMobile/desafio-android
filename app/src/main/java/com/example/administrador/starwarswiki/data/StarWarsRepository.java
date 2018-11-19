@@ -3,10 +3,13 @@ package com.example.administrador.starwarswiki.data;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.administrador.starwarswiki.data.dao.PendingFavoriteDao;
 import com.example.administrador.starwarswiki.data.dao.StarWarsCharacterDao;
+import com.example.administrador.starwarswiki.data.model.PendingFavorite;
 import com.example.administrador.starwarswiki.data.model.ResponseError;
 import com.example.administrador.starwarswiki.data.model.ResponseSuccess;
 import com.example.administrador.starwarswiki.network.ApiaryService;
@@ -16,18 +19,15 @@ import com.example.administrador.starwarswiki.data.model.PeopleList;
 import com.example.administrador.starwarswiki.data.model.Planet;
 import com.example.administrador.starwarswiki.data.model.Specie;
 import com.example.administrador.starwarswiki.data.model.StarWarsCharacter;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class StarWarsRepository {
-    private String DATABASE_NAME = "starwars_db";
     private StarWarsDatabase starWarsDatabase;
     private SwapiService swapiService;
     private ApiaryService apiaryService;
@@ -40,19 +40,19 @@ public class StarWarsRepository {
 
     public StarWarsRepository(Application application, RetrofitConfig retrofitConfig) {
         starWarsDatabase = StarWarsDatabase.getDatabase(application);
-        this.swapiService = retrofitConfig.getSwapiService();
-        this.apiaryService = retrofitConfig.getApiaryService();
-        this.starWarsCharacterlist = starWarsDatabase.starWarsCharacterDao().getAllCharacters();
+        swapiService = retrofitConfig.getSwapiService();
+        apiaryService = retrofitConfig.getApiaryService();
+        starWarsCharacterlist = starWarsDatabase.starWarsCharacterDao().getAllCharacters();
         favoriteResponseMessage = new MutableLiveData<>();
     }
 
     public StarWarsRepository(Application application, RetrofitConfig retrofitConfig, int id) {
         starWarsDatabase = StarWarsDatabase.getDatabase(application);
-        this.swapiService = retrofitConfig.getSwapiService();
-        this.apiaryService = retrofitConfig.getApiaryService();
-        this.starWarsCharacterLiveData = starWarsDatabase.starWarsCharacterDao().getCharcter(id);
-        this.specie = new MutableLiveData<String>();
-        this.planet = new MutableLiveData<String>();
+        swapiService = retrofitConfig.getSwapiService();
+        apiaryService = retrofitConfig.getApiaryService();
+        starWarsCharacterLiveData = starWarsDatabase.starWarsCharacterDao().getCharcter(id);
+        specie = new MutableLiveData<String>();
+        planet = new MutableLiveData<String>();
         favoriteResponseMessage = new MutableLiveData<>();
     }
 
@@ -76,10 +76,13 @@ public class StarWarsRepository {
         return favoriteResponseMessage;
     }
 
+    public void dispatchPendingFavorites(){
+        new DispatchPendingFavoritesAsyncTask(starWarsDatabase.pendingFavoriteDao(),apiaryService).execute();
+    }
+
     public void getSpecie(int id){
         Call<Specie> call = swapiService.getSpecies(id);
         //PARALLEL
-        //THIS CALL IS AN ASYNC CALL
         call.enqueue(new Callback<Specie>() {
             @Override
             public void onResponse(Call<Specie> call, Response<Specie> response) {
@@ -99,7 +102,6 @@ public class StarWarsRepository {
     public void getPlanet(int id){
         Call<Planet> call = swapiService.getPlanet(id);
         //PARALLEL
-        //THIS CALL IS AN ASYNC CALL
         call.enqueue(new Callback<Planet>() {
             @Override
             public void onResponse(Call<Planet> call, Response<Planet> response) {
@@ -150,6 +152,8 @@ public class StarWarsRepository {
                         try {
                             ResponseError responseError = mapper.readValue(response.errorBody().byteStream(), ResponseError.class);
                             favoriteResponseMessage.setValue(responseError.getError_message());
+                            PendingFavorite pendingFavorite = new PendingFavorite(i);
+                            new insertPendingFavoriteAsyncTask(starWarsDatabase.pendingFavoriteDao()).execute(pendingFavorite);
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -229,6 +233,18 @@ public class StarWarsRepository {
         }
     }
 
+    private static class insertPendingFavoriteAsyncTask extends AsyncTask<PendingFavorite, Void, Void> {
+        private PendingFavoriteDao mAsyncTaskDao;
+        insertPendingFavoriteAsyncTask(PendingFavoriteDao dao) {
+            mAsyncTaskDao = dao;
+        }
+        @Override
+        protected Void doInBackground(final PendingFavorite... params) {
+            mAsyncTaskDao.save(params[0]);
+            return null;
+        }
+    }
+
     private static class upsertAsyncTask extends AsyncTask<StarWarsCharacter, Void, Void> {
         private StarWarsCharacterDao mAsyncTaskDao;
         upsertAsyncTask(StarWarsCharacterDao dao) {
@@ -268,6 +284,54 @@ public class StarWarsRepository {
             return null;
         }
     }
+
+    private static class DispatchPendingFavoritesAsyncTask extends AsyncTask<Void, Void , Void> {
+        private PendingFavoriteDao mAsyncTaskDao;
+        private ApiaryService apiaryService;
+        DispatchPendingFavoritesAsyncTask(PendingFavoriteDao dao, ApiaryService apiaryService) {
+            mAsyncTaskDao = dao;
+            this.apiaryService = apiaryService;
+
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            List<PendingFavorite> list = mAsyncTaskDao.selectAllPendingFavorites();
+            if(list != null && list.size()>0){
+                for (PendingFavorite pendingFavorite : list) {
+                    Call<Object> call = apiaryService.postFavorite(pendingFavorite.getId());
+                    call.enqueue(new Callback<Object>() {
+                        @Override
+                        public void onResponse(Call<Object> call, Response<Object> response) {
+                            if (response.isSuccessful()) {
+                                new deletePendingFavoritesAsyncTask(mAsyncTaskDao).execute(pendingFavorite.getId());
+                                Log.d("pendingfavorite", String.valueOf(pendingFavorite.getId()));
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Object> call, Throwable t) {
+                            Log.d("response", t.getMessage());
+                        }
+                    });
+                }
+            }
+            return null;
+        }
+    }
+
+    private static class deletePendingFavoritesAsyncTask extends AsyncTask<Integer, Void , Void> {
+        private PendingFavoriteDao mAsyncTaskDao;
+        deletePendingFavoritesAsyncTask(PendingFavoriteDao dao) {
+            mAsyncTaskDao = dao;
+        }
+        @Override
+        protected Void doInBackground(Integer... params) {
+            mAsyncTaskDao.deletePendingFavorite(params[0]);
+            Log.d("pendingfavorite", "deleted " + String.valueOf(params[0]));
+            return null;
+        }
+    }
+
 
     private class MyParams{
         private boolean b;

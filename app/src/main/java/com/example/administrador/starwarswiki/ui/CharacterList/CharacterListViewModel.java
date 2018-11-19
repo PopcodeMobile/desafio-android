@@ -51,4 +51,8 @@ public class CharacterListViewModel extends AndroidViewModel {
         starWarsRepository.updateFavorite(b,id);
     }
 
+    public void dispatchPendingFavorites(){
+        starWarsRepository.dispatchPendingFavorites();
+    }
+
 }
