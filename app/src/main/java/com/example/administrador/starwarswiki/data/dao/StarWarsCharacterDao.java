@@ -17,9 +17,6 @@ public interface StarWarsCharacterDao {
     @Insert(onConflict = IGNORE)
     long save(StarWarsCharacter starWarsCharacter);
 
-    @Query("SELECT * FROM starwarscharacter WHERE name = :characterName")
-    LiveData<StarWarsCharacter> load(String characterName);
-
     @Query("SELECT * FROM starwarscharacter")
     LiveData<List<StarWarsCharacter>> getAllCharacters();
 

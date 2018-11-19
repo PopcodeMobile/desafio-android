@@ -15,11 +15,11 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.administrador.starwarswiki.R;
 import com.example.administrador.starwarswiki.data.model.StarWarsCharacter;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -32,12 +32,11 @@ public class CharacterListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_character_list);
 
-        //myDataset = new ArrayList<>();
+        //ROOM is responsible for caching the DATA, so if there's no internet we check if there's any data in the db
+        //this step is applyied when the viewModel is instatiated
         mViewModel = ViewModelProviders.of(this).get(CharacterListViewModel.class);
-        final ProgressBar simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        simpleProgressBar.setVisibility(View.VISIBLE);
         View view = findViewById(R.id.activity_main);
 
         mViewModel.loadDatabase();
@@ -51,43 +50,38 @@ public class CharacterListActivity extends AppCompatActivity {
             }
         });
 
-        //ROOM is responsible for caching the DATA, so if there's no internet we check if there's any data in the db
-        if(mViewModel.getStarWarsCharactersList() != null) {
-            simpleProgressBar.setVisibility(View.INVISIBLE);
-            mAdapter = new RecyclerViewAdapter(mViewModel);
-            mViewModel.getStarWarsCharactersList().observe(this, new Observer<List<StarWarsCharacter>>() {
-                @Override
-                public void onChanged(@Nullable final List<StarWarsCharacter> starWarsCharacters) {
-                    mAdapter.setStarWarsCharacters(starWarsCharacters);
-                    int tmp = mViewModel.getStarWarsCharactersList().getValue().size()/10;
-                    if (tmp == 0) {
-                        scrollListener.setCurrentPage(1);
-                    }else{
-                        scrollListener.setCurrentPage(tmp);
-                    }
-                    Log.d("=>>>>>>>>>>>", "characterlist updated, new page number: "+ tmp );
+        mAdapter = new RecyclerViewAdapter(mViewModel);
+        mViewModel.getStarWarsCharactersList().observe(this, new Observer<List<StarWarsCharacter>>() {
+            @Override
+            public void onChanged(@Nullable final List<StarWarsCharacter> starWarsCharacters) {
+                mAdapter.setStarWarsCharacters(starWarsCharacters);
+                int tmp = mViewModel.getStarWarsCharactersList().getValue().size()/10;
+                if (tmp == 0) {
+                    scrollListener.setCurrentPage(1);
+                }else{
+                    scrollListener.setCurrentPage(tmp);
                 }
-            });
-            // Configure the RecyclerView
-            RecyclerView recyclerViewItems = (RecyclerView) findViewById(R.id.recycler_view);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            recyclerViewItems.setLayoutManager(linearLayoutManager);
-            // Retain an instance so that you can call `resetState()` for fresh searches
-            scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-                @Override
-                public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                    // Triggered only when new data needs to be appended to the list
-                    Log.d("page=>>>>>>>>>>>>>>>>>>>>", String.valueOf(page));
-                    mViewModel.loadNextDataFromApi(page);
-                }
-            };
-            //uṕdates page value in case there were cached data
-
-            // Adds the scroll listener to RecyclerView
-            recyclerViewItems.addOnScrollListener(scrollListener);
-            recyclerViewItems.setAdapter(mAdapter);
-        }
+                Log.d("=>>>>>>>>>>>", "characterlist updated, new page number: "+ tmp );
+            }
+        });
+        // Configure the RecyclerView
+        RecyclerView recyclerViewItems = (RecyclerView) findViewById(R.id.recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerViewItems.setLayoutManager(linearLayoutManager);
+        // Retain an instance so that you can call `resetState()` for fresh searches
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                Log.d("page=>>>>>>>>>>>>>>>>>>>>", String.valueOf(page));
+                mViewModel.loadNextDataFromApi(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        recyclerViewItems.addOnScrollListener(scrollListener);
+        recyclerViewItems.setAdapter(mAdapter);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,7 +94,7 @@ public class CharacterListActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager
                 .getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setQueryHint("Type 'favorites' to see your favs");
+        searchView.setQueryHint(getString(R.string.search_hint));
 
         // listening to search query text change
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

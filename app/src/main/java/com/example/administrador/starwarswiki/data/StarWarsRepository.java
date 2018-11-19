@@ -3,7 +3,6 @@ package com.example.administrador.starwarswiki.data;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -76,6 +75,14 @@ public class StarWarsRepository {
         return favoriteResponseMessage;
     }
 
+    public void getCharacterById(int id){
+        new getCharacterAsyncTask(starWarsDatabase.starWarsCharacterDao()).execute(id);
+    }
+
+    public void upsertCharacter(StarWarsCharacter starWarsCharacter) {
+        new upsertAsyncTask(starWarsDatabase.starWarsCharacterDao()).execute(starWarsCharacter);
+    }
+
     public void dispatchPendingFavorites(){
         new DispatchPendingFavoritesAsyncTask(starWarsDatabase.pendingFavoriteDao(),apiaryService).execute();
     }
@@ -118,21 +125,9 @@ public class StarWarsRepository {
         });
     }
 
-    public void getCharacterById(int id){
-        new getCharacterAsyncTask(starWarsDatabase.starWarsCharacterDao()).execute(id);
-    }
-
-    public void upsertCharacter(StarWarsCharacter starWarsCharacter) {
-        new upsertAsyncTask(starWarsDatabase.starWarsCharacterDao()).execute(starWarsCharacter);
-    }
-
-    public void insertCharacter(StarWarsCharacter starWarsCharacter) {
-        new insertAsyncTask(starWarsDatabase.starWarsCharacterDao()).execute(starWarsCharacter);
-    }
-
     public void updateFavorite(boolean favorite, int i){
         if (favorite) {
-            //half the requests must have a status=400 header
+            //half of the requests must have a status=400 header
             //count is used to intercalate requests
             Call<Object> call = null;
 
@@ -219,18 +214,6 @@ public class StarWarsRepository {
                 Log.d("ERROR", "deu erro",t);
             }
         });
-    }
-
-    private static class insertAsyncTask extends AsyncTask<StarWarsCharacter, Void, Void> {
-        private StarWarsCharacterDao mAsyncTaskDao;
-        insertAsyncTask(StarWarsCharacterDao dao) {
-            mAsyncTaskDao = dao;
-        }
-        @Override
-        protected Void doInBackground(final StarWarsCharacter... params) {
-            mAsyncTaskDao.save(params[0]);
-            return null;
-        }
     }
 
     private static class insertPendingFavoriteAsyncTask extends AsyncTask<PendingFavorite, Void, Void> {

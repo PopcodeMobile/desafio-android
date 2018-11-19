@@ -14,7 +14,6 @@ import java.util.List;
 public class CharacterListViewModel extends AndroidViewModel {
     private LiveData<List<StarWarsCharacter>> starWarsCharactersList;
     private StarWarsRepository starWarsRepository;
-    private Application application;
     private RetrofitConfig retrofit;
     private MutableLiveData<String> favoriteResponseMessage;
 

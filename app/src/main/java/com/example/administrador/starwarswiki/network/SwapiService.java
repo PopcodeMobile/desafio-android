@@ -16,9 +16,6 @@ public interface SwapiService {
      * @Path("id") annotation on the id parameter marks it as a
      * replacement for the {id} placeholder in the @GET path
      */
-    @GET("api/people/{id}")
-    Call<StarWarsCharacter> getStarWarsCharacter(@Path("id") int id);
-
     @GET("api/people")
     Call<PeopleList> getStarWarsCharacters();
 

@@ -34,10 +34,6 @@ public class CharacterDetailsViewModel extends AndroidViewModel {
         starWarsRepository.updateFavorite(b,id);
     }
 
-    public void getCharacter(int id){
-        starWarsRepository.getCharacterById(id);
-    }
-
     public LiveData<StarWarsCharacter> getCharacter(){
         return this.starWarsCharacterLiveData;
     }

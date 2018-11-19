@@ -20,9 +20,6 @@ public interface PendingFavoriteDao {
     @Query("SELECT * FROM pendingfavorite")
     List<PendingFavorite> selectAllPendingFavorites();
 
-    @Query("DELETE FROM pendingfavorite")
-    void deleteAllPendingFavorites();
-
     @Query("DELETE FROM pendingfavorite WHERE id = :id")
     void deletePendingFavorite(int id);
 }
