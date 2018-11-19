@@ -55,15 +55,29 @@ public class CharacterDetailsActivity extends AppCompatActivity {
                 textViewHairColor.setText(starWarsCharacter.getHair_color());
                 textViewSkinColor.setText(starWarsCharacter.getSkin_color());
                 textViewBirthYear.setText(starWarsCharacter.getBirth_year());
+
                 if(starWarsCharacter.isFavorite()){
                     flag = starWarsCharacter.isFavorite();
                     favbtn.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),android.R.drawable.btn_star_big_on));
                 }
-                //favbtn.setChecked(starWarsCharacter.isFavorite());
-                characterDetailsViewModel.getPlanetAndSpecies(
-                        Integer.valueOf(starWarsCharacter.getHomeworld().replaceAll("[^\\d]", "")),
-                        Integer.valueOf(starWarsCharacter.getSpecies().get(0).replaceAll("[^\\d]", ""))
-                );
+
+                int specieId = 0;
+                int homeworldId = 0;
+
+                try{
+                    specieId = Integer.valueOf(starWarsCharacter.getSpecies().get(0).replaceAll("[^\\d]", ""));
+                }catch (Exception e){
+                    Log.d("error", e.getMessage());
+                }finally {
+                    try{
+                        homeworldId = Integer.valueOf(starWarsCharacter.getHomeworld().replaceAll("[^\\d]", ""));
+                    }catch (Exception e){
+                        Log.d("error", e.getMessage());
+                    }finally {
+                        characterDetailsViewModel.getPlanetAndSpecies(homeworldId, specieId);
+                    }
+                }
+
             }
         });
 
