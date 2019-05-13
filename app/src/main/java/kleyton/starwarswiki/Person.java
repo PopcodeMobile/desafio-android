@@ -10,7 +10,7 @@ public class Person {
     public String birth_year;
     public String gender;
     public String homeworld;
-    public String specie;
+    public String species;
 
     public Person(){}
 
@@ -19,6 +19,19 @@ public class Person {
         this.height = height;
         this.gender = gender;
         this.mass = mass;
+    }
+
+    public Person(String name, String height, String gender,  String mass, String hair_color, String skin_color, String eye_color, String birth_year, String homeworld, String species) {
+        this.name = name;
+        this.height = height;
+        this.gender = gender;
+        this.mass = mass;
+        this.hair_color = hair_color;
+        this.eye_color = eye_color;
+        this.skin_color = skin_color;
+        this.birth_year = birth_year;
+        this.homeworld = homeworld;
+        this.species = species;
     }
 
     public String getName() {
@@ -93,11 +106,11 @@ public class Person {
         this.homeworld = homeworld;
     }
 
-    public String getSpecie() {
-        return specie;
+    public String getSpecies() {
+        return species;
     }
 
-    public void setSpecie(String specie) {
-        this.specie = specie;
+    public void setSpecies(String species) {
+        this.species = species;
     }
 }

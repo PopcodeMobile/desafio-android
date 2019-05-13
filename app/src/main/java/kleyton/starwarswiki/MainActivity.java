@@ -6,30 +6,23 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    private DividerItemDecoration dividerItemDecoration;
     private List<Person> personList;
     private RecyclerView.Adapter adapter;
     private String url = "https://swapi.co/api/people/?format=json";
@@ -44,11 +37,8 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PersonAdapter(getApplicationContext(), personList);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                                                            linearLayoutManager.getOrientation());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
 
         getData();
@@ -58,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
+                Log.d("Volley", response.toString());
                 try {
                     JSONArray jsonArray = response.getJSONArray("results");
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -67,10 +57,16 @@ public class MainActivity extends AppCompatActivity {
                         String height = jsonObject.getString("height");
                         String gender = jsonObject.getString("gender");
                         String mass = jsonObject.getString("mass");
+                        String hair_color = jsonObject.getString("hair_color");
+                        String skin_color = jsonObject.getString("skin_color");
+                        String eye_color = jsonObject.getString("eye_color");
+                        String birth_year = jsonObject.getString("birth_year");
+                        String homeworld = jsonObject.getString("homeworld");
+                        String species = jsonObject.getString("species");
 
-                        Log.v("Person", name + height + gender + mass);
+                        Log.v("Person", name + height + gender + mass + hair_color + skin_color + eye_color + birth_year + homeworld + species);
 
-                        Person person = new Person(name, height, gender, mass);
+                        Person person = new Person(name, height, gender, mass, hair_color, skin_color, eye_color, birth_year, homeworld, species);
                         personList.add(person);
                         adapter.notifyDataSetChanged();
                     }
@@ -85,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
     }
