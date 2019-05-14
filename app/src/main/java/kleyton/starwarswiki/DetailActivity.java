@@ -31,16 +31,16 @@ public class DetailActivity extends AppCompatActivity {
         String species = intent.getStringExtra("species");
 
         TextView nameTv, heightTv, genderTv, massTv, hairTv, skinTv, eyeTv, birthTv, homeworldTv, speciesTv;
-        nameTv = (TextView) findViewById(R.id.name_detail_textview);
-        heightTv = (TextView) findViewById(R.id.height_detail_textview);
-        genderTv = (TextView) findViewById(R.id.gender_detail_textview);
-        massTv = (TextView) findViewById(R.id.mass_detail_textview);
-        hairTv = (TextView) findViewById(R.id.hair_color_detail_textview);
-        skinTv = (TextView) findViewById(R.id.skin_color_detail_textview);
-        eyeTv = (TextView) findViewById(R.id.eye_color_detail_textview);
-        birthTv = (TextView) findViewById(R.id.birth_year_detail_textview);
-        homeworldTv = (TextView) findViewById(R.id.birth_year_detail_textview);
-        speciesTv = (TextView) findViewById(R.id.homeworld_detail_textview);
+        nameTv = findViewById(R.id.name_detail_textview);
+        heightTv = findViewById(R.id.height_detail_textview);
+        genderTv = findViewById(R.id.gender_detail_textview);
+        massTv = findViewById(R.id.mass_detail_textview);
+        hairTv = findViewById(R.id.hair_color_detail_textview);
+        skinTv = findViewById(R.id.skin_color_detail_textview);
+        eyeTv = findViewById(R.id.eye_color_detail_textview);
+        birthTv = findViewById(R.id.birth_year_detail_textview);
+        homeworldTv = findViewById(R.id.homeworld_detail_textview);
+        speciesTv = findViewById(R.id.species_detail_textview);
 
         nameTv.setText(name);
         heightTv.setText(height);
