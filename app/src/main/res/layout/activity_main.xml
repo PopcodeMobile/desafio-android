@@ -6,28 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
-                <EditText
-                    android:id="@+id/searchEditText"
+            app:cardCornerRadius="10dp"
+            android:layout_margin="5dp"
+            android:layout_centerHorizontal="true">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"
-                    android:hint="Pesquisar                           "
-                    android:inputType="text" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/submitSearchImage"
-                    android:src="@android:drawable/ic_menu_search"
-                    android:layout_gravity="center"/>
-        </LinearLayout>
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:orientation="horizontal">
+                        <EditText
+                            android:id="@+id/searchEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="5dp"
+                            android:background="@null"
+                            android:hint="Pesquisar                           "
+                            android:inputType="text" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/submitSearchImage"
+                            android:src="@android:drawable/ic_menu_search"
+                            android:layout_gravity="center"/>
+                </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/main_list_recyclerview"
@@ -35,6 +44,25 @@
             android:layout_height="match_parent"
             android:layout_below="@id/search">
         </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fabWrapper"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_above="@id/floatingActionButton">
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/homeFAB"
+                android:layout_gravity="bottom|end"
+                android:src="@android:drawable/ic_menu_revert"
+                app:pressedTranslationZ="12dp"
+                />
+        </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"

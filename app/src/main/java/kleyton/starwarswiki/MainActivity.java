@@ -1,19 +1,18 @@
 package kleyton.starwarswiki;
 
+import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,24 +28,28 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    LinearLayout searchLinearLayout;
+    LinearLayout searchLinearLayout, backFabWrapper;
+    CardView searchWrapper;
     EditText searchEditText;
     ImageView submitSearchImage;
-    FloatingActionButton floatingActionButton;
+    FloatingActionButton searchFab;
     LinearLayoutManager linearLayoutManager;
     List<Person> personList;
     RecyclerView.Adapter adapter;
-    String url = "https://swapi.co/api/people/?format=json";
+    String url_page = "https://swapi.co/api/people/?page=";
     String url_search = "https://swapi.co/api/people/?search=";
+    boolean searchFabIsSend = false;
+    boolean backFabClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        searchLinearLayout = findViewById(R.id.search);
+        searchWrapper = findViewById(R.id.search);
         searchEditText = findViewById(R.id.searchEditText);
-        floatingActionButton = findViewById(R.id.floatingActionButton);
+        searchFab = findViewById(R.id.floatingActionButton);
+        backFabWrapper = findViewById(R.id.fabWrapper);
         submitSearchImage = findViewById(R.id.submitSearchImage);
 
         recyclerView = findViewById(R.id.main_list_recyclerview);
@@ -57,63 +60,65 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-        getData();
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        requestAllCharacters();
+
+        searchFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchLinearLayout.setVisibility(View.VISIBLE);
-                searchEditText.requestFocus();
+                backFabWrapper.setVisibility(View.VISIBLE);
+                if (!searchFabIsSend) {
+                    searchWrapper.setVisibility(View.VISIBLE);
+                    searchEditText.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(searchEditText, InputMethodManager.SHOW_IMPLICIT);
+                    searchFabIsSend = true;
+                } else {
+                    submitSearch();
+                }
+            }
+        });
+
+        backFabWrapper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backFabWrapper.setVisibility(View.GONE);
+                searchWrapper.setVisibility(View.GONE);
+                searchEditText.getText().clear();
+                clearCharacters();
+                requestAllCharacters();
+                searchFabIsSend = false;
+                hideKeyboard();
             }
         });
 
         submitSearchImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                personList.clear();
-                String query = searchEditText.getText().toString().trim();
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url_search + query, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("Volley", response.toString());
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("results");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String name = jsonObject.getString("name");
-                                String height = jsonObject.getString("height");
-                                String gender = jsonObject.getString("gender");
-                                String mass = jsonObject.getString("mass");
-                                String hair_color = jsonObject.getString("hair_color");
-                                String skin_color = jsonObject.getString("skin_color");
-                                String eye_color = jsonObject.getString("eye_color");
-                                String birth_year = jsonObject.getString("birth_year");
-                                String homeworld = jsonObject.getString("homeworld");
-                                String species = jsonObject.getString("species");
-
-                                Person person = new Person(name, height, gender, mass, hair_color, skin_color, eye_color, birth_year, homeworld, species);
-                                personList.add(person);
-                                adapter.notifyDataSetChanged();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Volley", error.toString());
-                    }
-                });
-
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                requestQueue.add(jsonObjectRequest);
+                submitSearch();
             }
         });
 
     }
 
-    private void getData() {
+    private void clearCharacters() {
+        personList.clear();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void submitSearch() {
+        personList.clear();
+        String query = searchEditText.getText().toString().trim();
+        requestData(url_search + query);
+    }
+
+    private void requestAllCharacters() {
+        for (int i = 1; i < 9; i++) {
+            requestData(url_page + i);
+        }
+    }
+
+    private void requestData(String url) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -131,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         String eye_color = jsonObject.getString("eye_color");
                         String birth_year = jsonObject.getString("birth_year");
                         String homeworld = jsonObject.getString("homeworld");
-                        String species = jsonObject.getString("species");
+                        String species = (String) jsonObject.getJSONArray("species").get(0);
 
                         Person person = new Person(name, height, gender, mass, hair_color, skin_color, eye_color, birth_year, homeworld, species);
                         personList.add(person);
@@ -150,5 +155,13 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
+    }
+
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

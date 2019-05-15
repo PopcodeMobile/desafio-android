@@ -9,7 +9,20 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DetailActivity extends AppCompatActivity {
+
+    TextView nameTv, heightTv, genderTv, massTv, hairTv, skinTv, eyeTv, birthTv, homeworldTv, speciesTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +40,14 @@ public class DetailActivity extends AppCompatActivity {
         String skin_color = intent.getStringExtra("skin_color");
         String eye_color = intent.getStringExtra("eye_color");
         String birth_year = intent.getStringExtra("birth_year");
-        String homeworld = intent.getStringExtra("homeworld");
-        String species = intent.getStringExtra("species");
+        String homeworldUrl = intent.getStringExtra("homeworld");
+        String speciesUrl = intent.getStringExtra("species");
 
-        TextView nameTv, heightTv, genderTv, massTv, hairTv, skinTv, eyeTv, birthTv, homeworldTv, speciesTv;
+        Log.d("URLS", homeworldUrl + "\n" + speciesUrl);
+
+        getHomeworld(homeworldUrl);
+        getSpecies(speciesUrl);
+
         nameTv = findViewById(R.id.name_detail_textview);
         heightTv = findViewById(R.id.height_detail_textview);
         genderTv = findViewById(R.id.gender_detail_textview);
@@ -50,8 +67,56 @@ public class DetailActivity extends AppCompatActivity {
         skinTv.setText(skin_color);
         eyeTv.setText(eye_color);
         birthTv.setText(birth_year);
-        homeworldTv.setText(homeworld);
-        speciesTv.setText(species);
+        homeworldTv.setText("Carregando...");
+        speciesTv.setText("Carregando...");
+    }
+
+    public void getHomeworld(String url) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley", response.toString());
+                try {
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    String homeworld = jsonObject.getString("name");
+                    homeworldTv.setText(homeworld);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void getSpecies(String url) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Volley", response.toString());
+                try {
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    String species = jsonObject.getString("name");
+                    speciesTv.setText(species);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
     }
 
     @Override
