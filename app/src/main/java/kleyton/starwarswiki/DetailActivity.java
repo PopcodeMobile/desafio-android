@@ -29,7 +29,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Detalhes");
+        getSupportActionBar().setTitle(R.string.detail_activity_name);
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
@@ -42,8 +42,7 @@ public class DetailActivity extends AppCompatActivity {
         String birth_year = intent.getStringExtra("birth_year");
         String homeworldUrl = intent.getStringExtra("homeworld");
         String speciesUrl = intent.getStringExtra("species");
-
-        Log.d("URLS", homeworldUrl + "\n" + speciesUrl);
+        String isbookmark = intent.getStringExtra("isbookmark");
 
         getHomeworld(homeworldUrl);
         getSpecies(speciesUrl);

@@ -1,6 +1,7 @@
 package kleyton.starwarswiki;
 
 public class Person {
+
     public String name;
     public String height;
     public String mass;
@@ -11,27 +12,24 @@ public class Person {
     public String gender;
     public String homeworld;
     public String species;
+    public String isbookmark;
 
     public Person(){}
 
-    public Person(String name, String height, String gender,  String mass) {
-        this.name = name;
-        this.height = height;
-        this.gender = gender;
-        this.mass = mass;
-    }
-
-    public Person(String name, String height, String gender,  String mass, String hair_color, String skin_color, String eye_color, String birth_year, String homeworld, String species) {
-        this.name = name;
-        this.height = height;
-        this.gender = gender;
-        this.mass = mass;
+    public Person(String name, String height, String gender,  String mass, String hair_color,
+                  String skin_color, String eye_color, String birth_year, String homeworld,
+                  String species, String isbookmark) {
+        this.name       = name;
+        this.height     = height;
+        this.gender     = gender;
+        this.mass       = mass;
         this.hair_color = hair_color;
-        this.eye_color = eye_color;
+        this.eye_color  = eye_color;
         this.skin_color = skin_color;
         this.birth_year = birth_year;
-        this.homeworld = homeworld;
-        this.species = species;
+        this.homeworld  = homeworld;
+        this.species    = species;
+        this.isbookmark = isbookmark;
     }
 
     public String getName() {
@@ -112,5 +110,30 @@ public class Person {
 
     public void setSpecies(String species) {
         this.species = species;
+    }
+
+    public String getIsbookmark() {
+        return isbookmark;
+    }
+
+    public void setIsbookmark(String isbookmark) {
+        this.isbookmark = isbookmark;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", height='" + height + '\'' +
+                ", mass='" + mass + '\'' +
+                ", hair_color='" + hair_color + '\'' +
+                ", skin_color='" + skin_color + '\'' +
+                ", eye_color='" + eye_color + '\'' +
+                ", birth_year='" + birth_year + '\'' +
+                ", gender='" + gender + '\'' +
+                ", homeworld='" + homeworld + '\'' +
+                ", species='" + species + '\'' +
+                ", isbookmark='" + isbookmark + '\'' +
+                '}';
     }
 }

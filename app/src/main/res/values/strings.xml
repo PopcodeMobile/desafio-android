@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Star Wars Wiki</string>
+    <string name="detail_activity_name">Detalhes</string>
 </resources>

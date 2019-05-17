@@ -32,16 +32,17 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
         final Person person = personList.get(i);
 
-        final String name = person.getName();
-        final String height = person.getHeight();
-        final String gender = person.getGender();
-        final String mass = person.getMass();
+        final String name       = person.getName();
+        final String height     = person.getHeight();
+        final String gender     = person.getGender();
+        final String mass       = person.getMass();
         final String hair_color = person.getHair_color();
         final String skin_color = person.getSkin_color();
-        final String eye_color = person.getEye_color();
+        final String eye_color  = person.getEye_color();
         final String birth_year = person.getBirth_year();
-        final String homeworld = person.getHomeworld();
-        final String species = person.getSpecies();
+        final String homeworld  = person.getHomeworld();
+        final String species    = person.getSpecies();
+        final String isbookmark = person.getIsbookmark();
 
         viewHolder.name.setText(name);
         viewHolder.height.setText(height);
@@ -53,7 +54,6 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
             public void onClick(View v) {
 
                 Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("msg", "This works properly.");
                 intent.putExtra("name", name);
                 intent.putExtra("height", height);
                 intent.putExtra("gender", gender);
@@ -64,6 +64,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
                 intent.putExtra("birth_year", birth_year);
                 intent.putExtra("homeworld", homeworld);
                 intent.putExtra("species", species);
+                intent.putExtra("isbookmark", isbookmark);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -77,11 +78,11 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
         public ViewHolder(View itemView) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.name_textView);
+            name   = itemView.findViewById(R.id.name_textView);
             height = itemView.findViewById(R.id.height_textView);
             gender = itemView.findViewById(R.id.gender_textView);
-            mass = itemView.findViewById(R.id.mass_textView);
-            item = itemView.findViewById(R.id.itemLinearLayout);
+            mass   = itemView.findViewById(R.id.mass_textView);
+            item   = itemView.findViewById(R.id.itemLinearLayout);
         }
     }
 
