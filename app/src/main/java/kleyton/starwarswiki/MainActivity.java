@@ -10,29 +10,25 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.Adapter adapter;
     String url_page = "https://swapi.co/api/people/?page=";
     String url_search = "https://swapi.co/api/people/?search=";
-    String url_base_favorites = "http://private-782d3-starwarsfavorites.apiary-mock.com/favorite/{id}";
     boolean searchFabIsSend = false;
+    boolean isFiltered = false;
     SQLiteDatabaseHandler db;
     List<Person> people;
 
@@ -76,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         if (isConnected(this)) {
             requestPeopleFromDatabase();
             requestPeopleFromNetwork();
-            sendBookmarkRequest("Dooku");
         } else {
             requestPeopleFromDatabase();
         }
@@ -117,6 +112,35 @@ public class MainActivity extends AppCompatActivity {
                 submitSearch();
             }
         });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_top, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_filter) {
+            if (!isFiltered) {
+                clearCharacters();
+                requestBookmarksFromDatabase();
+                isFiltered = true;
+                item.setIcon(R.drawable.filter_on);
+                Toast.makeText(this, "Mostrando somente favoritos", Toast.LENGTH_SHORT).show();
+            } else {
+                clearCharacters();
+                requestPeopleFromDatabase();
+                isFiltered = false;
+                item.setIcon(R.drawable.filter_off);
+                Toast.makeText(this, "Mostrando todos", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void clearCharacters() {
@@ -127,7 +151,8 @@ public class MainActivity extends AppCompatActivity {
     private void submitSearch() {
         people.clear();
         String query = searchEditText.getText().toString().trim();
-        searchRequest(url_search + query);
+        //searchRequest(url_search + query);
+        searchDatabase(searchEditText.getText().toString().trim());
     }
 
     private void requestPeopleFromNetwork() {
@@ -138,6 +163,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void requestPeopleFromDatabase() {
         List<Person> people = db.getAllCharacters();
+        for (int i = 0; i < people.size(); i++) {
+            this.people.add(people.get(i));
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void searchDatabase(String name) {
+        List<Person> people = db.searchPerson(name);
+        for (int i = 0; i < people.size(); i++) {
+            this.people.add(people.get(i));
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void requestBookmarksFromDatabase() {
+        List<Person> people = db.getAllBookmarks();
         for (int i = 0; i < people.size(); i++) {
             this.people.add(people.get(i));
             adapter.notifyDataSetChanged();
@@ -208,12 +249,11 @@ public class MainActivity extends AppCompatActivity {
                                                     eye_color, birth_year, homeworld, species, isbookmark);
 
                         people.add(person);
-                        if (!db.personExists(person)) {
+
+                        if (!db.personExists(name)) {
                             db.insertPerson(person);
                             adapter.notifyDataSetChanged();
                             Log.d("MAIN", "PERSON INSERTED");
-                        } else {
-                            //Log.d("MAIN", "PERSON EXISTS");
                         }
 
                     }
@@ -232,54 +272,8 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    public void parseVolleyError(VolleyError error) {
-        try {
-            String responseBody = new String(error.networkResponse.data, "utf-8");
-            JSONObject data = new JSONObject(responseBody);
-            String err = data.getString("error");
-            String error_message = data.getString("error_message");
-            Toast.makeText(getApplicationContext(), err + "\n" + error_message, Toast.LENGTH_LONG).show();
-            Log.e("ERROR_RESPONSE", data.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void sendBookmarkRequest(final String name) {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url_base_favorites, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("VOLLEYRESP", response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                parseVolleyError(error);
-            }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Prefer", "status=400");
-                return headers;
-            }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("id", name);
-                return params;
-            }
-
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-
-    public boolean isConnected(Context context) {
+    private boolean isConnected(Context context) {
         NetworkInfo netInfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting() && netInfo.isAvailable();
     }

@@ -44,6 +44,13 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"/>
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fav_icon"
+                android:alpha="0.3"
+                android:src="@drawable/fav_icon"/>
+
         </LinearLayout>
 
 

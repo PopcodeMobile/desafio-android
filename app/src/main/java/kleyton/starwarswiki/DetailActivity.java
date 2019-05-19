@@ -23,6 +23,7 @@ import org.json.JSONObject;
 public class DetailActivity extends AppCompatActivity {
 
     TextView nameTv, heightTv, genderTv, massTv, hairTv, skinTv, eyeTv, birthTv, homeworldTv, speciesTv;
+    SQLiteDatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,33 +31,31 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.detail_activity_name);
+        db = new SQLiteDatabaseHandler(this);
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-        String height = intent.getStringExtra("height");
-        String gender = intent.getStringExtra("gender");
-        String mass = intent.getStringExtra("mass");
-        String hair_color = intent.getStringExtra("hair_color");
-        String skin_color = intent.getStringExtra("skin_color");
-        String eye_color = intent.getStringExtra("eye_color");
-        String birth_year = intent.getStringExtra("birth_year");
+        String name         = intent.getStringExtra("name");
+        String height       = intent.getStringExtra("height");
+        String gender       = intent.getStringExtra("gender");
+        String mass         = intent.getStringExtra("mass");
+        String hair_color   = intent.getStringExtra("hair_color");
+        String skin_color   = intent.getStringExtra("skin_color");
+        String eye_color    = intent.getStringExtra("eye_color");
+        String birth_year   = intent.getStringExtra("birth_year");
         String homeworldUrl = intent.getStringExtra("homeworld");
-        String speciesUrl = intent.getStringExtra("species");
-        String isbookmark = intent.getStringExtra("isbookmark");
+        String speciesUrl   = intent.getStringExtra("species");
+        String isbookmark   = intent.getStringExtra("isbookmark");
 
-        getHomeworld(homeworldUrl);
-        getSpecies(speciesUrl);
-
-        nameTv = findViewById(R.id.name_detail_textview);
-        heightTv = findViewById(R.id.height_detail_textview);
-        genderTv = findViewById(R.id.gender_detail_textview);
-        massTv = findViewById(R.id.mass_detail_textview);
-        hairTv = findViewById(R.id.hair_color_detail_textview);
-        skinTv = findViewById(R.id.skin_color_detail_textview);
-        eyeTv = findViewById(R.id.eye_color_detail_textview);
-        birthTv = findViewById(R.id.birth_year_detail_textview);
+        nameTv      = findViewById(R.id.name_detail_textview);
+        heightTv    = findViewById(R.id.height_detail_textview);
+        genderTv    = findViewById(R.id.gender_detail_textview);
+        massTv      = findViewById(R.id.mass_detail_textview);
+        hairTv      = findViewById(R.id.hair_color_detail_textview);
+        skinTv      = findViewById(R.id.skin_color_detail_textview);
+        eyeTv       = findViewById(R.id.eye_color_detail_textview);
+        birthTv     = findViewById(R.id.birth_year_detail_textview);
         homeworldTv = findViewById(R.id.homeworld_detail_textview);
-        speciesTv = findViewById(R.id.species_detail_textview);
+        speciesTv   = findViewById(R.id.species_detail_textview);
 
         nameTv.setText(name);
         heightTv.setText(height);
@@ -68,9 +67,24 @@ public class DetailActivity extends AppCompatActivity {
         birthTv.setText(birth_year);
         homeworldTv.setText("Carregando...");
         speciesTv.setText("Carregando...");
+
+        if (db.homeWorldUpdated(name)) {
+            homeworldTv.setText(db.getHomeworld(name));
+            Log.d("DETAIL", "HOMEWORLD ALREADY UPDATED");
+        } else {
+            updateHomeworld(homeworldUrl, name);
+        }
+
+        if (db.speciesUpdated(name)) {
+            speciesTv.setText(db.getSpecies(name));
+            Log.d("DETAIL", "SPECIES ALREADY UPDATED");
+        } else {
+            updateSpecies(speciesUrl, name);
+        }
     }
 
-    public void getHomeworld(String url) {
+    public void updateHomeworld(String url, String name) {
+        final String personName = name;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -78,6 +92,8 @@ public class DetailActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response.toString());
                     String homeworld = jsonObject.getString("name");
+                    db.updateHomeworld(homeworld, personName);
+                    Log.d("DETAIL", "HOMEWORLD UPDATED");
                     homeworldTv.setText(homeworld);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -94,7 +110,8 @@ public class DetailActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    public void getSpecies(String url) {
+    public void updateSpecies(String url, String name) {
+        final String personName = name;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -102,6 +119,8 @@ public class DetailActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response.toString());
                     String species = jsonObject.getString("name");
+                    db.updateSpecies(species, personName);
+                    Log.d("DETAIL", "SPECIES UPDATED");
                     speciesTv.setText(species);
                 } catch (JSONException e) {
                     e.printStackTrace();
