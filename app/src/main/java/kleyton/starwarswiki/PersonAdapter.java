@@ -3,6 +3,9 @@ package kleyton.starwarswiki;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,11 +22,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,19 +102,22 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
         viewHolder.favIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Check connectivity first
                 String name_text = viewHolder.name.getText().toString();
                 SQLiteDatabaseHandler sqLiteDatabaseHandler = new SQLiteDatabaseHandler(context);
 
                 if (sqLiteDatabaseHandler.isBookmark(name_text)) {
                     sqLiteDatabaseHandler.removeBookmark(name_text);
                     viewHolder.favIcon.setAlpha(0.2f);
-                    Toast.makeText(context, "Favorito removido", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(viewHolder.item, "Favorito removido", Snackbar.LENGTH_LONG).show();
                 } else {
                     sqLiteDatabaseHandler.setBookmark(name_text);
-                    sendBookmarkRequest(name_text);
+                    if (isConnected(context)) {
+                        sendBookmarkRequest(name_text);
+                    } else {
+                        saveToRequestQueue(name_text);
+                    }
                     viewHolder.favIcon.setAlpha(1.0f);
-                    Toast.makeText(context, "Favorito adicionado", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(viewHolder.item, "Favorito adicionado", Snackbar.LENGTH_LONG).show();
                 }
 
             }
@@ -178,6 +185,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
             @Override
             public void onErrorResponse(VolleyError error) {
                 parseVolleyError(error);
+                saveToRequestQueue(name);
             }
         }){
             @Override
@@ -206,5 +214,45 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
         requestQueue.add(stringRequest);
     }
 
+    public void saveToRequestQueue(String name) {
+        SharedPreferences prefs = context.getSharedPreferences("RequestQueue", Context.MODE_PRIVATE);
+        String json = prefs.getString("queue", "");
+        Gson gson = new Gson();
+        if (json.isEmpty()) {
+            Log.e("SAVE PREF", "JSON EMPTY");
+            List<String> queue = new ArrayList<>();
+            queue.add(name);
+            String newJson = gson.toJson(queue);
+            Log.d("NEWJSON", newJson);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("queue", newJson);
+            editor.apply();
+        } else {
+            Log.d("JSON", json);
+            Type type = new TypeToken<List<String>>(){}.getType();
+            List<String> queue = gson.fromJson(json, type);
+            if(!nameSavedInQueue(queue, name)) {
+                queue.add(name);
+                String newJson = gson.toJson(queue);
+                Log.d("NEWJSON", newJson);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("queue", newJson);
+                editor.apply();
+            }
+        }
+
+    }
+
+    public boolean nameSavedInQueue(List<String> queue, String name) {
+        for (int i = 0; i < queue.size(); i++) {
+            if (queue.get(i).equals(name)) return true;
+        }
+        return false;
+    }
+
+    private boolean isConnected(Context context) {
+        NetworkInfo netInfo = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting() && netInfo.isAvailable();
+    }
 
 }

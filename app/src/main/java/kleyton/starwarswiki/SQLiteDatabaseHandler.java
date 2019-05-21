@@ -12,22 +12,9 @@ import java.util.List;
 
 public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION  = 5;
+    private static final int DATABASE_VERSION  = 23;
     private static final String DATABASE_NAME  = "PeopleDB";
     private static final String TABLE_NAME     = "PERSON";
-    private static final String KEY_NAME       = "name";
-    private static final String KEY_HEIGHT     = "height";
-    private static final String KEY_GENDER     = "gender";
-    private static final String KEY_MASS       = "mass";
-    private static final String KEY_HAIR_COLOR = "hair_color";
-    private static final String KEY_SKIN_COLOR = "skin_color";
-    private static final String KEY_EYE_COLOR  = "eye_color";
-    private static final String KEY_BIRTH_YEAR = "birth_year";
-    private static final String KEY_HOMEWORLD  = "homeworld";
-    private static final String KEY_SPECIES    = "species";
-    private static final String KEY_ISBOOKMARK = "isbookmark";
-    private static final String[] COLUMNS      = {KEY_NAME, KEY_HEIGHT, KEY_GENDER, KEY_MASS, KEY_HAIR_COLOR, KEY_SKIN_COLOR,
-                                                  KEY_EYE_COLOR, KEY_BIRTH_YEAR, KEY_HOMEWORLD, KEY_SPECIES, KEY_ISBOOKMARK};
 
     public SQLiteDatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -58,6 +45,12 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        this.onCreate(db);
+    }
+
     public void insertPerson(Person person) {
         SQLiteDatabase db           = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -74,6 +67,35 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         contentValues.put("isbookmark", person.getIsbookmark());
         db.insert(TABLE_NAME, null,contentValues);
         db.close();
+        Log.d("DATABASE", "----Person inserted----");
+    }
+
+    public void updatePerson(Person person) {
+        SQLiteDatabase db           = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", person.getName());
+        contentValues.put("height", person.getHeight());
+        contentValues.put("gender", person.getGender());
+        contentValues.put("mass", person.getMass());
+        contentValues.put("hair_color", person.getHair_color());
+        contentValues.put("skin_color", person.getSkin_color());
+        contentValues.put("eye_color", person.getEye_color());
+        contentValues.put("birth_year", person.getBirth_year());
+        contentValues.put("homeworld", person.getHomeworld());
+        contentValues.put("species", person.getSpecies());
+        contentValues.put("isbookmark", person.getIsbookmark());
+        String where = "name='" + person.getName() + "'";
+        db.update(TABLE_NAME, contentValues, where, null);
+        db.close();
+        Log.d("DATABASE", "----Person updated----");
+    }
+
+    public void removePerson(String name) {
+        String query = "DELETE FROM PERSON WHERE name='" + name + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+        Log.d("DATABASE", "----Person removed----");
     }
 
     public boolean personExists(String name) {
@@ -248,7 +270,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         return people;
     }
 
-    public List<Person> getAllCharacters() {
+    public List<Person> getPeople() {
 
         List<Person> people = new ArrayList<>();
         String selectQuery  = "SELECT * FROM PERSON";

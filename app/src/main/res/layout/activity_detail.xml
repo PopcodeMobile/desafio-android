@@ -3,10 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#727171"
+    android:background="@color/colorPrimaryDark"
     tools:context=".DetailActivity">
 
     <android.support.v7.widget.CardView
@@ -15,7 +16,7 @@
         app:cardCornerRadius="10dp"
         android:layout_margin="25dp"
         android:layout_centerHorizontal="true">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -25,63 +26,213 @@
                 android:id="@+id/name_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Luke Skywalker"
+                android:fontFamily="sans-serif-black"
+                android:textSize="28sp"
+                android:textAlignment="center"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelHeight"
+                android:layout_marginTop="15dp"
+                android:text="Altura:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/name_detail_textview"/>
 
             <TextView
                 android:id="@+id/height_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/name_detail_textview"
+                android:layout_toRightOf="@id/labelHeight"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="16dp"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelGender"
+                android:layout_marginTop="5dp"
+                android:text="Gênero:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/height_detail_textview"/>
 
             <TextView
                 android:id="@+id/gender_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/height_detail_textview"
+                android:layout_toRightOf="@id/labelGender"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="6dp"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelMass"
+                android:layout_marginTop="5dp"
+                android:text="Peso:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/gender_detail_textview"/>
 
             <TextView
                 android:id="@+id/mass_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/gender_detail_textview"
+                android:layout_toRightOf="@id/labelMass"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="5dp"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelHaircolor"
+                android:layout_marginTop="5dp"
+                android:text="Cor do cabelo:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/mass_detail_textview"/>
 
             <TextView
                 android:id="@+id/hair_color_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/labelHaircolor"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@id/mass_detail_textview"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelSkincolor"
+                android:layout_marginTop="5dp"
+                android:text="Cor da pele:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/hair_color_detail_textview"/>
 
             <TextView
                 android:id="@+id/skin_color_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/labelSkincolor"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@id/hair_color_detail_textview"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelEyecolor"
+                android:layout_marginTop="5dp"
+                android:text="Cor dos olhos:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/skin_color_detail_textview"/>
 
             <TextView
                 android:id="@+id/eye_color_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/labelEyecolor"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@id/skin_color_detail_textview"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelBirthyear"
+                android:layout_marginTop="5dp"
+                android:text="Ano de nascimento:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/eye_color_detail_textview"/>
 
             <TextView
                 android:id="@+id/birth_year_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/labelBirthyear"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@id/eye_color_detail_textview"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelHomeworld"
+                android:layout_marginTop="5dp"
+                android:text="Planeta natal:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/birth_year_detail_textview"/>
 
             <TextView
                 android:id="@+id/homeworld_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/labelHomeworld"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@id/birth_year_detail_textview"
                 android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelSpecies"
+                android:layout_marginTop="5dp"
+                android:text="Espécie:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_below="@id/homeworld_detail_textview"/>
 
             <TextView
                 android:id="@+id/species_detail_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/labelSpecies"
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@id/homeworld_detail_textview"
                 android:textColor="@android:color/black"/>
 
-        </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fav_icon_detail"
+                android:layout_below="@id/name_detail_textview"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:alpha="0.3"
+                android:src="@drawable/fav_icon"/>
+
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
 
