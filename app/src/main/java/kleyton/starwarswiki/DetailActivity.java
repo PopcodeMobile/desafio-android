@@ -140,7 +140,15 @@ public class DetailActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response.toString());
                     String homeworld = jsonObject.getString("name");
-                    db.updateHomeworld(homeworld, personName);
+
+                    if (homeworld.contains("'")) {
+                        int index = homeworld.indexOf("'");
+                        String newString = homeworld.substring(0, index) + "'" + homeworld.substring(index);
+                        db.updateHomeworld(newString, personName);
+                    } else {
+                        db.updateHomeworld(homeworld, personName);
+                    }
+
                     Log.d("DETAIL", "HOMEWORLD UPDATED");
                     homeworldTv.setText(homeworld);
                 } catch (JSONException e) {
@@ -153,6 +161,8 @@ public class DetailActivity extends AppCompatActivity {
                 Log.e("Volley", error.toString());
                 if (error.toString().equals("com.android.volley.TimeoutError")) {
                     homeworldTv.setText("timeout error");
+                } else {
+                    homeworldTv.setText("error");
                 }
             }
         });
@@ -171,7 +181,17 @@ public class DetailActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         String species = jsonObject.getString("name");
-                        db.updateSpecies(species, personName);
+
+                        Log.d("SQLPREVENT", species);
+                        if (species.contains("'")) {
+                            int index = species.indexOf("'");
+                            String newString = species.substring(0, index) + "'" + species.substring(index);
+                            db.updateSpecies(newString, personName);
+                            Log.d("SQLPREVENT", newString);
+                        } else {
+                            db.updateSpecies(species, personName);
+                        }
+
                         Log.d("DETAIL", "SPECIES UPDATED");
                         speciesTv.setText(species);
                     } catch (JSONException e) {
@@ -184,6 +204,8 @@ public class DetailActivity extends AppCompatActivity {
                     Log.e("Volley", error.toString());
                     if (error.toString().equals("com.android.volley.TimeoutError")) {
                         speciesTv.setText("timeout error");
+                    } else {
+                        speciesTv.setText("error");
                     }
                 }
             });
