@@ -11,10 +11,12 @@ import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SWAPIHandler.MyCallbackInterface {
     private String status;
     private SWAPIHandler swapiHandler;
+    private List<Person> people;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +33,22 @@ public class MainActivity extends AppCompatActivity implements SWAPIHandler.MyCa
         });
 
         swapiHandler = new SWAPIHandler(this);
-        swapiHandler.execute();
+        swapiHandler.execute("https://swapi.co/api/people?format=json");
     }
 
 
     @Override
     public void onRequestCompleted(People result) {
-        status = ""+result.getResults().size();
+        if(result.getPrevious() == null) {
+            people = result.getResults();
+            new SWAPIHandler(this).execute(result.getNext());
+        } else if (result.getNext() != null) {
+            people.addAll(result.getResults());
+            new SWAPIHandler(this).execute(result.getNext());
+        } else {
+            people.addAll(result.getResults());
+        }
+
+        status = ""+people.size();
     }
 }

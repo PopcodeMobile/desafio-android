@@ -26,7 +26,7 @@ public class SWAPIHandler extends AsyncTask<String, Void, People> {
     protected People doInBackground(String... strings) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-             people = objectMapper.readValue(new URL("https://swapi.co/api/people?format=json"), People.class);
+             people = objectMapper.readValue(new URL(strings[0]), People.class);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
