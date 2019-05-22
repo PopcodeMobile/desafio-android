@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.starwarswiki.handlers.SWAPIHandler;
+import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SWAPIHandler.MyCallbackInterface {
     private String status;
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements SWAPIHandler.MyCa
 
 
     @Override
-    public void onRequestCompleted(Person result) {
-        status = result.getName();
+    public void onRequestCompleted(People result) {
+        status = ""+result.getResults().size();
     }
 }
