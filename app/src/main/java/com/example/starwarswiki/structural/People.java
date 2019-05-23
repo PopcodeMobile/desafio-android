@@ -26,7 +26,7 @@ public class People {
     @JsonProperty("previous")
     private Object previous;
     @JsonProperty("results")
-    private List<Person> results = null;
+    private List<Person> list = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -61,13 +61,13 @@ public class People {
     }
 
     @JsonProperty("results")
-    public List<Person> getResults() {
-        return results;
+    public List<Person> getList() {
+        return list;
     }
 
     @JsonProperty("results")
-    public void setResults(List<Person> results) {
-        this.results = results;
+    public void setList(List<Person> list) {
+        this.list = list;
     }
 
     @JsonAnyGetter
