@@ -42,8 +42,10 @@ public class Person {
     @JsonProperty("gender")
     private String gender;
     @JsonProperty("homeworld")
+    private String homeworldURL;
     private String homeworld;
     @JsonProperty("species")
+    private List<String> speciesURL = null;
     private List<String> species = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -129,23 +131,23 @@ public class Person {
     }
 
     @JsonProperty("homeworld")
-    public String getHomeworld() {
-        return homeworld;
+    public String getHomeworldURL() {
+        return homeworldURL;
     }
 
     @JsonProperty("homeworld")
-    public void setHomeworld(String homeworld) {
-        this.homeworld = homeworld;
+    public void setHomeworldURL(String homeworld) {
+        this.homeworldURL = homeworld;
     }
 
     @JsonProperty("species")
-    public List<String> getSpecies() {
-        return species;
+    public List<String> getSpeciesURL() {
+        return speciesURL;
     }
 
     @JsonProperty("species")
-    public void setSpecies(List<String> species) {
-        this.species = species;
+    public void setSpeciesURL(List<String> speciesURL) {
+        this.speciesURL = speciesURL;
     }
 
     @JsonAnyGetter
@@ -158,4 +160,11 @@ public class Person {
         this.additionalProperties.put(name, value);
     }
 
+    public void setHomeworld(String homeworld) {
+        this.homeworld = homeworld;
+    }
+
+    public String getHomewolrd() {
+        return this.homeworld;
+    }
 }

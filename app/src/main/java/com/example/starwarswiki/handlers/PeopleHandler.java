@@ -8,17 +8,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 
-public class SWAPIHandler extends AsyncTask<String, Void, People> {
-    private Person person;
+public class PeopleHandler extends AsyncTask<String, Void, People> {
     private People people;
+    private MyCallbackInterface mCallback;
 
     public interface MyCallbackInterface {
         public void onRequestCompleted(People result);
+
     }
 
-    private MyCallbackInterface mCallback;
-
-    public SWAPIHandler(MyCallbackInterface callback) {
+    public PeopleHandler(MyCallbackInterface callback) {
         mCallback = callback;
     }
 
