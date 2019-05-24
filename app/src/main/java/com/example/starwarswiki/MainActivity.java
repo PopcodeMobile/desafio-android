@@ -1,8 +1,8 @@
 package com.example.starwarswiki;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,7 +16,7 @@ import com.example.starwarswiki.structural.Planet;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PeopleHandler.MyCallbackInterface, PlanetsNameHandler.MyCallbackInterface {
-    private String status = "Loading...";
+    private String status;
     private List<Person> people;
 
     //Indexes to mark itens already fetched
@@ -39,14 +39,11 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
         });
 
         dataSanityHandler = new DataSanityHandler(this.getApplicationContext());
-        //new PeopleHandler(this).execute("https://swapi.co/api/people/?format=json");
     }
 
     @Override
     public void onRequestCompleted(People result) {
 
-        //dataSanityHandler.fetchPeople(result, people);
-        //status = result.getList().get(4).getName();
     }
 
     @Override

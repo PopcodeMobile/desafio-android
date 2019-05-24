@@ -5,13 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
-import com.example.starwarswiki.structural.Planets;
+
+import org.json.JSONObject;
+
 
 /**
- *  All database operations will be made through this class
+ *
  */
 public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -37,11 +40,6 @@ public class DBHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    /**
-     * Create database tables (people, planets and species)
-     * This way it will
-     * @param db SQLiteDatabase Object
-     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTablePeople = "CREATE TABLE "+ PEOPLE_TABLE_NAME +" (" +
@@ -57,12 +55,10 @@ public class DBHandler extends SQLiteOpenHelper {
                 KEY_HOMEWORLD + " TEXT," +
                 KEY_SPECIES + " TEXT" +
                 ")";
-
         String createTablePlanets = "CREATE TABLE " + PLANETS_TABLE_NAME + " (" +
                 KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
                 KEY_NAME + " TEXT" +
                 ")";
-
         db.execSQL(createTablePeople);
         db.execSQL(createTablePlanets);
     }
@@ -88,8 +84,8 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_EYE_COLOR, person.getEyeColor());
         values.put(KEY_BIRTH_YEAR, person.getBirthYear());
         values.put(KEY_GENDER, person.getGender());
-        values.put(KEY_HOMEWORLD, person.getHomeworld());
-        values.put(KEY_SPECIES, person.getSpecies());
+        values.put(KEY_HOMEWORLD, person.getHomeworldURL());
+        values.put(KEY_SPECIES, person.getSpeciesURL().toString());
 
         db.insert(PEOPLE_TABLE_NAME, null, values);
         db.close();
@@ -135,15 +131,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //PLANETS CODE
     public void insertPlanet (Planet planet) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_NAME, planet.getName());
-    }
-
-    public void insertPlanets (Planets planets) {
-        for (int i = 0; i < planets.getListOfPlanet().size(); i++) {
-            insertPlanet(planets.getListOfPlanet().get(i));
-        }
+        
     }
     //END PLANETS CODE
 }
