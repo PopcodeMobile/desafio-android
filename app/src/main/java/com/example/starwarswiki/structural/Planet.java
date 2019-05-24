@@ -11,6 +11,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "name",
 })
 
+/**
+ * Due to project specifications the class planet was simplified
+ */
 public class Planet {
 
     @JsonProperty("name")

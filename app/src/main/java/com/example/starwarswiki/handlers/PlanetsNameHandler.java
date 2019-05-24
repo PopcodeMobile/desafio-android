@@ -8,22 +8,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 
-public class PlanetNameHandler extends AsyncTask<String, Void, String> {
-    private PlanetNameHandler.MyCallbackInterface mCallback;
+public class PlanetsNameHandler extends AsyncTask<String, Void, Planet> {
+    private PlanetsNameHandler.MyCallbackInterface mCallback;
 
     public interface MyCallbackInterface {
-        public void onRequestCompleted(String result);
+        public void onRequestCompleted(Planet result);
     }
 
-    public PlanetNameHandler (PlanetNameHandler.MyCallbackInterface callback) {
+    public PlanetsNameHandler(PlanetsNameHandler.MyCallbackInterface callback) {
         mCallback = callback;
     }
 
     @Override
-    protected String doInBackground(String... strings) {
+    protected Planet doInBackground(String... strings) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(new URL(strings[0]), Planet.class).getName();
+            return objectMapper.readValue(new URL(strings[0]), Planet.class);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -31,7 +31,7 @@ public class PlanetNameHandler extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String name){
+    protected void onPostExecute(Planet name){
         mCallback.onRequestCompleted(name);
     }
 }

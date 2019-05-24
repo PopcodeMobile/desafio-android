@@ -8,11 +8,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
+import com.example.starwarswiki.structural.Planet;
 
 import org.json.JSONObject;
 
 
-
+/**
+ *
+ */
 public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "StarWarsWIKI.db";
@@ -28,9 +31,10 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_GENDER = "gender";
     private static final String KEY_HOMEWORLD = "homeworld";
     private static final String KEY_SPECIES = "species";
-    private static final String[] COLUMNS = {KEY_ID, KEY_NAME, KEY_HEIGHT, KEY_MASS,
-            KEY_HAIR_COLOR, KEY_SKIN_COLOR,KEY_EYE_COLOR,KEY_BIRTH_YEAR, KEY_GENDER,KEY_HOMEWORLD,KEY_SPECIES};
-    private static final String[] COLUMNS_SIMPLIFIED = {KEY_ID, KEY_NAME, KEY_HEIGHT, KEY_MASS};
+    private static final String PLANETS_TABLE_NAME = "planets";
+//    private static final String[] COLUMNS = {KEY_ID, KEY_NAME, KEY_HEIGHT, KEY_MASS,
+//            KEY_HAIR_COLOR, KEY_SKIN_COLOR,KEY_EYE_COLOR,KEY_BIRTH_YEAR, KEY_GENDER,KEY_HOMEWORLD,KEY_SPECIES};
+//    private static final String[] COLUMNS_SIMPLIFIED = {KEY_ID, KEY_NAME, KEY_HEIGHT, KEY_MASS};
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,21 +42,25 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(
-                "CREATE TABLE "+ PEOPLE_TABLE_NAME +" (" +
-                        KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        KEY_NAME + " TEXT," +
-                        KEY_HEIGHT + " TEXT," +
-                        KEY_MASS + " TEXT," +
-                        KEY_HAIR_COLOR + " TEXT," +
-                        KEY_SKIN_COLOR + " TEXT," +
-                        KEY_EYE_COLOR + " TEXT," +
-                        KEY_BIRTH_YEAR + " TEXT," +
-                        KEY_GENDER + " TEXT," +
-                        KEY_HOMEWORLD + " TEXT," +
-                        KEY_SPECIES + " TEXT" +
-                        ")"
-        );
+        String createTablePeople = "CREATE TABLE "+ PEOPLE_TABLE_NAME +" (" +
+                KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                KEY_NAME + " TEXT," +
+                KEY_HEIGHT + " TEXT," +
+                KEY_MASS + " TEXT," +
+                KEY_HAIR_COLOR + " TEXT," +
+                KEY_SKIN_COLOR + " TEXT," +
+                KEY_EYE_COLOR + " TEXT," +
+                KEY_BIRTH_YEAR + " TEXT," +
+                KEY_GENDER + " TEXT," +
+                KEY_HOMEWORLD + " TEXT," +
+                KEY_SPECIES + " TEXT" +
+                ")";
+        String createTablePlanets = "CREATE TABLE " + PLANETS_TABLE_NAME + " (" +
+                KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
+                KEY_NAME + " TEXT" +
+                ")";
+        db.execSQL(createTablePeople);
+        db.execSQL(createTablePlanets);
     }
 
     @Override
@@ -61,6 +69,10 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Receive a single person and store it's attributes to the table {@link #PEOPLE_TABLE_NAME}
+     * @param person {@see #Person}
+     */
     public void insertPerson(Person person) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -79,34 +91,47 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    // PEOPLE CODE
+
     public void insertPeople (People people) {
         for (int i = 0; i < people.getList().size(); i++) {
             insertPerson(people.getList().get(i));
         }
     }
 
-    public Person searchPersonByName(String name) {
+    public People searchPersonByName(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
+        Person person = new Person();
+        People list = new People();
         String query = "SELECT * FROM "+ PEOPLE_TABLE_NAME + " WHERE " +KEY_NAME + " LIKE '%" + name + "%'";
         Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
         if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            Person person = new Person();
-            person.setName(cursor.getString(1));
-            person.setHeight(cursor.getString(2));
-            person.setMass(cursor.getString(3));
-            person.setHairColor(cursor.getString(4));
-            person.setSkinColor(cursor.getString(5));
-            person.setEyeColor(cursor.getString(6));
-            person.setBirthYear(cursor.getString(7));
-            person.setGender(cursor.getString(8));
-            person.setHomeworldURL(cursor.getString(9));
-            //person.setSpeciesURL(cursor.getString(10));
-            cursor.close();
-            db.close();
-            return person;
+            while(cursor.moveToNext()) {
+
+                person.setName(cursor.getString(1));
+                person.setHeight(cursor.getString(2));
+                person.setMass(cursor.getString(3));
+                person.setHairColor(cursor.getString(4));
+                person.setSkinColor(cursor.getString(5));
+                person.setEyeColor(cursor.getString(6));
+                person.setBirthYear(cursor.getString(7));
+                person.setGender(cursor.getString(8));
+                person.setHomeworldURL(cursor.getString(9));
+                person.setSpecies(cursor.getString(10));
+            }
+            list.getList().add(person);
         }
 
-        return new Person();
+        cursor.close();
+        db.close();
+        return list;
     }
+    //END PEOPLE CODE
+
+    //PLANETS CODE
+    public void insertPlanet (Planet planet) {
+        
+    }
+    //END PLANETS CODE
 }

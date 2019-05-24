@@ -1,26 +1,26 @@
 package com.example.starwarswiki.structural;
 
+/**
+ * POJO Class to help with planets response from SWAPI
+ */
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
         "count",
         "next",
         "previous",
         "results"
 })
-/**
- * POJO Class to help with people response from SWAPI
- */
-public class People {
+public class Planets {
 
     @JsonProperty("count")
     private Integer count;
@@ -29,7 +29,7 @@ public class People {
     @JsonProperty("previous")
     private Object previous;
     @JsonProperty("results")
-    private List<Person> list = null;
+    private List<Planet> listOfPlanet = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -64,22 +64,13 @@ public class People {
     }
 
     @JsonProperty("results")
-    public List<Person> getList() {
-        return list;
+    public List<Planet> getListOfPlanet() {
+        return listOfPlanet;
     }
 
     @JsonProperty("results")
-    public void setList(List<Person> list) {
-        this.list = list;
+    public void setListOfPlanets(List<Planet> listOfPlanet) {
+        this.listOfPlanet = listOfPlanet;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
 }

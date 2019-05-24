@@ -6,21 +6,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.starwarswiki.handlers.DBHandler;
+import com.example.starwarswiki.handlers.DataSanityHandler;
 import com.example.starwarswiki.handlers.PeopleHandler;
-import com.example.starwarswiki.handlers.PlanetNameHandler;
+import com.example.starwarswiki.handlers.PlanetsNameHandler;
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
+import com.example.starwarswiki.structural.Planet;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PeopleHandler.MyCallbackInterface, PlanetNameHandler.MyCallbackInterface {
+public class MainActivity extends AppCompatActivity implements PeopleHandler.MyCallbackInterface, PlanetsNameHandler.MyCallbackInterface {
     private String status;
     private List<Person> people;
 
     //Indexes to mark itens already fetched
     private int fetchPlanetsIndex = 0;
     private int fetchSpeciesIndex = 0;
+    private DataSanityHandler dataSanityHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,40 +38,16 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
             }
         });
 
-        new PeopleHandler(this).execute("https://swapi.co/api/people?format=json");
+        dataSanityHandler = new DataSanityHandler(this.getApplicationContext());
     }
-
 
     @Override
     public void onRequestCompleted(People result) {
-        DBHandler db = new DBHandler(this);
-        String person = "";
-        if(result.getPrevious() == null) {
-            people = result.getList();
-            db.insertPeople(result);
-            new PeopleHandler(this).execute(result.getNext());
-            new PlanetNameHandler(this).execute(people.get(fetchPlanetsIndex).getHomeworldURL()+"?format=json");
-        } else if (result.getNext() != null) {
-            people.addAll(result.getList());
-            db.insertPeople(result);
-            new PeopleHandler(this).execute(result.getNext());
-        } else {
-            people.addAll(result.getList());
-            db.insertPeople(result);
-            person = db.searchPersonByName("j").getName();
-        }
-        db.close();
 
-        status = ""+people.size()+" /sp " + person;
     }
 
     @Override
-    public void onRequestCompleted(String result) {
-        people.get(fetchPlanetsIndex).setHomeworld(result);
-        if (fetchPlanetsIndex < people.size() - 1) {
-            fetchPlanetsIndex++;
-            //new PlanetNameHandler(this).execute(people.get(fetchPlanetsIndex).getHomeworldURL()+"?format=json");
-            //Toast.makeText(this, people.get(fetchPlanetsIndex - 1).getHomewolrd() + " " + fetchPlanetsIndex, Toast.LENGTH_LONG).show();
-        }
+    public void onRequestCompleted(Planet result) {
+
     }
 }

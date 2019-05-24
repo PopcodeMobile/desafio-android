@@ -46,7 +46,8 @@ public class Person {
     private String homeworld;
     @JsonProperty("species")
     private List<String> speciesURL = null;
-    private List<String> species = null;
+
+    private String species;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -164,7 +165,15 @@ public class Person {
         this.homeworld = homeworld;
     }
 
-    public String getHomewolrd() {
-        return this.homeworld;
+    public String getHomeworld() {
+        return homeworld;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
     }
 }

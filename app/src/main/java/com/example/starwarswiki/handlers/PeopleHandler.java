@@ -3,7 +3,6 @@ package com.example.starwarswiki.handlers;
 import android.os.AsyncTask;
 
 import com.example.starwarswiki.structural.People;
-import com.example.starwarswiki.structural.Person;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
