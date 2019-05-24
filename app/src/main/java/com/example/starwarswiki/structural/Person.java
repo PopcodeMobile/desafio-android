@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "species"
 })
 public class Person {
-
+    //@PrimaryKey(autoGenerate = true)
     @JsonProperty("name")
     private String name;
     @JsonProperty("height")
@@ -161,9 +161,7 @@ public class Person {
         this.additionalProperties.put(name, value);
     }
 
-    public void setHomeworld(String homeworld) {
-        this.homeworld = homeworld;
-    }
+    public void setHomeworld(String homeworld) { this.homeworld = homeworld; }
 
     public String getHomeworld() {
         return homeworld;
