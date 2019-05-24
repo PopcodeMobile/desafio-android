@@ -1,14 +1,17 @@
 package com.example.starwarswiki.structural;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import androidx.room.PrimaryKey;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -24,7 +27,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "species"
 })
 public class Person {
-
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("height")
