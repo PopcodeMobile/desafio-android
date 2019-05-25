@@ -1,19 +1,20 @@
 package com.example.starwarswiki.structural;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.starwarswiki.handlers.DataConverter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
         "name",
         "height",
@@ -26,34 +27,50 @@ import java.util.Map;
         "homeworld",
         "species"
 })
+@Entity(tableName = "person_table")
 public class Person {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "name")
     @JsonProperty("name")
     private String name;
+    @ColumnInfo(name = "height")
     @JsonProperty("height")
     private String height;
+    @ColumnInfo(name = "mass")
     @JsonProperty("mass")
     private String mass;
+    @ColumnInfo(name = "hair_color")
     @JsonProperty("hair_color")
     private String hairColor;
+    @ColumnInfo(name = "skin_color")
     @JsonProperty("skin_color")
     private String skinColor;
+    @ColumnInfo(name = "eye_color")
     @JsonProperty("eye_color")
     private String eyeColor;
+    @ColumnInfo(name = "birth_year")
     @JsonProperty("birth_year")
     private String birthYear;
+    @ColumnInfo(name = "gender")
     @JsonProperty("gender")
     private String gender;
+    @ColumnInfo(name = "homeworld")
     @JsonProperty("homeworld")
     private String homeworldURL;
-    private String homeworld;
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "species")
     @JsonProperty("species")
     private List<String> speciesURL = null;
 
-    private String species;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     @JsonProperty("name")
     public String getName() {
@@ -153,31 +170,5 @@ public class Person {
     @JsonProperty("species")
     public void setSpeciesURL(List<String> speciesURL) {
         this.speciesURL = speciesURL;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public void setHomeworld(String homeworld) {
-        this.homeworld = homeworld;
-    }
-
-    public String getHomeworld() {
-        return homeworld;
-    }
-
-    public String getSpecies() {
-        return species;
-    }
-
-    public void setSpecies(String species) {
-        this.species = species;
     }
 }

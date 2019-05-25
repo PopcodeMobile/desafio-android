@@ -2,6 +2,8 @@ package com.example.starwarswiki.handlers;
 
 import android.content.Context;
 
+import androidx.room.Room;
+
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
@@ -18,9 +20,10 @@ public class DataSanityHandler {
     private String loadStauts = "unloaded";
     private int fetchPlanetsIndex = 0;
     private Context context;
-
+    private AppDatabase db;
     public DataSanityHandler (Context context) {
-//        new PeopleHandler(this).execute("https://swapi.co/api/personList?format=json");
+        //db = Room.databaseBuilder(context, AppDatabase.class, "app-database").build();
+        //new PeopleHandler(context).execute("https://swapi.co/api/personList?format=json");
         //this.context = context;
     }
 
@@ -31,23 +34,20 @@ public class DataSanityHandler {
      * @return The function returns the updated list of Person
      */
     public List<Person> fetchPeople (People previousResult, List<Person> personList) {
-        DBHandler db = new DBHandler(this.context);
-
         if(previousResult.getPrevious() == null) {
             personList = previousResult.getList();
-            db.insertPeople(previousResult);
+//            db.insertPeople(previousResult);
 //            new PeopleHandler(this).execute(previousResult.getNext());
 //            new PlanetsNameHandler(this).execute(personList.get(fetchPlanetsIndex).getHomeworldURL()+"?format=json");
         } else if (previousResult.getNext() != null) {
             personList.addAll(previousResult.getList());
-            db.insertPeople(previousResult);
+//            db.insertPeople(previousResult);
 //            new PeopleHandler(this).execute(previousResult.getNext());
         } else {
             personList.addAll(previousResult.getList());
-            db.insertPeople(previousResult);
+//            db.insertPeople(previousResult);
 //            person = db.searchPersonByName("j").getList().get(0).getName();
         }
-        db.close();
         return personList;
     }
 

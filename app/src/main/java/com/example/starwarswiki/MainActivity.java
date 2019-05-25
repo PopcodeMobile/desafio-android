@@ -1,8 +1,21 @@
 package com.example.starwarswiki;
 
+import com.example.starwarswiki.handlers.AppDatabase;
+import com.example.starwarswiki.handlers.PeopleDAO;
+import com.example.starwarswiki.handlers.PersonRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
+
+import android.app.Application;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,14 +28,12 @@ import com.example.starwarswiki.structural.Planet;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PeopleHandler.MyCallbackInterface, PlanetsNameHandler.MyCallbackInterface {
-    private String status;
-    private List<Person> people;
+public class MainActivity extends AppCompatActivity {
+    private PersonRepository personRepository;
+    private LiveData<List<Person>> listOfPerson;
+    private ViewModel mViewModel;
 
-    //Indexes to mark itens already fetched
-    private int fetchPlanetsIndex = 0;
-    private int fetchSpeciesIndex = 0;
-    private DataSanityHandler dataSanityHandler;
+    private String status = "Loading...";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
         setContentView(R.layout.activity_main);
 
         FloatingActionButton fab =findViewById(R.id.settings);
+        mViewModel = ViewModelProviders.of(this).get(PersonViewModel.class);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,17 +49,6 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
                         .setAction("Action", null).show();
             }
         });
-
-        dataSanityHandler = new DataSanityHandler(this.getApplicationContext());
     }
 
-    @Override
-    public void onRequestCompleted(People result) {
-
-    }
-
-    @Override
-    public void onRequestCompleted(Planet result) {
-
-    }
 }
