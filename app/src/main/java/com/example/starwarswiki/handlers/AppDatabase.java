@@ -1,10 +1,13 @@
 package com.example.starwarswiki.handlers;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.starwarswiki.structural.Person;
 
@@ -25,4 +28,26 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract PeopleDAO peopleDAO();
 
+    private static RoomDatabase.Callback sDatabaseCallback  = new Callback() {
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
+            new populateDBAsync(INSTANCE).execute();
+        }
+    };
+
+
+    private static class populateDBAsync extends AsyncTask {
+        private final PeopleDAO peopleDAO;
+
+        public populateDBAsync(AppDatabase db) {
+            peopleDAO = db.peopleDAO();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            peopleDAO.removeAllPerson();
+            return null;
+        }
+    }
 }

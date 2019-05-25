@@ -19,10 +19,12 @@ public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.P
 
     public class PersonViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView personItemView;
+        private final TextView personName;
+        private final TextView personHeight;
         public PersonViewHolder(@NonNull View itemView) {
             super(itemView);
-            personItemView = itemView.findViewById(R.id.textView);
+            personName = itemView.findViewById(R.id.name);
+            personHeight = itemView.findViewById(R.id.height);
         }
 
 
@@ -43,10 +45,11 @@ public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.P
     public void onBindViewHolder(@NonNull PersonListAdapter.PersonViewHolder holder, int position) {
         if (listOfPerson != null) {
             Person current = listOfPerson.get(position);
-            holder.personItemView.setText(current.getName());
+            holder.personName.setText(current.getName());
+            holder.personHeight.setText(current.getHeight());
         } else {
             // Covers the case of data not being ready yet.
-            holder.personItemView.setText("Loading...");
+            holder.personName.setText("Loading...");
         }
     }
 

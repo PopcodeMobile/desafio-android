@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Star Wars Wiki</string>
+    <string name="hint_word">name;;;</string>
+    <string name="button_save">save</string>
+    <string name="empty_not_saved">Not saved, empty input</string>
+
 </resources>

@@ -3,4 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="cards_bg">#FAFAFA</color>
+    <color name="card_title_bg">#0D47A1</color>
+    <color name="card_title_text">#D5E4F3</color>
 </resources>

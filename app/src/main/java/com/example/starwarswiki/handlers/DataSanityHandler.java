@@ -2,8 +2,6 @@ package com.example.starwarswiki.handlers;
 
 import android.content.Context;
 
-import androidx.room.Room;
-
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;

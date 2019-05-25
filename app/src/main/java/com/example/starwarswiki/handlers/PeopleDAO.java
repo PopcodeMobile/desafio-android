@@ -2,6 +2,7 @@ package com.example.starwarswiki.handlers;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.lifecycle.LiveData;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Dao
 public interface PeopleDAO {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insertPerson(Person person);
 
     @Query("DELETE FROM person_table")

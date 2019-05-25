@@ -15,10 +15,6 @@ public class PersonViewModel extends AndroidViewModel {
     private PersonRepository personRepository;
     private LiveData<List<Person>> lisfOfPerson;
 
-    public PersonViewModel(){
-        super(new Application());
-    }
-
     public PersonViewModel(@NonNull Application application) {
         super(application);
         personRepository = new PersonRepository(application);
@@ -27,4 +23,5 @@ public class PersonViewModel extends AndroidViewModel {
 
     public LiveData<List<Person>> getAllPerson () { return lisfOfPerson; }
     public void insert(Person person) { personRepository.insert(person); }
+    public void insert(List<Person> listOfPerson) {personRepository.insertList(listOfPerson);}
 }

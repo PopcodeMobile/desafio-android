@@ -1,5 +1,6 @@
 package com.example.starwarswiki.structural;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -29,8 +30,10 @@ import java.util.List;
 })
 @Entity(tableName = "person_table")
 public class Person {
-    @PrimaryKey(autoGenerate = true)
+//    @PrimaryKey(autoGenerate = true)
     private int id;
+    @PrimaryKey
+    @NonNull
     @ColumnInfo(name = "name")
     @JsonProperty("name")
     private String name;
@@ -62,6 +65,15 @@ public class Person {
     @ColumnInfo(name = "species")
     @JsonProperty("species")
     private List<String> speciesURL = null;
+
+    /**
+     * Default empty constructor so Jackson can create a Empty Object
+     */
+    public Person(){}
+
+    public Person(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;
