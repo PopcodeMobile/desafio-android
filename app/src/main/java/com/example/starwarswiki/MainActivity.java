@@ -1,17 +1,18 @@
 package com.example.starwarswiki;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.starwarswiki.handlers.PeopleHandler;
-import com.example.starwarswiki.handlers.PersonRepository;
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,13 +20,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PeopleHandler.MyCallbackInterface {
-    private PersonRepository personRepository;
-    private LiveData<List<Person>> listOfPerson;
+public class MainActivity extends AppCompatActivity
+        implements PeopleHandler.MyCallbackInterface, SearchView.OnQueryTextListener {
     private PersonViewModel mViewModel;
-    public static final int NEW_PERSON_ACTIVITY_REQUEST_CODE = 1;
-
     private String status = "Loading...";
+    private PersonListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
         mViewModel = ViewModelProviders.of(this).get(PersonViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final PersonListAdapter adapter = new PersonListAdapter(this);
+        adapter = new PersonListAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
         mViewModel.getAllPerson().observe(this, new Observer<List<Person>>() {
             @Override
             public void onChanged(List<Person> listOfPerson) {
-                adapter.setListOfPersonPerson(listOfPerson);
+                adapter.setListOfPerson(listOfPerson);
             }
         });
 
@@ -69,5 +68,34 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
         if(result.getNext() != null) {
             new PeopleHandler(this).execute(result.getNext());
         }
+    }
+
+    //Search functions
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search,menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        mViewModel.queryByName("%"+query+"%").observe(this, new Observer<List<Person>>() {
+            @Override
+            public void onChanged(List<Person> listOfPerson) {
+                adapter.setListOfPerson(listOfPerson);
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 }

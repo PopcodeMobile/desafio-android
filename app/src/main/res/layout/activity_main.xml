@@ -24,10 +24,11 @@ So, we are leaving the template code in. -->
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
     tools:context="com.example.starwarswiki.MainActivity">
 
 
-    <include layout="@layout/content_main"/>
+    <include layout="@layout/content_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -36,8 +37,8 @@ So, we are leaving the template code in. -->
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:src="@android:drawable/ic_search_category_default"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@android:drawable/ic_dialog_info"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

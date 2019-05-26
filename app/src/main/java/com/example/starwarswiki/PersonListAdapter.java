@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.starwarswiki.structural.Person;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.PersonViewHolder> {
@@ -66,8 +67,14 @@ public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.P
         else return 0;
     }
 
-    void setListOfPersonPerson(List<Person> listOfPerson){
+    public void setListOfPerson(List<Person> listOfPerson){
         this.listOfPerson = listOfPerson;
+        notifyDataSetChanged();
+    }
+
+    public void updateList (List<Person> listOfPerson) {
+        this.listOfPerson = new ArrayList<>();
+        this.listOfPerson.addAll(listOfPerson);
         notifyDataSetChanged();
     }
 }

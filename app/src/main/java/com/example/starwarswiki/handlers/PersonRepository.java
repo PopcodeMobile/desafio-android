@@ -2,17 +2,11 @@ package com.example.starwarswiki.handlers;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.os.Parcel;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 public class PersonRepository {
@@ -37,6 +31,10 @@ public class PersonRepository {
         for (int i = 0; i < listOfPerson.size(); i++) {
             insert(listOfPerson.get(i));
         }
+    }
+
+    public LiveData<List<Person>> queryByName (String name){
+        return peopleDao.searchByName(name);
     }
 
     private static class insertAsyncTask extends AsyncTask<Person, Void, Void> {

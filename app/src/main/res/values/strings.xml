@@ -3,8 +3,9 @@
     <string name="hint_word">name;;;</string>
     <string name="button_save">save</string>
     <string name="empty_not_saved">Not saved, empty input</string>
-    <string name="height">Height:</string>
-    <string name="mass">Mass:</string>
+    <string name="height">Height (cm):</string>
+    <string name="mass">Mass (kg):</string>
     <string name="gender">Gender:</string>
+    <string name="search">Search...</string>
 
 </resources>
