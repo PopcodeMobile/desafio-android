@@ -66,6 +66,10 @@ public class Person {
     @JsonProperty("species")
     private List<String> speciesURL = null;
 
+    @ColumnInfo(name = "favorite")
+    private int favorite = 0;
+
+
     /**
      * Default empty constructor so Jackson can create a Empty Object
      */
@@ -182,5 +186,13 @@ public class Person {
     @JsonProperty("species")
     public void setSpeciesURL(List<String> speciesURL) {
         this.speciesURL = speciesURL;
+    }
+
+    public int getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(int favorite) {
+        this.favorite = favorite;
     }
 }

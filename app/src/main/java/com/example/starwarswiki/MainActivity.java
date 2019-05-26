@@ -3,11 +3,9 @@ package com.example.starwarswiki;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.starwarswiki.handlers.PeopleHandler;
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -49,16 +45,16 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        FloatingActionButton fab =findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, status, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//        FloatingActionButton fab =findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, status, Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
 //                Intent intent = new Intent(MainActivity.this, NewPersonActivity.class);
 //                startActivityForResult(intent, NEW_PERSON_ACTIVITY_REQUEST_CODE);
-            }
-        });
+//            }
+//        });
     }
 
     @Override

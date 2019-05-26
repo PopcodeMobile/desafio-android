@@ -7,5 +7,6 @@
     <string name="mass">Mass (kg):</string>
     <string name="gender">Gender:</string>
     <string name="search">Search...</string>
+    <string name="fav">Favorite:</string>
 
 </resources>
