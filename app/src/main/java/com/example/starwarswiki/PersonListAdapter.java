@@ -17,33 +17,44 @@ import java.util.List;
 public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.PersonViewHolder> {
     private final LayoutInflater mInflater;
     private List<Person> listOfPerson;
+    private OnPersonClickListener mOnPersonClickListener;
 
-    public class PersonViewHolder extends RecyclerView.ViewHolder {
+    public class PersonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView personName;
         private final TextView personHeight;
         private final TextView personMass;
         private final TextView personGender;
-        public PersonViewHolder(@NonNull View itemView) {
+        private OnPersonClickListener onPersonClickListener;
+
+        public PersonViewHolder(@NonNull View itemView, OnPersonClickListener onPersonClickListener) {
             super(itemView);
             personName = itemView.findViewById(R.id.name);
             personHeight = itemView.findViewById(R.id.height);
             personMass = itemView.findViewById(R.id.mass);
             personGender = itemView.findViewById(R.id.gender);
+
+            this.onPersonClickListener = onPersonClickListener;
+            itemView.setOnClickListener(this);
         }
 
 
+        @Override
+        public void onClick(View v) {
+            onPersonClickListener.onPersonClick(getAdapterPosition());
+        }
     }
 
-    public PersonListAdapter(Context context) {
+    public PersonListAdapter(Context context, OnPersonClickListener mOnPersonClickListener) {
         mInflater = LayoutInflater.from(context);
+        this.mOnPersonClickListener = mOnPersonClickListener;
     }
 
     @NonNull
     @Override
     public PersonListAdapter.PersonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);
-        return new PersonViewHolder(itemView);
+        return new PersonViewHolder(itemView, mOnPersonClickListener);
     }
 
     @Override
@@ -76,5 +87,12 @@ public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.P
         this.listOfPerson = new ArrayList<>();
         this.listOfPerson.addAll(listOfPerson);
         notifyDataSetChanged();
+    }
+
+    /**
+     * This is used to map clicks
+     */
+    public interface OnPersonClickListener {
+        void onPersonClick(int position);
     }
 }

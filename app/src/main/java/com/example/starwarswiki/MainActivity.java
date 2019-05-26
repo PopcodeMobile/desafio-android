@@ -1,9 +1,11 @@
 package com.example.starwarswiki;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -17,12 +19,12 @@ import com.example.starwarswiki.structural.Person;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements PeopleHandler.MyCallbackInterface, SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements PeopleHandler.MyCallbackInterface,
+        SearchView.OnQueryTextListener, PersonListAdapter.OnPersonClickListener {
     private PersonViewModel mViewModel;
-    private String status = "Loading...";
     private PersonListAdapter adapter;
     private SearchView searchView;
+    private Switch favoriteSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         mViewModel = ViewModelProviders.of(this).get(PersonViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        adapter = new PersonListAdapter(this);
+        adapter = new PersonListAdapter(this,this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -55,11 +57,22 @@ public class MainActivity extends AppCompatActivity
 //                startActivityForResult(intent, NEW_PERSON_ACTIVITY_REQUEST_CODE);
 //            }
 //        });
+//        ActionBar actionBar = getSupportActionBar();
+//        TextView textView = new TextView(getApplicationContext());
+//        Typeface typeface = ResourcesCompat.getFont(this, R.font.sfdistantgalaxyalternateitalic);
+//        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+//                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        textView.setLayoutParams(lp);
+//        textView.setText("Star Wars Wiki");
+//        textView.setTextSize(20);
+//        textView.setTypeface(typeface);
+//        textView.setTextColor(Color.WHITE);
+//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        actionBar.setCustomView(textView);
     }
 
     @Override
     public void onRequestCompleted(People result) {
-        status = "ready";
         if(result != null) {
             mViewModel.insert(result.getList());
         }
@@ -111,5 +124,11 @@ public class MainActivity extends AppCompatActivity
                 adapter.setListOfPerson(listOfPerson);
             }
         });
+    }
+
+    @Override
+    public void onPersonClick(int position) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        startActivity(intent);
     }
 }
