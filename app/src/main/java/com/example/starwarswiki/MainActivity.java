@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity
     private PersonViewModel mViewModel;
     private String status = "Loading...";
     private PersonListAdapter adapter;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,25 +79,41 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.search,menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(this);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-
-        mViewModel.queryByName("%"+query+"%").observe(this, new Observer<List<Person>>() {
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
-            public void onChanged(List<Person> listOfPerson) {
-                adapter.setListOfPerson(listOfPerson);
+            public boolean onClose() {
+                mViewModel.getAllPerson().observe(MainActivity.this, new Observer<List<Person>>() {
+                    @Override
+                    public void onChanged(List<Person> personList) {
+                        adapter.setListOfPerson(personList);
+                    }
+                });
+                return false;
             }
         });
         return true;
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
+    public boolean onQueryTextSubmit(String query) {
+        queryString(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        queryString(query);
+        return true;
+    }
+
+    public void queryString (String query) {
+        mViewModel.queryByName("%"+query+"%").observe(this, new Observer<List<Person>>() {
+            @Override
+            public void onChanged(List<Person> listOfPerson) {
+                adapter.setListOfPerson(listOfPerson);
+            }
+        });
     }
 }

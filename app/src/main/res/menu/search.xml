@@ -11,5 +11,5 @@
         android:title="@string/search"
         android:visible="true"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="always|withText" />
 </menu>
