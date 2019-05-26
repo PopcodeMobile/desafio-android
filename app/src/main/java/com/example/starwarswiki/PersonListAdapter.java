@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,12 +20,16 @@ public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.P
     private List<Person> listOfPerson;
     private OnPersonClickListener mOnPersonClickListener;
 
+
+
     public class PersonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView personName;
         private final TextView personHeight;
         private final TextView personMass;
         private final TextView personGender;
+        private final Switch favSwitch;
+
         private OnPersonClickListener onPersonClickListener;
 
         public PersonViewHolder(@NonNull View itemView, OnPersonClickListener onPersonClickListener) {
@@ -33,11 +38,11 @@ public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.P
             personHeight = itemView.findViewById(R.id.height);
             personMass = itemView.findViewById(R.id.mass);
             personGender = itemView.findViewById(R.id.gender);
+            favSwitch = itemView.findViewById(R.id.switch1);
 
             this.onPersonClickListener = onPersonClickListener;
             itemView.setOnClickListener(this);
         }
-
 
         @Override
         public void onClick(View v) {
@@ -65,6 +70,7 @@ public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.P
             holder.personHeight.setText(current.getHeight());
             holder.personMass.setText(current.getMass());
             holder.personGender.setText(current.getGender());
+            holder.favSwitch.setChecked(current.getFavorite()==1);
         } else {
             // Covers the case of data not being ready yet.
             holder.personName.setText("Loading...");
@@ -76,6 +82,10 @@ public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.P
         if (listOfPerson != null)
             return listOfPerson.size();
         else return 0;
+    }
+
+    public Person getPerson(int position) {
+        return listOfPerson.get(position);
     }
 
     public void setListOfPerson(List<Person> listOfPerson){

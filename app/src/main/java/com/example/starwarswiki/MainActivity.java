@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.starwarswiki.handlers.PeopleHandler;
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -48,16 +49,6 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
             }
         });
 
-//        FloatingActionButton fab =findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, status, Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//                Intent intent = new Intent(MainActivity.this, NewPersonActivity.class);
-//                startActivityForResult(intent, NEW_PERSON_ACTIVITY_REQUEST_CODE);
-//            }
-//        });
 //        ActionBar actionBar = getSupportActionBar();
 //        TextView textView = new TextView(getApplicationContext());
 //        Typeface typeface = ResourcesCompat.getFont(this, R.font.sfdistantgalaxyalternateitalic);
@@ -130,12 +121,14 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
     @Override
     public void onPersonClick(int position) {
         Intent intent = new Intent(this, DetailsActivity.class);
+        String person = new Gson().toJson(adapter.getPerson(position));
+        intent.putExtra("person", person);
         startActivity(intent);
     }
 
     @Override
     protected void onResume() {
-        Toast toast = Toast.makeText(this, "Welcome Back!", 5);
+        Toast toast = Toast.makeText(this, "Welcome Back!", Toast.LENGTH_LONG);
         toast.show();
         super.onResume();
     }
