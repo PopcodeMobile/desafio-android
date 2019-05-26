@@ -24,7 +24,7 @@ So, we are leaving the template code in. -->
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+    android:theme="@style/AppTheme"
     tools:context="com.example.starwarswiki.MainActivity">
 
 
