@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -130,5 +131,12 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
     public void onPersonClick(int position) {
         Intent intent = new Intent(this, DetailsActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        Toast toast = Toast.makeText(this, "Welcome Back!", 5);
+        toast.show();
+        super.onResume();
     }
 }
