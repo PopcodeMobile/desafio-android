@@ -1,11 +1,15 @@
 package com.example.starwarswiki;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -14,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.starwarswiki.adapters.PersonListAdapter;
+import com.example.starwarswiki.handlers.NetworkHander;
 import com.example.starwarswiki.handlers.PeopleHandler;
 import com.example.starwarswiki.handlers.PlanetsNameHandler;
 import com.example.starwarswiki.handlers.SpeciesNameHandler;
@@ -37,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements
     private MainViewModel mViewModel;
     private PersonListAdapter adapter;
     private SearchView searchView;
-    private Switch favoriteSwitch;
+    private NetworkHander networkHander;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +55,16 @@ public class MainActivity extends AppCompatActivity implements
         adapter = new PersonListAdapter(this,this, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        new PeopleHandler(this).execute("https://swapi.co/api/people?format=json");
-        new PlanetsNameHandler(this).execute("https://swapi.co/api/planets/?format=json");
-        new SpeciesNameHandler(this).execute("https://swapi.co/api/species/?format=json");
+//        Check if network is available before starting to fetch
+        if(isInternetAvailable()) {
+            new PeopleHandler(this).execute("https://swapi.co/api/people?format=json");
+            new PlanetsNameHandler(this).execute("https://swapi.co/api/planets/?format=json");
+            new SpeciesNameHandler(this).execute("https://swapi.co/api/species/?format=json");
+        } else {
+           Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
+            mViewModel.getAllPerson();
+        }
+        networkHander = new NetworkHander(mViewModel);
 
         mViewModel.getAllPerson().observe(this, new Observer<List<Person>>() {
             @Override
@@ -121,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements
         mViewModel.setAsFavorite(name, fav);
     }
 
+//  >>>>>>>> Async data fetch >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
     /**
      * People list request completed
      * @param result People object
@@ -134,8 +147,6 @@ public class MainActivity extends AppCompatActivity implements
             new PeopleHandler(this).execute(result.getNext());
         }
     }
-
-//  >>>>>>>> Async data fetch >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     /**
      * Planets list request completed
@@ -197,6 +208,20 @@ public class MainActivity extends AppCompatActivity implements
         if(result.getNext() != null) {
             new SpeciesNameHandler(this).execute(result.getNext());
         }
+    }
+
+    public boolean isInternetAvailable () {
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = null;
+            if (connectivityManager != null) {
+                networkInfo = connectivityManager.getActiveNetworkInfo();
+            }
+            return networkInfo != null && networkInfo.isConnected();
+        } catch (NullPointerException e) {
+            return false;
+        }
+
     }
 
 
