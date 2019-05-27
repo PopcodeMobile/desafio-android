@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.starwarswiki.adapters.PersonListAdapter;
+import com.example.starwarswiki.handlers.FavHandler;
 import com.example.starwarswiki.handlers.NetworkHander;
 import com.example.starwarswiki.handlers.PeopleHandler;
 import com.example.starwarswiki.handlers.PlanetsNameHandler;
@@ -38,11 +39,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements
         PeopleHandler.MyCallbackInterface, PlanetsNameHandler.MyCallbackInterface,
         SpeciesNameHandler.MyCallbackInterface, SearchView.OnQueryTextListener,
-        PersonListAdapter.OnPersonClickListener, PersonListAdapter.OnCheckedFavListener {
+        PersonListAdapter.OnPersonClickListener, PersonListAdapter.OnCheckedFavListener,
+        FavHandler.FavCallBack {
     private MainViewModel mViewModel;
     private PersonListAdapter adapter;
     private SearchView searchView;
-    private NetworkHander networkHander;
+    //private NetworkHander networkHander;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements
            Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
             mViewModel.getAllPerson();
         }
-        networkHander = new NetworkHander(mViewModel);
+        //networkHander = new NetworkHander(mViewModel);
 
         mViewModel.getAllPerson().observe(this, new Observer<List<Person>>() {
             @Override
@@ -129,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFavClick(String name, int fav) {
+        new FavHandler(this).execute(false);
         mViewModel.setAsFavorite(name, fav);
     }
 
@@ -208,6 +211,11 @@ public class MainActivity extends AppCompatActivity implements
         if(result.getNext() != null) {
             new SpeciesNameHandler(this).execute(result.getNext());
         }
+    }
+
+    @Override
+    public void onRequestCompleted(String result) {
+        Toast.makeText(this, result, Toast.LENGTH_LONG);
     }
 
     public boolean isInternetAvailable () {

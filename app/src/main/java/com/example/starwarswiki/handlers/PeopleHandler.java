@@ -17,7 +17,6 @@ public class PeopleHandler extends AsyncTask<String, Void, People> {
 
     public interface MyCallbackInterface {
         public void onRequestCompleted(People result);
-
     }
 
     public PeopleHandler(MyCallbackInterface callback) {
