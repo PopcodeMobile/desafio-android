@@ -27,7 +27,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         PeopleHandler.MyCallbackInterface, PlanetsNameHandler.MyCallbackInterface,
-        SearchView.OnQueryTextListener, PersonListAdapter.OnPersonClickListener {
+        SearchView.OnQueryTextListener, PersonListAdapter.OnPersonClickListener,
+        PersonListAdapter.OnCheckedFavListener {
     private MainViewModel mViewModel;
     private PersonListAdapter adapter;
     private SearchView searchView;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        adapter = new PersonListAdapter(this,this);
+        adapter = new PersonListAdapter(this,this, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -153,6 +154,12 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra("person", person);
         startActivity(intent);
     }
+
+    @Override
+    public void onFavClick(String name, int fav) {
+        mViewModel.setAsFavorite(name, fav);
+    }
+
 
 //    @Override
 //    protected void onResume() {

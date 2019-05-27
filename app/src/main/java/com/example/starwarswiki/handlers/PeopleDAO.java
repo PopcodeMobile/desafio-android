@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.lifecycle.LiveData;
+import androidx.room.Update;
 
 import com.example.starwarswiki.structural.Person;
 
@@ -25,5 +26,7 @@ public interface PeopleDAO {
     @Query("SELECT * FROM person_table WHERE name LIKE :searchString")
     public LiveData<List<Person>> searchByName(String searchString);
 
+    @Query("UPDATE person_table SET favorite = :favValue WHERE name like :stringName")
+    public void updateFavorite(String stringName, int favValue);
 
 }

@@ -63,6 +63,26 @@ public class DataRepository {
         }
     }
 
+
+    public void setFavorite (String name, int fav) {
+        Person person = new Person();
+        person.setName(name);
+        person.setFavorite(fav);
+        new updateAsyntTask(peopleDao).execute(person);
+    }
+
+    private class updateAsyntTask extends AsyncTask <Person, Void, Void> {
+        private PeopleDAO mAsyncTaskDao;
+
+        public updateAsyntTask(PeopleDAO peopleDao) { mAsyncTaskDao = peopleDao; }
+
+        @Override
+        protected Void doInBackground(Person... people) {
+            mAsyncTaskDao.updateFavorite(people[0].getName(),people[0].getFavorite());
+            return null;
+        }
+    }
+
     //Person Operations End
 
     //Planet Operations Begin

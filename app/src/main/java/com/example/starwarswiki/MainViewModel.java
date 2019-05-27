@@ -31,6 +31,15 @@ public class MainViewModel extends AndroidViewModel {
         return queryResult;
     }
 
+    /**
+     * Setting as favorite
+     * @param name name of the person
+     * @param value 0 set false, "anything else" true
+     */
+    public void setAsFavorite(String name, int value) {
+        dataRepository.setFavorite(name, value);
+    }
+
 //    public void insert(Person person) { dataRepository.insert(person); }
     public void insert(List<Person> listOfPerson) {
         dataRepository.insertList(listOfPerson);
