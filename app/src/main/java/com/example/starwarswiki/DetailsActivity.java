@@ -6,12 +6,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.MutableLiveData;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.starwarswiki.adapters.PersonListAdapter;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
+import com.example.starwarswiki.view_models.DetailsViewModel;
+import com.example.starwarswiki.view_models.MainViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -22,9 +25,9 @@ public class DetailsActivity extends AppCompatActivity {
     private String json;
     private Person person;
     private DetailsViewModel detailsViewModel;
+    private MainViewModel mainViewModel;
     private String homeworld = "Loading..";
-    private List<Planet> planetList;
-    private MutableLiveData<String> mMutableLiveData;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +80,23 @@ public class DetailsActivity extends AppCompatActivity {
         data = findViewById(R.id.dt_species);
         data.setText(person.getSpeciesURL().toString());
 
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        fab.setBackgroundTintList((person.getFavorite() == 1) ?
+                ContextCompat.getColorStateList(this, R.color.colorAccent) :
+                ContextCompat.getColorStateList(this, R.color.fab_fav_off));
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mainViewModel.setAsFavorite(person.getName(), (person.getFavorite() == 1 ? 0 : 1));
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 }

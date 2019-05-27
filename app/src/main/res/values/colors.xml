@@ -7,4 +7,6 @@
     <color name="card_title_bg">#1752AF</color>
     <color name="primary_star">#0D47A1</color>
     <color name="card_title_text">#EDF0F5</color>
+    <color name="fab_fav_on">#FFCC31</color>
+    <color name="fab_fav_off">#575757</color>
 </resources>

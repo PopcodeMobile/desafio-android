@@ -1,4 +1,4 @@
-package com.example.starwarswiki;
+package com.example.starwarswiki.view_models;
 
 import android.app.Application;
 

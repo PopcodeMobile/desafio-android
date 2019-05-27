@@ -1,4 +1,4 @@
-package com.example.starwarswiki;
+package com.example.starwarswiki.adapters;
 
 import android.content.Context;
 import android.util.SparseBooleanArray;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.starwarswiki.R;
 import com.example.starwarswiki.structural.Person;
 
 import java.util.ArrayList;

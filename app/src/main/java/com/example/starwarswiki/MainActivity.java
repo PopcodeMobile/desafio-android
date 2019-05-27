@@ -13,12 +13,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.starwarswiki.adapters.PersonListAdapter;
 import com.example.starwarswiki.handlers.PeopleHandler;
 import com.example.starwarswiki.handlers.PlanetsNameHandler;
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
 import com.example.starwarswiki.structural.Planets;
+import com.example.starwarswiki.view_models.MainViewModel;
 import com.google.gson.Gson;
 
 import java.net.URI;
