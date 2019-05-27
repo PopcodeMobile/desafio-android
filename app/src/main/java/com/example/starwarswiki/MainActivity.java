@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -15,15 +14,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.starwarswiki.handlers.PeopleHandler;
+import com.example.starwarswiki.handlers.PlanetsNameHandler;
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
+import com.example.starwarswiki.structural.Planet;
+import com.example.starwarswiki.structural.Planets;
 import com.google.gson.Gson;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PeopleHandler.MyCallbackInterface,
+public class MainActivity extends AppCompatActivity implements
+        PeopleHandler.MyCallbackInterface, PlanetsNameHandler.MyCallbackInterface,
         SearchView.OnQueryTextListener, PersonListAdapter.OnPersonClickListener {
-    private PersonViewModel mViewModel;
+    private MainViewModel mViewModel;
     private PersonListAdapter adapter;
     private SearchView searchView;
     private Switch favoriteSwitch;
@@ -33,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mViewModel = ViewModelProviders.of(this).get(PersonViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         adapter = new PersonListAdapter(this,this);
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         new PeopleHandler(this).execute("https://swapi.co/api/people?format=json");
+        new PlanetsNameHandler(this).execute("https://swapi.co/api/planets/?format=json");
 
         mViewModel.getAllPerson().observe(this, new Observer<List<Person>>() {
             @Override
@@ -48,21 +54,12 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
                 adapter.setListOfPerson(listOfPerson);
             }
         });
-
-//        ActionBar actionBar = getSupportActionBar();
-//        TextView textView = new TextView(getApplicationContext());
-//        Typeface typeface = ResourcesCompat.getFont(this, R.font.sfdistantgalaxyalternateitalic);
-//        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-//                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        textView.setLayoutParams(lp);
-//        textView.setText("Star Wars Wiki");
-//        textView.setTextSize(20);
-//        textView.setTypeface(typeface);
-//        textView.setTextColor(Color.WHITE);
-//        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-//        actionBar.setCustomView(textView);
     }
 
+    /**
+     * People list request completed
+     * @param result People object
+     */
     @Override
     public void onRequestCompleted(People result) {
         if(result != null) {
@@ -70,6 +67,37 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
         }
         if(result.getNext() != null) {
             new PeopleHandler(this).execute(result.getNext());
+        }
+    }
+
+    /**
+     * Planets list request completed
+     * @param result Planets object
+     */
+    @Override
+    public void onRequestCompleted(Planets result) {
+        List<Planet> planets = result.getListOfPlanet();
+        URI uri;
+        String[] segments;
+        String idStr;
+        if(result != null) {
+            //Saving url as ids
+            for (int i = 0; i < result.getListOfPlanet().size(); i++) {
+                try {
+                    uri = new URI(planets.get(i).getUrl());
+                    segments = uri.getPath().split("/");
+                    idStr = segments[segments.length-1];
+                    planets.get(i).setUrl(idStr);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+            mViewModel.insertPlanets(planets);
+        }
+        if(result.getNext() != null) {
+            new PlanetsNameHandler(this).execute(result.getNext());
         }
     }
 
@@ -126,10 +154,10 @@ public class MainActivity extends AppCompatActivity implements PeopleHandler.MyC
         startActivity(intent);
     }
 
-    @Override
-    protected void onResume() {
-        Toast toast = Toast.makeText(this, "Welcome Back!", Toast.LENGTH_LONG);
-        toast.show();
-        super.onResume();
-    }
+//    @Override
+//    protected void onResume() {
+//        Toast toast = Toast.makeText(this, "Welcome Back!", Toast.LENGTH_LONG);
+//        toast.show();
+//        super.onResume();
+//    }
 }

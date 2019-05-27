@@ -10,8 +10,9 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.starwarswiki.structural.Person;
+import com.example.starwarswiki.structural.Planet;
 
-@Database(entities = {Person.class}, version = 1,  exportSchema = false)
+@Database(entities = {Person.class, Planet.class}, version = 1,  exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
@@ -28,6 +29,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract PeopleDAO peopleDAO();
 
+    public abstract PlanetDAO planetDAO();
+
     private static RoomDatabase.Callback sDatabaseCallback  = new Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
@@ -35,6 +38,8 @@ public abstract class AppDatabase extends RoomDatabase {
             new populateDBAsync(INSTANCE).execute();
         }
     };
+
+
 
 
     private static class populateDBAsync extends AsyncTask {

@@ -6,15 +6,25 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.starwarswiki.structural.Person;
+import com.example.starwarswiki.structural.Planet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
+import java.util.List;
+
 public class DetailsActivity extends AppCompatActivity {
     private String json;
     private Person person;
+    private DetailsViewModel detailsViewModel;
+    private String homeworld = "Loading..";
+    private List<Planet> planetList;
+    private MutableLiveData<String> mMutableLiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +34,21 @@ public class DetailsActivity extends AppCompatActivity {
         json  = getIntent().getStringExtra("person");
         person = new Gson().fromJson(json, Person.class);
 
+        detailsViewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
+
         setContentView(R.layout.activity_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(person.getName());
         setSupportActionBar(toolbar);
+
+        detailsViewModel.queryByPath(person.getHomeworldURL()).observe(this, new Observer<List<Planet>>() {
+            @Override
+            public void onChanged(List<Planet> list) {
+                homeworld = list.get(0).getName();
+                TextView data = findViewById(R.id.dt_home_planet);
+                data.setText(homeworld);
+            }
+        });
 
         data = findViewById(R.id.dt_height);
         data.setText(person.getHeight());
@@ -51,7 +72,7 @@ public class DetailsActivity extends AppCompatActivity {
         data.setText(person.getGender());
 
         data = findViewById(R.id.dt_home_planet);
-        data.setText(person.getHomeworldURL());
+        data.setText(homeworld);
 
         data = findViewById(R.id.dt_species);
         data.setText(person.getSpeciesURL().toString());

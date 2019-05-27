@@ -6,18 +6,23 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.example.starwarswiki.structural.Person;
+import com.example.starwarswiki.structural.Planet;
 
 import java.util.List;
 
-public class PersonRepository {
+public class DataRepository {
     private PeopleDAO peopleDao;
+    private PlanetDAO planetDAO;
     private LiveData<List<Person>> listOfPerson;
 
-    public PersonRepository(Application application) {
+    public DataRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         peopleDao = db.peopleDAO();
+        planetDAO = db.planetDAO();
         listOfPerson = peopleDao.getAllPerson();
     }
+
+    //Person Operations Begin
 
     public LiveData<List<Person>> getAllPerson() {
         return listOfPerson;
@@ -37,6 +42,11 @@ public class PersonRepository {
         return peopleDao.searchByName(name);
     }
 
+    public LiveData<List<Planet>> getAllPlanets() {
+        return planetDAO.getAllPlanets();
+    }
+
+
     private static class insertAsyncTask extends AsyncTask<Person, Void, Void> {
         private PeopleDAO mAsyncTaskDao;
 //        private String jsonURL = "https://swapi.co/api/people/?format=json";
@@ -53,7 +63,38 @@ public class PersonRepository {
         }
     }
 
+    //Person Operations End
 
+    //Planet Operations Begin
+
+    public void insertPlanet(Planet planet) {
+        new planetInsertAsyncTask(planetDAO).execute(planet);
+    }
+
+    public void insertPlanetList(List<Planet> list) {
+        for(int i = 0; i < list.size(); i++) {
+            insertPlanet(list.get(i));
+        }
+
+    }
+
+    public LiveData<List<Planet>> getHomeworld(String homeworldURL) {
+        return planetDAO.getHomeworld(homeworldURL);
+    }
+
+    private static class planetInsertAsyncTask extends AsyncTask<Planet, Void, Void> {
+        private PlanetDAO mAsyncTaskDao;
+
+        planetInsertAsyncTask(PlanetDAO planetDAO) { mAsyncTaskDao = planetDAO; }
+
+        @Override
+        protected Void doInBackground(Planet... params) {
+            mAsyncTaskDao.insertPlanet(params[0]);
+            return null;
+        }
+    }
+
+    //Planet Operations End
 
 }
 

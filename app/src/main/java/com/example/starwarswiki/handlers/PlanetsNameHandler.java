@@ -3,16 +3,18 @@ package com.example.starwarswiki.handlers;
 import android.os.AsyncTask;
 
 import com.example.starwarswiki.structural.Planet;
+import com.example.starwarswiki.structural.Planets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URL;
 
-public class PlanetsNameHandler extends AsyncTask<String, Void, Planet> {
+public class PlanetsNameHandler extends AsyncTask<String, Void, Planets> {
+    private Planets planets;
     private PlanetsNameHandler.MyCallbackInterface mCallback;
 
     public interface MyCallbackInterface {
-        public void onRequestCompleted(Planet result);
+        public void onRequestCompleted(Planets result);
     }
 
     public PlanetsNameHandler(PlanetsNameHandler.MyCallbackInterface callback) {
@@ -20,10 +22,11 @@ public class PlanetsNameHandler extends AsyncTask<String, Void, Planet> {
     }
 
     @Override
-    protected Planet doInBackground(String... strings) {
+    protected Planets doInBackground(String... strings) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(new URL(strings[0]), Planet.class);
+            planets = objectMapper.readValue(new URL(strings[0]), Planets.class);
+            return planets;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -31,7 +34,7 @@ public class PlanetsNameHandler extends AsyncTask<String, Void, Planet> {
     }
 
     @Override
-    protected void onPostExecute(Planet name){
-        mCallback.onRequestCompleted(name);
+    protected void onPostExecute(Planets planets){
+        mCallback.onRequestCompleted(planets);
     }
 }
