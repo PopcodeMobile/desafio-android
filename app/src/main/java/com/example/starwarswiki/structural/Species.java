@@ -1,15 +1,11 @@
 package com.example.starwarswiki.structural;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -20,21 +16,22 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "results"
 })
 /**
- * POJO Class to help with people response from SWAPI
+ * POJO Class to help with species response from SWAPI
  */
-public class People extends JsonSWAPIPage {
+public class Species extends JsonSWAPIPage {
 
     @JsonProperty("results")
-    private List<Person> list = null;
+    private List<Specie> listOfSpecie = null;
 
 
     @JsonProperty("results")
-    public List<Person> getList() {
-        return list;
+    public List<Specie> getListOfSpecie() {
+        return listOfSpecie;
     }
 
     @JsonProperty("results")
-    public void setList(List<Person> list) {
-        this.list = list;
+    public void setListOfSpecie(List<Specie> listOfSpecie) {
+        this.listOfSpecie = listOfSpecie;
     }
+
 }

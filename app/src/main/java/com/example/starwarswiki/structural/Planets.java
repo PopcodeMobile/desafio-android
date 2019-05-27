@@ -20,48 +20,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "previous",
         "results"
 })
-public class Planets {
+/**
+ * POJO Class to help with planets response from SWAPI
+ */
+public class Planets extends JsonSWAPIPage {
 
-    @JsonProperty("count")
-    private Integer count;
-    @JsonProperty("next")
-    private String next;
-    @JsonProperty("previous")
-    private Object previous;
     @JsonProperty("results")
     private List<Planet> listOfPlanet = null;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("count")
-    public Integer getCount() {
-        return count;
-    }
-
-    @JsonProperty("count")
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    @JsonProperty("next")
-    public String getNext() {
-        return next;
-    }
-
-    @JsonProperty("next")
-    public void setNext(String next) {
-        this.next = next;
-    }
-
-    @JsonProperty("previous")
-    public Object getPrevious() {
-        return previous;
-    }
-
-    @JsonProperty("previous")
-    public void setPrevious(Object previous) {
-        this.previous = previous;
-    }
 
     @JsonProperty("results")
     public List<Planet> getListOfPlanet() {
