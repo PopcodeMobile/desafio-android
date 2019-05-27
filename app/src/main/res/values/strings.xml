@@ -17,5 +17,6 @@
     <string name="home_planet">Home Planet:</string>
     <string name="species">Species:</string>
     <string name="null_item">No new item found</string>
+    <string name="na">n/a</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.example.starwarswiki.handlers;
+package com.example.starwarswiki.database;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -7,22 +7,26 @@ import androidx.lifecycle.LiveData;
 
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
+import com.example.starwarswiki.structural.Specie;
 
 import java.util.List;
 
 public class DataRepository {
     private PeopleDAO peopleDao;
     private PlanetDAO planetDAO;
+    private SpecieDAO specieDAO;
     private LiveData<List<Person>> listOfPerson;
 
     public DataRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         peopleDao = db.peopleDAO();
         planetDAO = db.planetDAO();
+        specieDAO = db.specieDAO();
+
         listOfPerson = peopleDao.getAllPerson();
     }
 
-    //Person Operations Begin
+    //Person Operations Begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     public LiveData<List<Person>> getAllPerson() {
         return listOfPerson;
@@ -83,9 +87,9 @@ public class DataRepository {
         }
     }
 
-    //Person Operations End
+    // >>>>>>>>>> Person Operations End >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    //Planet Operations Begin
+    // >>>>>>>>>> Planet Operations Begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     public void insertPlanet(Planet planet) {
         new planetInsertAsyncTask(planetDAO).execute(planet);
@@ -114,7 +118,38 @@ public class DataRepository {
         }
     }
 
-    //Planet Operations End
+    // >>>>>>>>>> Planet Operations End >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    // >>>>>>>>>> Species Operarions Begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    public void insertSpecie(Specie specie) {
+        new specieInsertAsyncTask(specieDAO).execute(specie);
+    }
+
+    public void insertSpecieList(List<Specie> list) {
+        for(int i = 0; i < list.size(); i++) {
+            insertSpecie(list.get(i));
+        }
+
+    }
+
+    public LiveData<List<Specie>> getSpecie(String homeworldURL) {
+        return specieDAO.getHomeworld(homeworldURL);
+    }
+
+    private static class specieInsertAsyncTask extends AsyncTask<Specie, Void, Void> {
+        private SpecieDAO mAsyncTaskDao;
+
+        specieInsertAsyncTask(SpecieDAO specieDAO) { mAsyncTaskDao = specieDAO; }
+
+        @Override
+        protected Void doInBackground(Specie... params) {
+            mAsyncTaskDao.insertSpecie(params[0]);
+            return null;
+        }
+    }
+
+    // >>>>>>>>>> Species Operarions End >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 }
 

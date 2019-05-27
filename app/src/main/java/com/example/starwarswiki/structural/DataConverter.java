@@ -1,4 +1,4 @@
-package com.example.starwarswiki.handlers;
+package com.example.starwarswiki.structural;
 
 import androidx.room.TypeConverter;
 

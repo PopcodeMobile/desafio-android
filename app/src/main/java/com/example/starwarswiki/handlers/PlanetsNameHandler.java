@@ -9,6 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 
+
+/**
+ * Fetchs planets page on AsyncTask
+ */
 public class PlanetsNameHandler extends AsyncTask<String, Void, Planets> {
     private Planets planets;
     private PlanetsNameHandler.MyCallbackInterface mCallback;

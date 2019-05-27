@@ -1,4 +1,4 @@
-package com.example.starwarswiki.handlers;
+package com.example.starwarswiki.database;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -11,10 +11,17 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
+import com.example.starwarswiki.structural.Specie;
 
-@Database(entities = {Person.class, Planet.class}, version = 1,  exportSchema = false)
+@Database(entities = {Person.class, Planet.class, Specie.class}, version = 1,  exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
+
+    public abstract PeopleDAO peopleDAO();
+
+    public abstract PlanetDAO planetDAO();
+
+    public abstract SpecieDAO specieDAO();
 
     static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
@@ -27,10 +34,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract PeopleDAO peopleDAO();
-
-    public abstract PlanetDAO planetDAO();
-
     private static RoomDatabase.Callback sDatabaseCallback  = new Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
@@ -38,8 +41,6 @@ public abstract class AppDatabase extends RoomDatabase {
             new populateDBAsync(INSTANCE).execute();
         }
     };
-
-
 
 
     private static class populateDBAsync extends AsyncTask {

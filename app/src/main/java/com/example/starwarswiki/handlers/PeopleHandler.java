@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 
+
+/**
+ * Fetchs people page on AsyncTask
+ */
 public class PeopleHandler extends AsyncTask<String, Void, People> {
     private People people;
     private MyCallbackInterface mCallback;

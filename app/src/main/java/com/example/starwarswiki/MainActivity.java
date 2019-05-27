@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.starwarswiki.adapters.PersonListAdapter;
 import com.example.starwarswiki.handlers.PeopleHandler;
 import com.example.starwarswiki.handlers.PlanetsNameHandler;
+import com.example.starwarswiki.handlers.SpeciesNameHandler;
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
 import com.example.starwarswiki.structural.Planets;
+import com.example.starwarswiki.structural.Specie;
+import com.example.starwarswiki.structural.Species;
 import com.example.starwarswiki.view_models.MainViewModel;
 import com.google.gson.Gson;
 
@@ -29,8 +32,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         PeopleHandler.MyCallbackInterface, PlanetsNameHandler.MyCallbackInterface,
-        SearchView.OnQueryTextListener, PersonListAdapter.OnPersonClickListener,
-        PersonListAdapter.OnCheckedFavListener {
+        SpeciesNameHandler.MyCallbackInterface, SearchView.OnQueryTextListener,
+        PersonListAdapter.OnPersonClickListener, PersonListAdapter.OnCheckedFavListener {
     private MainViewModel mViewModel;
     private PersonListAdapter adapter;
     private SearchView searchView;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements
 
         new PeopleHandler(this).execute("https://swapi.co/api/people?format=json");
         new PlanetsNameHandler(this).execute("https://swapi.co/api/planets/?format=json");
+        new SpeciesNameHandler(this).execute("https://swapi.co/api/species/?format=json");
 
         mViewModel.getAllPerson().observe(this, new Observer<List<Person>>() {
             @Override
@@ -57,51 +61,6 @@ public class MainActivity extends AppCompatActivity implements
                 adapter.setListOfPerson(listOfPerson);
             }
         });
-    }
-
-    /**
-     * People list request completed
-     * @param result People object
-     */
-    @Override
-    public void onRequestCompleted(People result) {
-        if(result != null) {
-            mViewModel.insert(result.getList());
-        }
-        if(result.getNext() != null) {
-            new PeopleHandler(this).execute(result.getNext());
-        }
-    }
-
-    /**
-     * Planets list request completed
-     * @param result Planets object
-     */
-    @Override
-    public void onRequestCompleted(Planets result) {
-        List<Planet> planets = result.getListOfPlanet();
-        URI uri;
-        String[] segments;
-        String idStr;
-        if(result != null) {
-            //Saving url as ids
-            for (int i = 0; i < result.getListOfPlanet().size(); i++) {
-                try {
-                    uri = new URI(planets.get(i).getUrl());
-                    segments = uri.getPath().split("/");
-                    idStr = segments[segments.length-1];
-                    planets.get(i).setUrl(idStr);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-            mViewModel.insertPlanets(planets);
-        }
-        if(result.getNext() != null) {
-            new PlanetsNameHandler(this).execute(result.getNext());
-        }
     }
 
     //Search functions
@@ -160,6 +119,84 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onFavClick(String name, int fav) {
         mViewModel.setAsFavorite(name, fav);
+    }
+
+    /**
+     * People list request completed
+     * @param result People object
+     */
+    @Override
+    public void onRequestCompleted(People result) {
+        if(result != null) {
+            mViewModel.insert(result.getList());
+        }
+        if(result.getNext() != null) {
+            new PeopleHandler(this).execute(result.getNext());
+        }
+    }
+
+//  >>>>>>>> Async data fetch >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    /**
+     * Planets list request completed
+     * @param result Planets object
+     */
+    @Override
+    public void onRequestCompleted(Planets result) {
+        List<Planet> planets = result.getListOfPlanet();
+        URI uri;
+        String[] segments;
+        String idStr;
+        if(result != null) {
+            //Saving url as ids
+            for (int i = 0; i < result.getListOfPlanet().size(); i++) {
+                try {
+                    uri = new URI(planets.get(i).getUrl());
+                    segments = uri.getPath().split("/");
+                    idStr = segments[segments.length-1];
+                    planets.get(i).setUrl(idStr);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+            mViewModel.insertPlanets(planets);
+        }
+        if(result.getNext() != null) {
+            new PlanetsNameHandler(this).execute(result.getNext());
+        }
+    }
+
+    /**
+     * Species list request completed
+     * @param result Species object
+     */
+    @Override
+    public void onRequestCompleted(Species result) {
+        List<Specie> species = result.getListOfSpecie();
+        URI uri;
+        String[] segments;
+        String idStr;
+        if(result != null) {
+            //Saving url as ids
+            for (int i = 0; i < result.getListOfSpecie().size(); i++) {
+                try {
+                    uri = new URI(species.get(i).getUrl());
+                    segments = uri.getPath().split("/");
+                    idStr = segments[segments.length-1];
+                    species.get(i).setUrl(idStr);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+            mViewModel.insertSpecies(species);
+        }
+        if(result.getNext() != null) {
+            new SpeciesNameHandler(this).execute(result.getNext());
+        }
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.starwarswiki.handlers;
+package com.example.starwarswiki.database;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

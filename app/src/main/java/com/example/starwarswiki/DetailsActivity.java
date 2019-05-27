@@ -10,9 +10,9 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.starwarswiki.adapters.PersonListAdapter;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
+import com.example.starwarswiki.structural.Specie;
 import com.example.starwarswiki.view_models.DetailsViewModel;
 import com.example.starwarswiki.view_models.MainViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,8 +26,8 @@ public class DetailsActivity extends AppCompatActivity {
     private Person person;
     private DetailsViewModel detailsViewModel;
     private MainViewModel mainViewModel;
-    private String homeworld = "Loading..";
-    private FloatingActionButton fab;
+    private String homeworld = "Loading...";
+    private String species = "Loading...";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +44,38 @@ public class DetailsActivity extends AppCompatActivity {
         toolbar.setTitle(person.getName());
         setSupportActionBar(toolbar);
 
-        detailsViewModel.queryByPath(person.getHomeworldURL()).observe(this, new Observer<List<Planet>>() {
+        detailsViewModel.queryPlanetByPath(person.getHomeworldURL()).observe(this, new Observer<List<Planet>>() {
             @Override
             public void onChanged(List<Planet> list) {
-                homeworld = list.get(0).getName();
-                TextView data = findViewById(R.id.dt_home_planet);
-                data.setText(homeworld);
+                if(list.size() > 0){
+                    homeworld = list.get(0).getName();
+                    TextView data = findViewById(R.id.dt_home_planet);
+                    data.setText(homeworld);
+                }
             }
         });
+
+        if(person.getSpeciesURL().size() > 0) {
+            detailsViewModel.querySpecieByList(person.getSpeciesURL()).observe(this, new Observer<List<Specie>>() {
+                @Override
+                public void onChanged(List<Specie> list) {
+                    if(list.size() > 0) {
+                        //Concatanating if theres more than one specie (who knows???)
+                        for(int i = 0; i < list.size(); i++) {
+                            if(i == 0){
+                                species = list.get(i).getName();
+                            } else {
+                                species += ", " + list.get(i).getName();
+                            }
+                        }
+                        TextView data = findViewById(R.id.dt_species);
+                        data.setText(species);
+                    }
+                }
+            });
+        } else {
+            species = getString(R.string.na);
+        }
 
         data = findViewById(R.id.dt_height);
         data.setText(person.getHeight());
@@ -78,7 +102,7 @@ public class DetailsActivity extends AppCompatActivity {
         data.setText(homeworld);
 
         data = findViewById(R.id.dt_species);
-        data.setText(person.getSpeciesURL().toString());
+        data.setText(species);
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 

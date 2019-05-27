@@ -1,4 +1,4 @@
-package com.example.starwarswiki.handlers;
+package com.example.starwarswiki.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

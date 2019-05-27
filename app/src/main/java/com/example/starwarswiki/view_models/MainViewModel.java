@@ -6,9 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.starwarswiki.handlers.DataRepository;
+import com.example.starwarswiki.database.DataRepository;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
+import com.example.starwarswiki.structural.Specie;
 
 import java.util.List;
 
@@ -49,4 +50,7 @@ public class MainViewModel extends AndroidViewModel {
         dataRepository.insertPlanetList(listOfPlanet);
     }
 
+    public void insertSpecies(List<Specie> listOfSpecie) {
+        dataRepository.insertSpecieList(listOfSpecie);
+    }
 }
