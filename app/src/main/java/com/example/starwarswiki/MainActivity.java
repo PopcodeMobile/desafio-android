@@ -61,32 +61,24 @@ public class MainActivity extends AppCompatActivity implements
             new SpeciesNameHandler(this).execute("https://swapi.co/api/species/?format=json");
 
             //Get List Of failed favourites
-            if(ranOnce) {
+            //if(ranOnce) {
                 Toast.makeText(this,"AAAAAAAA", Toast.LENGTH_LONG);
                 mViewModel.checkFailedFavLogs().observe(this, new Observer<List<FavLogItem>>() {
                     @Override
                     public void onChanged(List<FavLogItem> favLogItems) {
                         if(favLogItems != null) {
-                            mViewModel.removeFavLogs();//Clear the list
+                            mViewModel.removeFavLogs(); //Clear the list
                             for(int i = 0; i < favLogItems.size(); i++){
                                 String name = favLogItems.get(i).getName();
                                 new FavHandler(MainActivity.this).execute(name);
-                                mViewModel.setAsFavorite(name, 1);//Set as Fav
+                                mViewModel.setAsFavorite(name, 1);  //Tries to set as Fav
                             }
                             mViewModel.checkFailedFavLogs().removeObserver(this);
                         }
                     }
                 });
-                ranOnce = false;
-//                mViewModel.getListFavLog().observe(this, new Observer<List<FavLogItem>>() {
-//                    @Override
-//                    public void onChanged(List<FavLogItem> favLogItems) {
-//                        mViewModel.setAllAsFavorite(favLogItems);
-//                    }
-//                });
-//                getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-//                        .putBoolean("ran", false).commit();
-            }
+                //ranOnce = false;
+            //}
         } else {
             Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
         }
@@ -154,10 +146,21 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFavClick(String name, int fav) {
-        if(fav != 0) {//Remoções são tratadas
-            new FavHandler(this).execute(name);
+        if(fav != 0){
+            if(isInternetAvailable()) {
+                //Only add with internet connection
+                new FavHandler(this).execute(name);
+                mViewModel.setAsFavorite(name, fav);
+            } else {
+                //There's no internet so fav will be set back to 0, (not added)
+                Toast.makeText(getApplicationContext(), "No internet connection\n"+name+": will not be processed", Toast.LENGTH_LONG).show();
+                mViewModel.setAsFavorite(name,0);
+            }
+        } else {
+            //In this case fav == 0, the app will always remove
+            mViewModel.setAsFavorite(name, fav);
         }
-        mViewModel.setAsFavorite(name, fav);
+
     }
 
 //  >>>>>>>> Async data fetch >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

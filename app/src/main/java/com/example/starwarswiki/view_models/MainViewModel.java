@@ -71,19 +71,7 @@ public class MainViewModel extends AndroidViewModel {
         dataRepository.logFailedFavItem(result); //Log
     }
 
-//    /**
-//     * Remove All logs and returns it As list
-//     * @return List of failed Logs
-//     */
-//    public LiveData<List<FavLogItem>> getListFavLog() {
-//        return dataRepository.getAllFailedFavs();
-//    }
 
-    public void setAllAsFavorite(List<FavLogItem> favLogItems) {
-        for (int i = 0; i < favLogItems.size(); i++) {
-            setAsFavorite(favLogItems.get(i).getName(), 1);
-        }
-    }
 
     public LiveData<List<FavLogItem>> checkFailedFavLogs() {
         return listFavLog;
