@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.starwarswiki.database.DataRepository;
+import com.example.starwarswiki.structural.FavLogItem;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
 import com.example.starwarswiki.structural.Specie;
@@ -17,11 +18,14 @@ public class MainViewModel extends AndroidViewModel {
     private DataRepository dataRepository;
     private LiveData<List<Person>> lisfOfPerson;
     private LiveData<List<Person>> queryResult;
+    private LiveData<List<FavLogItem>> listFavLog;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         dataRepository = new DataRepository(application);
         lisfOfPerson = dataRepository.getAllPerson();
+        listFavLog = dataRepository.getAllFailedFavs();
+
     }
 
     public LiveData<List<Person>> getAllPerson () { return lisfOfPerson; }
@@ -57,5 +61,35 @@ public class MainViewModel extends AndroidViewModel {
 
     public void insertSpecies(List<Specie> listOfSpecie) {
         dataRepository.insertSpecieList(listOfSpecie);
+    }
+
+    /**
+     * Will remove fav entry from database and log the error
+     */
+    public void favFailed(FavLogItem result) {
+        dataRepository.setFavorite(result.getName(),0);//Unset
+        dataRepository.logFailedFavItem(result); //Log
+    }
+
+//    /**
+//     * Remove All logs and returns it As list
+//     * @return List of failed Logs
+//     */
+//    public LiveData<List<FavLogItem>> getListFavLog() {
+//        return dataRepository.getAllFailedFavs();
+//    }
+
+    public void setAllAsFavorite(List<FavLogItem> favLogItems) {
+        for (int i = 0; i < favLogItems.size(); i++) {
+            setAsFavorite(favLogItems.get(i).getName(), 1);
+        }
+    }
+
+    public LiveData<List<FavLogItem>> checkFailedFavLogs() {
+        return listFavLog;
+    }
+
+    public void removeFavLogs() {
+        dataRepository.removeAllFailedFav();
     }
 }

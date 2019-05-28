@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.starwarswiki.R;
+import com.example.starwarswiki.structural.FavLogItem;
 import com.example.starwarswiki.structural.Person;
 
 import java.util.ArrayList;
@@ -21,10 +22,10 @@ import java.util.List;
 public class PersonListAdapter  extends RecyclerView.Adapter<PersonListAdapter.PersonViewHolder> {
     private final LayoutInflater mInflater;
     private List<Person> listOfPerson;
+    private List<FavLogItem> favLogItems;
     private OnPersonClickListener mOnPersonClickListener;
     private OnCheckedFavListener onCheckedFavListener;
     private SparseBooleanArray itemStateArray= new SparseBooleanArray();
-
 
 
     public class PersonViewHolder extends RecyclerView.ViewHolder implements

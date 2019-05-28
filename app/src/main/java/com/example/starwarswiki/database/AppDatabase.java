@@ -9,11 +9,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.starwarswiki.structural.FavLogItem;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
 import com.example.starwarswiki.structural.Specie;
 
-@Database(entities = {Person.class, Planet.class, Specie.class}, version = 1,  exportSchema = false)
+@Database(entities = {Person.class, Planet.class, Specie.class, FavLogItem.class}, version = 1,  exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
@@ -22,6 +23,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PlanetDAO planetDAO();
 
     public abstract SpecieDAO specieDAO();
+
+    public abstract FavLogDAO favLogDAO();
 
     static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {

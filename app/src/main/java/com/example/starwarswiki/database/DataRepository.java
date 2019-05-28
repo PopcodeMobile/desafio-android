@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.starwarswiki.structural.FavLogItem;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
 import com.example.starwarswiki.structural.Specie;
@@ -15,6 +16,7 @@ public class DataRepository {
     private PeopleDAO peopleDao;
     private PlanetDAO planetDAO;
     private SpecieDAO specieDAO;
+    private FavLogDAO favLogDAO;
     private LiveData<List<Person>> listOfPerson;
 
     public DataRepository(Application application) {
@@ -22,6 +24,7 @@ public class DataRepository {
         peopleDao = db.peopleDAO();
         planetDAO = db.planetDAO();
         specieDAO = db.specieDAO();
+        favLogDAO = db.favLogDAO();
 
         listOfPerson = peopleDao.getAllPerson();
     }
@@ -34,6 +37,19 @@ public class DataRepository {
 
     public void insert (Person person) {
         new insertAsyncTask(peopleDao).execute(person);
+    }
+
+    private static class insertAsyncTask extends AsyncTask<Person, Void, Void> {
+        private PeopleDAO mAsyncTaskDao;
+
+        insertAsyncTask(PeopleDAO dao) { mAsyncTaskDao = dao; }
+
+        @Override
+        protected Void doInBackground(final Person... params) {
+            //                people = objectMapper.readValue(new URL(jsonURL), People.class);
+            mAsyncTaskDao.insertPerson(params[0]);
+            return null;
+        }
     }
 
     public void insertList(List<Person> listOfPerson) {
@@ -53,24 +69,6 @@ public class DataRepository {
     public LiveData<List<Planet>> getAllPlanets() {
         return planetDAO.getAllPlanets();
     }
-
-
-    private static class insertAsyncTask extends AsyncTask<Person, Void, Void> {
-        private PeopleDAO mAsyncTaskDao;
-//        private String jsonURL = "https://swapi.co/api/people/?format=json";
-//        private People people;
-//        private ObjectMapper objectMapper;
-
-        insertAsyncTask(PeopleDAO dao) { mAsyncTaskDao = dao; }
-
-        @Override
-        protected Void doInBackground(final Person... params) {
-            //                people = objectMapper.readValue(new URL(jsonURL), People.class);
-            mAsyncTaskDao.insertPerson(params[0]);
-            return null;
-        }
-    }
-
 
     public void setFavorite (String name, int fav) {
         Person person = new Person();
@@ -96,7 +94,7 @@ public class DataRepository {
     // >>>>>>>>>> Planet Operations Begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     public void insertPlanet(Planet planet) {
-        new planetInsertAsyncTask(planetDAO).execute(planet);
+        new PlanetInsertAsyncTask(planetDAO).execute(planet);
     }
 
     public void insertPlanetList(List<Planet> list) {
@@ -110,10 +108,10 @@ public class DataRepository {
         return planetDAO.getHomeworld(homeworldURL);
     }
 
-    private static class planetInsertAsyncTask extends AsyncTask<Planet, Void, Void> {
+    private static class PlanetInsertAsyncTask extends AsyncTask<Planet, Void, Void> {
         private PlanetDAO mAsyncTaskDao;
 
-        planetInsertAsyncTask(PlanetDAO planetDAO) { mAsyncTaskDao = planetDAO; }
+        PlanetInsertAsyncTask(PlanetDAO planetDAO) { mAsyncTaskDao = planetDAO; }
 
         @Override
         protected Void doInBackground(Planet... params) {
@@ -127,7 +125,7 @@ public class DataRepository {
     // >>>>>>>>>> Species Operarions Begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     public void insertSpecie(Specie specie) {
-        new specieInsertAsyncTask(specieDAO).execute(specie);
+        new SpecieInsertAsyncTask(specieDAO).execute(specie);
     }
 
     public void insertSpecieList(List<Specie> list) {
@@ -141,10 +139,10 @@ public class DataRepository {
         return specieDAO.getHomeworld(homeworldURL);
     }
 
-    private static class specieInsertAsyncTask extends AsyncTask<Specie, Void, Void> {
+    private static class SpecieInsertAsyncTask extends AsyncTask<Specie, Void, Void> {
         private SpecieDAO mAsyncTaskDao;
 
-        specieInsertAsyncTask(SpecieDAO specieDAO) { mAsyncTaskDao = specieDAO; }
+        SpecieInsertAsyncTask(SpecieDAO specieDAO) { mAsyncTaskDao = specieDAO; }
 
         @Override
         protected Void doInBackground(Specie... params) {
@@ -155,6 +153,45 @@ public class DataRepository {
 
     // >>>>>>>>>> Species Operarions End >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+    // >>>>>>>>>> FavLog Operarions Begin >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    public void logFailedFavItem(FavLogItem result) {
+        new InsertFailedFav(favLogDAO).execute(result);
+    }
+
+    private static class InsertFailedFav extends AsyncTask<FavLogItem, Void, Void > {
+        FavLogDAO myAsyncDAO;
+        InsertFailedFav(FavLogDAO favLogDAO) { myAsyncDAO = favLogDAO; }
+
+        @Override
+        protected Void doInBackground(FavLogItem... favLogItems) {
+            myAsyncDAO.insertLogEntry(favLogItems[0]);
+            return null;
+        }
+    }
+
+    public LiveData<List<FavLogItem>> getAllFailedFavs(){
+        LiveData<List<FavLogItem>> list = favLogDAO.getAllFailedFavs();
+        return list;
+    }
+
+    public void removeAllFailedFav(){
+        new RemoveAllFailedFav(favLogDAO).execute();
+
+    }
+
+    private static class RemoveAllFailedFav extends AsyncTask<Void, Void, Void > {
+        FavLogDAO myAsyncDAO;
+        RemoveAllFailedFav(FavLogDAO favLogDAO) { myAsyncDAO = favLogDAO; }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            myAsyncDAO.removeAllFavLog();
+            return null;
+        }
+    }
+
+    // >>>>>>>>>> FavLog Operarions End >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 }
 
 

@@ -17,17 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.starwarswiki.adapters.PersonListAdapter;
-import com.example.starwarswiki.handlers.FavHandler;
-import com.example.starwarswiki.handlers.PeopleHandler;
-import com.example.starwarswiki.handlers.PlanetsNameHandler;
-import com.example.starwarswiki.handlers.SpeciesNameHandler;
-import com.example.starwarswiki.structural.FavLogItem;
-import com.example.starwarswiki.structural.People;
-import com.example.starwarswiki.structural.Person;
-import com.example.starwarswiki.structural.Planet;
-import com.example.starwarswiki.structural.Planets;
-import com.example.starwarswiki.structural.Specie;
-import com.example.starwarswiki.structural.Species;
+import com.example.starwarswiki.handlers.*;
+import com.example.starwarswiki.structural.*;
 import com.example.starwarswiki.view_models.MainViewModel;
 import com.google.gson.Gson;
 
@@ -43,7 +34,8 @@ public class MainActivity extends AppCompatActivity implements
     private MainViewModel mViewModel;
     private PersonListAdapter adapter;
     private SearchView searchView;
-    //private NetworkHander networkHander;
+    private List<FavLogItem> failedFavLogList;
+    private Boolean ranOnce = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +45,50 @@ public class MainActivity extends AppCompatActivity implements
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        adapter = new PersonListAdapter(this,this, this);
+        adapter = new PersonListAdapter
+                (this,this, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+//        Boolean ranOnce = getSharedPreferences
+//                ("PREFERENCE", MODE_PRIVATE).getBoolean("ran", true);
+
 //        Check if network is available before starting to fetch
+
         if(isInternetAvailable()) {
             new PeopleHandler(this).execute("https://swapi.co/api/people?format=json");
             new PlanetsNameHandler(this).execute("https://swapi.co/api/planets/?format=json");
             new SpeciesNameHandler(this).execute("https://swapi.co/api/species/?format=json");
+
+            //Get List Of failed favourites
+            if(ranOnce) {
+                Toast.makeText(this,"AAAAAAAA", Toast.LENGTH_LONG);
+                mViewModel.checkFailedFavLogs().observe(this, new Observer<List<FavLogItem>>() {
+                    @Override
+                    public void onChanged(List<FavLogItem> favLogItems) {
+                        if(favLogItems != null) {
+                            mViewModel.removeFavLogs();//Clear the list
+                            for(int i = 0; i < favLogItems.size(); i++){
+                                String name = favLogItems.get(i).getName();
+                                new FavHandler(MainActivity.this).execute(name);
+                                mViewModel.setAsFavorite(name, 1);//Set as Fav
+                            }
+                            mViewModel.checkFailedFavLogs().removeObserver(this);
+                        }
+                    }
+                });
+                ranOnce = false;
+//                mViewModel.getListFavLog().observe(this, new Observer<List<FavLogItem>>() {
+//                    @Override
+//                    public void onChanged(List<FavLogItem> favLogItems) {
+//                        mViewModel.setAllAsFavorite(favLogItems);
+//                    }
+//                });
+//                getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+//                        .putBoolean("ran", false).commit();
+            }
         } else {
-           Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
-            mViewModel.getAllPerson();
+            Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
         }
 
         mViewModel.getAllPerson().observe(this, new Observer<List<Person>>() {
@@ -72,8 +97,6 @@ public class MainActivity extends AppCompatActivity implements
                 adapter.setListOfPerson(listOfPerson);
             }
         });
-        Toast toast = Toast.makeText(this, "Welcome Back!", Toast.LENGTH_LONG);
-        toast.show();
     }
 
     //Search functions
@@ -131,7 +154,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFavClick(String name, int fav) {
-        new FavHandler(this).execute(name);
+        if(fav != 0) {//Remoções são tratadas
+            new FavHandler(this).execute(name);
+        }
         mViewModel.setAsFavorite(name, fav);
     }
 
@@ -226,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements
             } else { //400
                 Toast.makeText(this,
                         "[" + result.getName()+"] Failed\n" + result.getErrorMessage(), Toast.LENGTH_LONG).show();
+                mViewModel.favFailed(result);
             }
         }
     }
@@ -243,12 +269,4 @@ public class MainActivity extends AppCompatActivity implements
         }
 
     }
-
-
-//    @Override
-//    protected void onResume() {
-//        Toast toast = Toast.makeText(this, "Welcome Back!", Toast.LENGTH_LONG);
-//        toast.show();
-//        super.onResume();
-//    }
 }
