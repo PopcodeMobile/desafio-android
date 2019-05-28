@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-public class DetailsActivity extends AppCompatActivity implements FavHandler.FavCallBack {
+public class DetailsActivity extends AppCompatActivity {
     private String json;
     private Person person;
     private DetailsViewModel detailsViewModel;
@@ -112,29 +112,7 @@ public class DetailsActivity extends AppCompatActivity implements FavHandler.Fav
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         fab.setBackgroundTintList((person.getFavorite() == 1) ?
-                ContextCompat.getColorStateList(this, R.color.colorAccent) :
+                ContextCompat.getColorStateList(this, R.color.fab_fav_on) :
                 ContextCompat.getColorStateList(this, R.color.fab_fav_off));
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainViewModel.setAsFavorite(person.getName(), (person.getFavorite() == 1 ? 0 : 1));
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
-
-    @Override
-    public void onRequestCompleted(FavLogItem result) {
-
-    }
-
-//    @Override
-//    public void onBackPressed(){
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-//        startActivity(intent);
-//    }
-
 }

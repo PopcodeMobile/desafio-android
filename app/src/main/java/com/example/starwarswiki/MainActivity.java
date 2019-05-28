@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements
             new PeopleHandler(this).execute("https://swapi.co/api/people?format=json");
             new PlanetsNameHandler(this).execute("https://swapi.co/api/planets/?format=json");
             new SpeciesNameHandler(this).execute("https://swapi.co/api/species/?format=json");
+            mViewModel.getAllPerson();
 
             //Get List Of failed favourites
             //if(ranOnce) {
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
         }
 
+        mViewModel.getAllPerson();
         mViewModel.getAllPerson().observe(this, new Observer<List<Person>>() {
             @Override
             public void onChanged(List<Person> listOfPerson) {
