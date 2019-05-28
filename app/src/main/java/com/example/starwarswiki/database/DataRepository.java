@@ -46,6 +46,10 @@ public class DataRepository {
         return peopleDao.searchByName(name);
     }
 
+    public LiveData<Person> queryOnePerson (String name) {
+        return peopleDao.getOnePersonByName(name);
+    }
+
     public LiveData<List<Planet>> getAllPlanets() {
         return planetDAO.getAllPlanets();
     }

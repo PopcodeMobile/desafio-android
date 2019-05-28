@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.starwarswiki.handlers.FavHandler;
+import com.example.starwarswiki.structural.FavLogItem;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
 import com.example.starwarswiki.structural.Specie;
@@ -21,7 +23,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements FavHandler.FavCallBack {
     private String json;
     private Person person;
     private DetailsViewModel detailsViewModel;
@@ -43,6 +45,7 @@ public class DetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(person.getName());
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         detailsViewModel.queryPlanetByPath(person.getHomeworldURL()).observe(this, new Observer<List<Planet>>() {
             @Override
@@ -120,7 +123,18 @@ public class DetailsActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    @Override
+    public void onRequestCompleted(FavLogItem result) {
+
+    }
+
+//    @Override
+//    public void onBackPressed(){
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+//        startActivity(intent);
+//    }
 
 }

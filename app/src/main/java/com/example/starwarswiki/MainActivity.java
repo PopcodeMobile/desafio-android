@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.starwarswiki.adapters.PersonListAdapter;
 import com.example.starwarswiki.handlers.FavHandler;
-import com.example.starwarswiki.handlers.NetworkHander;
 import com.example.starwarswiki.handlers.PeopleHandler;
 import com.example.starwarswiki.handlers.PlanetsNameHandler;
 import com.example.starwarswiki.handlers.SpeciesNameHandler;
+import com.example.starwarswiki.structural.FavLogItem;
 import com.example.starwarswiki.structural.People;
 import com.example.starwarswiki.structural.Person;
 import com.example.starwarswiki.structural.Planet;
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements
            Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
             mViewModel.getAllPerson();
         }
-        //networkHander = new NetworkHander(mViewModel);
 
         mViewModel.getAllPerson().observe(this, new Observer<List<Person>>() {
             @Override
@@ -74,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements
                 adapter.setListOfPerson(listOfPerson);
             }
         });
+        Toast toast = Toast.makeText(this, "Welcome Back!", Toast.LENGTH_LONG);
+        toast.show();
     }
 
     //Search functions
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFavClick(String name, int fav) {
-        new FavHandler(this).execute(false);
+        new FavHandler(this).execute(name);
         mViewModel.setAsFavorite(name, fav);
     }
 
@@ -213,9 +213,21 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Favorite add request completed
+     * @param result FavLogItem Object
+     */
     @Override
-    public void onRequestCompleted(String result) {
-        Toast.makeText(this, result, Toast.LENGTH_LONG);
+    public void onRequestCompleted(FavLogItem result) {
+        if(result != null) {
+            if(result.getStatus() != null) { //200
+                Toast.makeText(this,
+                        "[" + result.getName()+"] Added\n" + result.getMessage(), Toast.LENGTH_LONG).show();
+            } else { //400
+                Toast.makeText(this,
+                        "[" + result.getName()+"] Failed\n" + result.getErrorMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     public boolean isInternetAvailable () {

@@ -32,6 +32,11 @@ public class MainViewModel extends AndroidViewModel {
         return queryResult;
     }
 
+    public LiveData<Person> queryOnePerson(String name) {
+        LiveData<Person> result = dataRepository.queryOnePerson(name);
+        return result;
+    }
+
     /**
      * Setting as favorite
      * @param name name of the person

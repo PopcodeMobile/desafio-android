@@ -26,7 +26,8 @@ So, we are leaving the template code in. -->
     android:layout_height="match_parent"
     android:theme="@style/AppTheme"
     tools:context="com.example.starwarswiki.MainActivity"
-    android:noHistory="false">
+    android:noHistory="false"
+    android:id="@+id/main">
 
 
     <include layout="@layout/content_main" />
