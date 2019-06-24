@@ -1,6 +1,8 @@
 package com.example.entrevistapopcode.api.entity.config;
 
 
+import com.example.entrevistapopcode.api.entity.API;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;

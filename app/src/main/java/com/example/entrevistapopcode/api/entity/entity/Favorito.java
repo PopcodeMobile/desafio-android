@@ -1,4 +1,4 @@
-package com.example.retrofit;
+package com.example.entrevistapopcode.api.entity.entity;
 
 import com.google.gson.annotations.SerializedName;
 

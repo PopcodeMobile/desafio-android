@@ -1,5 +1,9 @@
 package com.example.entrevistapopcode.api.entity;
 
+import com.example.entrevistapopcode.api.entity.entity.Favorito;
+import com.example.entrevistapopcode.api.entity.entity.OnlyNameGeneric;
+import com.example.entrevistapopcode.api.entity.entity.SwaResult;
+
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
