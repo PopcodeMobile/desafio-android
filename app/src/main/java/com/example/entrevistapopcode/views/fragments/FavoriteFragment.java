@@ -40,7 +40,7 @@ public class FavoriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_main, container, false);
+        View view = inflater.inflate(R.layout.fragment, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv);
         searchView=(SearchView) view.findViewById(R.id.search);
         searchView.setVisibility(View.GONE);
