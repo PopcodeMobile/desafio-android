@@ -22,7 +22,7 @@
     <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
     <!--tools:background="#EFEFEF"/>-->
 
-    <com.example.retrofit.NoSwipePager
+    <com.example.entrevistapopcode.views.NoSwipePager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

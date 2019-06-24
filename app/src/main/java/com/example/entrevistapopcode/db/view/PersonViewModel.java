@@ -22,7 +22,7 @@ public class PersonViewModel extends AndroidViewModel {
         //mAllWords = mRepository.getAllWords();
     }
 
-    LiveData<List<Person>> getAllWords() {
+    public LiveData<List<Person>> getAllWords() {
         mAllWords = mRepository.getAllWords();
         return mAllWords; }
 

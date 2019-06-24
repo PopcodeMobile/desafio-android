@@ -2,4 +2,5 @@
     <string name="app_name">entrevistapopcode</string>
     <string name="tab_1">Home</string>
     <string name="tab_2">Favoritos</string>
+    <string name="title_activity_detalhes">DetalhesActivity</string>
 </resources>
