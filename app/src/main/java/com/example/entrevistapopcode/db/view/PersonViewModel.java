@@ -32,6 +32,8 @@ public class PersonViewModel extends AndroidViewModel {
 
     public void insert(Person person) { mRepository.insert(person); }
 
+    public LiveData<Boolean> isFav(String name) { return mRepository.isFav(name); }
+
     public void insertFavorite(String name, boolean value) { mRepository.insertFavorite(name, value); }
 
     public LiveData<Person> getPerson(String name) {

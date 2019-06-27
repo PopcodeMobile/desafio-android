@@ -53,11 +53,12 @@ public class DetalhesActivity extends AppCompatActivity {
     private Person p;
     private Button voltar;
     private Toolbar toolbar;
+    private Boolean check = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        service = new RetrofitConfig().getSwa();
+        service = new RetrofitConfig(false).getSwa();
         setContentView(R.layout.activity_detalhes);
         toolbar = findViewById(R.id.toolbar);
 
@@ -134,23 +135,23 @@ public class DetalhesActivity extends AppCompatActivity {
                 buttonView.startAnimation(scaleAnimation);
                 PersonViewModel viewModel = ViewModelProviders.of(DetalhesActivity.this).get(PersonViewModel.class);
                 viewModel.insertFavorite(p.getName(), isChecked);
-                if(isChecked){
-                    String url = "http://private-782d3-starwarsfavorites.apiary-mock.com/";
+                if(!check){
 
-                    API serviceFav = new RetrofitConfig(url).getSwa();
+
+                    API serviceFav = new RetrofitConfig(true).getSwa();
                     String[] id  = p.getUrl().split("/");
                     Call<Favorito> callPage = serviceFav.postFavoriteCharacter("Content-Type:application/jsonContent-Type:application/json",id[id.length - 1]);
                     callPage.enqueue(new Callback<Favorito>() {
                         @Override
                         public void onResponse(Call<Favorito> call, Response<Favorito> response) {
                             Favorito cep = response.body();
-                            Toast.makeText(DetalhesActivity.this,cep.getMessage(),Toast.LENGTH_LONG);
+                            Toast.makeText(DetalhesActivity.this,cep.getMessage(),Toast.LENGTH_LONG).show();
                             Log.e("favorito","resultado"+cep.getMessage());
                         }
 
                         @Override
                         public void onFailure(Call<Favorito> call, Throwable t) {
-                            Toast.makeText(DetalhesActivity.this,t.getMessage(),Toast.LENGTH_LONG);
+                            Toast.makeText(DetalhesActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -158,16 +159,13 @@ public class DetalhesActivity extends AppCompatActivity {
             }
         });
         PersonViewModel viewModel = ViewModelProviders.of(this).get(PersonViewModel.class);
-        viewModel.getPerson("%"+p.getName()+"%").observe(DetalhesActivity.this, new Observer<Person>() {
+
+        viewModel.isFav(p.getName()).observe(DetalhesActivity.this, new Observer<Boolean>() {
             @Override
-            public void onChanged(@Nullable final Person words) {
-                if(words!=null){
-                    if(words.getLoved()){
-                        favorite.setChecked(true);
-                    }
-                }
-
-
+            public void onChanged(Boolean aBoolean) {
+                Log.e("alerta   ", "primeiro eu");
+                check = aBoolean;
+                favorite.setChecked(check);
             }
         });
 

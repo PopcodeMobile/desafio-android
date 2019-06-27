@@ -31,6 +31,10 @@ public class PersonRepository {
         mAllWords = mWordDao.getAllFavorite(true);
         return mAllWords;
     }
+    public LiveData<Boolean> isFav(String name) {
+        LiveData<Boolean> fav = mWordDao.isfavorite(name);
+        return fav;
+    }
 
     public void insertFavorite(String name, boolean value) {
         new insertFavoritetAsyncTask(mWordDao, value).execute(name);

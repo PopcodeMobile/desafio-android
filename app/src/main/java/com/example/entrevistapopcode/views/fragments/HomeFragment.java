@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -49,6 +50,9 @@ public class HomeFragment extends Fragment implements Callback<SwaResult> {
     private PersonViewModel viewModel;
     private SearchView searchView;
     private ProgressBar progressBar;
+    private  Observer<Person> obsever;
+    private String searchPerson;
+    private boolean search = false;
 
 
 
@@ -69,23 +73,18 @@ public class HomeFragment extends Fragment implements Callback<SwaResult> {
         searchView=(SearchView) view.findViewById(R.id.search);
         progressBar=(ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
-        searchView.setQueryHint("Search View");
+        searchView.setQueryHint("Pesquise aqui");
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                viewModel.getPerson("%"+query+"%").observe(getActivity(), new Observer<Person>() {
-                    @Override
-                    public void onChanged(@Nullable final Person words) {
-                        if(words!=null){
-                            Log.e("pesquisa person",words.getName());
-                            alert(words);
-                        }
-
-
-                    }
-                });
+                searchPerson = query;
+                searchView.clearFocus();
+                searchView.setQueryHint("Pesquise aqui");
+                search = false;
+                viewModel.getPerson("%"+searchPerson+"%").observe((AppCompatActivity)getContext(), obsever);
                 return false;
             }
 
@@ -103,7 +102,17 @@ public class HomeFragment extends Fragment implements Callback<SwaResult> {
 
 
         });
+obsever =  new Observer<Person>() {
+    @Override
+    public void onChanged(Person person) {
+        if(person!=null){
 
+            Log.e("pesquisa person",person.getName());
+            viewModel.getPerson(searchPerson).removeObserver(obsever);
+            alert(person);
+        }
+    }
+};
 
         setupRecycler();
         return  view;
@@ -172,7 +181,7 @@ public class HomeFragment extends Fragment implements Callback<SwaResult> {
                 })
         );
 
-        service = new RetrofitConfig().getSwa();
+        service = new RetrofitConfig(false).getSwa();
         call = service.getPerson();
         call.enqueue(this);
 
@@ -184,47 +193,58 @@ public class HomeFragment extends Fragment implements Callback<SwaResult> {
             public void onChanged(@Nullable final List<Person> words) {
 
                 mAdapter = new Adapter(words);
+                mAdapter.setViewModel(viewModel);
+                mAdapter.setActivity(getActivity());
                 mRecyclerView.setAdapter(mAdapter);
 
             }
         });
     }
     private void alert(Person p) {
-        AlertDialog alerta;
-        //LayoutInflater é utilizado para inflar nosso layout em uma view.
-        //-pegamos nossa instancia da classe
-        LayoutInflater li = getLayoutInflater();
+        if(!search){
+            search = true;
+            Log.e("alerta","entrou no alerta");
+            AlertDialog alerta=null;
+            //LayoutInflater é utilizado para inflar nosso layout em uma view.
+            //-pegamos nossa instancia da classe
+            LayoutInflater li = getLayoutInflater();
 
-        //inflamos o layout alerta.xml na view
-        View itemView = li.inflate(R.layout.cardview, null);
-        //definimos para o botão do layout um clickListener
-        TextView nameTextView = (TextView) itemView.findViewById(R.id.nameTextView);
-        TextView  massTextView = (TextView) itemView.findViewById(R.id.massTextView);
-        TextView  heightTextView = (TextView) itemView.findViewById(R.id.heightTextView);
-        TextView   genderTextView = (TextView) itemView.findViewById(R.id.genderTextView);
-        nameTextView.setText(p.getName());
-        massTextView.setText(p.getMass());
-        heightTextView.setText(p.getHeight());
-        genderTextView.setText(p.getGender());
+            //inflamos o layout alerta.xml na view
+            View itemView = li.inflate(R.layout.cardview, null);
+            //definimos para o botão do layout um clickListener
+            TextView nameTextView = (TextView) itemView.findViewById(R.id.nameTextView);
+            TextView  massTextView = (TextView) itemView.findViewById(R.id.massTextView);
+            TextView  heightTextView = (TextView) itemView.findViewById(R.id.heightTextView);
+            TextView   genderTextView = (TextView) itemView.findViewById(R.id.genderTextView);
+            nameTextView.setText(p.getName());
+            massTextView.setText(p.getMass());
+            heightTextView.setText(p.getHeight());
+            genderTextView.setText(p.getGender());
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Encontramos: "+p.getName());
-        //define a mensagem
-        builder.setMessage("may the force be with you");
-        builder.setView(itemView);
-        builder.setPositiveButton("Detalhes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Encontramos: "+p.getName());
+            //define a mensagem
+            builder.setMessage("may the force be with you");
+            builder.setView(itemView);
+            builder.setNeutralButton("Detalhes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                Intent i = new Intent(getContext(), DetalhesActivity.class);
-                i.putExtra("person", (Serializable) p);
-                startActivity(i);
-            }
-        });
+                    dialog.dismiss();
+                    Intent i = new Intent(getContext(), DetalhesActivity.class);
+                    i.putExtra("person", (Serializable) p);
+                    startActivity(i);
+                }
+            });
+            alerta = builder.create();
+            alerta.show();
+        }
 
-        alerta = builder.create();
-        alerta.show();
+
+
+
+
     }
 
 }

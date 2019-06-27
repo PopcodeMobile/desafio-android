@@ -22,6 +22,9 @@ public interface PersonDAO {
     @Query("SELECT * from personagem_table WHERE name LIKE :Personname")
     LiveData<Person> getPerson(String Personname);
 
+    @Query("SELECT loved from personagem_table WHERE name LIKE :Personname")
+    LiveData<Boolean> isfavorite(String Personname);
+
     @Query("UPDATE personagem_table SET loved = :value WHERE name = :Personname")
     void favorite(String Personname, boolean value);
 

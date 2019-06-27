@@ -64,41 +64,42 @@
 
     </LinearLayout>
 
-    <ToggleButton
-        android:id="@+id/favorite"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="332dp"
-        android:layout_marginLeft="332dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/favorite"
-        android:checked="false"
-        android:text=""
-        android:textOff=""
-        android:textOn=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nome_genero"
-        app:layout_constraintVertical_bias="0.794" />
-
-    <TextView
-        android:id="@+id/nome_genero"
-        android:layout_width="400dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="464dp"
         android:background="@drawable/rounded"
         android:gravity="center|center_vertical"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.092"
+        tools:layout_editor_absoluteX="34dp">
 
+        <TextView
+            android:id="@+id/nome_genero"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:layout_margin="5dp"
+
+
+            android:layout_weight="2"
+            android:text="dsasdasda"
+            android:textSize="20sp" />
+
+        <ToggleButton
+            android:id="@+id/favorite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/favorite"
+            android:checked="false"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,22 +10,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitConfig {
 
     private final Retrofit retrofit;
+    private final String URL_FAV = "http://private-782d3-starwarsfavorites.apiary-mock.com/";
+    private  final String URL_BASE = "https://swapi.co/api/";
 
-    public RetrofitConfig() {
+    public RetrofitConfig(boolean fav) {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl("https://swapi.co/api/")
+                .baseUrl(fav ? URL_FAV: URL_BASE)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
-    public RetrofitConfig(String url) {
-        this.retrofit = new Retrofit.Builder()
-                .baseUrl(url)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
+
 
     public API getSwa() {
         return this.retrofit.create(API.class);
