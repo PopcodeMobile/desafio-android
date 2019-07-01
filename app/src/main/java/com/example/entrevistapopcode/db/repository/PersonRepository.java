@@ -27,6 +27,11 @@ public class PersonRepository {
         return mAllWords;
     }
 
+    public LiveData<List<Person>> getAllPersonById(String name) {
+        mAllWords = mWordDao.getAllPersonById(name);
+        return mAllWords;
+    }
+
     public LiveData<List<Person>> getAllFavorite() {
         mAllWords = mWordDao.getAllFavorite(true);
         return mAllWords;

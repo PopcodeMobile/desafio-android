@@ -8,6 +8,7 @@ import com.example.entrevistapopcode.api.entity.entity.Favorito;
 import com.example.entrevistapopcode.api.entity.entity.OnlyNameGeneric;
 import com.example.entrevistapopcode.api.entity.entity.Person;
 import com.example.entrevistapopcode.db.view.PersonViewModel;
+import com.example.entrevistapopcode.view.adapters.Adapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -30,6 +31,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.entrevistapopcode.R;
+
+import org.json.JSONObject;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -54,6 +59,7 @@ public class DetalhesActivity extends AppCompatActivity {
     private Button voltar;
     private Toolbar toolbar;
     private Boolean check = false;
+    private int  tamanho =-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,23 +143,54 @@ public class DetalhesActivity extends AppCompatActivity {
                 viewModel.insertFavorite(p.getName(), isChecked);
                 if(!check){
 
-
-                    API serviceFav = new RetrofitConfig(true).getSwa();
-                    String[] id  = p.getUrl().split("/");
-                    Call<Favorito> callPage = serviceFav.postFavoriteCharacter("Content-Type:application/jsonContent-Type:application/json",id[id.length - 1]);
-                    callPage.enqueue(new Callback<Favorito>() {
+                    viewModel.getAllFavorite().observe(DetalhesActivity.this, new Observer<List<Person>>() {
                         @Override
-                        public void onResponse(Call<Favorito> call, Response<Favorito> response) {
-                            Favorito cep = response.body();
-                            Toast.makeText(DetalhesActivity.this,cep.getMessage(),Toast.LENGTH_LONG).show();
-                            Log.e("favorito","resultado"+cep.getMessage());
-                        }
+                        public void onChanged(@Nullable final List<Person> words) {
+                            if(words!=null && tamanho == -1){
 
-                        @Override
-                        public void onFailure(Call<Favorito> call, Throwable t) {
-                            Toast.makeText(DetalhesActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                                tamanho = words.size();
+                                API serviceFav = new RetrofitConfig(true).getSwa();
+                                String[] id  = p.getUrl().split("/");
+                                String header = tamanho%2 != 0 ? "400" : "200";
+
+                                Call<Favorito> callPage = serviceFav.postFavoriteCharacter(header,id[id.length - 1]);
+                                callPage.enqueue(new Callback<Favorito>() {
+                                    @Override
+                                    public void onResponse(Call<Favorito> call, Response<Favorito> response) {
+                                        tamanho = -1;
+                                        Favorito cep = response.body();
+                                        if (cep!=null){
+                                            Toast.makeText(DetalhesActivity.this,cep.getMessage(),Toast.LENGTH_LONG).show();
+                                            Log.e("favorito","resultado"+cep.getMessage());
+                                        } else if (response.code() == 400 ){
+                                            try{
+                                                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                                Toast.makeText(DetalhesActivity.this, jObjError.getString("error_message"), Toast.LENGTH_LONG).show();
+                                            }catch (Exception e){
+                                                e.printStackTrace();
+                                            }
+
+
+//                                            Log.e("favorito","resultado"+cep.getMessage());
+                                        }
+
+
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Favorito> call, Throwable t) {
+                                        Log.i("toast",t.getMessage());
+                                        Toast.makeText(DetalhesActivity.this,t.getMessage(),Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+
+
                         }
                     });
+
+
                 }
 
             }
@@ -163,7 +200,7 @@ public class DetalhesActivity extends AppCompatActivity {
         viewModel.isFav(p.getName()).observe(DetalhesActivity.this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                Log.e("alerta   ", "primeiro eu");
+
                 check = aBoolean;
                 favorite.setChecked(check);
             }

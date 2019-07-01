@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.entrevistapopcode.R;
@@ -50,7 +51,7 @@ public class HomeFragment extends Fragment implements Callback<SwaResult> {
     private PersonViewModel viewModel;
     private SearchView searchView;
     private ProgressBar progressBar;
-    private  Observer<Person> obsever;
+    private  Observer<List<Person>> obsever;
     private String searchPerson;
     private boolean search = false;
 
@@ -84,7 +85,7 @@ public class HomeFragment extends Fragment implements Callback<SwaResult> {
                 searchView.clearFocus();
                 searchView.setQueryHint("Pesquise aqui");
                 search = false;
-                viewModel.getPerson("%"+searchPerson+"%").observe((AppCompatActivity)getContext(), obsever);
+                viewModel.getAllPersonById("%"+searchPerson+"%").observe((AppCompatActivity)getContext(), obsever);
                 return false;
             }
 
@@ -92,6 +93,20 @@ public class HomeFragment extends Fragment implements Callback<SwaResult> {
             public boolean onQueryTextChange(String newText) {
 
                 return false;
+            }
+        });
+
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                searchPerson = searchView.getQuery().toString();
+                if(!b && searchPerson.length()>0){
+
+                    searchView.clearFocus();
+                    searchView.setQueryHint("Pesquise aqui");
+                    search = false;
+                    viewModel.getAllPersonById("%"+searchPerson+"%").observe((AppCompatActivity)getContext(), obsever);
+                }
             }
         });
         viewModel = ViewModelProviders.of(this).get(PersonViewModel.class);
@@ -102,17 +117,7 @@ public class HomeFragment extends Fragment implements Callback<SwaResult> {
 
 
         });
-obsever =  new Observer<Person>() {
-    @Override
-    public void onChanged(Person person) {
-        if(person!=null){
 
-            Log.e("pesquisa person",person.getName());
-            viewModel.getPerson(searchPerson).removeObserver(obsever);
-            alert(person);
-        }
-    }
-};
 
         setupRecycler();
         return  view;
@@ -200,7 +205,7 @@ obsever =  new Observer<Person>() {
             }
         });
     }
-    private void alert(Person p) {
+    private void alert(List<Person> list) {
         if(!search){
             search = true;
             Log.e("alerta","entrou no alerta");
@@ -210,33 +215,43 @@ obsever =  new Observer<Person>() {
             LayoutInflater li = getLayoutInflater();
 
             //inflamos o layout alerta.xml na view
-            View itemView = li.inflate(R.layout.cardview, null);
+            View itemView = li.inflate(R.layout.custom_dialog, null);
             //definimos para o botão do layout um clickListener
-            TextView nameTextView = (TextView) itemView.findViewById(R.id.nameTextView);
-            TextView  massTextView = (TextView) itemView.findViewById(R.id.massTextView);
-            TextView  heightTextView = (TextView) itemView.findViewById(R.id.heightTextView);
-            TextView   genderTextView = (TextView) itemView.findViewById(R.id.genderTextView);
-            nameTextView.setText(p.getName());
-            massTextView.setText(p.getMass());
-            heightTextView.setText(p.getHeight());
-            genderTextView.setText(p.getGender());
+            RecyclerView rv = (RecyclerView) itemView.findViewById(R.id.rv);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            rv.setLayoutManager(layoutManager);
+            Adapter adapter = new Adapter(list);
+            adapter.setViewModel(viewModel);
+            adapter.setActivity(getActivity());
+            rv.setAdapter(adapter);
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Encontramos: "+p.getName());
+            builder.setTitle("Encontramos: "+list.size()+" resultados");
             //define a mensagem
             builder.setMessage("may the force be with you");
             builder.setView(itemView);
-            builder.setNeutralButton("Detalhes", new DialogInterface.OnClickListener() {
+            builder.setNeutralButton("Fechar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     dialog.dismiss();
-                    Intent i = new Intent(getContext(), DetalhesActivity.class);
-                    i.putExtra("person", (Serializable) p);
-                    startActivity(i);
                 }
             });
+            rv.addOnItemTouchListener(
+                    new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override public void onItemClick(View view, int position) {
+                            int itemPosition = mRecyclerView.getChildLayoutPosition(view);
+                            Person p = mAdapter.getList().get(itemPosition);
+                            Intent i = new Intent(getContext(),DetalhesActivity.class);
+                            i.putExtra("person", (Serializable) p);
+                            startActivity(i);
+                        }
+
+                        @Override public void onLongItemClick(View view, int position) {
+                            // do whatever
+                        }
+                    })
+            );
             alerta = builder.create();
             alerta.show();
         }

@@ -19,8 +19,11 @@ public interface PersonDAO {
     @Query("SELECT * from personagem_table")
     LiveData<List<Person>> getAllPerson();
 
-    @Query("SELECT * from personagem_table WHERE name LIKE :Personname")
+    @Query("SELECT * from personagem_table WHERE name=:Personname")
     LiveData<Person> getPerson(String Personname);
+
+    @Query("SELECT * from personagem_table WHERE name LIKE :Personname")
+    LiveData<List<Person>> getAllPersonById(String Personname);
 
     @Query("SELECT loved from personagem_table WHERE name LIKE :Personname")
     LiveData<Boolean> isfavorite(String Personname);

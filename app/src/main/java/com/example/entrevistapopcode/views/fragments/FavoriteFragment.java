@@ -1,5 +1,6 @@
 package com.example.entrevistapopcode.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.entrevistapopcode.R;
+import com.example.entrevistapopcode.RecyclerItemClickListener;
 import com.example.entrevistapopcode.api.entity.entity.Person;
 import com.example.entrevistapopcode.db.view.PersonViewModel;
 import com.example.entrevistapopcode.view.adapters.Adapter;
+import com.example.entrevistapopcode.views.DetalhesActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +63,21 @@ public class FavoriteFragment extends Fragment {
         mAdapter.setViewModel(viewModel);
         mAdapter.setActivity(getActivity());
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        int itemPosition = mRecyclerView.getChildLayoutPosition(view);
+                        Person p = mAdapter.getList().get(itemPosition);
+                        Intent i = new Intent(getContext(), DetalhesActivity.class);
+                        i.putExtra("person", (Serializable) p);
+                        startActivity(i);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
 
 
         viewModel.getAllFavorite().observe(this, new Observer<List<Person>>() {

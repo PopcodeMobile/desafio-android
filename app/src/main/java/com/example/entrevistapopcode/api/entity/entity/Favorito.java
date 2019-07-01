@@ -2,7 +2,9 @@ package com.example.entrevistapopcode.api.entity.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Favorito {
+import java.io.Serializable;
+
+public class Favorito implements Serializable {
 
     @SerializedName("error")
     private String error;

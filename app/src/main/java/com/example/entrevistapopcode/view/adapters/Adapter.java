@@ -56,7 +56,7 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
             }
         });
-        viewModel.getPerson("%"+p.getName()+"%").observe( activity,new Observer<Person>() {
+        viewModel.getPerson(p.getName()).observe( activity,new Observer<Person>() {
             @Override
             public void onChanged(@Nullable final Person words) {
                 if(words!=null){

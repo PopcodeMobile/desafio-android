@@ -26,6 +26,11 @@ public class PersonViewModel extends AndroidViewModel {
         mAllWords = mRepository.getAllWords();
         return mAllWords; }
 
+    public LiveData<List<Person>> getAllPersonById(String name) {
+        mAllWords = mRepository.getAllPersonById(name);
+        return mAllWords;
+    }
+
     public LiveData<List<Person>> getAllFavorite() {
         mAllWords = mRepository.getAllFavorite();
         return mAllWords; }
