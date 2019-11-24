@@ -10,11 +10,16 @@ import android.view.ViewGroup
 import com.example.starwarswiki.R
 import com.example.starwarswiki.databinding.PersonListFragmentBinding
 import com.example.starwarswiki.viewmodel.PersonListViewModel
+import com.example.starwarswiki.viewmodel.PersonListViewModelFactory
 
 class PersonListFragment : Fragment() {
 
     private val viewModel: PersonListViewModel by lazy {
-        ViewModelProviders.of(this).get(PersonListViewModel::class.java)
+        val activity = requireNotNull(this.activity) {
+            "You can only access the viewModel after onActivityCreated()"
+        }
+        ViewModelProviders.of(this, PersonListViewModelFactory(activity.application))
+            .get(PersonListViewModel::class.java)
     }
 
     override fun onCreateView(
