@@ -21,7 +21,7 @@ class PersonListRepository(private val database: PersonRoomDatabase){
         }
     }
     val personList: LiveData<List<PersonModel>> = Transformations.map(
-        database.personDao.getPersons()
+        database.personDao.getAllPeople()
     ){
         it.asDomainModel()
     }

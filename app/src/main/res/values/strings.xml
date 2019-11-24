@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StarWarsWiki</string>
+    <string name="person_characteristics">Altura: %1$s\nGênero: %2$s\nPeso: %3$s</string>
 </resources>
