@@ -3,10 +3,14 @@ package com.example.starwarswiki.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.starwarswiki.database.getDatabase
 import com.example.starwarswiki.network.NetworkObject
 import com.example.starwarswiki.network.NetworkPerson
 import com.example.starwarswiki.network.PersonNetworkService
+import com.example.starwarswiki.repository.PersonListRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,13 +18,19 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
+import java.io.IOException
 import java.lang.Exception
 
 class PersonListViewModel(application: Application) : ViewModel() {
 
     private var viewModelJob = Job()
 
-    val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    private val uiCoroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
+    private val listRepository = PersonListRepository(getDatabase(application))
+
+    val personList = listRepository.personList
 
     private val _eventNetworkError = MutableLiveData<Boolean>(false)
 
@@ -37,12 +47,27 @@ class PersonListViewModel(application: Application) : ViewModel() {
         get() = _response
 
     init {
-        getPersonListProperties()
+        refreshFromRepository()
+    }
+
+    private fun refreshFromRepository(){
+        viewModelScope.launch {
+            try {
+                listRepository.refreshList()
+                _eventNetworkError.value=false
+                _isNetworkErrorShown.value =false
+                Timber.d("Refresh sucessfully !")
+            }
+            catch (networkError: IOException){
+                if(personList.value!!.isEmpty())
+                    _eventNetworkError.value = true
+            }
+        }
     }
 
     private fun getPersonListProperties(){
-        coroutineScope.launch {
-            var getPersonListDeferred = PersonNetworkService.personList.getPersonList()
+        uiCoroutineScope.launch {
+            var getPersonListDeferred = PersonNetworkService.bruteRequest.getObject()
             try {
                 var listResult = getPersonListDeferred.await()
                 _response.value = "Sucess: ${listResult.count} items retrieved !"

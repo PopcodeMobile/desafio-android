@@ -11,7 +11,7 @@ import retrofit2.http.GET
 
 interface PersonService{
     @GET("people")
-    fun getPersonList():Deferred<NetworkObject>
+    fun getObject():Deferred<NetworkObject>
 }
 
 object PersonNetworkService{
@@ -21,5 +21,5 @@ object PersonNetworkService{
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
-    val personList =retrofit.create(PersonService::class.java)
+    val bruteRequest =retrofit.create(PersonService::class.java)
 }

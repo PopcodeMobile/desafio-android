@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
 
 import com.example.starwarswiki.R
 import com.example.starwarswiki.databinding.PersonListFragmentBinding
@@ -30,6 +32,19 @@ class PersonListFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        viewModel.eventNetworkError.observe(this, Observer {
+            if(it==true)
+                onNetworkError()
+        })
+
         return binding.root
+    }
+
+    private fun onNetworkError(){
+        if(!viewModel.eventNetworkError.value!!){
+            Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT)
+                .show()
+            viewModel.onNetworkErrorShown()
+        }
     }
 }

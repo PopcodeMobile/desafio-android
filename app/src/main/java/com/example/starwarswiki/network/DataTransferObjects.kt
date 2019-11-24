@@ -2,19 +2,14 @@ package com.example.starwarswiki.network
 
 //import com.example.starwarswiki.database.DatabasePerson
 //import com.example.starwarswiki.domain.PersonModel
+import com.example.starwarswiki.database.DatabasePerson
+import com.example.starwarswiki.domain.PersonModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-//import kotlinx.android.parcel.Parcelize
-//
-//@JsonClass(generateAdapter = true)
-//data class NetworkPersonContainer(val personList: List<NetworkPerson>)
-//
 
 @JsonClass(generateAdapter = true)
 data class NetworkObject(
     val count: Int,
-    val next: String?,
-    val previous: String?,
     val results: List<NetworkPerson>
 )
 
@@ -36,39 +31,39 @@ data class NetworkPerson(
     val homeworld: String,
     val species: List<String>
 )
-//
-//fun NetworkPersonContainer.asDatabaseModel():List<DatabasePerson>{
-//    return personList.map{
-//        DatabasePerson(
-//            url = it.url,
-//            name = it.name,
-//            height = it.height,
-//            mass = it.mass,
-//            gender = it.gender,
-//            homeworld = it.homeworld,
-//            hair_color = it.hairColor,
-//            skin_color = it.skinColor,
-//            eye_color = it.eyeColor,
-//            birth_year = it.birthYear,
-//            species = it.species
-//        )
-//    }
-//}
-//
-//fun NetworkPersonContainer.asDomainModel(): List<PersonModel>{
-//    return personList.map {
-//        PersonModel(
-//            url = it.url,
-//            name = it.name,
-//            height = it.height,
-//            mass = it.mass,
-//            gender = it.gender,
-//            homeworld = it.homeworld,
-//            hair_color = it.hairColor,
-//            skin_color = it.skinColor,
-//            eye_color = it.eyeColor,
-//            birth_year = it.birthYear,
-//            species = it.species
-//        )
-//    }
-//}
+
+fun NetworkObject.asDatabaseModel():List<DatabasePerson>{
+    return results.map{
+        DatabasePerson(
+            url = it.url,
+            name = it.name,
+            height = it.height,
+            mass = it.mass,
+            gender = it.gender,
+            homeworld = it.homeworld,
+            hair_color = it.hairColor,
+            skin_color = it.skinColor,
+            eye_color = it.eyeColor,
+            birth_year = it.birthYear,
+            species = it.species
+        )
+    }
+}
+
+fun NetworkObject.asDomainModel(): List<PersonModel>{
+    return results.map {
+        PersonModel(
+            url = it.url,
+            name = it.name,
+            height = it.height,
+            mass = it.mass,
+            gender = it.gender,
+            homeworld = it.homeworld,
+            hair_color = it.hairColor,
+            skin_color = it.skinColor,
+            eye_color = it.eyeColor,
+            birth_year = it.birthYear,
+            species = it.species
+        )
+    }
+}
