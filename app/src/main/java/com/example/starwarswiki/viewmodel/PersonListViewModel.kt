@@ -7,11 +7,20 @@ import androidx.lifecycle.ViewModel
 import com.example.starwarswiki.network.NetworkObject
 import com.example.starwarswiki.network.NetworkPerson
 import com.example.starwarswiki.network.PersonNetworkService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class PersonListViewModel(application: Application) : ViewModel() {
+
+    private var viewModelJob = Job()
+
+    val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     private val _eventNetworkError = MutableLiveData<Boolean>(false)
 
@@ -32,21 +41,24 @@ class PersonListViewModel(application: Application) : ViewModel() {
     }
 
     private fun getPersonListProperties(){
-        PersonNetworkService.personList.getPersonList().enqueue(
-            object: Callback<NetworkObject>{
-                override fun onFailure(call: Call<NetworkObject>, t: Throwable) {
-                    _response.value = "Failure: "+ t.message
-                }
-
-                override fun onResponse(call: Call<NetworkObject>, response: Response<NetworkObject>) {
-                    _response.value = "Sucess: ${response.body()?.count} items retrieved !"
-                }
-
+        coroutineScope.launch {
+            var getPersonListDeferred = PersonNetworkService.personList.getPersonList()
+            try {
+                var listResult = getPersonListDeferred.await()
+                _response.value = "Sucess: ${listResult.count} items retrieved !"
             }
-        )
+            catch (e: Exception){
+                _response.value = "Failure: "+ e.message
+            }
+        }
     }
 
     fun onNetworkErrorShown(){
         _isNetworkErrorShown.value = true
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

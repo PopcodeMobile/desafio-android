@@ -11,14 +11,14 @@ import retrofit2.http.GET
 
 interface PersonService{
     @GET("people")
-    fun getPersonList():Call<NetworkObject>
+    fun getPersonList():Deferred<NetworkObject>
 }
 
 object PersonNetworkService{
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://swapi.co/api/")
         .addConverterFactory(MoshiConverterFactory.create())
-//        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
     val personList =retrofit.create(PersonService::class.java)
