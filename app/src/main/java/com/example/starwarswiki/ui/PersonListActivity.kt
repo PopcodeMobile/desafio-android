@@ -1,12 +1,13 @@
-package com.example.starwarswiki
+package com.example.starwarswiki.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.starwarswiki.R
 
-class MainActivity : AppCompatActivity() {
+class PersonListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_person_list)
     }
 }

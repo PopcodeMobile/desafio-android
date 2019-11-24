@@ -6,11 +6,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
-@Dao
-interface PersonDao {
-    @Query("SELECT * FROM databaseperson")
-    fun getPersons(): LiveData<List<DatabasePerson>>
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(persons: List<DatabasePerson>)
-}
-
+//@Dao
+//interface PersonDao {
+//    @Query("SELECT * FROM databaseperson")
+//    fun getPersons(): LiveData<List<DatabasePerson>>
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    fun insertAll(persons: List<DatabasePerson>)
+//}
+//
