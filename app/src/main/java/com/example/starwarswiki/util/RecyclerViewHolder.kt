@@ -19,5 +19,6 @@ class  RecyclerViewHolder private constructor(val binding: ItemListFragmentBindi
 
     fun bind(item: PersonModel){
         binding.person = item
+        binding.executePendingBindings()
     }
 }

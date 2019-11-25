@@ -54,6 +54,7 @@ class PersonListFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+            viewModel.doneShowingSnackbar()
         })
         return binding.root
     }

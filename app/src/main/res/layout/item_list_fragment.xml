@@ -36,8 +36,8 @@
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
             android:paddingBottom="10dp"
-            android:text=""
             android:textSize="14sp"
+            app:shortDetails="@{person}"
             tools:text="Altura: x \nGênero: x \nPeso: x"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
