@@ -10,6 +10,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class NetworkObject(
     val count: Int,
+    val next: String?,
     val results: List<NetworkPerson>
 )
 

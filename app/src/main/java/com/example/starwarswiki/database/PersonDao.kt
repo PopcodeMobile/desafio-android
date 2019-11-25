@@ -8,9 +8,11 @@ import androidx.room.Query
 
 @Dao
 interface PersonDao {
-    @Query("SELECT * FROM databaseperson")
+    @Query("SELECT * FROM table_person")
     fun getAllPeople(): LiveData<List<DatabasePerson>>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(persons: List<DatabasePerson>)
+    @Query("DELETE FROM table_person")
+    fun clear()
 }
 

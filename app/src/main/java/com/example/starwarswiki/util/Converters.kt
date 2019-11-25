@@ -6,10 +6,11 @@ class Converters {
 
     @TypeConverter
     fun stringListToString(stringList: List<String>): String{
-        return if(stringList.size > 1)
-            stringList.joinToString()
+        return if(stringList.isEmpty())
+            ""
         else
-            stringList[0]
+            stringList.joinToString()
+
     }
 
     @TypeConverter

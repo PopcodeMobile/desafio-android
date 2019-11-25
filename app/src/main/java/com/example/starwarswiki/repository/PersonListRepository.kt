@@ -2,6 +2,7 @@ package com.example.starwarswiki.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.example.starwarswiki.database.PersonDao
 import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.database.asDomainModel
 import com.example.starwarswiki.domain.PersonModel
@@ -11,17 +12,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class PersonListRepository(private val database: PersonRoomDatabase){
+class PersonListRepository(private val database: PersonDao){
 
     suspend fun refreshList(){
         withContext(Dispatchers.IO){
             Timber.d("Refreshing list...")
-            val objectRequest = PersonNetworkService.bruteRequest.getObject().await()
-            database.personDao.insertAll(objectRequest.asDatabaseModel())
+            var index = 1
+            do {
+                val objectRequest = PersonNetworkService.bruteRequest.getObject(index).await()
+                database.insertAll(objectRequest.asDatabaseModel())
+                index++
+            }while (objectRequest.next != null)
         }
     }
     val personList: LiveData<List<PersonModel>> = Transformations.map(
-        database.personDao.getAllPeople()
+        database.getAllPeople()
     ){
         it.asDomainModel()
     }

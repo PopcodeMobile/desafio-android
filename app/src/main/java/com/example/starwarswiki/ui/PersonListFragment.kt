@@ -11,6 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.example.starwarswiki.R
+import com.example.starwarswiki.database.DatabasePerson
+import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.databinding.PersonListFragmentBinding
 import com.example.starwarswiki.viewmodel.PersonListAdapter
 import com.example.starwarswiki.viewmodel.PersonListViewModel
@@ -18,19 +20,16 @@ import com.example.starwarswiki.viewmodel.PersonListViewModelFactory
 
 class PersonListFragment : Fragment() {
 
-    private val viewModel: PersonListViewModel by lazy {
-        val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
-        }
-        ViewModelProviders.of(this, PersonListViewModelFactory(activity.application))
-            .get(PersonListViewModel::class.java)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = PersonListFragmentBinding.inflate(inflater)
+        val application = requireNotNull(this.activity).application
+        val dataSource =  PersonRoomDatabase.getDatabase(application).personDao
+        val viewModelFragment = PersonListViewModelFactory(dataSource, application)
+        val viewModel = ViewModelProviders.of(this, viewModelFragment)
+            .get(PersonListViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         val adapter = PersonListAdapter()
@@ -41,18 +40,21 @@ class PersonListFragment : Fragment() {
             }
         })
         viewModel.eventNetworkError.observe(this, Observer {
-            if(it==true)
-                onNetworkError()
+            if(it==true){
+                Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT)
+                    .show()
+                viewModel.onNetworkErrorShown()
+            }
         })
-
+        viewModel.showSnackbarEvent.observe(this, Observer {
+            if(it==true){
+                Toast.makeText(
+                    context,
+                    "Database cleared !",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
         return binding.root
-    }
-
-    private fun onNetworkError(){
-        if(!viewModel.eventNetworkError.value!!){
-            Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT)
-                .show()
-            viewModel.onNetworkErrorShown()
-        }
     }
 }

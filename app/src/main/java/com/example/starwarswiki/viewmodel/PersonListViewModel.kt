@@ -6,15 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.starwarswiki.database.getDatabase
+import com.example.starwarswiki.database.PersonDao
 import com.example.starwarswiki.network.NetworkObject
 import com.example.starwarswiki.network.NetworkPerson
 import com.example.starwarswiki.network.PersonNetworkService
 import com.example.starwarswiki.repository.PersonListRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,13 +19,14 @@ import timber.log.Timber
 import java.io.IOException
 import java.lang.Exception
 
-class PersonListViewModel(application: Application) : ViewModel() {
+class PersonListViewModel(val database: PersonDao,
+                          application: Application) : ViewModel() {
 
     private var viewModelJob = Job()
 
     private val uiCoroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    private val listRepository = PersonListRepository(getDatabase(application))
+    private val listRepository = PersonListRepository(database)
 
     val personList = listRepository.personList
 
@@ -41,6 +39,11 @@ class PersonListViewModel(application: Application) : ViewModel() {
 
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
+
+    private val _showSnackbarEvent = MutableLiveData<Boolean>()
+
+    val showSnackbarEvent: LiveData<Boolean>
+        get() = _showSnackbarEvent
 
     private val _response = MutableLiveData<String>()
     val response: LiveData<String>
@@ -65,19 +68,6 @@ class PersonListViewModel(application: Application) : ViewModel() {
         }
     }
 
-    private fun getPersonListProperties(){
-        uiCoroutineScope.launch {
-            var getPersonListDeferred = PersonNetworkService.bruteRequest.getObject()
-            try {
-                var listResult = getPersonListDeferred.await()
-                _response.value = "Sucess: ${listResult.count} items retrieved !"
-            }
-            catch (e: Exception){
-                _response.value = "Failure: "+ e.message
-            }
-        }
-    }
-
     fun onNetworkErrorShown(){
         _isNetworkErrorShown.value = true
     }
@@ -85,5 +75,22 @@ class PersonListViewModel(application: Application) : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+
+    fun onClear(){
+        uiCoroutineScope.launch {
+            clear()
+            _showSnackbarEvent.value = true
+        }
+    }
+
+    suspend fun clear(){
+        withContext(Dispatchers.IO){
+            database.clear()
+        }
+    }
+
+    fun doneShowingSnackbar(){
+        _showSnackbarEvent.value = false
     }
 }
