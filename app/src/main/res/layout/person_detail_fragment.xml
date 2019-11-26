@@ -7,6 +7,9 @@
         <variable
             name="personDetailViewModel"
             type="com.example.starwarswiki.viewmodel.PersonDetailViewModel" />
+        <variable
+            name="person"
+            type="com.example.starwarswiki.domain.PersonModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

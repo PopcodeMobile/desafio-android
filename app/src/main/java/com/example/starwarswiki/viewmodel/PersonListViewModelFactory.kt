@@ -14,6 +14,6 @@ class PersonListViewModelFactory(private val dataSource: PersonDao, private val 
             Timber.d("Instance of PersonViewModel created !")
             return PersonListViewModel(dataSource,application) as T
         }
-        throw IllegalArgumentException("Unable to construct viewmodel")
+        throw IllegalArgumentException("Unable to intance PersonListViewModel")
     }
 }

@@ -1,5 +1,6 @@
 package com.example.starwarswiki.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -8,12 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.starwarswiki.R
 import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.databinding.PersonDetailFragmentBinding
+import com.example.starwarswiki.util.setLongDetails
 import com.example.starwarswiki.viewmodel.PersonDetailViewModel
 import com.example.starwarswiki.viewmodel.PersonDetailViewModelFactory
+import kotlinx.android.synthetic.main.person_detail_fragment.*
+import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -24,6 +29,7 @@ import com.example.starwarswiki.viewmodel.PersonDetailViewModelFactory
  * create an instance of this fragment.
  */
 class PersonDetailFragment : Fragment() {
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,9 +39,17 @@ class PersonDetailFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val dataSource = PersonRoomDatabase.getDatabase(application).personDao
         val viewModelFactory = PersonDetailViewModelFactory(args.url, dataSource)
-        val PersonDetailViewModel =  ViewModelProviders
+        val personDetailViewModel =  ViewModelProviders
             .of(this, viewModelFactory).get(PersonDetailViewModel::class.java)
-        binding.personDetailViewModel = PersonDetailViewModel
+        binding.personDetailViewModel = personDetailViewModel
+        personDetailViewModel.planetName.observe(this, Observer {
+            it?.let{
+                val details = binding.detailsText.text
+                Timber.d("Details: $details")
+                Timber.d("Planeta natal: $it")
+                binding.detailsText.text = "$details\nPlaneta natal: $it"
+            }
+        })
         binding.lifecycleOwner = this
         return binding.root
     }

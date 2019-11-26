@@ -46,11 +46,6 @@ class PersonListViewModel(val database: PersonDao,
     val showSnackbarEvent: LiveData<Boolean>
         get() = _showSnackbarEvent
 
-    private val _detailPerson = MutableLiveData<String>()
-
-    val detailPerson: LiveData<String>
-        get() = _detailPerson
-
     private val _response = MutableLiveData<String>()
     val response: LiveData<String>
         get() = _response
@@ -99,6 +94,11 @@ class PersonListViewModel(val database: PersonDao,
     fun doneShowingSnackbar(){
         _showSnackbarEvent.value = false
     }
+
+    private val _detailPerson = MutableLiveData<String>()
+
+    val detailPerson: LiveData<String>
+        get() = _detailPerson
 
     fun onPersonClicked(id: String){
         _detailPerson.value = id
