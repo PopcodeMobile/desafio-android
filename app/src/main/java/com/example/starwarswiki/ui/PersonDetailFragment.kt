@@ -50,6 +50,18 @@ class PersonDetailFragment : Fragment() {
                 binding.detailsText.text = "$details\nPlaneta natal: $it"
             }
         })
+        personDetailViewModel.speciesName.observe(this, Observer{
+            it?.let{
+                var details = binding.detailsText.text.toString()
+                details = "$details\nEspécie(s): "
+                it.forEachIndexed { index, specie ->
+                    if(index>0)
+                        details += ", "
+                    details += "$specie"
+                }
+                binding.detailsText.text = details
+            }
+        })
         binding.lifecycleOwner = this
         return binding.root
     }

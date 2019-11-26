@@ -32,32 +32,35 @@ class PersonDetailViewModel(
     suspend fun getPerson():PersonModel?{
         return withContext(Dispatchers.IO) {
             var personRequest = database.getPerson(url)
-            Timber.d("Person request: ${personRequest?.name}")
+//            Timber.d("Person request: ${personRequest?.name}")
             personRequest?.let{
-                onInit(it.homeworld, it.species)
+                requestPlanet(it.homeworld)
+                requestSpecies(it.species)
             }
             personRequest
         }
     }
 
-    fun onInit(planetUrl: String?, species: List<String>?){
-        Timber.d("onInit(${planetUrl}) called !")
+    fun requestPlanet(planetUrl: String?){
         uiCoroutineScope.launch {
             planetUrl?.let{
                 val iPlanet = it.substringAfter("https://swapi.co/api/planets/").removeSuffix("/").toInt()
-                Timber.d("${iPlanet}")
                 _planetName.value = getPlanet(iPlanet)
             }
-//            species?.let{
-//                val indexSpecies = mutableListOf<Int>()
-//                species.forEach { s ->
-//                    val iSpecie = s.substringAfter("https://swapi.co/api/species/").removeSuffix("/").toInt()
-//                    indexSpecies.add(iSpecie)
-//                }
-//                getSpecies(indexSpecies)
-//            }
         }
+    }
 
+    fun requestSpecies(species: List<String>?){
+        uiCoroutineScope.launch {
+            species?.let{
+                val indexSpecies = mutableListOf<Int>()
+                it.forEach { s ->
+                    val iSpecie = s.substringAfter("https://swapi.co/api/species/").removeSuffix("/").toInt()
+                    indexSpecies.add(iSpecie)
+                }
+                _speciesName.value = getSpecies(indexSpecies)
+            }
+        }
     }
 
     private val _planetName = MutableLiveData<String>()
@@ -68,7 +71,6 @@ class PersonDetailViewModel(
     suspend fun getPlanet(index: Int): String?{
         return withContext(Dispatchers.IO){
             val planetObject = PersonNetworkService.bruteRequest.getPlanet(index).await()
-            Timber.d("getPlanet = ${planetObject.name}")
             planetObject.name
         }
     }
@@ -78,15 +80,17 @@ class PersonDetailViewModel(
     val speciesName: LiveData<MutableList<String>>
         get() = _speciesName
 
-    suspend fun getSpecies(index: List<Int>?){
-        withContext(Dispatchers.IO){
-            index?.let{
-                index.forEach {
+    suspend fun getSpecies(index: List<Int>?): MutableList<String>?{
+       return withContext(Dispatchers.IO){
+           var speciesList = mutableListOf<String>()
+           index?.let{
+                it.forEach {
                     val specieObject = PersonNetworkService.bruteRequest.getSpecie(it).await()
-                    _speciesName.value?.add(specieObject.name)
+                    speciesList.add(specieObject.name)
                 }
             }
-        }
+           speciesList
+       }
     }
 
     override fun onCleared() {
