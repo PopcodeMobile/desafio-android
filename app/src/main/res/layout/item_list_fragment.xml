@@ -7,11 +7,14 @@
         <variable
             name="person"
             type="com.example.starwarswiki.domain.PersonModel" />
-
+        <variable
+            name="clickListener"
+            type="com.example.starwarswiki.viewmodel.PersonClickListener" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()->clickListener.onClick(person)}">
         <TextView
             android:id="@+id/person_name"
             android:layout_width="match_parent"

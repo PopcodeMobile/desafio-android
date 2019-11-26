@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.starwarswiki.database.PersonDao
+import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.network.NetworkObject
 import com.example.starwarswiki.network.NetworkPerson
 import com.example.starwarswiki.network.PersonNetworkService
@@ -44,6 +45,11 @@ class PersonListViewModel(val database: PersonDao,
 
     val showSnackbarEvent: LiveData<Boolean>
         get() = _showSnackbarEvent
+
+    private val _detailPerson = MutableLiveData<String>()
+
+    val detailPerson: LiveData<String>
+        get() = _detailPerson
 
     private val _response = MutableLiveData<String>()
     val response: LiveData<String>
@@ -92,5 +98,13 @@ class PersonListViewModel(val database: PersonDao,
 
     fun doneShowingSnackbar(){
         _showSnackbarEvent.value = false
+    }
+
+    fun onPersonClicked(id: String){
+        _detailPerson.value = id
+    }
+
+    fun onPersonDetailed(){
+        _detailPerson.value = null
     }
 }

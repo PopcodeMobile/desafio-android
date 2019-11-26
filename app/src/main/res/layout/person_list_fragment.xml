@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.PersonListFragment">
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/person_list"
             android:layout_width="match_parent"

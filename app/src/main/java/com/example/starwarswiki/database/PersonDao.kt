@@ -5,9 +5,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.starwarswiki.domain.PersonModel
 
 @Dao
 interface PersonDao {
+    @Query("SELECT * FROM table_person WHERE url= :key")
+    fun getPerson(key: String): PersonModel?
+    @Query("SELECT * FROM table_person WHERE url= :key")
+    fun getLivedataPerson(key: String): LiveData<PersonModel>
     @Query("SELECT * FROM table_person")
     fun getAllPeople(): LiveData<List<DatabasePerson>>
     @Insert(onConflict = OnConflictStrategy.REPLACE)

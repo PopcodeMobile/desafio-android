@@ -8,6 +8,27 @@
     <fragment
         android:id="@+id/personListFragment"
         android:name="com.example.starwarswiki.ui.PersonListFragment"
-        android:label="person_list_fragment"
-        tools:layout="@layout/person_list_fragment" />
+        android:label="PersonListFragment"
+        tools:layout="@layout/person_list_fragment" >
+        <action
+            android:id="@+id/action_personListFragment_to_personDetailFragment"
+            app:destination="@+id/personDetailFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@+id/personListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/personDetailFragment"
+        android:name="com.example.starwarswiki.ui.PersonDetailFragment"
+        android:label="PersonDetailFragment"
+        tools:layout="@layout/person_detail_fragment">
+        <action
+            android:id="@+id/action_personDetailFragment_to_personListFragment"
+            app:destination="@id/personListFragment"
+            app:popEnterAnim="@anim/slide_in_right" />
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

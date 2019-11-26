@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwarswiki.databinding.ItemListFragmentBinding
 import com.example.starwarswiki.domain.PersonModel
+import com.example.starwarswiki.viewmodel.PersonClickListener
 
 class  RecyclerViewHolder private constructor(val binding: ItemListFragmentBinding)
     : RecyclerView.ViewHolder(binding.root){
@@ -16,8 +17,11 @@ class  RecyclerViewHolder private constructor(val binding: ItemListFragmentBindi
             return RecyclerViewHolder(binding)
         }
     }
-
-    fun bind(item: PersonModel){
+    fun bind(
+        item: PersonModel,
+        clickListener: PersonClickListener
+    ){
+        binding.clickListener = clickListener
         binding.person = item
         binding.executePendingBindings()
     }

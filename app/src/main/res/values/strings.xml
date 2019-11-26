@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">StarWarsWiki</string>
     <string name="person_characteristics">Altura: %1$s\nGênero: %2$s\nPeso: %3$s</string>
+    <string name="person_detailed">Altura: %1$s\nGênero: %2$s\nPeso: %3$s\nCor do cabelo: %4$s\nCor da pele: %5$s\nCor do olho: %6$s\nAno de nascimento: %7$s\nPlaneta natal:\nEspécie:\n</string>
 </resources>

@@ -14,6 +14,7 @@ import com.example.starwarswiki.R
 import com.example.starwarswiki.database.DatabasePerson
 import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.databinding.PersonListFragmentBinding
+import com.example.starwarswiki.viewmodel.PersonClickListener
 import com.example.starwarswiki.viewmodel.PersonListAdapter
 import com.example.starwarswiki.viewmodel.PersonListViewModel
 import com.example.starwarswiki.viewmodel.PersonListViewModelFactory
@@ -32,7 +33,18 @@ class PersonListFragment : Fragment() {
             .get(PersonListViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        val adapter = PersonListAdapter()
+        val adapter = PersonListAdapter(PersonClickListener { url ->
+//            Toast.makeText(context, "Person url: ${url}", Toast.LENGTH_SHORT).show()
+            viewModel.onPersonClicked(url)
+        })
+        viewModel.detailPerson.observe(this, Observer {
+            it?.let{
+                this.findNavController()
+                    .navigate(PersonListFragmentDirections
+                        .actionPersonListFragmentToPersonDetailFragment(it))
+                viewModel.onPersonDetailed()
+            }
+        })
         binding.personList.adapter = adapter
         viewModel.personList.observe(this, Observer {
             it?.let {
