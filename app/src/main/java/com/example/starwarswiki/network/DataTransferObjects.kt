@@ -8,6 +8,12 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
+data class PlanetNetworkObject(val name: String)
+
+@JsonClass(generateAdapter = true)
+data class SpecieNetworkObject(val name: String)
+
+@JsonClass(generateAdapter = true)
 data class NetworkObject(
     val count: Int,
     val next: String?,
