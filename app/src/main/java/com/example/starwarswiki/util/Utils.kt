@@ -11,3 +11,7 @@ fun formatShortDetails(item: PersonModel, res: Resources): String{
 fun formatLongDetails(item: PersonModel, res:Resources): String{
     return res.getString(R.string.person_detailed, item.height, item.gender, item.mass, item.hair_color, item.skin_color, item.eye_color, item.birth_year)
 }
+
+fun getObjectId(string: String,url: String): Int{
+    return string.substringAfter(url).removeSuffix("/").toInt()
+}

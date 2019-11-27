@@ -116,21 +116,17 @@ class PersonListViewModel(val database: PersonDao,
         _detailPerson.value = null
     }
 
+    private val _favoriteId = MutableLiveData<Int>()
+
+    val favoriteId:LiveData<Int>
+        get() = _favoriteId
+
+    fun onFavoriteClicked(id: Int){
+        _favoriteId.value = id
+    }
     fun onInputText(string: String){
         viewModelScope.launch {
             _personSearch.value = listRepository.peopleSearched(string)
         }
-//        Timber.d("_Person Search value: ${peopleFound.value}")
-//        Timber.d("Person Search value: ${peopleFound.value?.get(0)?.name}")
-    }
-
-    fun getPeopleFromDb(searchText: String, owner: LifecycleOwner){
-//        val text = "%$searchText%"
-//        listRepository.peopleSearched(text)
-//            .observe(owner, Observer {
-//                it?.let{
-//
-//                }
-//            })
     }
 }

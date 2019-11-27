@@ -13,10 +13,7 @@ import com.example.starwarswiki.R
 import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.databinding.PersonListFragmentBinding
 import com.example.starwarswiki.repository.PersonListRepository
-import com.example.starwarswiki.viewmodel.PersonClickListener
-import com.example.starwarswiki.viewmodel.PersonListAdapter
-import com.example.starwarswiki.viewmodel.PersonListViewModel
-import com.example.starwarswiki.viewmodel.PersonListViewModelFactory
+import com.example.starwarswiki.viewmodel.*
 import timber.log.Timber
 
 class PersonListFragment : Fragment() {
@@ -38,9 +35,15 @@ class PersonListFragment : Fragment() {
         val binding = PersonListFragmentBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        adapter = PersonListAdapter(PersonClickListener { url ->
-            viewModel.onPersonClicked(url)
-        })
+        adapter = PersonListAdapter(
+            PersonClickListener { url ->
+                viewModel.onPersonClicked(url)
+            },
+            FavoriteClickListener { id ->
+                viewModel.onFavoriteClicked(id)
+//                Toast.makeText(context, "Item $id favoritado !", Toast.LENGTH_SHORT).show()
+            }
+            )
         viewModel.detailPerson.observe(this, Observer {
             it?.let{
                 this.findNavController()
@@ -49,6 +52,10 @@ class PersonListFragment : Fragment() {
                 viewModel.onPersonDetailed()
             }
         })
+        viewModel.favoriteId.observe(this, Observer {
+
+        })
+
         binding.personList.adapter = adapter
         viewModel.personList.observe(this, Observer {
             it?.let {

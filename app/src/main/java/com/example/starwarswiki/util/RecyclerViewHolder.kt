@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwarswiki.databinding.ItemListFragmentBinding
 import com.example.starwarswiki.domain.PersonModel
+import com.example.starwarswiki.viewmodel.FavoriteClickListener
 import com.example.starwarswiki.viewmodel.PersonClickListener
 
 class  RecyclerViewHolder private constructor(val binding: ItemListFragmentBinding)
@@ -19,8 +20,12 @@ class  RecyclerViewHolder private constructor(val binding: ItemListFragmentBindi
     }
     fun bind(
         item: PersonModel,
-        clickListener: PersonClickListener
+        index: Int,
+        clickListener: PersonClickListener,
+        favoriteClickListener: FavoriteClickListener
     ){
+        binding.position = index
+        binding.favoriteClickListener = favoriteClickListener
         binding.clickListener = clickListener
         binding.person = item
         binding.executePendingBindings()

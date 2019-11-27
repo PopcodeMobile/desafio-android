@@ -8,6 +8,7 @@ import com.example.starwarswiki.database.PersonDao
 import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.network.PersonNetworkService
 import com.example.starwarswiki.network.PlanetNetworkObject
+import com.example.starwarswiki.util.getObjectId
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -44,7 +45,7 @@ class PersonDetailViewModel(
     fun requestPlanet(planetUrl: String?){
         uiCoroutineScope.launch {
             planetUrl?.let{
-                val iPlanet = it.substringAfter("https://swapi.co/api/planets/").removeSuffix("/").toInt()
+                val iPlanet = getObjectId(it, "https://swapi.co/api/planets/")//it.substringAfter("https://swapi.co/api/planets/").removeSuffix("/").toInt()
                 _planetName.value = getPlanet(iPlanet)
             }
         }
@@ -55,7 +56,7 @@ class PersonDetailViewModel(
             species?.let{
                 val indexSpecies = mutableListOf<Int>()
                 it.forEach { s ->
-                    val iSpecie = s.substringAfter("https://swapi.co/api/species/").removeSuffix("/").toInt()
+                    val iSpecie = getObjectId(s, "https://swapi.co/api/species/")//s.substringAfter("https://swapi.co/api/species/").removeSuffix("/").toInt()
                     indexSpecies.add(iSpecie)
                 }
                 _speciesName.value = getSpecies(indexSpecies)

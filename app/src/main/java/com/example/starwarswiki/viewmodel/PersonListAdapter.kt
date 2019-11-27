@@ -1,15 +1,13 @@
 package com.example.starwarswiki.viewmodel
 
 import android.view.ViewGroup
-import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.util.RecyclerViewHolder
-import java.util.logging.Filter
-import java.util.logging.LogRecord
+import com.example.starwarswiki.util.getObjectId
 
-class PersonListAdapter(val clickListener: PersonClickListener): ListAdapter<PersonModel, RecyclerViewHolder> (PersonListDiffCallback()){
+class PersonListAdapter(val clickListener: PersonClickListener, val favoriteClickListener: FavoriteClickListener): ListAdapter<PersonModel, RecyclerViewHolder> (PersonListDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         return RecyclerViewHolder.from(parent)
@@ -17,7 +15,7 @@ class PersonListAdapter(val clickListener: PersonClickListener): ListAdapter<Per
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item!!, clickListener)
+        holder.bind(item!!, position, clickListener, favoriteClickListener)
     }
 }
 
@@ -33,4 +31,11 @@ class PersonListDiffCallback: DiffUtil.ItemCallback<PersonModel>(){
 
 class PersonClickListener(val clickListener: (url: String)->Unit){
     fun onClick(person: PersonModel) = clickListener(person.url)
+}
+
+class FavoriteClickListener(val clickListener: (id: Int) -> Unit){
+    fun onClick(person: PersonModel){
+        val id = getObjectId(person.url,"https://swapi.co/api/people/")
+        return clickListener(id)
+    }
 }

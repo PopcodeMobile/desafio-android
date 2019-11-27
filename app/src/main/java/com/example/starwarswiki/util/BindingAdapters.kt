@@ -1,11 +1,20 @@
 package com.example.starwarswiki.util
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.RecyclerView
+import com.example.starwarswiki.R
 import com.example.starwarswiki.domain.PersonModel
-import com.example.starwarswiki.viewmodel.PersonListAdapter
+
+@BindingAdapter("alternateColor")
+fun ConstraintLayout.setAlternateColor(i: Int){
+    if(i%2==1)
+        setBackgroundColor(resources.getColor(R.color.colorPrimaryDark))
+    else
+        setBackgroundColor(resources.getColor(R.color.colorPrimary))
+}
 
 @BindingAdapter("shortDetails")
 fun TextView.setShortDetails(item: PersonModel?){

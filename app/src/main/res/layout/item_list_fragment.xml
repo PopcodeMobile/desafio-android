@@ -10,27 +10,56 @@
         <variable
             name="clickListener"
             type="com.example.starwarswiki.viewmodel.PersonClickListener" />
+        <variable
+            name="favoriteClickListener"
+            type="com.example.starwarswiki.viewmodel.FavoriteClickListener" />
+        <variable
+            name="position"
+            type="Integer" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:alternateColor="@{position}"
         android:onClick="@{()->clickListener.onClick(person)}">
+
         <TextView
             android:id="@+id/person_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@{person.name}"
+            android:textColor="@color/colorSecondary"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="@{person.name}"
+            app:layout_constraintBottom_toTopOf="@+id/person_characteristics"
+            app:layout_constraintEnd_toStartOf="@+id/favorite"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginRight="0dp"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="Person name"
-            />
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp" />
+
+        <ImageView
+            android:id="@+id/favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/person_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/person_characteristics"
+            android:src="@drawable/ic_star_border"
+            android:contentDescription="Favorite Item"
+            android:onClick="@{()->favoriteClickListener.onClick(person)}"/>
+
         <TextView
             android:id="@+id/person_characteristics"
             android:layout_width="match_parent"
@@ -40,6 +69,7 @@
             android:paddingEnd="15dp"
             android:paddingBottom="10dp"
             android:textSize="14sp"
+            android:textColor="@color/colorAccent"
             app:shortDetails="@{person}"
             tools:text="Altura: x \nGênero: x \nPeso: x"
             />
