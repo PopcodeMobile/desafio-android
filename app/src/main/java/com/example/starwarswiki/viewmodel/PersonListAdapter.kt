@@ -1,12 +1,15 @@
 package com.example.starwarswiki.viewmodel
 
 import android.view.ViewGroup
+import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.util.RecyclerViewHolder
+import java.util.logging.Filter
+import java.util.logging.LogRecord
 
-class PersonListAdapter(val clickListener: PersonClickListener): ListAdapter<PersonModel, RecyclerViewHolder>(PersonListDiffCallback()){
+class PersonListAdapter(val clickListener: PersonClickListener): ListAdapter<PersonModel, RecyclerViewHolder> (PersonListDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         return RecyclerViewHolder.from(parent)

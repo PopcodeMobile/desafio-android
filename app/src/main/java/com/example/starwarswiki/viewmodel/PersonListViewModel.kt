@@ -1,17 +1,14 @@
 package com.example.starwarswiki.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.starwarswiki.database.PersonDao
 import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.network.NetworkObject
 import com.example.starwarswiki.network.NetworkPerson
 import com.example.starwarswiki.network.PersonNetworkService
 import com.example.starwarswiki.repository.PersonListRepository
+import com.example.starwarswiki.ui.PersonListFragment
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,6 +27,17 @@ class PersonListViewModel(val database: PersonDao,
     private val listRepository = PersonListRepository(database)
 
     val personList = listRepository.personList
+
+//    private var _searchText = MutableLiveData<String?>("")
+//
+//    val searchText: LiveData<String?>
+//        get() = _searchText
+
+    private val _personSearch = MutableLiveData<List<PersonModel>>()
+
+    val personSearch: LiveData<List<PersonModel>>
+        get() = _personSearch
+
 
     private val _eventNetworkError = MutableLiveData<Boolean>(false)
 
@@ -106,5 +114,23 @@ class PersonListViewModel(val database: PersonDao,
 
     fun onPersonDetailed(){
         _detailPerson.value = null
+    }
+
+    fun onInputText(string: String){
+        viewModelScope.launch {
+            _personSearch.value = listRepository.peopleSearched(string)
+        }
+//        Timber.d("_Person Search value: ${peopleFound.value}")
+//        Timber.d("Person Search value: ${peopleFound.value?.get(0)?.name}")
+    }
+
+    fun getPeopleFromDb(searchText: String, owner: LifecycleOwner){
+//        val text = "%$searchText%"
+//        listRepository.peopleSearched(text)
+//            .observe(owner, Observer {
+//                it?.let{
+//
+//                }
+//            })
     }
 }

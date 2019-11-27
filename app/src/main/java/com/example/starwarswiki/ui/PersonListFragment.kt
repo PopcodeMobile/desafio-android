@@ -2,39 +2,43 @@ package com.example.starwarswiki.ui
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.example.starwarswiki.R
-import com.example.starwarswiki.database.DatabasePerson
 import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.databinding.PersonListFragmentBinding
+import com.example.starwarswiki.repository.PersonListRepository
 import com.example.starwarswiki.viewmodel.PersonClickListener
 import com.example.starwarswiki.viewmodel.PersonListAdapter
 import com.example.starwarswiki.viewmodel.PersonListViewModel
 import com.example.starwarswiki.viewmodel.PersonListViewModelFactory
+import timber.log.Timber
 
 class PersonListFragment : Fragment() {
-
+    private val viewModel: PersonListViewModel by lazy{
+        val activity = requireNotNull(this.activity){
+            "You can only access the viewModel after onActivityCreated()"
+        }
+        ViewModelProviders.of(this, PersonListViewModelFactory(
+            PersonRoomDatabase.getDatabase(activity).personDao,
+            activity.application)
+        )
+            .get(PersonListViewModel::class.java)
+    }
+    private lateinit var adapter: PersonListAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = PersonListFragmentBinding.inflate(inflater)
-        val application = requireNotNull(this.activity).application
-        val dataSource =  PersonRoomDatabase.getDatabase(application).personDao
-        val viewModelFragment = PersonListViewModelFactory(dataSource, application)
-        val viewModel = ViewModelProviders.of(this, viewModelFragment)
-            .get(PersonListViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        val adapter = PersonListAdapter(PersonClickListener { url ->
-//            Toast.makeText(context, "Person url: ${url}", Toast.LENGTH_SHORT).show()
+        adapter = PersonListAdapter(PersonClickListener { url ->
             viewModel.onPersonClicked(url)
         })
         viewModel.detailPerson.observe(this, Observer {
@@ -51,6 +55,14 @@ class PersonListFragment : Fragment() {
                 adapter.submitList(it)
             }
         })
+
+        viewModel.personSearch.observe(this, Observer {
+            it?.let{
+                Timber.d("Count items: ${it.size}")
+                adapter.submitList(it)
+            }
+        })
+
         viewModel.eventNetworkError.observe(this, Observer {
             if(it==true){
                 Toast.makeText(activity, "Network Error", Toast.LENGTH_SHORT)
@@ -68,6 +80,31 @@ class PersonListFragment : Fragment() {
             }
             viewModel.doneShowingSnackbar()
         })
+        setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_bar, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem!!.actionView as androidx.appcompat.widget.SearchView
+        searchView.setOnQueryTextListener(object: androidx.appcompat.widget.SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                searchView.setQuery("", false)
+                searchItem.collapseActionView()
+                Toast.makeText(context, "$query", Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let{
+                    viewModel.onInputText(it)
+                }
+                return false
+            }
+
+        })
     }
 }

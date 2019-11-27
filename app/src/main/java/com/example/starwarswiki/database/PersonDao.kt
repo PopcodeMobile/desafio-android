@@ -10,6 +10,8 @@ import kotlinx.coroutines.Deferred
 
 @Dao
 interface PersonDao {
+    @Query("SELECT * FROM table_person WHERE name LIKE '%' || :keyName || '%'")
+    fun getSearch(keyName:String?): List<DatabasePerson>?
     @Query("SELECT * FROM table_person WHERE url= :key")
     fun getPerson(key: String): PersonModel?
     @Query("SELECT * FROM table_person")
