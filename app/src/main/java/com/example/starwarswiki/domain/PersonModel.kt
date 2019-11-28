@@ -2,6 +2,7 @@ package com.example.starwarswiki.domain
 
 data class PersonModel(
     val url: String,
+    val id: Int,
     val name: String,
     val height: String,
     val mass: String,

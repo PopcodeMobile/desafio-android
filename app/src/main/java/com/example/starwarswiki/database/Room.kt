@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.starwarswiki.util.Converters
 
-@Database(entities = [DatabasePerson::class], version = 2, exportSchema = false)
+@Database(entities = [DatabasePerson::class], version = 4, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class PersonRoomDatabase: RoomDatabase(){
     abstract val personDao: PersonDao

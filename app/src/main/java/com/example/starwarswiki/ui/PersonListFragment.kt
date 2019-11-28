@@ -36,8 +36,8 @@ class PersonListFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         adapter = PersonListAdapter(
-            PersonClickListener { url ->
-                viewModel.onPersonClicked(url)
+            PersonClickListener { id ->
+                viewModel.onPersonClicked(id)
             },
             FavoriteClickListener { id ->
                 viewModel.onFavoriteClicked(id)

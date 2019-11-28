@@ -14,7 +14,7 @@ import timber.log.Timber
 
 class PersonDetailViewModel(
     val dataSource: PersonDao,
-    val url: String)
+    val id: Int)
     : ViewModel() {
     val database = dataSource
     val viewModelJob = Job()
@@ -32,7 +32,7 @@ class PersonDetailViewModel(
 
     suspend fun getPerson():PersonModel?{
         return withContext(Dispatchers.IO) {
-            var personRequest = database.getPerson(url)
+            var personRequest = database.getPerson(id)
 //            Timber.d("Person request: ${personRequest?.name}")
             personRequest?.let{
                 requestPlanet(it.homeworld)

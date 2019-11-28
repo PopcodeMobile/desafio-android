@@ -21,7 +21,7 @@ class PersonListAdapter(val clickListener: PersonClickListener, val favoriteClic
 
 class PersonListDiffCallback: DiffUtil.ItemCallback<PersonModel>(){
     override fun areItemsTheSame(oldItem: PersonModel, newItem: PersonModel): Boolean {
-        return (oldItem.url == newItem.url)
+        return (oldItem.id == newItem.id)
     }
 
     override fun areContentsTheSame(oldItem: PersonModel, newItem: PersonModel): Boolean {
@@ -29,8 +29,8 @@ class PersonListDiffCallback: DiffUtil.ItemCallback<PersonModel>(){
     }
 }
 
-class PersonClickListener(val clickListener: (url: String)->Unit){
-    fun onClick(person: PersonModel) = clickListener(person.url)
+class PersonClickListener(val clickListener: (id: Int)->Unit){
+    fun onClick(person: PersonModel) = clickListener(person.id)
 }
 
 class FavoriteClickListener(val clickListener: (id: Int) -> Unit){

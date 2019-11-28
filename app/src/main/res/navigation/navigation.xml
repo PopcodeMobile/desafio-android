@@ -27,8 +27,8 @@
             app:destination="@id/personListFragment"
             app:popEnterAnim="@anim/slide_in_right" />
         <argument
-            android:name="url"
-            app:argType="string" />
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

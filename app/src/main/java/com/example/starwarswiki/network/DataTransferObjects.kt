@@ -4,8 +4,10 @@ package com.example.starwarswiki.network
 //import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.database.DatabasePerson
 import com.example.starwarswiki.domain.PersonModel
+import com.example.starwarswiki.util.getObjectId
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import timber.log.Timber
 
 @JsonClass(generateAdapter = true)
 data class PlanetNetworkObject(val name: String)
@@ -41,8 +43,10 @@ data class NetworkPerson(
 
 fun NetworkObject.asDatabaseModel():List<DatabasePerson>{
     return results.map{
-        DatabasePerson(
+        val idValue = getObjectId(it.url, "https://swapi.co/api/people/")
+        val dbPerson = DatabasePerson(
             url = it.url,
+            id = idValue,
             name = it.name,
             height = it.height,
             mass = it.mass,
@@ -54,13 +58,17 @@ fun NetworkObject.asDatabaseModel():List<DatabasePerson>{
             birth_year = it.birthYear,
             species = it.species
         )
+//        Timber.d("Person ${dbPerson.id} transformed to dbmodel")
+        dbPerson
     }
 }
 
 fun NetworkObject.asDomainModel(): List<PersonModel>{
     return results.map {
-        PersonModel(
+        val idValue = getObjectId(it.url, "https://swapi.co/api/people/")
+        val personModel = PersonModel(
             url = it.url,
+            id = idValue,
             name = it.name,
             height = it.height,
             mass = it.mass,
@@ -72,5 +80,7 @@ fun NetworkObject.asDomainModel(): List<PersonModel>{
             birth_year = it.birthYear,
             species = it.species
         )
+//        Timber.d("Person ${personModel.id} transformed to dbmodel")
+        personModel
     }
 }

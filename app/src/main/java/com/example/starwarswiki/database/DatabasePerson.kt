@@ -7,6 +7,7 @@ import com.example.starwarswiki.domain.PersonModel
 @Entity(tableName = "table_person")
 data class DatabasePerson(
     @PrimaryKey
+    val id: Int,
     val url: String,
     val name: String,
     val height: String,
@@ -24,6 +25,7 @@ fun List<DatabasePerson>.asDomainModel(): List<PersonModel>{
     return map {
         PersonModel(
             url = it.url,
+            id = it.id,
             name = it.name,
             height = it.height,
             mass = it.mass,

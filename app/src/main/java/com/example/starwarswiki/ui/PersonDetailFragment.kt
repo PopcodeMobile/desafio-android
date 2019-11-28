@@ -23,7 +23,7 @@ class PersonDetailFragment : Fragment() {
         val binding = PersonDetailFragmentBinding.inflate(inflater)
         val application = requireNotNull(this.activity).application
         val dataSource = PersonRoomDatabase.getDatabase(application).personDao
-        val viewModelFactory = PersonDetailViewModelFactory(args.url, dataSource)
+        val viewModelFactory = PersonDetailViewModelFactory(args.id, dataSource)
         val personDetailViewModel =  ViewModelProviders
             .of(this, viewModelFactory).get(PersonDetailViewModel::class.java)
         binding.personDetailViewModel = personDetailViewModel
