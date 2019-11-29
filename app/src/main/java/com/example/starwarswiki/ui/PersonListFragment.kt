@@ -41,7 +41,6 @@ class PersonListFragment : Fragment() {
             },
             FavoriteClickListener { id ->
                 viewModel.onFavoriteClicked(id)
-//                Toast.makeText(context, "Item $id favoritado !", Toast.LENGTH_SHORT).show()
             }
             )
         viewModel.detailPerson.observe(this, Observer {
@@ -53,7 +52,7 @@ class PersonListFragment : Fragment() {
             }
         })
         viewModel.favoriteId.observe(this, Observer {
-
+            Toast.makeText(context, "Item ${viewModel.favoriteId.value} favoritado !", Toast.LENGTH_SHORT).show()
         })
 
         binding.personList.adapter = adapter

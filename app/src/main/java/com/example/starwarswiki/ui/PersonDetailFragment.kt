@@ -30,8 +30,8 @@ class PersonDetailFragment : Fragment() {
         personDetailViewModel.planetName.observe(this, Observer {
             it?.let{
                 val details = binding.detailsText.text
-                Timber.d("Details: $details")
-                Timber.d("Planeta natal: $it")
+//                Timber.d("Details: $details")
+//                Timber.d("Planeta natal: $it")
                 binding.detailsText.text = "$details\nPlaneta natal: $it"
             }
         })

@@ -35,7 +35,6 @@ class PersonClickListener(val clickListener: (id: Int)->Unit){
 
 class FavoriteClickListener(val clickListener: (id: Int) -> Unit){
     fun onClick(person: PersonModel){
-        val id = getObjectId(person.url,"https://swapi.co/api/people/")
-        return clickListener(id)
+        return clickListener(person.id)
     }
 }

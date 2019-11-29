@@ -12,5 +12,6 @@ data class PersonModel(
     val birth_year: String,
     val gender: String,
     val homeworld: String,
-    val species: List<String>
+    val species: List<String>,
+    val isFavorite: Boolean=false
 )

@@ -18,7 +18,8 @@ data class DatabasePerson(
     val birth_year: String,
     val gender: String,
     val species: List<String>,
-    val homeworld: String
+    val homeworld: String,
+    val isFavorite: Boolean=false
 )
 
 fun List<DatabasePerson>.asDomainModel(): List<PersonModel>{
@@ -35,7 +36,8 @@ fun List<DatabasePerson>.asDomainModel(): List<PersonModel>{
             birth_year = it.birth_year,
             gender = it.gender,
             homeworld = it.homeworld,
-            species = it.species
+            species = it.species,
+            isFavorite = it.isFavorite
         )
     }
 }
