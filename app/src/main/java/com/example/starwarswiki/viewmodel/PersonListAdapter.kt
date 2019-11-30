@@ -1,6 +1,8 @@
 package com.example.starwarswiki.viewmodel
 
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.starwarswiki.domain.PersonModel
@@ -33,8 +35,8 @@ class PersonClickListener(val clickListener: (id: Int)->Unit){
     fun onClick(person: PersonModel) = clickListener(person.id)
 }
 
-class FavoriteClickListener(val clickListener: (id: Int) -> Unit){
-    fun onClick(person: PersonModel){
-        return clickListener(person.id)
+class FavoriteClickListener(val clickListener: (id: Int, view: View) -> Unit){
+    fun onClick(person: PersonModel, view: View){
+        return clickListener(person.id, view)
     }
 }

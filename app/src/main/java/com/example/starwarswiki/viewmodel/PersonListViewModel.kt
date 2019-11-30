@@ -1,6 +1,8 @@
 package com.example.starwarswiki.viewmodel
 
 import android.app.Application
+import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.*
 import com.example.starwarswiki.database.PersonDao
 import com.example.starwarswiki.domain.PersonModel
@@ -121,8 +123,14 @@ class PersonListViewModel(val database: PersonDao,
     val favoriteId:LiveData<Int>
         get() = _favoriteId
 
-    fun onFavoriteClicked(id: Int){
+    private val _favoriteView = MutableLiveData<View>()
+
+    val favoriteView:LiveData<View>
+        get() = _favoriteView
+
+    fun onFavoriteClicked(id: Int, view: View){
         _favoriteId.value = id
+        _favoriteView.value = view
     }
     fun onInputText(string: String){
         viewModelScope.launch {

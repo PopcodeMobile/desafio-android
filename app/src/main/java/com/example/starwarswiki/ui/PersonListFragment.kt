@@ -1,5 +1,6 @@
 package com.example.starwarswiki.ui
 
+import android.graphics.Color
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
@@ -14,6 +15,8 @@ import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.databinding.PersonListFragmentBinding
 import com.example.starwarswiki.repository.PersonListRepository
 import com.example.starwarswiki.viewmodel.*
+import kotlinx.android.synthetic.main.item_list_fragment.view.*
+import kotlinx.android.synthetic.main.person_list_fragment.*
 import timber.log.Timber
 
 class PersonListFragment : Fragment() {
@@ -39,8 +42,8 @@ class PersonListFragment : Fragment() {
             PersonClickListener { id ->
                 viewModel.onPersonClicked(id)
             },
-            FavoriteClickListener { id ->
-                viewModel.onFavoriteClicked(id)
+            FavoriteClickListener { id, view ->
+                viewModel.onFavoriteClicked(id, view)
             }
             )
         viewModel.detailPerson.observe(this, Observer {
@@ -51,8 +54,11 @@ class PersonListFragment : Fragment() {
                 viewModel.onPersonDetailed()
             }
         })
-        viewModel.favoriteId.observe(this, Observer {
+        viewModel.favoriteView.observe(this, Observer {
             Toast.makeText(context, "Item ${viewModel.favoriteId.value} favoritado !", Toast.LENGTH_SHORT).show()
+            it?.let{
+                it.favorite.setImageResource(R.drawable.ic_star)
+            }
         })
 
         binding.personList.adapter = adapter
@@ -103,14 +109,12 @@ class PersonListFragment : Fragment() {
                 Toast.makeText(context, "$query", Toast.LENGTH_SHORT).show()
                 return true
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let{
                     viewModel.onInputText(it)
                 }
                 return false
             }
-
         })
     }
 }
