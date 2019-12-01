@@ -118,9 +118,9 @@ class PersonListViewModel(val database: PersonDao,
         _detailPerson.value = null
     }
 
-    private val _favoriteId = MutableLiveData<Int>()
+    private val _favoriteId = MutableLiveData<PersonModel>()
 
-    val favoriteId:LiveData<Int>
+    val favoriteId:LiveData<PersonModel>
         get() = _favoriteId
 
     private val _favoriteView = MutableLiveData<View>()
@@ -128,9 +128,16 @@ class PersonListViewModel(val database: PersonDao,
     val favoriteView:LiveData<View>
         get() = _favoriteView
 
-    fun onFavoriteClicked(id: Int, view: View){
-        _favoriteId.value = id
+    fun onFavoriteClicked(person: PersonModel, view: View){
         _favoriteView.value = view
+        viewModelScope.launch {
+            if(person.isFavorite != null)
+                listRepository.favoritePerson(person.id, true)
+
+            else
+                listRepository.favoritePerson(person.id, false)
+//            _favoriteId.value = listRepository.getPerson(person.id)
+        }
     }
     fun onInputText(string: String){
         viewModelScope.launch {

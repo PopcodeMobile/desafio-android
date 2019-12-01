@@ -7,6 +7,8 @@ import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.util.getObjectId
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import okhttp3.Response
+import okhttp3.ResponseBody
 import timber.log.Timber
 
 @JsonClass(generateAdapter = true)
@@ -84,3 +86,12 @@ fun NetworkObject.asDomainModel(): List<PersonModel>{
         personModel
     }
 }
+
+@JsonClass(generateAdapter = true)
+data class FavoriteNetworkObject(
+    val status: String?,
+    val message: String?,
+    val error: String?,
+    @Json(name = "error_message")
+    val errorMessage: String?
+    )

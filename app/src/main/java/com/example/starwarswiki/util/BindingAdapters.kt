@@ -2,6 +2,7 @@ package com.example.starwarswiki.util
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
@@ -22,6 +23,14 @@ fun TextView.setShortDetails(item: PersonModel?){
         text = formatShortDetails(it, resources)
     }
 }
+
+//@BindingAdapter("isFavorite")
+//fun ImageView.setFavoriteStatus(item: PersonModel?){
+//    item?.let{
+//        if(item.isFavorite)
+//            setImageResource(R.drawable.ic_star)
+//    }
+//}
 
 @BindingAdapter("longDetails")
 fun TextView.setLongDetails(item: PersonModel?){

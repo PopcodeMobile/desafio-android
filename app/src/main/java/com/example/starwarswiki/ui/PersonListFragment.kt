@@ -42,8 +42,8 @@ class PersonListFragment : Fragment() {
             PersonClickListener { id ->
                 viewModel.onPersonClicked(id)
             },
-            FavoriteClickListener { id, view ->
-                viewModel.onFavoriteClicked(id, view)
+            FavoriteClickListener { person, view ->
+                viewModel.onFavoriteClicked(person, view)
             }
             )
         viewModel.detailPerson.observe(this, Observer {
@@ -55,10 +55,10 @@ class PersonListFragment : Fragment() {
             }
         })
         viewModel.favoriteView.observe(this, Observer {
-            Toast.makeText(context, "Item ${viewModel.favoriteId.value} favoritado !", Toast.LENGTH_SHORT).show()
-            it?.let{
-                it.favorite.setImageResource(R.drawable.ic_star)
-            }
+//            Toast.makeText(context, "Item ${viewModel.favoriteId.value?.name} favoritado !", Toast.LENGTH_SHORT).show()
+//            it?.let{
+//                it.favorite.setImageResource(R.drawable.ic_star)
+//            }
         })
 
         binding.personList.adapter = adapter

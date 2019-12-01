@@ -35,8 +35,8 @@ class PersonClickListener(val clickListener: (id: Int)->Unit){
     fun onClick(person: PersonModel) = clickListener(person.id)
 }
 
-class FavoriteClickListener(val clickListener: (id: Int, view: View) -> Unit){
+class FavoriteClickListener(val clickListener: (id: PersonModel, view: View) -> Unit){
     fun onClick(person: PersonModel, view: View){
-        return clickListener(person.id, view)
+        return clickListener(person, view)
     }
 }

@@ -16,6 +16,8 @@ interface PersonDao {
     fun getPerson(key: Int): PersonModel?
     @Query("SELECT * FROM table_person")
     fun getAllPeople(): LiveData<List<DatabasePerson>>
+    @Query("UPDATE table_person SET isFavorite = :status WHERE id = :key")
+    fun updateFavorite(key: Int, status: Boolean)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(persons: List<DatabasePerson>)
     @Query("DELETE FROM table_person")
