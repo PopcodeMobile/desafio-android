@@ -6,12 +6,14 @@ import android.widget.ImageView
 import androidx.lifecycle.*
 import com.example.starwarswiki.database.PersonDao
 import com.example.starwarswiki.domain.PersonModel
+import com.example.starwarswiki.network.FavoriteNetworkObject
 import com.example.starwarswiki.network.NetworkObject
 import com.example.starwarswiki.network.NetworkPerson
 import com.example.starwarswiki.network.PersonNetworkService
 import com.example.starwarswiki.repository.PersonListRepository
 import com.example.starwarswiki.ui.PersonListFragment
 import kotlinx.coroutines.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -131,12 +133,38 @@ class PersonListViewModel(val database: PersonDao,
     fun onFavoriteClicked(person: PersonModel, view: View){
         _favoriteView.value = view
         viewModelScope.launch {
-            if(person.isFavorite != null)
-                listRepository.favoritePerson(person.id, true)
+            if(!person.isFavorite){
+                val responseObject = listRepository.favoritePerson(person.id)
+                if(responseObject.isSuccessful){
+                    Timber.d("Response code: \n${responseObject.code()}\nMessage: ${responseObject.body()?.message}")
+                    when (listRepository.updateFavoriteDatabase(person.id, true)){
+                        true -> {
+                            val personUpdated = listRepository.getPerson(person.id)
+                            Timber.d("[${personUpdated?.isFavorite}] Person ${person.name} is favorited ! :D")
+                        }
+                        false ->{
+                            Timber.d("Fail to update person ${person.name}")
+                        }
+                    }
+                }
+                else{
+                    val jsonObject = JSONObject(responseObject.errorBody()?.string())
+                    val errorObject = FavoriteNetworkObject(null, null, error = jsonObject.getString("error"), errorMessage = jsonObject.getString("error_message"))
+                    Timber.d("Response error: ${errorObject.error}\n${errorObject.errorMessage}!")
+                }
+            }
 
-            else
-                listRepository.favoritePerson(person.id, false)
-//            _favoriteId.value = listRepository.getPerson(person.id)
+            else{
+                when (listRepository.updateFavoriteDatabase(person.id, false)){
+                    true -> {
+                        val personUpdated = listRepository.getPerson(person.id)
+                        Timber.d("[${personUpdated?.isFavorite}] Person is not along favorited ! D:")
+                    }
+                    false -> {
+                        Timber.d("Fail to update person ${person.name}")
+                    }
+                }
+            }
         }
     }
     fun onInputText(string: String){

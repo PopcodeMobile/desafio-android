@@ -12,6 +12,7 @@ import com.example.starwarswiki.network.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import retrofit2.Response
 import timber.log.Timber
 import java.lang.Exception
 
@@ -50,24 +51,21 @@ class PersonListRepository(private val database: PersonDao){
         }
     }
 
-    suspend fun favoritePerson(id: Int, status: Boolean){
-        withContext(Dispatchers.IO){
-            var responseObject = FavoriteRetrofit.retrofit.postFavorite(400, id).await()
-
-            if(responseObject.isSuccessful)
-                Timber.d("Response code: \n${responseObject.code()}\nMessage: ${responseObject.body()?.message}")
-            else{
-                val jsonObject = JSONObject(responseObject.errorBody()?.string())
-                val errorObject = FavoriteNetworkObject(null, null, error = jsonObject.getString("error"), errorMessage = jsonObject.getString("error_message"))
-                Timber.d("Response error: ${errorObject.error}\n${errorObject.errorMessage}!")
+    suspend fun favoritePerson(id: Int): Response<FavoriteNetworkObject> {
+        return withContext(Dispatchers.IO){
+            val favoriteResponse = FavoriteRetrofit.retrofit.postFavorite(201 ,id = id).await()
+            favoriteResponse
+        }
+    }
+    suspend fun updateFavoriteDatabase(id: Int, status: Boolean): Boolean{
+        return withContext(Dispatchers.IO){
+            try {
+                database.updateFavorite(id, status)
+                true
             }
-//            try {
-//                database.updateFavorite(id, status)
-//                true
-//            }
-//            catch (e: Exception){
-//                false
-//            }
+            catch (e: Exception){
+                false
+            }
         }
     }
 }

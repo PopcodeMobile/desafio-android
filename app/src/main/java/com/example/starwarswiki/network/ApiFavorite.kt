@@ -13,8 +13,8 @@ import retrofit2.http.Path
 
 interface FavoriteService{
     @POST("favorite/{id}")
-    suspend fun postFavorite(
-        @Header("Prefer") code: Int,
+    fun postFavorite(
+        @Header("Prefer") code: Int = 201,
         @Path("id") id: Int
     ): Deferred<Response<FavoriteNetworkObject>>
 }
