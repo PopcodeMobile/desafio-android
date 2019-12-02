@@ -1,17 +1,13 @@
 package com.example.starwarswiki.repository
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.starwarswiki.database.PersonDao
-import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.database.asDomainModel
 import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.network.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import retrofit2.Response
 import timber.log.Timber
 import java.lang.Exception

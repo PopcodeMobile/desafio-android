@@ -32,11 +32,6 @@ class PersonListViewModel(val database: PersonDao,
 
     val personList = listRepository.personList
 
-//    private var _searchText = MutableLiveData<String?>("")
-//
-//    val searchText: LiveData<String?>
-//        get() = _searchText
-
     private val _personSearch = MutableLiveData<List<PersonModel>>()
 
     val personSearch: LiveData<List<PersonModel>>
@@ -113,6 +108,7 @@ class PersonListViewModel(val database: PersonDao,
         get() = _detailPerson
 
     fun onPersonClicked(id: Int){
+        Timber.d("Person clicked !")
         _detailPerson.value = id
     }
 
@@ -120,26 +116,41 @@ class PersonListViewModel(val database: PersonDao,
         _detailPerson.value = null
     }
 
-    private val _favoriteId = MutableLiveData<PersonModel>()
-
-    val favoriteId:LiveData<PersonModel>
-        get() = _favoriteId
-
-    private val _favoriteView = MutableLiveData<View>()
-
-    val favoriteView:LiveData<View>
-        get() = _favoriteView
-
-    fun onFavoriteClicked(person: PersonModel, view: View){
-        _favoriteView.value = view
+    fun onInputText(string: String){
         viewModelScope.launch {
-            if(!person.isFavorite){
+            _personSearch.value = listRepository.peopleSearched(string)
+        }
+    }
+
+    private val _favoritePerson = MutableLiveData<PersonModel>()
+
+    val favoritePerson:LiveData<PersonModel>
+        get() = _favoritePerson
+
+    private val _favoritePosition = MutableLiveData<Int>()
+
+    val favoritePosition :LiveData<Int>
+        get() = _favoritePosition
+
+    private val _favoriteResponse = MutableLiveData<Response<FavoriteNetworkObject>>()
+
+    val favoriteResponse: LiveData<Response<FavoriteNetworkObject>>
+        get() = _favoriteResponse
+
+    fun onFavoriteClicked(person: PersonModel, position: Int){
+        Timber.d("Favorite clicked !")
+        viewModelScope.launch {
+            if(!person.isFavorite || person.isFavorite == null){
                 val responseObject = listRepository.favoritePerson(person.id)
+                _favoriteResponse.value = responseObject
+                Timber.d("Response code: ${responseObject.code()}")
                 if(responseObject.isSuccessful){
                     Timber.d("Response code: \n${responseObject.code()}\nMessage: ${responseObject.body()?.message}")
                     when (listRepository.updateFavoriteDatabase(person.id, true)){
                         true -> {
+                            _favoritePosition.value = position
                             val personUpdated = listRepository.getPerson(person.id)
+                            _favoritePerson.value = personUpdated
                             Timber.d("[${personUpdated?.isFavorite}] Person ${person.name} is favorited ! :D")
                         }
                         false ->{
@@ -147,17 +158,13 @@ class PersonListViewModel(val database: PersonDao,
                         }
                     }
                 }
-                else{
-                    val jsonObject = JSONObject(responseObject.errorBody()?.string())
-                    val errorObject = FavoriteNetworkObject(null, null, error = jsonObject.getString("error"), errorMessage = jsonObject.getString("error_message"))
-                    Timber.d("Response error: ${errorObject.error}\n${errorObject.errorMessage}!")
-                }
             }
-
             else{
                 when (listRepository.updateFavoriteDatabase(person.id, false)){
                     true -> {
+                        _favoritePosition.value = position
                         val personUpdated = listRepository.getPerson(person.id)
+                        _favoritePerson.value = personUpdated
                         Timber.d("[${personUpdated?.isFavorite}] Person is not along favorited ! D:")
                     }
                     false -> {
@@ -167,9 +174,13 @@ class PersonListViewModel(val database: PersonDao,
             }
         }
     }
-    fun onInputText(string: String){
-        viewModelScope.launch {
-            _personSearch.value = listRepository.peopleSearched(string)
-        }
+
+    fun afterFavoriteResponse(){
+        _favoriteResponse.value = null
+    }
+
+    fun afterFavorite(){
+        _favoritePerson.value = null
+        _favoritePosition.value = null
     }
 }

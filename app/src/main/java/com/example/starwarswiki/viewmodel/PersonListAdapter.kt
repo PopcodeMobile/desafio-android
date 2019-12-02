@@ -2,14 +2,16 @@ package com.example.starwarswiki.viewmodel
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.util.RecyclerViewHolder
-import com.example.starwarswiki.util.getObjectId
+import timber.log.Timber
 
-class PersonListAdapter(val clickListener: PersonClickListener, val favoriteClickListener: FavoriteClickListener): ListAdapter<PersonModel, RecyclerViewHolder> (PersonListDiffCallback()){
+class PersonListAdapter(
+    val clickListener: PersonClickListener,
+    val favoriteClickListener: FavoriteClickListener
+): ListAdapter<PersonModel, RecyclerViewHolder> (PersonListDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         return RecyclerViewHolder.from(parent)
@@ -32,11 +34,13 @@ class PersonListDiffCallback: DiffUtil.ItemCallback<PersonModel>(){
 }
 
 class PersonClickListener(val clickListener: (id: Int)->Unit){
-    fun onClick(person: PersonModel) = clickListener(person.id)
+    fun onClick(person: PersonModel){
+        return clickListener(person.id)
+    }
 }
 
-class FavoriteClickListener(val clickListener: (id: PersonModel, view: View) -> Unit){
-    fun onClick(person: PersonModel, view: View){
-        return clickListener(person, view)
+class FavoriteClickListener(val clickListener: (id: PersonModel, position: Int) -> Unit){
+    fun onClick(person: PersonModel, position: Int){
+        return clickListener(person, position)
     }
 }

@@ -59,7 +59,10 @@
             android:src="@drawable/ic_star_border"
             android:contentDescription="Favorite Item"
             android:clickable="true"
-            android:onClick="@{(view)->favoriteClickListener.onClick(person, view)}"/>
+            android:focusable="true"
+            android:onClick="@{()->favoriteClickListener.onClick(person, position)}"
+            app:isFavorite="@{person}"
+            />
 
         <TextView
             android:id="@+id/person_characteristics"
