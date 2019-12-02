@@ -1,13 +1,16 @@
 package com.example.starwarswiki.ui
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.starwarswiki.R
 import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.databinding.PersonDetailFragmentBinding
 import com.example.starwarswiki.viewmodel.PersonDetailViewModel
@@ -26,12 +29,30 @@ class PersonDetailFragment : Fragment() {
         val viewModelFactory = PersonDetailViewModelFactory(args.id, dataSource)
         val personDetailViewModel =  ViewModelProviders
             .of(this, viewModelFactory).get(PersonDetailViewModel::class.java)
+        val switch = binding.favoriteSwitch!!
+
+        personDetailViewModel.person.observe(this, Observer {
+            it?.let{
+                switch.isChecked = it.isFavorite
+            }
+        })
+
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                switch.setThumbResource(R.drawable.ic_star)
+                switch.setTrackResource(R.color.colorSecondary)
+                personDetailViewModel.updateFavoriteStatus(true)
+            }else{
+                switch.setThumbResource(R.drawable.ic_star_border)
+                switch.setTrackResource(R.color.colorPrimary)
+                personDetailViewModel.updateFavoriteStatus(false)
+            }
+        }
+
         binding.personDetailViewModel = personDetailViewModel
         personDetailViewModel.planetName.observe(this, Observer {
             it?.let{
                 val details = binding.detailsText.text
-//                Timber.d("Details: $details")
-//                Timber.d("Planeta natal: $it")
                 binding.detailsText.text = "$details\nPlaneta natal: $it"
             }
         })
@@ -47,6 +68,14 @@ class PersonDetailFragment : Fragment() {
                 binding.detailsText.text = details
             }
         })
+
+        personDetailViewModel.favorite.observe(this, Observer {
+            it?.let{
+                Toast.makeText(context, "Item favorite status:\n${it.isFavorite}", Toast.LENGTH_SHORT).show()
+                personDetailViewModel.onDoneShowToast()
+            }
+        })
+
         binding.lifecycleOwner = this
         return binding.root
     }

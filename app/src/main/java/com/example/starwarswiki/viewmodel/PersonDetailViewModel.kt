@@ -8,6 +8,7 @@ import com.example.starwarswiki.database.PersonDao
 import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.network.PersonNetworkService
 import com.example.starwarswiki.network.PlanetNetworkObject
+import com.example.starwarswiki.repository.PersonListRepository
 import com.example.starwarswiki.util.getObjectId
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -17,6 +18,7 @@ class PersonDetailViewModel(
     val id: Int)
     : ViewModel() {
     val database = dataSource
+    val repositoryService = PersonListRepository(dataSource)
     val viewModelJob = Job()
     val uiCoroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     private var _person = MutableLiveData<PersonModel?>()
@@ -92,6 +94,22 @@ class PersonDetailViewModel(
             }
            speciesList
        }
+    }
+
+    private val _favorite = MutableLiveData<PersonModel>()
+
+    val favorite: LiveData<PersonModel>
+        get() = _favorite
+
+    fun updateFavoriteStatus(status: Boolean){
+        viewModelScope.launch {
+            repositoryService.updateFavoriteDatabase(id, status)
+            _favorite.value = repositoryService.getPerson(id)
+        }
+    }
+
+    fun onDoneShowToast(){
+        _favorite.value = null
     }
 
     override fun onCleared() {
