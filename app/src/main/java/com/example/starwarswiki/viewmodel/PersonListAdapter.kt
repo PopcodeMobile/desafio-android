@@ -9,8 +9,8 @@ import com.example.starwarswiki.util.RecyclerViewHolder
 import timber.log.Timber
 
 class PersonListAdapter(
-    val clickListener: PersonClickListener,
-    val favoriteClickListener: FavoriteClickListener
+    private val clickListener: PersonClickListener,
+    private val favoriteClickListener: FavoriteClickListener
 ): ListAdapter<PersonModel, RecyclerViewHolder> (PersonListDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {

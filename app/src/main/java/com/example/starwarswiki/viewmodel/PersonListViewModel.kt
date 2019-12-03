@@ -1,25 +1,15 @@
 package com.example.starwarswiki.viewmodel
 
 import android.app.Application
-import android.view.View
-import android.widget.ImageView
 import androidx.lifecycle.*
 import com.example.starwarswiki.database.PersonDao
 import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.network.FavoriteNetworkObject
-import com.example.starwarswiki.network.NetworkObject
-import com.example.starwarswiki.network.NetworkPerson
-import com.example.starwarswiki.network.PersonNetworkService
 import com.example.starwarswiki.repository.PersonListRepository
-import com.example.starwarswiki.ui.PersonListFragment
 import kotlinx.coroutines.*
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
-import java.lang.Exception
 
 class PersonListViewModel(val database: PersonDao,
                           application: Application) : ViewModel() {
@@ -53,10 +43,6 @@ class PersonListViewModel(val database: PersonDao,
     val showSnackbarEvent: LiveData<Boolean>
         get() = _showSnackbarEvent
 
-    private val _response = MutableLiveData<String>()
-    val response: LiveData<String>
-        get() = _response
-
     init {
         refreshFromRepository()
     }
@@ -67,7 +53,7 @@ class PersonListViewModel(val database: PersonDao,
                 listRepository.refreshList()
                 _eventNetworkError.value=false
                 _isNetworkErrorShown.value =false
-                Timber.d("Refresh sucessfully !")
+                //Timber.d("Refresh sucessfully !")
             }
             catch (networkError: IOException){
                 if(personList.value!!.isEmpty())
@@ -85,19 +71,6 @@ class PersonListViewModel(val database: PersonDao,
         viewModelJob.cancel()
     }
 
-    fun onClear(){
-        uiCoroutineScope.launch {
-            clear()
-            _showSnackbarEvent.value = true
-        }
-    }
-
-    suspend fun clear(){
-        withContext(Dispatchers.IO){
-            database.clear()
-        }
-    }
-
     fun doneShowingSnackbar(){
         _showSnackbarEvent.value = false
     }
@@ -108,7 +81,7 @@ class PersonListViewModel(val database: PersonDao,
         get() = _detailPerson
 
     fun onPersonClicked(id: Int){
-        Timber.d("Person clicked !")
+        //Timber.d("Person clicked !")
         _detailPerson.value = id
     }
 
@@ -121,12 +94,6 @@ class PersonListViewModel(val database: PersonDao,
             _personSearch.value = listRepository.peopleSearched(string)
         }
     }
-
-    private val _favoritePerson = MutableLiveData<PersonModel>()
-
-    val favoritePerson:LiveData<PersonModel>
-        get() = _favoritePerson
-
     private val _favoritePosition = MutableLiveData<Int>()
 
     val favoritePosition :LiveData<Int>
@@ -137,35 +104,38 @@ class PersonListViewModel(val database: PersonDao,
     val favoriteResponse: LiveData<Response<FavoriteNetworkObject>>
         get() = _favoriteResponse
 
-    private val _changePrefer = MutableLiveData<Int>(201)
+    private val _changePrefer = MutableLiveData(201)
 
     fun onFavoriteClicked(person: PersonModel, position: Int){
-        Timber.d("Favorite clicked !")
+        //Timber.d("Favorite clicked !")
         viewModelScope.launch {
             if(!person.isFavorite || person.isFavorite == null){
-                val responseObject = listRepository.favoritePerson(person.id, _changePrefer.value!!)
-                if(_changePrefer.value == 201)
-                    _changePrefer.value = 400
-                else
-                    _changePrefer.value = 201
-                _favoriteResponse.value = responseObject
-                Timber.d("Response code: ${responseObject.code()}")
-                if(responseObject.isSuccessful){
-                    Timber.d("Response code: \n${responseObject.code()}\nMessage: ${responseObject.body()?.message}")
-                    when (listRepository.updateFavoriteDatabase(person.id, true)){
-                        true -> {
-                            _favoritePosition.value = position
-                            val personUpdated = listRepository.getPerson(person.id)
-                            _favoritePerson.value = personUpdated
-                            Timber.d("[${personUpdated?.isFavorite}] Person ${person.name} is favorited ! :D")
-                        }
-                        false ->{
-                            Timber.d("Fail to update person ${person.name}")
+                try {
+                    val responseObject = listRepository.favoritePerson(person.id, _changePrefer.value!!)
+                    if(_changePrefer.value == 201)
+                        _changePrefer.value = 400
+                    else
+                        _changePrefer.value = 201
+                    _favoriteResponse.value = responseObject
+                    //Timber.d("Response code: ${responseObject.code()}")
+                    if(responseObject.isSuccessful){
+                        //Timber.d("Response code: \n${responseObject.code()}\nMessage: ${responseObject.body()?.message}")
+                        when (listRepository.updateFavoriteDatabase(person.id, true)){
+                            true -> {
+                                _favoritePosition.value = position
+                                val personUpdated = listRepository.getPerson(person.id)
+                                //Timber.d("[${personUpdated?.isFavorite}] Person ${person.name} is favorited ! :D")
+                            }
+                            false ->{
+                                //Timber.d("Fail to update person ${person.name}")
+                            }
                         }
                     }
+                    _eventNetworkError.value=false
+                    _isNetworkErrorShown.value =false
                 }
-                else{
-
+                catch (networkError: IOException){
+                    _eventNetworkError.value=true
                 }
             }
             else{
@@ -173,11 +143,10 @@ class PersonListViewModel(val database: PersonDao,
                     true -> {
                         _favoritePosition.value = position
                         val personUpdated = listRepository.getPerson(person.id)
-                        _favoritePerson.value = personUpdated
-                        Timber.d("[${personUpdated?.isFavorite}] Person is not along favorited ! D:")
+                        //Timber.d("[${personUpdated?.isFavorite}] Person is not along favorited ! D:")
                     }
                     false -> {
-                        Timber.d("Fail to update person ${person.name}")
+                        //Timber.d("Fail to update person ${person.name}")
                     }
                 }
             }
@@ -189,7 +158,6 @@ class PersonListViewModel(val database: PersonDao,
     }
 
     fun afterFavorite(){
-        _favoritePerson.value = null
         _favoritePosition.value = null
     }
 }

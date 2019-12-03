@@ -60,7 +60,7 @@ fun NetworkObject.asDatabaseModel():List<DatabasePerson>{
             birth_year = it.birthYear,
             species = it.species
         )
-//        Timber.d("Person ${dbPerson.id} transformed to dbmodel")
+//        //Timber.d("Person ${dbPerson.id} transformed to dbmodel")
         dbPerson
     }
 }

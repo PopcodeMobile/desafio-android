@@ -1,13 +1,11 @@
 package com.example.starwarswiki.ui
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.starwarswiki.R
@@ -15,7 +13,7 @@ import com.example.starwarswiki.database.PersonRoomDatabase
 import com.example.starwarswiki.databinding.PersonDetailFragmentBinding
 import com.example.starwarswiki.viewmodel.PersonDetailViewModel
 import com.example.starwarswiki.viewmodel.PersonDetailViewModelFactory
-import timber.log.Timber
+
 class PersonDetailFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onCreateView(

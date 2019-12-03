@@ -6,7 +6,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.example.starwarswiki.R
 import com.example.starwarswiki.domain.PersonModel
-import com.example.starwarswiki.repository.PersonListRepository
 
 @BindingAdapter("alternateColor")
 fun ConstraintLayout.setAlternateColor(i: Int){

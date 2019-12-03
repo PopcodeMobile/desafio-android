@@ -7,20 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.starwarswiki.database.PersonDao
 import com.example.starwarswiki.domain.PersonModel
 import com.example.starwarswiki.network.PersonNetworkService
-import com.example.starwarswiki.network.PlanetNetworkObject
 import com.example.starwarswiki.repository.PersonListRepository
 import com.example.starwarswiki.util.getObjectId
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 class PersonDetailViewModel(
-    val dataSource: PersonDao,
+    private val dataSource: PersonDao,
     val id: Int)
     : ViewModel() {
-    val database = dataSource
-    val repositoryService = PersonListRepository(dataSource)
-    val viewModelJob = Job()
-    val uiCoroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+    private val repositoryService = PersonListRepository(dataSource)
+    private val viewModelJob = Job()
+    private val uiCoroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     private var _person = MutableLiveData<PersonModel?>()
 
     val person: LiveData<PersonModel?>
@@ -32,9 +29,9 @@ class PersonDetailViewModel(
         }
     }
 
-    suspend fun getPerson():PersonModel?{
+    private suspend fun getPerson():PersonModel?{
         return withContext(Dispatchers.IO) {
-            var personRequest = database.getPerson(id)
+            val personRequest = dataSource.getPerson(id)
 //            Timber.d("Person request: ${personRequest?.name}")
             personRequest?.let{
                 requestPlanet(it.homeworld)
@@ -44,7 +41,7 @@ class PersonDetailViewModel(
         }
     }
 
-    fun requestPlanet(planetUrl: String?){
+    private fun requestPlanet(planetUrl: String?){
         uiCoroutineScope.launch {
             planetUrl?.let{
                 val iPlanet = getObjectId(it, "https://swapi.co/api/planets/")//it.substringAfter("https://swapi.co/api/planets/").removeSuffix("/").toInt()
@@ -53,7 +50,7 @@ class PersonDetailViewModel(
         }
     }
 
-    fun requestSpecies(species: List<String>?){
+    private fun requestSpecies(species: List<String>?){
         uiCoroutineScope.launch {
             species?.let{
                 val indexSpecies = mutableListOf<Int>()
@@ -71,7 +68,7 @@ class PersonDetailViewModel(
     val planetName: LiveData<String>
         get() = _planetName
 
-    suspend fun getPlanet(index: Int): String?{
+    private suspend fun getPlanet(index: Int): String?{
         return withContext(Dispatchers.IO){
             val planetObject = PersonNetworkService.bruteRequest.getPlanet(index).await()
             planetObject.name
@@ -83,12 +80,12 @@ class PersonDetailViewModel(
     val speciesName: LiveData<MutableList<String>>
         get() = _speciesName
 
-    suspend fun getSpecies(index: List<Int>?): MutableList<String>?{
+    private suspend fun getSpecies(index: List<Int>?): MutableList<String>?{
        return withContext(Dispatchers.IO){
-           var speciesList = mutableListOf<String>()
+           val speciesList = mutableListOf<String>()
            index?.let{
-                it.forEach {
-                    val specieObject = PersonNetworkService.bruteRequest.getSpecie(it).await()
+                it.forEach {specieId ->
+                    val specieObject = PersonNetworkService.bruteRequest.getSpecie(specieId).await()
                     speciesList.add(specieObject.name)
                 }
             }

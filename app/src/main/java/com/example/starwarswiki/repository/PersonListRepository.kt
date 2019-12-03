@@ -9,14 +9,13 @@ import com.example.starwarswiki.network.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
-import timber.log.Timber
 import java.lang.Exception
 
 class PersonListRepository(private val database: PersonDao){
 
     suspend fun refreshList(){
         withContext(Dispatchers.IO){
-            Timber.d("Refreshing list...")
+            //Timber.d("Refreshing list...")
             var index = 1
             do {
                 val objectRequest = PersonNetworkService.bruteRequest.getObject(index).await()
@@ -34,7 +33,7 @@ class PersonListRepository(private val database: PersonDao){
     suspend fun peopleSearched(searchText: String): List<PersonModel>?{
         return withContext(Dispatchers.IO){
             val peopleList= database.getSearch(searchText)?.asDomainModel()
-            Timber.d("Size of filtered list: ${peopleList?.size}")
+            //Timber.d("Size of filtered list: ${peopleList?.size}")
             peopleList
         }
     }
@@ -42,7 +41,7 @@ class PersonListRepository(private val database: PersonDao){
     suspend fun getPerson(id: Int): PersonModel?{
         return withContext(Dispatchers.IO){
             val person= database.getPerson(id)
-            Timber.d("Found person: ${person?.name}")
+            //Timber.d("Found person: ${person?.name}")
             person
         }
     }
