@@ -69,13 +69,6 @@ class PersonDetailFragment : Fragment() {
             }
         })
 
-        personDetailViewModel.favorite.observe(this, Observer {
-            it?.let{
-                Toast.makeText(context, "Item favorite status:\n${it.isFavorite}", Toast.LENGTH_SHORT).show()
-                personDetailViewModel.onDoneShowToast()
-            }
-        })
-
         binding.lifecycleOwner = this
         return binding.root
     }

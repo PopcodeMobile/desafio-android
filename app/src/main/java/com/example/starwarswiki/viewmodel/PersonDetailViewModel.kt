@@ -96,20 +96,10 @@ class PersonDetailViewModel(
        }
     }
 
-    private val _favorite = MutableLiveData<PersonModel>()
-
-    val favorite: LiveData<PersonModel>
-        get() = _favorite
-
     fun updateFavoriteStatus(status: Boolean){
         viewModelScope.launch {
             repositoryService.updateFavoriteDatabase(id, status)
-            _favorite.value = repositoryService.getPerson(id)
         }
-    }
-
-    fun onDoneShowToast(){
-        _favorite.value = null
     }
 
     override fun onCleared() {

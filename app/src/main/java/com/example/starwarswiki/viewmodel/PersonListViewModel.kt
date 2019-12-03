@@ -137,11 +137,17 @@ class PersonListViewModel(val database: PersonDao,
     val favoriteResponse: LiveData<Response<FavoriteNetworkObject>>
         get() = _favoriteResponse
 
+    private val _changePrefer = MutableLiveData<Int>(201)
+
     fun onFavoriteClicked(person: PersonModel, position: Int){
         Timber.d("Favorite clicked !")
         viewModelScope.launch {
             if(!person.isFavorite || person.isFavorite == null){
-                val responseObject = listRepository.favoritePerson(person.id)
+                val responseObject = listRepository.favoritePerson(person.id, _changePrefer.value!!)
+                if(_changePrefer.value == 201)
+                    _changePrefer.value = 400
+                else
+                    _changePrefer.value = 201
                 _favoriteResponse.value = responseObject
                 Timber.d("Response code: ${responseObject.code()}")
                 if(responseObject.isSuccessful){
@@ -157,6 +163,9 @@ class PersonListViewModel(val database: PersonDao,
                             Timber.d("Fail to update person ${person.name}")
                         }
                     }
+                }
+                else{
+
                 }
             }
             else{

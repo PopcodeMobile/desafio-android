@@ -47,9 +47,9 @@ class PersonListRepository(private val database: PersonDao){
         }
     }
 
-    suspend fun favoritePerson(id: Int): Response<FavoriteNetworkObject> {
+    suspend fun favoritePerson(id: Int, code:Int): Response<FavoriteNetworkObject> {
         return withContext(Dispatchers.IO){
-            val favoriteResponse = FavoriteRetrofit.retrofit.postFavorite(201 ,id = id).await()
+            val favoriteResponse = FavoriteRetrofit.retrofit.postFavorite(code ,id = id).await()
             favoriteResponse
         }
     }
