@@ -1,6 +1,7 @@
 package com.example.starwarswiki.ui
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -28,7 +29,10 @@ class PersonDetailFragment : Fragment() {
         val personDetailViewModel =  ViewModelProviders
             .of(this, viewModelFactory).get(PersonDetailViewModel::class.java)
         val switch = binding.favoriteSwitch!!
-
+        val fontName = Typeface.createFromAsset(context?.assets, "fonts/Starjout.ttf")
+        val fontDetail = Typeface.createFromAsset(context?.assets, "fonts/Starjedi.ttf")
+        binding.nameText.typeface = fontName
+        binding.detailsText.typeface = fontDetail
         personDetailViewModel.person.observe(this, Observer {
             it?.let{
                 switch.isChecked = it.isFavorite
@@ -42,7 +46,7 @@ class PersonDetailFragment : Fragment() {
                 personDetailViewModel.updateFavoriteStatus(true)
             }else{
                 switch.setThumbResource(R.drawable.ic_star_border)
-                switch.setTrackResource(R.color.colorPrimary)
+                switch.setTrackResource(R.color.colorAccent)
                 personDetailViewModel.updateFavoriteStatus(false)
             }
         }
