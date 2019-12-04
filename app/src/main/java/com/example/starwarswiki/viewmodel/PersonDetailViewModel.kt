@@ -10,6 +10,7 @@ import com.example.starwarswiki.network.PersonNetworkService
 import com.example.starwarswiki.repository.PersonListRepository
 import com.example.starwarswiki.util.getObjectId
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 class PersonDetailViewModel(
     private val dataSource: PersonDao,
@@ -71,25 +72,27 @@ class PersonDetailViewModel(
     private suspend fun getPlanet(index: Int): String?{
         return withContext(Dispatchers.IO){
             val planetObject = PersonNetworkService.bruteRequest.getPlanet(index).await()
-            planetObject.name
+            "\nPlaneta natal: ${planetObject.name}"
         }
     }
 
-    private val _speciesName = MutableLiveData<MutableList<String>>()
+    private val _speciesName = MutableLiveData<String>()
 
-    val speciesName: LiveData<MutableList<String>>
+    val speciesName: LiveData<String>
         get() = _speciesName
 
-    private suspend fun getSpecies(index: List<Int>?): MutableList<String>?{
+    private suspend fun getSpecies(index: List<Int>?): String?{
        return withContext(Dispatchers.IO){
-           val speciesList = mutableListOf<String>()
+           var string = "\nEspécie(s): "
            index?.let{
-                it.forEach {specieId ->
+                it.forEachIndexed { index, specieId ->
                     val specieObject = PersonNetworkService.bruteRequest.getSpecie(specieId).await()
-                    speciesList.add(specieObject.name)
+                    if(index>0)
+                        string += ", "
+                    string += specieObject.name
                 }
             }
-           speciesList
+           string
        }
     }
 
