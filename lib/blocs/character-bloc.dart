@@ -24,7 +24,6 @@ class CharacterBloc extends ChangeNotifier {
       _pageIndex++;
 
       notifyListeners();
-      print("notify");
     }
   }
 }
