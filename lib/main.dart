@@ -1,5 +1,6 @@
 import 'package:entrevista_android/blocs/character-bloc.dart';
 import 'package:entrevista_android/ui/screens/character-details.dart';
+import 'package:entrevista_android/ui/screens/character-search.dart';
 import 'package:entrevista_android/ui/shared/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => CharacterFeed(),
         '/details': (context) => CharacterDetails(),
+        '/search': (context) => CharacterSearch(),
       },
     );
   }

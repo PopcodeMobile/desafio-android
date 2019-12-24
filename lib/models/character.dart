@@ -42,4 +42,8 @@ class Character {
   String toString() {
     return '$name';
   }
+
+bool operator ==(o) => o is Character && name == o.name;
+
+
 }

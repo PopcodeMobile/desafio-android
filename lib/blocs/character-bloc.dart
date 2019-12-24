@@ -3,7 +3,12 @@ import 'package:entrevista_android/services/swapi-client.dart';
 import 'package:flutter/widgets.dart';
 
 class CharacterBloc extends ChangeNotifier {
+
+  //list of characters loaded
   List<Character> _characterList = [];
+
+  //list of characters loaded
+  List<Character> _searchList = [];
 
   //paginator counter used in api responses
   int _pageIndex = 1;
@@ -11,19 +16,35 @@ class CharacterBloc extends ChangeNotifier {
   //api client
   final SwapiClient _api = SwapiClient();
 
+
   void addMultiple(List<Character> list) {
-    _characterList.addAll(list);
+    list.forEach((char) {
+      if(!_characterList.contains(char)){
+        _characterList.addAll(list);
+      }
+    });
   }
+
+
 
   List<Character> get listOfCharacters => _characterList;
 
+
   load() async {
     if (listOfCharacters.length < 87) {
-      List<Character> list = await _api.fetchCharactersByPage(page: _pageIndex);
+      List<Character> list =  await _api.fetchCharactersByPage(page: _pageIndex);
       addMultiple(list);
       _pageIndex++;
 
       notifyListeners();
     }
+  }
+
+  
+
+   Future<List<Character>> searchByName({String name}) async {
+
+      return await _api.searchCharacterByName(name);
+    
   }
 }
