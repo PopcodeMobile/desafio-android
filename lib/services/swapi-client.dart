@@ -13,7 +13,10 @@ class SwapiClient {
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       Iterable list = jsonResponse['results'];
-      return list.map((ch) => Character.fromJson(ch)).toList();
+      var charList = list.map((ch) => Character.fromJson(ch)).toList();
+      charList.forEach((ch) => _loadDetails(ch));
+
+      return charList;
     } else {
       throw Exception("Error fetching API data");
     }
@@ -31,5 +34,38 @@ class SwapiClient {
     } else {
       throw Exception("Error searching API data");
     }
+  }
+
+  Future<Character> _loadDetails(Character ch) async {
+    ch.birth_planet = await _loadBirthPlanet(ch.birth_planet);
+    ch.species = await _loadSpecies(ch.species);
+
+    return ch;
+  }
+
+  Future<String> _loadBirthPlanet(String url) async {
+    http.Response response = await http.get(url);
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      return (jsonResponse['name']);
+    }
+  }
+
+  Future<List<String>> _loadSpecies(List<dynamic> specieUrls) async {
+    List<String> list = List();
+    try {
+      for (var url in specieUrls) {
+        print(url.runtimeType);
+        var res = await http.get(url);
+        if (res.statusCode == 200) {
+          final jsonResponse = json.decode(res.body);
+          list.add(jsonResponse['name']);
+        }
+      }
+    } catch (e) {
+      throw Exception("Error searching API data details ${e.toString()}");
+    }
+
+    return list;
   }
 }

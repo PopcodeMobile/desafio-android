@@ -1,5 +1,7 @@
 import 'package:entrevista_android/blocs/character-bloc.dart';
 import 'package:entrevista_android/models/character.dart';
+import 'package:entrevista_android/ui/screens/character-details.dart';
+import 'package:entrevista_android/ui/widgets/character_attribute.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 
 import 'package:flutter/material.dart';
@@ -87,6 +89,13 @@ class _CharacterFeedState extends State<CharacterFeed> {
               itemHeight: 400,
               layout: SwiperLayout.STACK,
               loop: false,
+              onTap: (index) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CharacterDetails(
+                            character: bloc.listOfCharacters[index])));
+              },
               onIndexChanged: (index) {
                 /* the http requests are lazy, every time user reachs the end of swiper cards
                           a new request is made 
@@ -143,26 +152,38 @@ class CharacterItem extends StatelessWidget {
                         thickness: 1,
                       ),
                       SizedBox(height: 12),
-                      _buildCharacterAttribute(
-                        attribute: "Height",
-                        description: "cm",
+                      CharacterAttribute(
+                        attribute: 'Height',
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 28,
+                            fontFamily: 'Lato'),
+                        description: 'cm',
                         value: bloc.listOfCharacters[indexPosition].height,
                         icon: Icon(Icons.person),
                       ),
                       SizedBox(
                         height: 20,
                       ),
-                      _buildCharacterAttribute(
-                        attribute: "Mass",
+                      CharacterAttribute(
+                        attribute: 'Mass',
                         description: "kg",
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 28,
+                            fontFamily: 'Lato'),
                         value: bloc.listOfCharacters[indexPosition].mass,
                         icon: Icon(Icons.person),
                       ),
                       SizedBox(
                         height: 20,
                       ),
-                      _buildCharacterAttribute(
-                        attribute: "Gender",
+                      CharacterAttribute(
+                        attribute: 'Gender',
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 28,
+                            fontFamily: 'Lato'),
                         value: bloc.listOfCharacters[indexPosition].gender,
                         icon: Icon(Icons.person),
                       ),
@@ -173,28 +194,6 @@ class CharacterItem extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildCharacterAttribute(
-      {String attribute = "",
-      String value = "",
-      String description = "",
-      Icon icon}) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.person),
-          SizedBox(
-            width: 14,
-          ),
-          Text(
-            "$attribute: $value $description",
-            style: TextStyle(fontFamily: 'Lato', fontSize: 22),
-          ),
-        ],
       ),
     );
   }

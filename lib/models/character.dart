@@ -7,8 +7,9 @@ class Character {
   final String skin_color;
   final String eye_color;
   final String birth_year;
-  final List<dynamic> species;
-  final String birth_planet;
+  List<dynamic> species;
+  String birth_planet;
+  bool isFavorite;
 
   Character(
       {this.name,
@@ -20,7 +21,8 @@ class Character {
       this.eye_color,
       this.birth_year,
       this.species,
-      this.birth_planet});
+      this.birth_planet,
+      this.isFavorite = false});
 
   factory Character.fromJson(Map<String, dynamic> json) {
     return Character(
@@ -33,7 +35,8 @@ class Character {
       birth_year: json['birth_year'],
       gender: json['gender'],
       birth_planet: json['homeworld'],
-      species: json['species']
+      species: json['species'],
+      isFavorite: false,
 
     );
   }
@@ -44,6 +47,7 @@ class Character {
   }
 
 bool operator ==(o) => o is Character && name == o.name;
+
 
 
 }

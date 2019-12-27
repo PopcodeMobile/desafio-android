@@ -7,8 +7,7 @@ class CharacterBloc extends ChangeNotifier {
   //list of characters loaded
   List<Character> _characterList = [];
 
-  //list of characters loaded
-  List<Character> _searchList = [];
+ 
 
   //paginator counter used in api responses
   int _pageIndex = 1;
@@ -46,5 +45,11 @@ class CharacterBloc extends ChangeNotifier {
 
       return await _api.searchCharacterByName(name);
     
+  }
+
+  void markFavorite(Character character) {
+    var c = listOfCharacters.firstWhere((char)=> char == character);
+    c.isFavorite = !c.isFavorite;
+    notifyListeners();
   }
 }
