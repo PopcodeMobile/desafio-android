@@ -36,6 +36,7 @@ class SwapiClient {
     }
   }
 
+  /// Loads Character data asynchronously
   Future<Character> _loadDetails(Character ch) async {
     ch.birth_planet = await _loadBirthPlanet(ch.birth_planet);
     ch.species = await _loadSpecies(ch.species);
@@ -43,6 +44,8 @@ class SwapiClient {
     return ch;
   }
 
+  /// Calls GET request for birth planet data from
+  /// swapi /planets/ resource
   Future<String> _loadBirthPlanet(String url) async {
     http.Response response = await http.get(url);
     if (response.statusCode == 200) {
@@ -51,11 +54,12 @@ class SwapiClient {
     }
   }
 
+  /// Calls GET request for species data from
+  /// swapi /species/ resource
   Future<List<String>> _loadSpecies(List<dynamic> specieUrls) async {
     List<String> list = List();
     try {
       for (var url in specieUrls) {
-        print(url.runtimeType);
         var res = await http.get(url);
         if (res.statusCode == 200) {
           final jsonResponse = json.decode(res.body);
@@ -63,7 +67,7 @@ class SwapiClient {
         }
       }
     } catch (e) {
-      throw Exception("Error searching API data details ${e.toString()}");
+      throw Exception("Error searching API data details");
     }
 
     return list;

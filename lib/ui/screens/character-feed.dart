@@ -1,9 +1,7 @@
 import 'package:entrevista_android/blocs/character-bloc.dart';
-import 'package:entrevista_android/models/character.dart';
 import 'package:entrevista_android/ui/screens/character-details.dart';
+import 'package:entrevista_android/ui/shared/star_animation.dart';
 import 'package:entrevista_android/ui/widgets/character_attribute.dart';
-import 'package:flappy_search_bar/flappy_search_bar.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
@@ -23,11 +21,13 @@ class _CharacterFeedState extends State<CharacterFeed> {
 
   final _swiperController = new SwiperController();
 
-  TextEditingController _textController = TextEditingController();
+  StarAnimation _starAnimation;
 
   @override
   void initState() {
     super.initState();
+    
+    _starAnimation = StarAnimation();
   }
 
   @override
@@ -51,7 +51,6 @@ class _CharacterFeedState extends State<CharacterFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         actions: <Widget>[
           Padding(
@@ -70,42 +69,49 @@ class _CharacterFeedState extends State<CharacterFeed> {
         backgroundColor:
             Theme.of(context).appBarTheme.copyWith(color: Colors.yellow).color,
       ),
-      body: ListView(
+      body: Stack(
+        alignment: Alignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.symmetric(vertical: 100),
-            child: Swiper(
-              autoplay: false,
-              itemBuilder: (BuildContext context, int index) {
-                //ITEM CARD
-
-                return CharacterItem(
-                  indexPosition: index,
-                );
-              },
-              controller: _swiperController,
-              itemCount: bloc.listOfCharacters.length,
-              itemWidth: 310,
-              itemHeight: 400,
-              layout: SwiperLayout.STACK,
-              loop: false,
-              onTap: (index) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CharacterDetails(
-                            character: bloc.listOfCharacters[index])));
-              },
-              onIndexChanged: (index) {
-                /* the http requests are lazy, every time user reachs the end of swiper cards
-                          a new request is made 
-                        */
-                print("actual = ${bloc.listOfCharacters}");
-                if (index == bloc.listOfCharacters.length - 1) {
-                  fetch();
-                }
-              },
-            ),
+            child: _starAnimation,
+          ),
+          ListView(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 100),
+                child: Swiper(
+                  autoplay: false,
+                  itemCount: bloc.listOfCharacters.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CharacterItem(
+                      indexPosition: index,
+                    );
+                  },
+                  controller: _swiperController,
+                  itemWidth: 310,
+                  autoplayDisableOnInteraction: true,
+                  itemHeight: 400,
+                  layout: SwiperLayout.STACK,
+                  loop: false,
+                  onTap: (index) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CharacterDetails(
+                                character: bloc.listOfCharacters[index])));
+                  },
+                  onIndexChanged: (index) {
+                    /* the http requests are lazy, every time user reachs the end of swiper cards
+                              a new request is made 
+                            */
+                    print("actual = ${bloc.listOfCharacters}");
+                    if (index == bloc.listOfCharacters.length - 1) {
+                      fetch();
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -135,65 +141,63 @@ class CharacterItem extends StatelessWidget {
           children: <Widget>[
             Consumer<CharacterBloc>(
               builder: (context, bloc, child) {
-                return Container(
-                  padding: EdgeInsets.all(14),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Text(
-                            bloc.listOfCharacters[indexPosition].name,
-                            style: TextStyle(
-                                fontFamily: 'Lato',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 26),
-                          )),
-                      Divider(
-                        thickness: 1,
-                      ),
-                      SizedBox(height: 12),
-                      CharacterAttribute(
-                        attribute: 'Height',
-                        textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 28,
-                            fontFamily: 'Lato'),
-                        description: 'cm',
-                        value: bloc.listOfCharacters[indexPosition].height,
-                        icon: Icon(Icons.person),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      CharacterAttribute(
-                        attribute: 'Mass',
-                        description: "kg",
-                        textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 28,
-                            fontFamily: 'Lato'),
-                        value: bloc.listOfCharacters[indexPosition].mass,
-                        icon: Icon(Icons.person),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      CharacterAttribute(
-                        attribute: 'Gender',
-                        textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 28,
-                            fontFamily: 'Lato'),
-                        value: bloc.listOfCharacters[indexPosition].gender,
-                        icon: Icon(Icons.person),
-                      ),
-                    ],
-                  ),
-                );
+                return _buildItem(bloc);
               },
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Container _buildItem(CharacterBloc bloc) {
+    return Container(
+      padding: EdgeInsets.all(14),
+      child: Column(
+        children: <Widget>[
+          Container(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                bloc.listOfCharacters[indexPosition].name,
+                style: TextStyle(
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26),
+              )),
+          Divider(
+            thickness: 1,
+          ),
+          SizedBox(height: 12),
+          CharacterAttribute(
+            attribute: 'Height',
+            textStyle: TextStyle(
+                color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
+            description: 'cm',
+            value: bloc.listOfCharacters[indexPosition].height,
+            icon: Icon(Icons.person),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          CharacterAttribute(
+            attribute: 'Mass',
+            description: "kg",
+            textStyle: TextStyle(
+                color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
+            value: bloc.listOfCharacters[indexPosition].mass,
+            icon: Icon(Icons.person),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          CharacterAttribute(
+            attribute: 'Gender',
+            textStyle: TextStyle(
+                color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
+            value: bloc.listOfCharacters[indexPosition].gender,
+            icon: Icon(Icons.person),
+          ),
+        ],
       ),
     );
   }

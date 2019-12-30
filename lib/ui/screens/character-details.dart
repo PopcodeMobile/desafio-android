@@ -1,5 +1,6 @@
 import 'package:entrevista_android/blocs/character-bloc.dart';
 import 'package:entrevista_android/models/character.dart';
+import 'package:entrevista_android/ui/shared/star_animation.dart';
 import 'package:entrevista_android/ui/widgets/character_attribute.dart';
 import 'package:flutter/material.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
@@ -16,42 +17,43 @@ class CharacterDetails extends StatefulWidget {
 
 class _CharacterDetailsState extends State<CharacterDetails> {
   void _checkFavorite() {
-
     showDialog(
         context: context,
         builder: (_) => NetworkGiffyDialog(
               image: Image.network(
-                  "https://raw.githubusercontent.com/tnorthcutt/gifs/master/star-wars-kylo-ren-darth-vader-lightsaber-gift.gif", fit: BoxFit.cover,),
+                "https://raw.githubusercontent.com/tnorthcutt/gifs/master/star-wars-kylo-ren-darth-vader-lightsaber-gift.gif",
+                fit: BoxFit.cover,
+              ),
               title: buildCharacterQuestion(),
               onlyOkButton: true,
               buttonRadius: 20,
               buttonOkColor: Colors.black87,
-
               onOkButtonPressed: () {
-                Provider.of<CharacterBloc>(context).markFavorite(widget.character);
+                Provider.of<CharacterBloc>(context)
+                    .markFavorite(widget.character);
 
                 //to close dialog
                 Navigator.pop(context);
               },
             ));
-    
-    
   }
 
   Text buildCharacterQuestion() {
     var question;
 
-    if(!widget.character.isFavorite){
-      question = 'Do you want ${widget.character} to be part of your Favorites?';
-    }
-    else{
+    if (!widget.character.isFavorite) {
+      question =
+          'Do you want ${widget.character} to be part of your Favorites?';
+    } else {
       question = 'If it is what you want...';
     }
 
     return Text(question,
-                textAlign: TextAlign.center,
-                style:
-                    TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600, color: Colors.black87));
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontSize: 22.0,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87));
   }
 
   @override
@@ -59,6 +61,8 @@ class _CharacterDetailsState extends State<CharacterDetails> {
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
+        
+        actions: <Widget>[buildStarWarsLogo()] ,
         title: Text('${widget.character.name}',
             style: TextStyle(
                 fontFamily: 'Lato', fontWeight: FontWeight.w600, fontSize: 22)),
@@ -68,7 +72,9 @@ class _CharacterDetailsState extends State<CharacterDetails> {
         child: Stack(
           //
           children: <Widget>[
+            StarAnimation(),
             topContent(context),
+            
             Padding(
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height / 2.5),
@@ -80,11 +86,22 @@ class _CharacterDetailsState extends State<CharacterDetails> {
     );
   }
 
+  Container buildStarWarsLogo() {
+    return Container(
+            alignment: Alignment.center,
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: ExactAssetImage('assets/imgs/star-wars-logo.png'),
+                    fit: BoxFit.cover)),
+          );
+  }
+
   topContentText() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            //FAV STAR
             alignment: Alignment.centerRight,
             child: GestureDetector(
               onTap: () {
@@ -169,8 +186,6 @@ class _CharacterDetailsState extends State<CharacterDetails> {
               color: Colors.white,
             ),
           ),
-          
-          
           SizedBox(
             height: 20,
           ),
