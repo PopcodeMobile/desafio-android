@@ -1,7 +1,12 @@
-import 'package:entrevista_android/blocs/character-bloc.dart';
+import 'dart:async';
+
+import 'package:entrevista_android/blocs/character-service.dart';
+import 'package:entrevista_android/models/character.dart';
+import 'package:entrevista_android/services/swapi-client.dart';
 import 'package:entrevista_android/ui/screens/character-details.dart';
 import 'package:entrevista_android/ui/shared/star_animation.dart';
 import 'package:entrevista_android/ui/widgets/character_attribute.dart';
+import 'package:entrevista_android/ui/widgets/favorite_star.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
@@ -11,43 +16,51 @@ class CharacterFeed extends StatefulWidget {
   _CharacterFeedState createState() {
     return _CharacterFeedState();
   }
+
+
 }
 
 class _CharacterFeedState extends State<CharacterFeed> {
   ScrollController _scrollController = ScrollController();
 
-  //
-  CharacterBloc bloc;
-
   final _swiperController = new SwiperController();
 
   StarAnimation _starAnimation;
 
+  CharacterService _bloc;
+
+  StreamController _streamController = StreamController<List<Character>>();
+
+  Stream<List<Character>> get characterStream => _streamController.stream;
+set characterStream(Stream newStream) => newStream;
+  StreamSink get sink => _streamController.sink;
+
+
   @override
   void initState() {
+    _bloc = CharacterService();
+    _load();
     super.initState();
-    
     _starAnimation = StarAnimation();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    var blocProvider = Provider.of<CharacterBloc>(context);
-    if (blocProvider != this.bloc) {
-      this.bloc = blocProvider;
-      this.bloc.load();
-    }
+  _load() async {
+    await _bloc.load();
+    var list = await _bloc.readAllfromDatabase();
+    sink.add(list);
   }
 
   @override
   void dispose() {
+    _streamController.close();
     _scrollController.dispose(); //
     super.dispose();
   }
 
-  //"Icon made by Pixel perfect from www.flaticon.com"
+  _childCallback(){
+    _load();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,37 +92,48 @@ class _CharacterFeedState extends State<CharacterFeed> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.symmetric(vertical: 100),
-                child: Swiper(
-                  autoplay: false,
-                  itemCount: bloc.listOfCharacters.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return CharacterItem(
-                      indexPosition: index,
-                    );
-                  },
-                  controller: _swiperController,
-                  itemWidth: 310,
-                  autoplayDisableOnInteraction: true,
-                  itemHeight: 400,
-                  layout: SwiperLayout.STACK,
-                  loop: false,
-                  onTap: (index) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CharacterDetails(
-                                character: bloc.listOfCharacters[index])));
-                  },
-                  onIndexChanged: (index) {
-                    /* the http requests are lazy, every time user reachs the end of swiper cards
-                              a new request is made 
-                            */
-                    print("actual = ${bloc.listOfCharacters}");
-                    if (index == bloc.listOfCharacters.length - 1) {
-                      fetch();
-                    }
-                  },
-                ),
+                child: StreamBuilder<List<Character>>(
+                    stream: characterStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting)
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+
+                      return Swiper(
+                        autoplay: false,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          print('character item load');
+                          return CharacterItem(
+                            indexPosition: index,
+                            character: snapshot.data[index],
+                            callback: _childCallback,
+                          );
+                        },
+                        controller: _swiperController,
+                        itemWidth: 310,
+                        autoplayDisableOnInteraction: true,
+                        itemHeight: 400,
+                        layout: SwiperLayout.STACK,
+                        loop: false,
+                        onTap: (index) {
+                          Character c = snapshot.data[index];
+                          loadCharacter(c).then((character) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CharacterDetails(
+                                        character: character)));
+                          });
+                        },
+                        onIndexChanged: (index) {
+                          if (index != 86) {
+                            _load();
+                          }
+                        },
+                      );
+                    }),
               ),
             ],
           ),
@@ -118,16 +142,21 @@ class _CharacterFeedState extends State<CharacterFeed> {
     );
   }
 
-  /// triggers bloc to get more paginated data
-  void fetch() {
-    Provider.of<CharacterBloc>(context).load();
+  Future<Character> loadCharacter(Character c) async {
+    var api = SwapiClient();
+    var character = await api.loadDetails(c);
+    return character;
   }
 }
 
 class CharacterItem extends StatelessWidget {
   final int indexPosition;
+  final Character character;
+  final Function callback;
 
-  CharacterItem({Key key, @required this.indexPosition}) : super(key: key);
+  CharacterItem(
+      {Key key, @required this.indexPosition, @required this.character, this.callback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -139,18 +168,14 @@ class CharacterItem extends StatelessWidget {
         width: 288,
         child: Column(
           children: <Widget>[
-            Consumer<CharacterBloc>(
-              builder: (context, bloc, child) {
-                return _buildItem(bloc);
-              },
-            ),
+            _buildItem(this.character),
           ],
         ),
       ),
     );
   }
 
-  Container _buildItem(CharacterBloc bloc) {
+  Container _buildItem(Character character) {
     return Container(
       padding: EdgeInsets.all(14),
       child: Column(
@@ -158,7 +183,7 @@ class CharacterItem extends StatelessWidget {
           Container(
               padding: EdgeInsets.symmetric(vertical: 20),
               child: Text(
-                bloc.listOfCharacters[indexPosition].name,
+                character.name,
                 style: TextStyle(
                     fontFamily: 'Lato',
                     fontWeight: FontWeight.bold,
@@ -173,7 +198,7 @@ class CharacterItem extends StatelessWidget {
             textStyle: TextStyle(
                 color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
             description: 'cm',
-            value: bloc.listOfCharacters[indexPosition].height,
+            value: character.height,
             icon: Icon(Icons.person),
           ),
           SizedBox(
@@ -184,7 +209,7 @@ class CharacterItem extends StatelessWidget {
             description: "kg",
             textStyle: TextStyle(
                 color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
-            value: bloc.listOfCharacters[indexPosition].mass,
+            value: character.mass,
             icon: Icon(Icons.person),
           ),
           SizedBox(
@@ -194,9 +219,21 @@ class CharacterItem extends StatelessWidget {
             attribute: 'Gender',
             textStyle: TextStyle(
                 color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
-            value: bloc.listOfCharacters[indexPosition].gender,
+            value: character.gender,
             icon: Icon(Icons.person),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 118),
+            child: FavoriteStar(isFavorite: character.isFavorite, onTap: (){
+              print(character.id);
+              CharacterService().markFavorite(character);
+              callback();
+              
+            },),
+          )
         ],
       ),
     );

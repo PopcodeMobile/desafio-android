@@ -1,4 +1,4 @@
-import 'package:entrevista_android/blocs/character-bloc.dart';
+import 'package:entrevista_android/blocs/character-service.dart';
 import 'package:entrevista_android/models/character.dart';
 import 'package:entrevista_android/ui/screens/character-details.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
@@ -12,16 +12,12 @@ class CharacterSearch extends StatefulWidget {
 }
 
 class _CharacterSearchState extends State<CharacterSearch> {
-  CharacterBloc bloc;
+  CharacterService _service;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    var blocProvider = Provider.of<CharacterBloc>(context);
-    if (blocProvider != this.bloc) {
-      this.bloc = blocProvider;
-      this.bloc.load();
-    }
+  void initState() {
+    _service = CharacterService();
+    super.initState();
   }
 
   @override
@@ -75,7 +71,7 @@ class _CharacterSearchState extends State<CharacterSearch> {
   }
 
   Future<List<Character>> search(String search) async {
-    var list = await bloc.searchByName(name: search);
+    var list = await _service.searchByName(name: search);
     return list;
   }
 

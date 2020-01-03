@@ -14,7 +14,7 @@ class SwapiClient {
       final jsonResponse = json.decode(response.body);
       Iterable list = jsonResponse['results'];
       var charList = list.map((ch) => Character.fromJson(ch)).toList();
-      charList.forEach((ch) => _loadDetails(ch));
+      charList.forEach((ch) async => await loadDetails(ch));
 
       return charList;
     } else {
@@ -37,9 +37,14 @@ class SwapiClient {
   }
 
   /// Loads Character data asynchronously
-  Future<Character> _loadDetails(Character ch) async {
-    ch.birth_planet = await _loadBirthPlanet(ch.birth_planet);
-    ch.species = await _loadSpecies(ch.species);
+  Future<Character> loadDetails(Character ch) async {
+    if (null != ch.birth_planet && ch.birth_planet.startsWith('http')){
+      ch.birth_planet = await _loadBirthPlanet(ch.birth_planet);
+    }
+
+    if (ch.specie.isNotEmpty && ch.specie[0].startsWith('http')) {
+      ch.specie[0] = await _loadSpecies(ch.specie[0]);
+    }
 
     return ch;
   }
@@ -56,20 +61,15 @@ class SwapiClient {
 
   /// Calls GET request for species data from
   /// swapi /species/ resource
-  Future<List<String>> _loadSpecies(List<dynamic> specieUrls) async {
-    List<String> list = List();
+  Future<String> _loadSpecies(String specieUrl) async {
     try {
-      for (var url in specieUrls) {
-        var res = await http.get(url);
-        if (res.statusCode == 200) {
-          final jsonResponse = json.decode(res.body);
-          list.add(jsonResponse['name']);
-        }
+      var res = await http.get(specieUrl);
+      if (res.statusCode == 200) {
+        final jsonResponse = json.decode(res.body);
+        return jsonResponse['name'];
       }
     } catch (e) {
       throw Exception("Error searching API data details");
     }
-
-    return list;
   }
 }

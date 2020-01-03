@@ -1,7 +1,9 @@
-import 'package:entrevista_android/blocs/character-bloc.dart';
+import 'package:entrevista_android/blocs/character-service.dart';
 import 'package:entrevista_android/models/character.dart';
+import 'package:entrevista_android/services/swapi-client.dart';
 import 'package:entrevista_android/ui/shared/star_animation.dart';
 import 'package:entrevista_android/ui/widgets/character_attribute.dart';
+import 'package:entrevista_android/ui/widgets/favorite_star.dart';
 import 'package:flutter/material.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,18 @@ class CharacterDetails extends StatefulWidget {
 }
 
 class _CharacterDetailsState extends State<CharacterDetails> {
-  void _checkFavorite() {
+
+ Character character;
+  final _api = SwapiClient();
+  @override
+  void initState() {
+    this.character = widget.character;
+    super.initState();
+  }
+  
+  
+
+  checkFavorite() {
     showDialog(
         context: context,
         builder: (_) => NetworkGiffyDialog(
@@ -29,8 +42,11 @@ class _CharacterDetailsState extends State<CharacterDetails> {
               buttonRadius: 20,
               buttonOkColor: Colors.black87,
               onOkButtonPressed: () {
-                Provider.of<CharacterBloc>(context)
-                    .markFavorite(widget.character);
+                CharacterService()
+                    .markFavorite(character);
+                    setState(() {
+                      character.isFavorite = !character.isFavorite;
+                    });
 
                 //to close dialog
                 Navigator.pop(context);
@@ -41,9 +57,9 @@ class _CharacterDetailsState extends State<CharacterDetails> {
   Text buildCharacterQuestion() {
     var question;
 
-    if (!widget.character.isFavorite) {
+    if (!character.isFavorite) {
       question =
-          'Do you want ${widget.character} to be part of your Favorites?';
+          'Do you want ${character.name} to be part of your Favorites?';
     } else {
       question = 'If it is what you want...';
     }
@@ -63,7 +79,7 @@ class _CharacterDetailsState extends State<CharacterDetails> {
         elevation: 3,
         
         actions: <Widget>[buildStarWarsLogo()] ,
-        title: Text('${widget.character.name}',
+        title: Text('${character.name}',
             style: TextStyle(
                 fontFamily: 'Lato', fontWeight: FontWeight.w600, fontSize: 22)),
       ),
@@ -101,40 +117,24 @@ class _CharacterDetailsState extends State<CharacterDetails> {
   topContentText() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            alignment: Alignment.centerRight,
-            child: GestureDetector(
-              onTap: () {
-                _checkFavorite();
-              },
-              child: widget.character.isFavorite
-                  ? Icon(
-                      Icons.star,
-                      color: Colors.orangeAccent,
-                      size: 58,
-                    )
-                  : Icon(
-                      Icons.star_border,
-                      color: Colors.orangeAccent,
-                      size: 58,
-                    ),
-            ),
-          ),
+          FavoriteStar(isFavorite: character.isFavorite, onTap: checkFavorite,),
           SizedBox(height: 12.0),
           Text(
-            '${widget.character.name}',
+            '${character.name}',
             style: TextStyle(color: Colors.black, fontSize: 45.0),
           ),
           SizedBox(height: 10.0),
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              '${widget.character.gender}',
+              '${character.gender}',
               style: TextStyle(color: Colors.black, fontSize: 32.0),
             ),
           ),
         ],
       );
+
+ 
 
   topContent(BuildContext context) {
     return Stack(
@@ -164,7 +164,7 @@ class _CharacterDetailsState extends State<CharacterDetails> {
           CharacterAttribute(
             attribute: 'Height',
             description: "cm",
-            value: widget.character.height,
+            value: character.height,
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 22, fontFamily: 'Lato'),
             icon: Icon(
@@ -178,7 +178,7 @@ class _CharacterDetailsState extends State<CharacterDetails> {
           CharacterAttribute(
             attribute: 'Mass',
             description: "kg",
-            value: widget.character.mass,
+            value: character.mass,
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 22, fontFamily: 'Lato'),
             icon: Icon(
@@ -191,7 +191,7 @@ class _CharacterDetailsState extends State<CharacterDetails> {
           ),
           CharacterAttribute(
             attribute: 'Hair Color',
-            value: widget.character.hair_color,
+            value: character.hair_color,
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 22, fontFamily: 'Lato'),
             icon: Icon(
@@ -204,7 +204,7 @@ class _CharacterDetailsState extends State<CharacterDetails> {
           ),
           CharacterAttribute(
             attribute: 'Skin Color',
-            value: widget.character.skin_color,
+            value: character.skin_color,
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 22, fontFamily: 'Lato'),
             icon: Icon(
@@ -216,8 +216,8 @@ class _CharacterDetailsState extends State<CharacterDetails> {
             height: 20,
           ),
           CharacterAttribute(
-            attribute: 'Species',
-            value: widget.character.species.join(','),
+            attribute: 'Specie',
+            value: character.specie.isEmpty ? '' : character.specie[0],
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 22, fontFamily: 'Lato'),
             icon: Icon(
@@ -230,7 +230,7 @@ class _CharacterDetailsState extends State<CharacterDetails> {
           ),
           CharacterAttribute(
             attribute: 'Birth Planet',
-            value: widget.character.birth_planet,
+            value: character.birth_planet,
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 22, fontFamily: 'Lato'),
             icon: Icon(
@@ -243,7 +243,7 @@ class _CharacterDetailsState extends State<CharacterDetails> {
           ),
           CharacterAttribute(
             attribute: 'Birth Year',
-            value: widget.character.birth_year,
+            value: character.birth_year,
             textStyle: TextStyle(
                 color: Colors.white, fontSize: 22, fontFamily: 'Lato'),
             icon: Icon(

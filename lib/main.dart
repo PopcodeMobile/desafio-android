@@ -1,22 +1,11 @@
-import 'package:entrevista_android/blocs/character-bloc.dart';
 import 'package:entrevista_android/ui/screens/character-details.dart';
 import 'package:entrevista_android/ui/screens/character-search.dart';
-import 'package:entrevista_android/ui/shared/star_animation.dart';
 import 'package:entrevista_android/ui/shared/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'ui/screens/character-feed.dart';
 
-
-void main() => runApp(
-  MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => (CharacterBloc())),
-      ],
-      child: MyApp(),
-    ),
-);
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -34,5 +23,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
