@@ -6,7 +6,7 @@ import 'package:entrevista_android/models/character.dart';
 import 'package:entrevista_android/services/swapi-client.dart';
 import 'package:flutter/widgets.dart';
 
-class CharacterService extends ChangeNotifier {
+class CharacterService {
   //paginator counter used in api responses
   int _pageIndex = 1;
 
@@ -24,25 +24,28 @@ class CharacterService extends ChangeNotifier {
   }
 
   Future<List<Character>> load() async {
-    if(_pageIndex <= 9){
-    List<Character> list = await _api.fetchCharactersByPage(page: _pageIndex);
-    database.insertMultipleIfNotExists(list);
-    print('fetched and saved locally: $list');
-    _pageIndex++;
-    return list;
+    if (_pageIndex <= 9) {
+      List<Character> list = await _api.fetchCharactersByPage(page: _pageIndex);
+      database.insertMultipleIfNotExists(list);
+      print('fetched and saved locally: $list');
+      _pageIndex++;
+      return list;
     }
     return [];
-    
   }
 
   Future<List<Character>> searchByName({String name}) async {
     return await _api.searchCharacterByName(name);
   }
 
-  void markFavorite(Character character) {
-    character.isFavorite = !character.isFavorite;
+  Future<String> markFavorite(Character character) async {
+    var responseMessage= '${character.name} removed from favorites';
+    if (character.isFavorite == false) {
+      responseMessage = await _api.postFavorite(character.id);
+    }
     database.update(character);
 
+    return responseMessage;
   }
 
   Future<Character> readCharacterById(int index) async {

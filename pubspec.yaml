@@ -27,6 +27,7 @@ dependencies:
   giffy_dialog: 
   sqflite: ^1.0.0
   path_provider: ^0.4.1
+  fluttertoast: ^3.1.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

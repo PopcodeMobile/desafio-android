@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:entrevista_android/models/character.dart';
 import 'package:http/http.dart' as http;
 
 class SwapiClient {
   static const String _BASE_URL = "swapi.co";
+  static const String _FAVORITE_API_URL = 'http://private-782d3-starwarsfavorites.apiary-mock.com/favorite/';
 
   Future<List<Character>> fetchCharactersByPage({int page = 1}) async {
     final Uri uri = new Uri.http(_BASE_URL, "/api/people/", {"page": '$page'});
@@ -72,4 +74,27 @@ class SwapiClient {
       throw Exception("Error searching API data details");
     }
   }
+
+
+  Future<String> postFavorite(int characterId) async{
+    try{
+    http.Response response = await http.post(_FAVORITE_API_URL+'$characterId');
+    if(response.statusCode == 201){
+        final jsonResponse = json.decode(response.body);
+        return jsonResponse['message'];
+      }else if(response.statusCode == 400){
+        final jsonResponse = json.decode(response.body);
+        return jsonResponse['error_message'];
+      }
+
+    }on HttpException catch (e){
+      print(e);
+    }
+  }
+
+
+
+
+
+
 }

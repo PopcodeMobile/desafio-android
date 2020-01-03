@@ -2,11 +2,11 @@ import 'package:entrevista_android/blocs/character-service.dart';
 import 'package:entrevista_android/models/character.dart';
 import 'package:entrevista_android/services/swapi-client.dart';
 import 'package:entrevista_android/ui/shared/star_animation.dart';
+import 'package:entrevista_android/ui/shared/toast.dart';
 import 'package:entrevista_android/ui/widgets/character_attribute.dart';
 import 'package:entrevista_android/ui/widgets/favorite_star.dart';
 import 'package:flutter/material.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
-import 'package:provider/provider.dart';
 
 class CharacterDetails extends StatefulWidget {
   final Character character;
@@ -41,17 +41,24 @@ class _CharacterDetailsState extends State<CharacterDetails> {
               onlyOkButton: true,
               buttonRadius: 20,
               buttonOkColor: Colors.black87,
-              onOkButtonPressed: () {
-                CharacterService()
+              onOkButtonPressed: () async{
+                var responseMessage = await CharacterService()
                     .markFavorite(character);
                     setState(() {
-                      character.isFavorite = !character.isFavorite;
-                    });
+              character.isFavorite = !character.isFavorite;
+            });
+                    
 
                 //to close dialog
                 Navigator.pop(context);
+                showToastMessage(responseMessage);
               },
             ));
+
+            
+
+            
+            
   }
 
   Text buildCharacterQuestion() {

@@ -5,11 +5,12 @@ import 'package:entrevista_android/models/character.dart';
 import 'package:entrevista_android/services/swapi-client.dart';
 import 'package:entrevista_android/ui/screens/character-details.dart';
 import 'package:entrevista_android/ui/shared/star_animation.dart';
+import 'package:entrevista_android/ui/shared/toast.dart';
 import 'package:entrevista_android/ui/widgets/character_attribute.dart';
 import 'package:entrevista_android/ui/widgets/favorite_star.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CharacterFeed extends StatefulWidget {
   @override
@@ -57,9 +58,12 @@ set characterStream(Stream newStream) => newStream;
     super.dispose();
   }
 
-  _childCallback(){
+  _childCallback(String message){
     _load();
+    showToastMessage(message);
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +108,6 @@ set characterStream(Stream newStream) => newStream;
                         autoplay: false,
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) {
-                          print('character item load');
                           return CharacterItem(
                             indexPosition: index,
                             character: snapshot.data[index],
@@ -227,10 +230,9 @@ class CharacterItem extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(right: 118),
-            child: FavoriteStar(isFavorite: character.isFavorite, onTap: (){
-              print(character.id);
-              CharacterService().markFavorite(character);
-              callback();
+            child: FavoriteStar(isFavorite: character.isFavorite, onTap: () async{
+              var message = await CharacterService().markFavorite(character);
+              callback(message);
               
             },),
           )
