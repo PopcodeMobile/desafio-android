@@ -43,7 +43,7 @@ class CharacterService {
     if (character.isFavorite == false) {
       responseMessage = await _api.postFavorite(character.id);
     }
-    database.update(character);
+    await database.update(character);
 
     return responseMessage;
   }

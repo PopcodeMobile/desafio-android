@@ -17,8 +17,6 @@ class CharacterFeed extends StatefulWidget {
   _CharacterFeedState createState() {
     return _CharacterFeedState();
   }
-
-
 }
 
 class _CharacterFeedState extends State<CharacterFeed> {
@@ -33,9 +31,8 @@ class _CharacterFeedState extends State<CharacterFeed> {
   StreamController _streamController = StreamController<List<Character>>();
 
   Stream<List<Character>> get characterStream => _streamController.stream;
-set characterStream(Stream newStream) => newStream;
+  set characterStream(Stream newStream) => newStream;
   StreamSink get sink => _streamController.sink;
-
 
   @override
   void initState() {
@@ -58,12 +55,12 @@ set characterStream(Stream newStream) => newStream;
     super.dispose();
   }
 
-  _childCallback(String message){
+  _childCallback(String message) {
     _load();
     showToastMessage(message);
+    setState(() {
+    });
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +155,10 @@ class CharacterItem extends StatelessWidget {
   final Function callback;
 
   CharacterItem(
-      {Key key, @required this.indexPosition, @required this.character, this.callback})
+      {Key key,
+      @required this.indexPosition,
+      @required this.character,
+      this.callback})
       : super(key: key);
 
   @override
@@ -171,72 +171,72 @@ class CharacterItem extends StatelessWidget {
         width: 288,
         child: Column(
           children: <Widget>[
-            _buildItem(this.character),
+            Container(
+              padding: EdgeInsets.all(14),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        character.name,
+                        style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 26),
+                      )),
+                  Divider(
+                    thickness: 1,
+                  ),
+                  SizedBox(height: 12),
+                  CharacterAttribute(
+                    attribute: 'Height',
+                    textStyle: TextStyle(
+                        color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
+                    description: 'cm',
+                    value: character.height,
+                    icon: Icon(Icons.person),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CharacterAttribute(
+                    attribute: 'Mass',
+                    description: "kg",
+                    textStyle: TextStyle(
+                        color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
+                    value: character.mass,
+                    icon: Icon(Icons.person),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CharacterAttribute(
+                    attribute: 'Gender',
+                    textStyle: TextStyle(
+                        color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
+                    value: character.gender,
+                    icon: Icon(Icons.person),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 118),
+                    child: FavoriteStar(
+                      isFavorite: character.isFavorite,
+                      onTap: () async {
+                        var message =
+                            await CharacterService().markFavorite(character);
+                        
+                        callback(message);
+                      },
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
-      ),
-    );
-  }
-
-  Container _buildItem(Character character) {
-    return Container(
-      padding: EdgeInsets.all(14),
-      child: Column(
-        children: <Widget>[
-          Container(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Text(
-                character.name,
-                style: TextStyle(
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 26),
-              )),
-          Divider(
-            thickness: 1,
-          ),
-          SizedBox(height: 12),
-          CharacterAttribute(
-            attribute: 'Height',
-            textStyle: TextStyle(
-                color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
-            description: 'cm',
-            value: character.height,
-            icon: Icon(Icons.person),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          CharacterAttribute(
-            attribute: 'Mass',
-            description: "kg",
-            textStyle: TextStyle(
-                color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
-            value: character.mass,
-            icon: Icon(Icons.person),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          CharacterAttribute(
-            attribute: 'Gender',
-            textStyle: TextStyle(
-                color: Colors.black, fontSize: 28, fontFamily: 'Lato'),
-            value: character.gender,
-            icon: Icon(Icons.person),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 118),
-            child: FavoriteStar(isFavorite: character.isFavorite, onTap: () async{
-              var message = await CharacterService().markFavorite(character);
-              callback(message);
-              
-            },),
-          )
-        ],
       ),
     );
   }
