@@ -1,11 +1,14 @@
 #
-
-
+<img src="screenshots/1.jpeg" width="250" >
+<img src="screenshots/2.jpeg" width="250" >
+<img src="screenshots/3.jpeg" width="250" >
+<img src="screenshots/5.jpeg" width="250" >
+<img src="screenshots/4.jpeg" width="250" >
 # Desafio Android
 
 O desafio consiste em criar uma Wiki de Star Wars onde é mostrada uma lista de personagens e o usuário pode favoritar alguns deles. É recomendado a utilização de Kotlin ou Java no projeto.
 
-O candidato deve dar **fork** neste repositório e após o termino do desenvolvimento, realizar um **pull request** para análise do time. Em casos especiais o candidato tambem pode enviar o projeto compactado para hugo@popcode.com.br, eric@popcode.com.br e railan@popcode.com.br. Prefira vários commits durante o projeto invés de um unico commit no final.
+O candidato deve dar **fork** neste repositório e após o termino do desenvolvimento, reaslizar um **pull request** para análise do time. Em casos especiais o candidato tambem pode enviar o projeto compactado para hugo@popcode.com.br, eric@popcode.com.br e railan@popcode.com.br. Prefira vários commits durante o projeto invés de um unico commit no final.
 
 A documentação das APIs que serão utilizadas no desafio estão disponíveis nos links abaixo:
 
