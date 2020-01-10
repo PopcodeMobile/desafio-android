@@ -2,7 +2,9 @@ package br.com.starwarswiki
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import br.com.starwarswiki.services.SWServiceApi
+import br.com.starwarswiki.actions.ActionCreator
+import br.com.starwarswiki.models.AppState
+import com.github.raulccabreu.redukt.states.StateListener
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,19 +12,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        SWServiceApi.getPeople { person, error ->
-            println("person: $person")
-            println("person error: $error")
-        }
+        StarWarsApplication.redukt.listeners.add(object : StateListener<AppState> {
+            override fun hasChanged(newState: AppState, oldState: AppState): Boolean {
+                return newState != oldState
+            }
 
-        SWServiceApi.getPlanets { planet, error ->
-            println("planet: $planet")
-            println("planet error: $error")
-        }
+            override fun onChanged(state: AppState) {
+                println("App state: $state")
+            }
+        })
 
-        SWServiceApi.getSpecies { specie, error ->
-            println("specie: $specie")
-            println("specie error: $error")
-        }
+        ActionCreator.syncPeope()
+        ActionCreator.syncPlanets()
+        ActionCreator.syncSpecies()
     }
 }
