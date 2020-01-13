@@ -1,6 +1,8 @@
 package br.com.starwarswiki.actions
 
 object Actions {
+    const val LOAD_DATABASE = "LOAD_DATABASE"
+    const val LOADED_DATABASE = "LOADED_DATABASE"
 
     const val SYNC_PEOPLE = "SYNC_PEOPLE"
     const val SAVE_PEOPLE = "SAVE_PEOPLE"

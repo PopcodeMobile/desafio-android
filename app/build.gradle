@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -38,4 +37,10 @@ dependencies {
 
     implementation 'com.github.raulccabreu.redukt:core:0.1.3'
     implementation "com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.2"
+
+    implementation "io.objectbox:objectbox-android:$objectbox_version"
+    implementation "io.objectbox:objectbox-kotlin:$objectbox_version"
+    kapt "io.objectbox:objectbox-processor:$objectbox_version"
 }
+
+apply plugin: 'io.objectbox'

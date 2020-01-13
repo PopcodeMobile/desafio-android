@@ -1,9 +1,12 @@
 package br.com.starwarswiki.models
 
 import com.google.gson.annotations.SerializedName
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
 
+@Entity
 data class Person(
-    val id: Int = 0,
+    @Id(assignable = true) var _id: Long = 1,
     @SerializedName("name") val name: String = "",
     @SerializedName("height") val height: String = "",
     @SerializedName("mass") val mass: String = "",
