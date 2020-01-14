@@ -11,6 +11,6 @@ class SpeciesReducer : BaseAnnotatedReducer<AppState>() {
 
     @Reduce(Actions.SAVE_SPECIES)
     fun saveSpecies(state: AppState, payload: ServerResponse<Specie>): AppState {
-        return state.copy(species = payload)
+        return state.copy(species = payload.results)
     }
 }

@@ -11,6 +11,6 @@ class PlanetsReducer : BaseAnnotatedReducer<AppState>() {
 
     @Reduce(Actions.SAVE_PLANETS)
     fun savePlanets(state: AppState, payload: ServerResponse<Planet>): AppState {
-        return state.copy(planets = payload)
+        return state.copy(planets = payload.results)
     }
 }

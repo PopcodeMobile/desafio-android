@@ -11,6 +11,6 @@ class PeopleReducer : BaseAnnotatedReducer<AppState>() {
 
     @Reduce(Actions.SAVE_PEOPLE)
     fun savePeople(state: AppState, payload: ServerResponse<Person>): AppState {
-        return state.copy(people = payload)
+        return state.copy(people = payload.results)
     }
 }

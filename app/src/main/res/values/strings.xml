@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">StarWarsWiki</string>
+
+    <string name="name">Nome</string>
+    <string name="height">Altura</string>
+    <string name="mass">Massa</string>
+    <string name="hair_color">Cor do cabelo</string>
+    <string name="skin_color">Cor da pele</string>
+    <string name="eye_color">Cor dos olhos</string>
+    <string name="birth_year">Ano de nascimento</string>
+    <string name="gender">Gênero</string>
+    <string name="home_world">Planeta natal</string>
+    <string name="specie">espécie</string>
+
+    <string name="person_detail">Detalhes do Personagem</string>
 </resources>

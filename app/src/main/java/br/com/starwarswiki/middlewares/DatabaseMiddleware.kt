@@ -13,13 +13,9 @@ class DatabaseMiddleware : BaseAnnotatedMiddleware<AppState>() {
 
     @BeforeAction(Actions.LOAD_DATABASE)
     fun syncSWAPI(state: AppState, action: Action<*>) {
-        val people = ObjectBox.boxStore?.boxFor(ServerResponse::class.java)?.get(1)
-        val planets = ObjectBox.boxStore?.boxFor(ServerResponse::class.java)?.get(1)
-        val species = ObjectBox.boxStore?.boxFor(ServerResponse::class.java)?.get(1)
-
-        people as ServerResponse<Person>
-        planets as ServerResponse<Planet>
-        species as ServerResponse<Specie>
+        val people = ObjectBox.boxStore?.boxFor(Person::class.java)?.all
+        val planets = ObjectBox.boxStore?.boxFor(Planet::class.java)?.all
+        val species = ObjectBox.boxStore?.boxFor(Specie::class.java)?.all
 
         ActionCreator.loadedDatabase(
             AppState(
@@ -32,22 +28,19 @@ class DatabaseMiddleware : BaseAnnotatedMiddleware<AppState>() {
 
     @AfterAction(Actions.SAVE_PEOPLE)
     fun savePeople(state: AppState, action: Action<*>) {
-        val payload = action.payload ?: return
-        payload as ServerResponse<Person>
-        ObjectBox.boxStore?.boxFor(ServerResponse::class.java)?.put(payload)
+        val payload = action.payload as? ServerResponse<Person> ?: return
+        ObjectBox.boxStore?.boxFor(Person::class.java)?.put(payload.results)
     }
 
     @AfterAction(Actions.SAVE_PLANETS)
     fun savePlanets(state: AppState, action: Action<*>) {
-        val payload = action.payload ?: return
-        payload as ServerResponse<Planet>
-        ObjectBox.boxStore?.boxFor(ServerResponse::class.java)?.put(payload)
+        val payload = action.payload as? ServerResponse<Planet> ?: return
+        ObjectBox.boxStore?.boxFor(Planet::class.java)?.put(payload.results)
     }
 
     @AfterAction(Actions.SAVE_SPECIES)
     fun saveSpecies(state: AppState, action: Action<*>) {
-        val payload = action.payload ?: return
-        payload as ServerResponse<Specie>
-        ObjectBox.boxStore?.boxFor(ServerResponse::class.java)?.put(payload)
+        val payload = action.payload as? ServerResponse<Specie> ?: return
+        ObjectBox.boxStore?.boxFor(Specie::class.java)?.put(payload.results)
     }
 }
