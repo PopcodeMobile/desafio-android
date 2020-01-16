@@ -2,6 +2,7 @@ package br.com.starwarswiki
 
 import android.app.Application
 import android.content.Context
+import br.com.starwarswiki.database.ObjectBox
 import br.com.starwarswiki.middlewares.DatabaseMiddleware
 import br.com.starwarswiki.middlewares.PeopleMiddleware
 import br.com.starwarswiki.middlewares.PlanetsMiddleware
@@ -45,6 +46,7 @@ class StarWarsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        ObjectBox.build(this)
         initRedukt(this, AppState(stateStarted = false)).let {
             redukt = it
         }
