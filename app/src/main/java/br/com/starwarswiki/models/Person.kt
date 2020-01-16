@@ -17,6 +17,7 @@ data class Person(
     @SerializedName("eye_color") val eye_color: String = "",
     @SerializedName("birth_year") val birth_year: String = "",
     @SerializedName("gender") val gender: String = "",
+    val isFavorite: Boolean = false,
     @SerializedName("homeworld") val homeworld: String = "",
 
     @Convert(converter = ListStringConverter::class, dbType = String::class)

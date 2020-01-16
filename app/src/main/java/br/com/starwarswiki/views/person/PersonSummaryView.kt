@@ -17,8 +17,9 @@ class PersonSummaryView(context: Context) : BasePeopleView(context) {
         val height = person.height
         val gender = person.gender
         val mass = person.mass
+        val isFavorite = person.isFavorite
 
-        cardLayout(context, "$name", mapOf(
+        cardLayout(context, "$name", isFavorite, mapOf(
             R.string.height to "$height cm",
             R.string.gender to "$gender",
             R.string.mass to "$mass kg"

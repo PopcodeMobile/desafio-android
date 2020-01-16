@@ -6,5 +6,7 @@ data class AppState(
     val species: List<Specie>? = null,
 
     val stateStarted: Boolean = true
-)
+) {
+    fun synced() = people?.isNotEmpty()
+}
 

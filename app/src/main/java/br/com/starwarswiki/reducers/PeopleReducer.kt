@@ -13,4 +13,33 @@ class PeopleReducer : BaseAnnotatedReducer<AppState>() {
     fun savePeople(state: AppState, payload: ServerResponse<Person>): AppState {
         return state.copy(people = payload.results)
     }
+
+    @Reduce(Actions.ADD_FAVORITE)
+    fun addFavorite(state: AppState, name: String): AppState {
+        val newPerson = state.people
+            ?.firstOrNull { it.name == name }
+            ?.copy(isFavorite = true) ?: return state
+        return setPeople(state, newPerson)
+    }
+
+    @Reduce(Actions.REMOVE_FAVORITE)
+    fun removeFavorite(state: AppState, name: String): AppState {
+        val newPerson = state.people
+            ?.firstOrNull { it.name == name }
+            ?.copy(isFavorite = false) ?: return state
+        return setPeople(state, newPerson)
+    }
+
+    private fun setPeople(state: AppState, newPerson: Person): AppState {
+        val peopleMap = state.people
+            ?.map { it.name to it }
+            ?.toMap()
+            ?.toMutableMap() ?: return state
+
+        peopleMap[newPerson.name] = newPerson
+
+        val newPeople = peopleMap.values.toList()
+
+        return state.copy(people = newPeople)
+    }
 }

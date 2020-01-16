@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:6056129450096918648",
-      "lastPropertyId": "11:4728739495576867369",
+      "lastPropertyId": "12:1500285067632061258",
       "name": "Person",
       "properties": [
         {
@@ -51,6 +51,10 @@
         {
           "id": "11:4728739495576867369",
           "name": "species"
+        },
+        {
+          "id": "12:1500285067632061258",
+          "name": "isFavorite"
         }
       ],
       "relations": []

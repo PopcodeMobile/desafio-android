@@ -12,17 +12,14 @@ import trikita.anvil.BaseDSL.sip
 import trikita.anvil.BaseDSL.text
 import trikita.anvil.BaseDSL.textSize
 import trikita.anvil.BaseDSL.weight
-import trikita.anvil.DSL.MATCH
-import trikita.anvil.DSL.linearLayout
-import trikita.anvil.DSL.orientation
-import trikita.anvil.DSL.size
-import trikita.anvil.DSL.textView
-import trikita.anvil.DSL.typeface
-import trikita.anvil.DSL.weightSum
+import trikita.anvil.DSL.*
 import trikita.anvil.cardview.v7.CardViewv7DSL.cardView
+import br.com.starwarswiki.R
+import br.com.starwarswiki.actions.ActionCreator
+import trikita.anvil.BaseDSL
 
 object CardLayout {
-    fun cardLayout(context: Context, title: String, content: Map<Int, String>) {
+    fun cardLayout(context: Context, title: String, isFavorite: Boolean, content: Map<Int, String>) {
         cardView {
             size(MATCH, WRAP)
             margin(dip(8))
@@ -31,18 +28,36 @@ object CardLayout {
                 orientation(VERTICAL)
                 padding(dip(8))
 
-                cardTitle(title)
+                cardTitle(title, isFavorite)
                 content.forEach { renderCardLine(context.getString(it.key), it.value) }
             }
         }
     }
 
-    fun cardTitle(title: String) {
-        textView {
-            text(title)
-            textSize(sip(24f))
-            margin(0, 0, 0, dip(16))
-            typeface(null, Typeface.BOLD)
+    private fun cardTitle(title: String, isFavorite: Boolean) {
+        relativeLayout {
+            size(MATCH, WRAP)
+            orientation(HORIZONTAL)
+            margin(0, 0, 0, dip(6))
+
+            textView {
+                text(title)
+                BaseDSL.alignParentLeft()
+                textSize(sip(24f))
+                margin(0, 0, 0, dip(16))
+                typeface(null, Typeface.BOLD)
+            }
+
+//            imageView {
+//                size(50, 50)
+//                BaseDSL.alignParentRight()
+//                backgroundResource(getIconResource(isFavorite))
+//                init {
+//                    onClick {
+//                        toggleFavorite(title, isFavorite)
+//                    }
+//                }
+//            }
         }
     }
 
@@ -66,5 +81,19 @@ object CardLayout {
             textSize(sip(14f))
             if (isBold) typeface(null, Typeface.BOLD)
         }
+    }
+
+    private fun getIconResource(isFavorite: Boolean): Int {
+        return if (isFavorite)
+            R.drawable.baseline_favorite_24
+        else
+            R.drawable.baseline_favorite_border_24
+    }
+
+    private fun toggleFavorite(title: String, isFavorite: Boolean) {
+        if (isFavorite)
+            ActionCreator.removeFavorite(title)
+        else
+            ActionCreator.addFavorite(title)
     }
 }

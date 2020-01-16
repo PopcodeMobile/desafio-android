@@ -4,7 +4,6 @@ package br.com.starwarswiki.views.person
 import android.content.Context
 import br.com.starwarswiki.models.AppState
 import br.com.starwarswiki.models.Person
-import br.com.starwarswiki.models.ServerResponse
 import br.com.starwarswiki.views.ReactRenderableView
 import trikita.anvil.Anvil
 
@@ -18,10 +17,14 @@ abstract class BasePeopleView(context: Context): ReactRenderableView(context) {
     }
 
     override fun hasChanged(newState: AppState, oldState: AppState): Boolean {
-        return newState.people != oldState.people
+        return newState.people?.firstOrNull { it.name == person?.name } !=
+                oldState.people?.firstOrNull { it.name == person?.name }
     }
 
     override fun onChanged(state: AppState) {
-        Anvil.render(this)
+        state.people?.firstOrNull { it.name == person?.name }?.let {
+            this.person = it
+            Anvil.render(this)
+        }
     }
 }

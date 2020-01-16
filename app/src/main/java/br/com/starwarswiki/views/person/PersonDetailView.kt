@@ -26,10 +26,10 @@ class PersonDetailView(context: Context) : BasePeopleView(context) {
         val birth_year = person.birth_year
         val gender = person.gender
         val homeWorld = getHomeWorld()
-        val species = person.species.toString()
-        val teste = getSpecies()
+        val species = getSpecies()
+        val isfavorite = person.isFavorite
 
-        cardLayout(context, name, mapOf(
+        cardLayout(context, name, isfavorite, mapOf(
             R.string.height to "$height cm",
             R.string.mass to "$mass kg",
             R.string.hair_color to hair_color,
@@ -57,7 +57,7 @@ class PersonDetailView(context: Context) : BasePeopleView(context) {
         val nameList: MutableList<String?> = mutableListOf()
 
         speciesList.forEach { specie ->
-            nameList.add(specie?.name)
+            nameList.add(specie?.name ?: "")
         }
 
         return nameList.toString()

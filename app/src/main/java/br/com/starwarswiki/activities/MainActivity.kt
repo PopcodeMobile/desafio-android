@@ -15,12 +15,14 @@ class MainActivity : ReactiveActivity() {
     }
 
     override fun hasChanged(newState: AppState, oldState: AppState): Boolean {
-        return newState.stateStarted != oldState.stateStarted
+        return newState.stateStarted != oldState.stateStarted ||
+                newState.synced() != oldState.synced()
     }
 
     override fun onChanged(state: AppState) {
-        if (state.stateStarted)
+        if (state.stateStarted && state.synced() == false) {
             syncContent()
+        }
     }
 
     private fun syncContent() {

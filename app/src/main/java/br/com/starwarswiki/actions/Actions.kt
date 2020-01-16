@@ -12,4 +12,8 @@ object Actions {
 
     const val SYNC_SPECIES = "SYNC_SPECIES"
     const val SAVE_SPECIES = "SAVE_SPECIES"
+
+    const val ADD_FAVORITE = "ADD_FAVORITE"
+    const val REMOVE_FAVORITE = "REMOVE_FAVORITE"
+
 }

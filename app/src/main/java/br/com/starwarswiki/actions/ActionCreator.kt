@@ -1,8 +1,11 @@
 package br.com.starwarswiki.actions
 
+import android.service.voice.AlwaysOnHotwordDetector
 import br.com.starwarswiki.StarWarsApplication
+import br.com.starwarswiki.actions.Actions.ADD_FAVORITE
 import br.com.starwarswiki.actions.Actions.LOADED_DATABASE
 import br.com.starwarswiki.actions.Actions.LOAD_DATABASE
+import br.com.starwarswiki.actions.Actions.REMOVE_FAVORITE
 import br.com.starwarswiki.actions.Actions.SAVE_PEOPLE
 import br.com.starwarswiki.actions.Actions.SAVE_PLANETS
 import br.com.starwarswiki.actions.Actions.SAVE_SPECIES
@@ -44,6 +47,14 @@ object ActionCreator {
 
     fun saveResponseSpecie(response: ServerResponse<Specie>) {
         asyncDispatch(Action(SAVE_SPECIES, response))
+    }
+
+    fun addFavorite(name: String) {
+        asyncDispatch(Action(ADD_FAVORITE, name))
+    }
+
+    fun removeFavorite(name: String) {
+        asyncDispatch(Action(REMOVE_FAVORITE, name))
     }
 
     private fun asyncDispatch(action: Action<*>) {

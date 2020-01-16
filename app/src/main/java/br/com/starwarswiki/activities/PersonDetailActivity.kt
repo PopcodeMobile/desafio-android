@@ -2,6 +2,7 @@ package br.com.starwarswiki.activities
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import br.com.starwarswiki.models.AppState
 import br.com.starwarswiki.views.PersonDetailsLayout
@@ -27,5 +28,8 @@ class PersonDetailActivity : ReactiveActivity() {
         return newState != oldState
     }
 
-    override fun onChanged(state: AppState) { }
+    override fun onChanged(state: AppState) {
+        Log.d("testFavorite", "PersonDetailActivity onChanged()")
+        this@PersonDetailActivity.render()
+    }
 }
