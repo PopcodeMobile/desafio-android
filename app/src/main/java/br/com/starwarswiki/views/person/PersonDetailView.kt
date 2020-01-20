@@ -3,7 +3,6 @@ package br.com.starwarswiki.views.person
 import android.content.Context
 import br.com.starwarswiki.R
 import br.com.starwarswiki.StarWarsApplication
-import br.com.starwarswiki.models.Specie
 import br.com.starwarswiki.views.CardLayout.cardLayout
 import br.com.starwarswiki.views.dslAddView
 
@@ -25,8 +24,8 @@ class PersonDetailView(context: Context) : BasePeopleView(context) {
         val eye_color = person.eye_color
         val birth_year = person.birth_year
         val gender = person.gender
-        val homeWorld = getHomeWorld()
-        val species = getSpecies()
+        val homeWorld = state.getHomeWorld(state, person)
+        val species = state.getSpecies(state, person)
         val isfavorite = person.isFavorite
 
         cardLayout(context, name, isfavorite, mapOf(
@@ -41,26 +40,4 @@ class PersonDetailView(context: Context) : BasePeopleView(context) {
             R.string.specie to species
         ))
     }
-
-    private fun getHomeWorld(): String {
-        val homeWorld = state.planets?.firstOrNull { it.url == person?.homeworld }
-        return homeWorld?.name ?: ""
-    }
-
-    private fun getSpecies(): String {
-        val speciesList: MutableList<Specie?> = mutableListOf()
-
-        person?.species?.forEach { item ->
-            speciesList.add(state.species?.firstOrNull {it.url == item})
-        }
-
-        val nameList: MutableList<String?> = mutableListOf()
-
-        speciesList.forEach { specie ->
-            nameList.add(specie?.name ?: "")
-        }
-
-        return nameList.toString()
-    }
-
 }

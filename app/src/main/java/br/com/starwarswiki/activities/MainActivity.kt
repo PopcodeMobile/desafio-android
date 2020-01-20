@@ -26,7 +26,7 @@ class MainActivity : ReactiveActivity() {
     }
 
     private fun syncContent() {
-        ActionCreator.syncPeope()
+        ActionCreator.syncPeople()
         ActionCreator.syncPlanets()
         ActionCreator.syncSpecies()
     }

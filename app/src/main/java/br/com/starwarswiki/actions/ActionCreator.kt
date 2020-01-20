@@ -3,12 +3,15 @@ package br.com.starwarswiki.actions
 import android.service.voice.AlwaysOnHotwordDetector
 import br.com.starwarswiki.StarWarsApplication
 import br.com.starwarswiki.actions.Actions.ADD_FAVORITE
+import br.com.starwarswiki.actions.Actions.FILTER_BY_FAVORITE
 import br.com.starwarswiki.actions.Actions.LOADED_DATABASE
 import br.com.starwarswiki.actions.Actions.LOAD_DATABASE
 import br.com.starwarswiki.actions.Actions.REMOVE_FAVORITE
+import br.com.starwarswiki.actions.Actions.RESULT
 import br.com.starwarswiki.actions.Actions.SAVE_PEOPLE
 import br.com.starwarswiki.actions.Actions.SAVE_PLANETS
 import br.com.starwarswiki.actions.Actions.SAVE_SPECIES
+import br.com.starwarswiki.actions.Actions.SEARCH_BY_NAME
 import br.com.starwarswiki.actions.Actions.SYNC_PEOPLE
 import br.com.starwarswiki.actions.Actions.SYNC_PLANETS
 import br.com.starwarswiki.actions.Actions.SYNC_SPECIES
@@ -25,7 +28,7 @@ object ActionCreator {
         asyncDispatch(Action<Any>(LOADED_DATABASE, state))
     }
 
-    fun syncPeope() {
+    fun syncPeople() {
         asyncDispatch(Action<Any>(SYNC_PEOPLE))
     }
 
@@ -59,5 +62,17 @@ object ActionCreator {
 
     private fun asyncDispatch(action: Action<*>) {
         StarWarsApplication.redukt.dispatch(action, true)
+    }
+
+    fun filterByFavorite() {
+        asyncDispatch(Action(FILTER_BY_FAVORITE, true))
+    }
+
+    fun searchByName(payload: String) {
+        asyncDispatch(Action(SEARCH_BY_NAME, payload))
+    }
+
+    fun result(state: List<Person>) {
+        asyncDispatch(Action(RESULT, state))
     }
 }

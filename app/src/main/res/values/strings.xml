@@ -10,7 +10,7 @@
     <string name="birth_year">Ano de nascimento</string>
     <string name="gender">Gênero</string>
     <string name="home_world">Planeta natal</string>
-    <string name="specie">espécie</string>
+    <string name="specie">Espécie</string>
 
     <string name="person_detail">Detalhes do Personagem</string>
 </resources>

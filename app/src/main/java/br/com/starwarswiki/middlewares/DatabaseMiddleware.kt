@@ -3,6 +3,7 @@ package br.com.starwarswiki.middlewares
 import br.com.starwarswiki.actions.ActionCreator
 import br.com.starwarswiki.actions.Actions
 import br.com.starwarswiki.database.ObjectBox
+import br.com.starwarswiki.database.Queries
 import br.com.starwarswiki.models.*
 import com.github.raulccabreu.redukt.actions.Action
 import com.github.raulccabreu.redukt.middlewares.AfterAction
@@ -42,5 +43,18 @@ class DatabaseMiddleware : BaseAnnotatedMiddleware<AppState>() {
     fun saveSpecies(state: AppState, action: Action<*>) {
         val payload = action.payload as? ServerResponse<Specie> ?: return
         ObjectBox.boxStore?.boxFor(Specie::class.java)?.put(payload.results)
+    }
+
+    @AfterAction(Actions.FILTER_BY_FAVORITE)
+    fun filterByFavorite(state: AppState, action: Action<*>) {
+
+        ActionCreator.result(Queries.filterPepleByFavorite())
+    }
+
+    @AfterAction(Actions.SEARCH_BY_NAME)
+    fun searchByName(state: AppState, action: Action<*>) {
+        val name = action.payload as String
+
+        ActionCreator.result(Queries.searchPeopleByName(name))
     }
 }

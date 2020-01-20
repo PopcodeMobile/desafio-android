@@ -13,6 +13,11 @@ class PeopleReducer : BaseAnnotatedReducer<AppState>() {
         return state.copy(people = payload)
     }
 
+    @Reduce(Actions.RESULT)
+    fun filterPeople(state: AppState, payload: List<Person>): AppState {
+        return state.copy(people = payload)
+    }
+
     @Reduce(Actions.ADD_FAVORITE)
     fun addFavorite(state: AppState, name: String): AppState {
         val newPerson = state.people
