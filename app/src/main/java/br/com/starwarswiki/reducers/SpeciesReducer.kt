@@ -10,7 +10,7 @@ import com.github.raulccabreu.redukt.reducers.BaseAnnotatedReducer
 class SpeciesReducer : BaseAnnotatedReducer<AppState>() {
 
     @Reduce(Actions.SAVE_SPECIES)
-    fun saveSpecies(state: AppState, payload: ServerResponse<Specie>): AppState {
-        return state.copy(species = payload.results)
+    fun saveSpecies(state: AppState, payload: List<Specie>): AppState {
+        return state.copy(species = payload)
     }
 }

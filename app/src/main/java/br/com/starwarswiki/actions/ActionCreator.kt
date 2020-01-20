@@ -37,15 +37,15 @@ object ActionCreator {
         asyncDispatch(Action<Any>(SYNC_SPECIES))
     }
 
-    fun saveResponsePerson(response: ServerResponse<Person>) {
+    fun saveResponsePerson(response: List<Person>) {
         asyncDispatch(Action(SAVE_PEOPLE, response))
     }
 
-    fun saveResponsePlanet(response: ServerResponse<Planet>) {
+    fun saveResponsePlanet(response: List<Planet>) {
         asyncDispatch(Action(SAVE_PLANETS, response))
     }
 
-    fun saveResponseSpecie(response: ServerResponse<Specie>) {
+    fun saveResponseSpecie(response: List<Specie>) {
         asyncDispatch(Action(SAVE_SPECIES, response))
     }
 
