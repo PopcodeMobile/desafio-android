@@ -17,9 +17,4 @@ object Actions {
 
     const val ADD_FAVORITE = "ADD_FAVORITE"
     const val REMOVE_FAVORITE = "REMOVE_FAVORITE"
-
-    const val FILTER_BY_FAVORITE = "FILTER_BY_FAVORITE"
-    const val SEARCH_BY_NAME = "SEARCH_BY_NAME"
-    const val RESULT = "FILTER_RESULT"
-
 }

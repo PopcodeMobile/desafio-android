@@ -12,35 +12,34 @@ import com.github.raulccabreu.redukt.middlewares.BeforeAction
 
 class PeopleMiddleware(context: Context) : NetworkOnMiddleware(context) {
 
-    companion object {
-        const val maxIdToRequest = 9
-    }
 
     @BeforeAction(Actions.SYNC_PEOPLE)
     fun syncPeople(state: AppState, action: Action<*>) {
-        val map: MutableMap<String, Person> = mutableMapOf()
-        val nPageToRequest = 1
-
-        requestPeople(nPageToRequest) { response ->
-            if (response != null) map.putAll(response.results.map { it.name to it })
-            ActionCreator.saveResponsePerson(map)
-        }
+        requestPeople(1)
     }
 
-    private fun requestPeople(pageId: Int, onFinishRequest: (
-        (people: ServerResponse<Person>?) -> Unit)) {
-
-        println("logd started sync")
+    private fun requestPeople(pageId: Int) {
+        println("load started sync")
         ActionCreator.updateSyncStatus(true)
 
-        getPeople(pageId) { responsePeople, _ ->
-            onFinishRequest.invoke(responsePeople)
-            if(pageId < maxIdToRequest) {
-                requestPeople(pageId+1, onFinishRequest)
+        getPeople(pageId) { response, _ ->
+            savePeople(response)
+            if (response?.next != null) {
+                requestPeople(pageId + 1)
             }
         }
 
         ActionCreator.updateSyncStatus(false)
-        println("logd finished sync")
+        println("load finished sync")
     }
+
+    private fun savePeople(response: ServerResponse<Person>?) {
+        response ?: return
+
+        val map: MutableMap<String, Person> = mutableMapOf()
+        map.putAll(response.results.map { it.name to it }.toMap())
+        ActionCreator.saveResponsePerson(map)
+    }
+
+
 }

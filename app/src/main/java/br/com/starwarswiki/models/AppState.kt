@@ -14,10 +14,16 @@ data class AppState(
         var specie: Specie? = null
 
         person?.species?.forEach { item ->
-            specie = state.species.values.firstOrNull {it.url == item}
+            specie = state.species.values.firstOrNull { it.url == item }
         }
 
         return specie?.name ?: ""
     }
+
+    fun search(state: AppState, name: String? = null): List<Person>? =
+        name?.let {
+            state.people.filter { it.key.toLowerCase().contains(name.toLowerCase().toRegex()) }
+        }
+            ?.values?.toList()
 }
 

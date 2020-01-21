@@ -3,8 +3,10 @@ package br.com.starwarswiki.middlewares
 import br.com.starwarswiki.actions.ActionCreator
 import br.com.starwarswiki.actions.Actions
 import br.com.starwarswiki.database.ObjectBox
-import br.com.starwarswiki.database.Queries
-import br.com.starwarswiki.models.*
+import br.com.starwarswiki.models.AppState
+import br.com.starwarswiki.models.Person
+import br.com.starwarswiki.models.Planet
+import br.com.starwarswiki.models.Specie
 import com.github.raulccabreu.redukt.actions.Action
 import com.github.raulccabreu.redukt.middlewares.AfterAction
 import com.github.raulccabreu.redukt.middlewares.BaseAnnotatedMiddleware
@@ -33,32 +35,29 @@ class DatabaseMiddleware : BaseAnnotatedMiddleware<AppState>() {
 
     @AfterAction(Actions.SAVE_PEOPLE)
     fun savePeople(state: AppState, action: Action<*>) {
-        val payload = action.payload as? ServerResponse<Person> ?: return
-        ObjectBox.boxStore?.boxFor(Person::class.java)?.put(payload.results)
+        val payload = action.payload as? Map<String, Person> ?: return
+        ObjectBox.boxStore?.boxFor(Person::class.java)?.put(payload.values)
     }
 
     @AfterAction(Actions.SAVE_PLANETS)
     fun savePlanets(state: AppState, action: Action<*>) {
-        val payload = action.payload as? ServerResponse<Planet> ?: return
-        ObjectBox.boxStore?.boxFor(Planet::class.java)?.put(payload.results)
+        val payload = action.payload as? Map<String, Planet> ?: return
+        ObjectBox.boxStore?.boxFor(Planet::class.java)?.put(payload.values)
     }
 
     @AfterAction(Actions.SAVE_SPECIES)
     fun saveSpecies(state: AppState, action: Action<*>) {
-        val payload = action.payload as? ServerResponse<Specie> ?: return
-        ObjectBox.boxStore?.boxFor(Specie::class.java)?.put(payload.results)
+        val payload = action.payload as? Map<String, Specie> ?: return
+        ObjectBox.boxStore?.boxFor(Specie::class.java)?.put(payload.values)
     }
 
-    @AfterAction(Actions.FILTER_BY_FAVORITE)
-    fun filterByFavorite(state: AppState, action: Action<*>) {
-
-        ActionCreator.result(Queries.filterPepleByFavorite())
+    @AfterAction(Actions.ADD_FAVORITE)
+    fun addFavorite(state: AppState, action: Action<*>) {
+        ObjectBox.boxStore?.boxFor(Person::class.java)?.put(state.people.values)
     }
 
-    @AfterAction(Actions.SEARCH_BY_NAME)
-    fun searchByName(state: AppState, action: Action<*>) {
-        val name = action.payload as String
-
-        ActionCreator.result(Queries.searchPeopleByName(name))
+    @AfterAction(Actions.REMOVE_FAVORITE)
+    fun removeFavorite(state: AppState, action: Action<*>) {
+        ObjectBox.boxStore?.boxFor(Person::class.java)?.put(state.people.values)
     }
 }

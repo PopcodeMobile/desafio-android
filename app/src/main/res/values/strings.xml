@@ -13,4 +13,6 @@
     <string name="specie">Espécie</string>
 
     <string name="person_detail">Detalhes do Personagem</string>
+    <string name="Favorite_screen">Personagens Favoritos</string>
+    <string name="Favorite">Favoritos</string>
 </resources>

@@ -10,7 +10,7 @@ class PeopleReducer : BaseAnnotatedReducer<AppState>() {
 
     @Reduce(Actions.SAVE_PEOPLE)
     fun savePeople(state: AppState, people: Map<String, Person>): AppState {
-        return state.copy(people = LinkedHashMap(people))
+        return state.copy(people = state.people.plus(people))
     }
 
     @Reduce(Actions.ADD_FAVORITE)
