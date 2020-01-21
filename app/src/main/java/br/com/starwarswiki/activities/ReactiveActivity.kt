@@ -1,7 +1,6 @@
 package br.com.starwarswiki.activities
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.com.starwarswiki.StarWarsApplication
 import br.com.starwarswiki.anvil.FrameLayoutComponent

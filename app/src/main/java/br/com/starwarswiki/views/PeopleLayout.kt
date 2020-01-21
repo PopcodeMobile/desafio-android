@@ -9,7 +9,6 @@ import br.com.starwarswiki.models.Person
 import br.com.starwarswiki.views.person.personSummaryView
 import br.com.starwarswiki.R
 import br.com.starwarswiki.StarWarsApplication
-import br.com.starwarswiki.actions.ActionCreator
 import br.com.starwarswiki.anvil.ReactiveFrameComponent
 import trikita.anvil.BaseDSL
 import trikita.anvil.BaseDSL.MATCH
@@ -52,13 +51,11 @@ class PeopleLayout(context: Context): ReactiveFrameComponent(context){
                 }
             }
 
-            renderfind()
+            renderFindComponent()
         }
     }
 
-
-
-    fun renderfind() {
+    fun renderFindComponent() {
         linearLayout {
             id(1)
             alignParentBottom()
