@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.com.starwarswiki.StarWarsApplication
+import br.com.starwarswiki.anvil.FrameLayoutComponent
 import br.com.starwarswiki.models.AppState
 import com.github.raulccabreu.redukt.states.StateListener
 
@@ -11,9 +12,13 @@ abstract class ReactiveActivity: AppCompatActivity(), StateListener<AppState> {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(render())
 
         initialState()
+        setContentView(object: FrameLayoutComponent(this ) {
+            override fun view() {
+                content()
+            }
+        })
     }
 
     override fun onStart() {
@@ -28,6 +33,5 @@ abstract class ReactiveActivity: AppCompatActivity(), StateListener<AppState> {
 
     abstract fun initialState()
 
-    abstract fun render(): View
-
+    abstract fun content()
 }

@@ -1,6 +1,5 @@
 package br.com.starwarswiki.actions
 
-import android.service.voice.AlwaysOnHotwordDetector
 import br.com.starwarswiki.StarWarsApplication
 import br.com.starwarswiki.actions.Actions.ADD_FAVORITE
 import br.com.starwarswiki.actions.Actions.FILTER_BY_FAVORITE
@@ -15,7 +14,11 @@ import br.com.starwarswiki.actions.Actions.SEARCH_BY_NAME
 import br.com.starwarswiki.actions.Actions.SYNC_PEOPLE
 import br.com.starwarswiki.actions.Actions.SYNC_PLANETS
 import br.com.starwarswiki.actions.Actions.SYNC_SPECIES
-import br.com.starwarswiki.models.*
+import br.com.starwarswiki.actions.Actions.SYNC_STARTED
+import br.com.starwarswiki.models.AppState
+import br.com.starwarswiki.models.Person
+import br.com.starwarswiki.models.Planet
+import br.com.starwarswiki.models.Specie
 import com.github.raulccabreu.redukt.actions.Action
 
 object ActionCreator {
@@ -26,6 +29,10 @@ object ActionCreator {
 
     fun loadedDatabase(state: AppState) {
         asyncDispatch(Action<Any>(LOADED_DATABASE, state))
+    }
+
+    fun updateSyncStatus(status: Boolean) {
+        asyncDispatch(Action(SYNC_STARTED, status))
     }
 
     fun syncPeople() {
@@ -40,15 +47,15 @@ object ActionCreator {
         asyncDispatch(Action<Any>(SYNC_SPECIES))
     }
 
-    fun saveResponsePerson(response: List<Person>) {
+    fun saveResponsePerson(response: Map<String, Person>) {
         asyncDispatch(Action(SAVE_PEOPLE, response))
     }
 
-    fun saveResponsePlanet(response: List<Planet>) {
+    fun saveResponsePlanet(response: Map<String, Planet>) {
         asyncDispatch(Action(SAVE_PLANETS, response))
     }
 
-    fun saveResponseSpecie(response: List<Specie>) {
+    fun saveResponseSpecie(response: Map<String, Specie>) {
         asyncDispatch(Action(SAVE_SPECIES, response))
     }
 

@@ -2,10 +2,9 @@ package br.com.starwarswiki.activities
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import android.view.View
+import br.com.starwarswiki.StarWarsApplication
 import br.com.starwarswiki.models.AppState
-import br.com.starwarswiki.views.PersonDetailsLayout
+import br.com.starwarswiki.views.personDetailLayout
 
 class PersonDetailActivity : ReactiveActivity() {
 
@@ -17,19 +16,18 @@ class PersonDetailActivity : ReactiveActivity() {
         }
     }
 
-    override fun render(): View {
+    override fun content() {
+        val state = StarWarsApplication.redukt.state
         val name = intent.extras?.getString("person_name") ?: ""
-        return PersonDetailsLayout(this, name)
+        val person = state.people.values.firstOrNull { it.name == name } ?: return
+
+        println("load person detail activity) content ran")
+        personDetailLayout { person(person) }
     }
 
     override fun initialState() { }
 
-    override fun hasChanged(newState: AppState, oldState: AppState): Boolean {
-        return newState != oldState
-    }
+    override fun hasChanged(newState: AppState, oldState: AppState) = false
 
-    override fun onChanged(state: AppState) {
-        Log.d("testFavorite", "PersonDetailActivity onChanged()")
-        this@PersonDetailActivity.render()
-    }
+    override fun onChanged(state: AppState) { }
 }

@@ -13,10 +13,10 @@ class PlanetsMiddleware(context: Context) : NetworkOnMiddleware(context) {
 
     @BeforeAction(Actions.SYNC_PLANETS)
     fun synPlanets(state: AppState, action: Action<*>) {
-        val list: MutableList<Planet> = mutableListOf()
-        getPlanets() { planets, _ ->
-            if (planets != null) list.addAll(planets.results)
+        val map: MutableMap<String, Planet> = mutableMapOf()
+        getPlanets { planets, _ ->
+            if (planets != null) map.putAll(planets.results.map { it.name to it })
         }
-        ActionCreator.saveResponsePlanet(list)
+        ActionCreator.saveResponsePlanet(map)
     }
 }

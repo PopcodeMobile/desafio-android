@@ -7,14 +7,18 @@ import br.com.starwarswiki.models.Person
 import br.com.starwarswiki.views.person.personSummaryView
 import br.com.starwarswiki.R
 import br.com.starwarswiki.actions.ActionCreator
-import trikita.anvil.Anvil
+import br.com.starwarswiki.anvil.ReactiveFrameComponent
 import trikita.anvil.BaseDSL
 import trikita.anvil.BaseDSL.MATCH
 import trikita.anvil.BaseDSL.size
 import trikita.anvil.DSL.*
 import trikita.anvil.RenderableAdapter
 
-class PeopleLayout(context: Context): ReactRenderableView(context){
+inline fun peopleLayout(crossinline func: PeopleLayout.() -> Unit) {
+    dslAddView(func)
+}
+
+class PeopleLayout(context: Context): ReactiveFrameComponent(context){
 
     private var people = listOf<Person>()
 
@@ -62,12 +66,12 @@ class PeopleLayout(context: Context): ReactRenderableView(context){
     }
 
     override fun hasChanged(newState: AppState, oldState: AppState): Boolean {
-        return newState.people?.map { it.name } != oldState.people?.map { it.name }
+        return newState.people != oldState.people
     }
 
     override fun onChanged(state: AppState) {
-        people = state.people ?: listOf()
-        Anvil.render()
+        people = state.people.values.toList()
+        render()
     }
 
 }

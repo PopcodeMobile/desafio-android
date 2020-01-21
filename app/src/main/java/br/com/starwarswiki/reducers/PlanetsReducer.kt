@@ -10,7 +10,7 @@ import com.github.raulccabreu.redukt.reducers.BaseAnnotatedReducer
 class PlanetsReducer : BaseAnnotatedReducer<AppState>() {
 
     @Reduce(Actions.SAVE_PLANETS)
-    fun savePlanets(state: AppState, payload: List<Planet>): AppState {
+    fun savePlanets(state: AppState, payload: Map<String, Planet>): AppState {
         return state.copy(planets = payload)
     }
 }

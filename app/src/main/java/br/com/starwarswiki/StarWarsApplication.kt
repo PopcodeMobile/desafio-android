@@ -8,10 +8,7 @@ import br.com.starwarswiki.middlewares.PeopleMiddleware
 import br.com.starwarswiki.middlewares.PlanetsMiddleware
 import br.com.starwarswiki.middlewares.SpeciesMiddleware
 import br.com.starwarswiki.models.AppState
-import br.com.starwarswiki.reducers.DatabaseReducer
-import br.com.starwarswiki.reducers.PeopleReducer
-import br.com.starwarswiki.reducers.PlanetsReducer
-import br.com.starwarswiki.reducers.SpeciesReducer
+import br.com.starwarswiki.reducers.*
 import com.github.raulccabreu.redukt.Redukt
 
 class StarWarsApplication : Application() {
@@ -34,6 +31,7 @@ class StarWarsApplication : Application() {
         redukt.reducers["planets_reducer"] = PlanetsReducer()
         redukt.reducers["species_reducer"] = SpeciesReducer()
         redukt.reducers["database_reducer"] = DatabaseReducer()
+        redukt.reducers["sync_reducer"] = SyncReducer()
     }
 
     private fun addMiddlewares(context: Context, redukt: Redukt<AppState>) {
@@ -47,7 +45,7 @@ class StarWarsApplication : Application() {
         super.onCreate()
 
         ObjectBox.build(this)
-        initRedukt(this, AppState(stateStarted = false)).let {
+        initRedukt(this, AppState(syncRunning = false)).let {
             redukt = it
         }
     }

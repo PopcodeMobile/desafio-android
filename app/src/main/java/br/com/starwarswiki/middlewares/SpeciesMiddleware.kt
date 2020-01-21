@@ -13,10 +13,10 @@ class SpeciesMiddleware(context: Context) : NetworkOnMiddleware(context) {
 
     @BeforeAction(Actions.SYNC_SPECIES)
     fun synSpecies(state: AppState, action: Action<*>) {
-        val list: MutableList<Specie> = mutableListOf()
+        val map: MutableMap<String, Specie> = mutableMapOf()
         getSpecies { species, _ ->
-            if (species != null) list.addAll(species.results)
+            if (species != null) map.putAll(species.results.map { it.name to it })
         }
-        ActionCreator.saveResponseSpecie(list)
+        ActionCreator.saveResponseSpecie(map)
     }
 }

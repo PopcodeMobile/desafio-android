@@ -3,7 +3,7 @@ package br.com.starwarswiki.views.person
 import android.content.Context
 import br.com.starwarswiki.R
 import br.com.starwarswiki.StarWarsApplication
-import br.com.starwarswiki.views.CardLayout.cardLayout
+import br.com.starwarswiki.views.cardLayout
 import br.com.starwarswiki.views.dslAddView
 
 inline fun personDetailView(crossinline func: PersonDetailView.() -> Unit) {
@@ -11,12 +11,11 @@ inline fun personDetailView(crossinline func: PersonDetailView.() -> Unit) {
 }
 
 class PersonDetailView(context: Context) : BasePeopleView(context) {
-    val state = StarWarsApplication.redukt.state
 
     override fun view() {
+        val state = StarWarsApplication.redukt.state
         val person = person ?: return
 
-        val name = person.name
         val height = person.height
         val mass = person.mass
         val hair_color = person.hair_color
@@ -26,9 +25,8 @@ class PersonDetailView(context: Context) : BasePeopleView(context) {
         val gender = person.gender
         val homeWorld = state.getHomeWorld(state, person)
         val species = state.getSpecies(state, person)
-        val isfavorite = person.isFavorite
 
-        cardLayout(context, name, isfavorite, mapOf(
+        val content = mapOf(
             R.string.height to "$height cm",
             R.string.mass to "$mass kg",
             R.string.hair_color to hair_color,
@@ -38,6 +36,11 @@ class PersonDetailView(context: Context) : BasePeopleView(context) {
             R.string.gender to gender,
             R.string.home_world to homeWorld,
             R.string.specie to species
-        ))
+        )
+
+        cardLayout {
+            person(person)
+            content(content)
+        }
     }
 }

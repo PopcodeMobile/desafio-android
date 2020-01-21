@@ -4,6 +4,11 @@ import android.content.Context
 import android.graphics.Typeface
 import android.widget.LinearLayout.HORIZONTAL
 import android.widget.LinearLayout.VERTICAL
+import br.com.starwarswiki.R
+import br.com.starwarswiki.actions.ActionCreator
+import br.com.starwarswiki.anvil.ReactiveFrameComponent
+import br.com.starwarswiki.models.AppState
+import br.com.starwarswiki.models.Person
 import trikita.anvil.BaseDSL.WRAP
 import trikita.anvil.BaseDSL.dip
 import trikita.anvil.BaseDSL.margin
@@ -14,12 +19,18 @@ import trikita.anvil.BaseDSL.textSize
 import trikita.anvil.BaseDSL.weight
 import trikita.anvil.DSL.*
 import trikita.anvil.cardview.v7.CardViewv7DSL.cardView
-import br.com.starwarswiki.R
-import br.com.starwarswiki.actions.ActionCreator
-import trikita.anvil.BaseDSL
 
-object CardLayout {
-    fun cardLayout(context: Context, title: String, isFavorite: Boolean, content: Map<Int, String>) {
+inline fun cardLayout(crossinline func: CardLayout.() -> Unit) {
+    dslAddView(func)
+}
+
+class CardLayout(context: Context) : ReactiveFrameComponent(context) {
+
+    private var content = mapOf<Int, String>()
+    private var person: Person? = null
+
+    override fun view() {
+        val person = person ?: return
         cardView {
             size(MATCH, WRAP)
             margin(dip(8))
@@ -28,36 +39,34 @@ object CardLayout {
                 orientation(VERTICAL)
                 padding(dip(8))
 
-                cardTitle(title, isFavorite)
+                cardTitle(person)
                 content.forEach { renderCardLine(context.getString(it.key), it.value) }
             }
         }
     }
 
-    private fun cardTitle(title: String, isFavorite: Boolean) {
+    private fun cardTitle(person: Person) {
         relativeLayout {
             size(MATCH, WRAP)
             orientation(HORIZONTAL)
             margin(0, 0, 0, dip(6))
 
             textView {
-                text(title)
-                BaseDSL.alignParentLeft()
+                text(person.name)
+                alignParentLeft()
                 textSize(sip(24f))
                 margin(0, 0, 0, dip(16))
                 typeface(null, Typeface.BOLD)
             }
 
-//            imageView {
-//                size(50, 50)
-//                BaseDSL.alignParentRight()
-//                backgroundResource(getIconResource(isFavorite))
-//                init {
-//                    onClick {
-//                        toggleFavorite(title, isFavorite)
-//                    }
-//                }
-//            }
+            imageView {
+                size(50, 50)
+                alignParentRight()
+                backgroundResource(getIconResource(person.isFavorite))
+                onClick {
+                    toggleFavorite(person)
+                }
+            }
         }
     }
 
@@ -90,10 +99,29 @@ object CardLayout {
             R.drawable.baseline_favorite_border_24
     }
 
-    private fun toggleFavorite(title: String, isFavorite: Boolean) {
-        if (isFavorite)
-            ActionCreator.removeFavorite(title)
+    private fun toggleFavorite(person: Person) {
+        if (person.isFavorite)
+            ActionCreator.removeFavorite(person.name)
         else
-            ActionCreator.addFavorite(title)
+            ActionCreator.addFavorite(person.name)
+    }
+
+    fun person(person: Person) {
+        this.person = person
+        render()
+    }
+
+    fun content(content: Map<Int, String>) {
+        this.content = content
+    }
+
+    override fun hasChanged(newState: AppState, oldState: AppState): Boolean {
+        val person = person ?: return false
+        return newState.people[person.name] != oldState.people[person.name]
+    }
+
+    override fun onChanged(state: AppState) {
+        val person = state.people[person?.name] ?: return
+        person(person)
     }
 }

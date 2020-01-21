@@ -2,7 +2,8 @@ package br.com.starwarswiki.views.person
 
 import android.content.Context
 import br.com.starwarswiki.R
-import br.com.starwarswiki.views.CardLayout.cardLayout
+import br.com.starwarswiki.utils.ThreadUtils
+import br.com.starwarswiki.views.cardLayout
 import br.com.starwarswiki.views.dslAddView
 
 inline fun personSummaryView(crossinline func: PersonSummaryView.() -> Unit) {
@@ -13,17 +14,20 @@ class PersonSummaryView(context: Context) : BasePeopleView(context) {
     override fun view() {
         val person = person ?: return
 
-        val name = person.name
         val height = person.height
         val gender = person.gender
         val mass = person.mass
-        val isFavorite = person.isFavorite
 
-        cardLayout(context, "$name", isFavorite, mapOf(
-            R.string.height to "$height cm",
-            R.string.gender to "$gender",
-            R.string.mass to "$mass kg"
-        ))
+        ThreadUtils.runOnMain {
+            cardLayout {
+                person(person)
+                content(mapOf(
+                    R.string.height to "$height cm",
+                    R.string.gender to gender,
+                    R.string.mass to "$mass kg"
+                ))
+            }
+        }
     }
 
 }

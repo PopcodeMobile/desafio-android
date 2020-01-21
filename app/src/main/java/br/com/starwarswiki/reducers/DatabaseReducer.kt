@@ -10,10 +10,9 @@ class DatabaseReducer : BaseAnnotatedReducer<AppState>() {
     @Reduce(Actions.LOADED_DATABASE)
     fun loadedDatabase(state: AppState, payload: AppState): AppState {
         return state.copy(
-            people = payload.people,
-            planets = payload.planets,
-            species = payload.species,
-            stateStarted = true)
+            people = LinkedHashMap(payload.people),
+            planets = LinkedHashMap(payload.planets),
+            species = LinkedHashMap(payload.species))
     }
 
 }

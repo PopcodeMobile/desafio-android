@@ -14,15 +14,19 @@ class DatabaseMiddleware : BaseAnnotatedMiddleware<AppState>() {
 
     @BeforeAction(Actions.LOAD_DATABASE)
     fun syncSWAPI(state: AppState, action: Action<*>) {
-        val people = ObjectBox.boxStore?.boxFor(Person::class.java)?.all
-        val planets = ObjectBox.boxStore?.boxFor(Planet::class.java)?.all
-        val species = ObjectBox.boxStore?.boxFor(Specie::class.java)?.all
+        val people = ObjectBox.boxStore?.boxFor(Person::class.java)?.all ?: listOf()
+        val planets = ObjectBox.boxStore?.boxFor(Planet::class.java)?.all ?: listOf()
+        val species = ObjectBox.boxStore?.boxFor(Specie::class.java)?.all ?: listOf()
+
+        val mapPeople = people.map { it.name to it }.toMap()
+        val mapPlanets = planets.map { it.name to it }.toMap()
+        val mapSpecies = species.map { it.name to it }.toMap()
 
         ActionCreator.loadedDatabase(
             AppState(
-                people = people,
-                planets = planets,
-                species = species
+                people = mapPeople,
+                planets = mapPlanets,
+                species = mapSpecies
             )
         )
     }

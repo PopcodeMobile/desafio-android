@@ -13,10 +13,8 @@ object SWServiceApi : BaseApi() {
 
     private val service = retrofit.create(SWService::class.java)
 
-    fun getPeople(callback: (people: ServerResponse<Person>?, error: String?) -> Unit) {
-        for (x in 1..9) {
-            service.getPeople(x).enqueue(handleResponse(callback))
-        }
+    fun getPeople(page: Int, callback: (people: ServerResponse<Person>?, error: String?) -> Unit) {
+        service.getPeople(page).enqueue(handleResponse(callback))
     }
 
     fun getPlanets(callback: (planets: ServerResponse<Planet>?, error: String?) -> Unit) {
