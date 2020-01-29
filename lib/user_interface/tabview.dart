@@ -38,7 +38,7 @@ class _TabPageState extends State<TabPage> {
       color: Color.fromRGBO(126, 120, 99, 0.2),
       iconSize: 24,
       padding: padding,
-      icon: LineIcons.home,
+      icon: LineIcons.user,
       // textStyle: t.textStyle,
       text: 'Characters',
     ));
