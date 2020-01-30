@@ -29,6 +29,7 @@ dependencies:
   sqflite: any
   path_provider: any
   http: ^0.11.3+16
+  flutter_icons: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:

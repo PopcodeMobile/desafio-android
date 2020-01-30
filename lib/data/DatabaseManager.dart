@@ -15,7 +15,7 @@ class DatabaseManager{
     var url = baseUrl + "?page=" + page.toString();
     print(url);
     final res = await http.get(url);
-    final jsonData = json.decode(res.body);
+    final jsonData = json.decode(utf8.decode(res.bodyBytes));
     List lista = jsonData['results'];
 
     for(var i = 0; i < lista.length; i++){

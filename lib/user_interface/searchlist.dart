@@ -22,7 +22,7 @@ class Debug extends StatelessWidget {
 
   Character novo1 = new Character(
       id: 0,
-      name: "Alan",
+      name: "Alan"  ,
       height: "188",
       mass: "110",
       hair: "Black",
@@ -63,9 +63,25 @@ class Debug extends StatelessWidget {
   
   
   void _apertar() async {
-  Character character = await DatabaseProvider.db.getCharacterWithId(50);
-  print(character.name);
+
+//  Character char = await DatabaseProvider.db.getCharacterWithId(1);
+////  char.fav = 1;
+////  DatabaseProvider.db.updateCharacter(char)
+//  DatabaseProvider.db.deleteAllCharacters();
+  DatabaseManager.parseCharacters(1);
+  DatabaseManager.parseCharacters(2);
+  DatabaseManager.parseCharacters(3);
+  DatabaseManager.parseCharacters(4);
+  DatabaseManager.parseCharacters(5);
+  DatabaseManager.parseCharacters(6);
+  DatabaseManager.parseCharacters(7);
+  DatabaseManager.parseCharacters(8);
+  DatabaseManager.parseCharacters(9);
+
+
+
   }
+
 
   
   
