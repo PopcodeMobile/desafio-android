@@ -81,6 +81,7 @@ class _TabPageState extends State<TabPage> {
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: Colors.yellow[700],
+        accentColor: Colors.black
       ),
 
       home: Scaffold(
@@ -107,7 +108,7 @@ class _TabPageState extends State<TabPage> {
           }
 
           else if (position == 2){
-            return Debug();
+            return Search();
           }
 
 

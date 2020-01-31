@@ -69,6 +69,13 @@ class DatabaseProvider {
     return rec.isNotEmpty ? rec : null;
   }
 
+  Future<List<Map<String, dynamic>>> getSearch(String query) async {
+    final db = await database;
+    List<Map<String, dynamic>> rec = await db.rawQuery("SELECT * FROM character where name like '%" + query + "%'");
+
+    return rec.isNotEmpty ? rec : null;
+  }
+
 
   deleteCharacterWithId(int id) async {
     final db = await database;

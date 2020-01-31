@@ -15,8 +15,8 @@ class CharacterManager{
        if(character != null) {
          lst.add(character);
        }
-       
      }
+
      return lst;
   }
 
@@ -28,6 +28,22 @@ class CharacterManager{
 
     if(rec != null) {
       rec.forEach((char) => lst.add(Character.fromMap(char)));
+    }
+
+    return lst;
+  }
+
+  static Future<List<Character>> getSearch(String query) async {
+    List<Character> lst = new List();
+
+    List<Map<String, dynamic>> rec = await DatabaseProvider.db.getSearch(query);
+
+    if(rec != null) {
+      rec.forEach((char) => lst.add(Character.fromMap(char)));
+    }
+
+    for( var i = 0; i < lst.length; i++){
+      print(lst[i].name);
     }
 
     return lst;

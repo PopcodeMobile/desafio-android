@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:starchars/data/DatabaseProvider.dart';
 import 'package:starchars/data/Character.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-
 const baseUrl = "https://swapi.co/api/people/";
 const apiURL = 'http://private-782d3-starwarsfavorites.apiary-mock.com/favorite/';
 

@@ -31,6 +31,7 @@ dependencies:
   http: ^0.11.3+16
   flutter_icons: ^1.0.0+1
   oktoast: ^2.1.8
+  flappy_search_bar: 1.4.1
 
 dev_dependencies:
   flutter_test:
