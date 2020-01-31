@@ -4,6 +4,7 @@ import 'package:starchars/data/CharacterManager.dart';
 import 'package:starchars/data/DatabaseManager.dart';
 import 'package:starchars/user_interface/char.dart';
 
+
 class CharList extends StatefulWidget {
   _InfiniteScrollListViewState createState() => _InfiniteScrollListViewState();
 }
@@ -53,38 +54,24 @@ class _InfiniteScrollListViewState extends State<CharList> {
   @override
   Widget build(BuildContext context) {
     while (_listViewData == null) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: CircularProgressIndicator(backgroundColor: Color.fromRGBO(126, 120, 99, 1.0),));
     }
 
       return Scaffold(
-        body: ListView.builder(
+        body: new Container(
+        color: Color.fromRGBO(126, 120, 99, 1.0),
+          child: ListView.builder(
           itemCount: _listViewData.length,
           controller: _scrollController,
           itemBuilder: (context, index) {
             return CharItem(_listViewData[index]);
           },
         ),
-      );
+      ));
 
   }
 }
 
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//      body: FutureBuilder<List<Character>>(
-//        future: CharacterManager.getCharChunk(1, 10),
-//        builder: (context, snapshot) {
-//             if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
-//
-//          return ListView(
-//            children: snapshot.data.map((character) => CharItem(character)).toList(),
-//          );
-//        },
-//      ),
-//    );
-//  }
-//}
 
 
 

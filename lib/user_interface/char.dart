@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:starchars/data/Character.dart';
+import 'package:starchars/data/DatabaseManager.dart';
 import 'package:starchars/data/DatabaseProvider.dart';
 import 'package:starchars/user_interface/detailscreen.dart';
 
+bool sucesso = true;
+
 class CharItem extends StatefulWidget {
+
+  final Function() notifyParent;
+
   Character character;
 
-  CharItem(this.character);
+  CharItem(this.character, {Key key, @required this.notifyParent}) : super(key: key);
 
   @override
   _CharItemState createState() => _CharItemState();
@@ -91,28 +97,39 @@ class _CharItemState extends State<CharItem> {
   }
 
   _detailPage() {
-    print("pressed on card of " + widget.character.name);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => DetailScreen(widget.character)),
     );
   }
 
-  _pressStar() {
-    print("pressed on star of " + widget.character.name);
-    setState(() {
-      if(widget.character.fav == 1){
-        widget.character.fav = 0;
-      }
+  _pressStar() async {
 
-      else{
+    if(widget.character.fav == 1){
+      widget.character.fav = 0;
+    }
+
+    else{
+      int StatusCode = await DatabaseManager.postFavorite(widget.character.id, sucesso, context);
+      sucesso = !sucesso;
+
+      if(StatusCode == 201) {
         widget.character.fav = 1;
       }
+    }
+
+    setState((){
+
 
       DatabaseProvider.db.updateCharacter(widget.character);
 
 
     });
+
+    if(widget.notifyParent != null) {
+      widget.notifyParent();
+    }
+
   }
 
   String _getFormatedWeight(){
@@ -158,8 +175,9 @@ class _CharItemState extends State<CharItem> {
 
   }
 
-// ···
 }
+
+
 bool isNumeric(String s) {
   if(s == null) {
     return false;

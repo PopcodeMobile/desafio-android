@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:starchars/data/Character.dart';
+import 'package:starchars/data/CharacterManager.dart';
+import 'package:starchars/data/DatabaseManager.dart';
+import 'package:starchars/user_interface/char.dart';
 
 class FavList extends StatefulWidget {
   _InfiniteScrollListViewState createState() => _InfiniteScrollListViewState();
@@ -6,24 +10,18 @@ class FavList extends StatefulWidget {
 
 class _InfiniteScrollListViewState extends State<FavList> {
   ScrollController _scrollController = ScrollController();
+  List<Character> _listViewData = List();
+  bool done = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        _loadMore();
-      }
-    });
+    getFavorites();
   }
 
-  _loadMore() {
-    setState(() {
-      print('loading more,...');
-      //if we're at the end of the list, add more items
-      _listViewData..addAll(List<String>.from(_listViewData));
-    });
+  void getFavorites() async {
+    _listViewData = await CharacterManager.getFavorites();
+    setState(() {});
   }
 
   @override
@@ -32,61 +30,33 @@ class _InfiniteScrollListViewState extends State<FavList> {
     super.dispose();
   }
 
-  List<String> _listViewData = [
-    "Inducesmile.com",
-    "Flutter Dev",
-    "Android Dev",
-    "iOS Dev!",
-    "React Native Dev!",
-    "React Dev!",
-    "express Dev!",
-    "Laravel Dev!",
-    "Angular Dev!",
-    "Adonis Dev!",
-    "Next.js Dev!",
-    "Node.js Dev!",
-    "Vue.js Dev!",
-    "Java Dev!",
-    "C# Dev!",
-    "C++ Dev!",
-  ];
-
-  int number = 0;
-
   @override
   Widget build(BuildContext context) {
-
+    if (_listViewData.isEmpty) {
+      return Container(
+        color: Color.fromRGBO(126, 120, 99, 1.0),
+        child: Center(
+            child: Text(
+          "You don't have any favorites :(",
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        )),
+      );
+    }
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: ListView.builder(
+        body: new Container(
+      color: Color.fromRGBO(126, 120, 99, 1.0),
+      child: ListView.builder(
         itemCount: _listViewData.length,
         controller: _scrollController,
         itemBuilder: (context, index) {
-          return Container(
-              color: Color.fromRGBO(173, 125, 55, 1.0),
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              height: 120,
-              width: double.maxFinite,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
-                color: Colors.white,
-                child: RaisedButton(onPressed: _changeNumber,
-                  child: Text(number.toString()),),
-                elevation: 6,
-              ));
+          return CharItem(_listViewData[index], notifyParent: refresh);
         },
       ),
-    );
-
-  }
-  void _changeNumber(){
-    setState(() {
-      number += 1;
-    });
-
+    ));
   }
 
-
+  refresh() {
+    getFavorites();
+  }
 }

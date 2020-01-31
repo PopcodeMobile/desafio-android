@@ -62,6 +62,14 @@ class DatabaseProvider {
     return response.isNotEmpty ? Character.fromMap(response.first) : null;
   }
 
+  Future<List<Map<String, dynamic>>> getFavorites() async {
+    final db = await database;
+    List<Map<String, dynamic>> rec = await db.rawQuery('SELECT * FROM character where fav = 1');
+
+    return rec.isNotEmpty ? rec : null;
+  }
+
+
   deleteCharacterWithId(int id) async {
     final db = await database;
     return db.delete("character", where: "id = ?", whereArgs: [id]);

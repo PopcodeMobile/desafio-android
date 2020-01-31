@@ -4,9 +4,13 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:starchars/data/Character.dart';
 import 'package:starchars/data/DatabaseProvider.dart';
+import 'package:starchars/data/DatabaseManager.dart';
+
+bool sucesso = true;
 
 class DetailScreen extends StatefulWidget {
   Character character;
+
 
   DetailScreen(this.character);
 
@@ -15,13 +19,18 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+
+  final globalKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: globalKey,
         appBar: AppBar(
           title: Text(widget.character.name),
         ),
-        body: Align(
+        body: Builder(
+        builder: (context) =>  Align(
             alignment: Alignment.center,
             child: Container(
               height: 600,
@@ -49,7 +58,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: FlatButton(
 //                                      splashColor: Colors.transparent,
 //                                      highlightColor: Colors.transparent,
-                              onPressed: _pressStar,
+                              onPressed: () =>_pressStar(context),
                               child: Icon(
                                 _getIcon(),
                                 size: 30,
@@ -163,20 +172,31 @@ class _DetailScreenState extends State<DetailScreen> {
                   ],
                 ),
               ),
-            )));
+            ))));
   }
 
-  _pressStar() {
-    print("pressed on star of " + widget.character.name);
-    setState(() {
-      if (widget.character.fav == 1) {
-        widget.character.fav = 0;
-      } else {
+  _pressStar(BuildContext context) async {
+    if(widget.character.fav == 1){
+      widget.character.fav = 0;
+    }
+
+    else{
+      int StatusCode = await DatabaseManager.postFavorite(widget.character.id, sucesso, context);
+      sucesso = !sucesso;
+
+      if(StatusCode == 201) {
         widget.character.fav = 1;
       }
+    }
+
+    setState((){
+
 
       DatabaseProvider.db.updateCharacter(widget.character);
+
+
     });
+
   }
 
   IconData _getIcon() {
@@ -253,8 +273,8 @@ class _DetailScreenState extends State<DetailScreen> {
     return widget.character.eye;
 
   }
-}
 
+}
 
 
 bool isNumeric(String s) {
