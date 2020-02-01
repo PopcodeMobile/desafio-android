@@ -1,3 +1,19 @@
+# Star Chars
+
+Baixe o APK pré-compilado [AQUI](https://github.com/AlanTas/entrevista-android/blob/master/apk/StarChars.apk?raw=true):
+
+<p align="center">
+  <img src="capturas/photo_2020-02-01_17-55-05.jpg" width="250" title="Splash">
+  <img src="capturas/photo_2020-02-01_17-55-08.jpg" width="250" title="Char List">
+  <img src="capturas/photo_2020-02-01_17-55-07.jpg" width="250" title="Favorites">
+  <img src="capturas/photo_2020-02-01_17-55-11.jpg" width="250" title="Detail">
+  <img src="capturas/photo_2020-02-01_17-55-13.jpg" width="250" title="Search">
+</p>
+
+
+
+
+--------------
 # Desafio Android
 
 O desafio consiste em criar uma Wiki de Star Wars onde é mostrada uma lista de personagens e o usuário pode favoritar alguns deles. É recomendado a utilização de Kotlin ou Java no projeto.
