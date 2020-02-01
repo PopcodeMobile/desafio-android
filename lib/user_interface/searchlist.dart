@@ -7,38 +7,7 @@ import 'package:starchars/data/Character.dart';
 import 'package:starchars/data/DatabaseManager.dart';
 import 'package:starchars/user_interface/char.dart';
 
-class Debug extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: RaisedButton(
-        onPressed: _apertar,
-        child: Text('Hello World'),
-      )),
-    );
-  }
-
-  void _apertar() async {
-//  Character char = await DatabaseProvider.db.getCharacterWithId(1);
-////  char.fav = 1;
-////  DatabaseProvider.db.updateCharacter(char)
-//  DatabaseProvider.db.deleteAllCharacters();
-//  DatabaseManager.parseCharacters(1);
-//  DatabaseManager.parseCharacters(2);
-//  DatabaseManager.parseCharacters(3);
-//  DatabaseManager.parseCharacters(4);
-//  DatabaseManager.parseCharacters(5);
-//  DatabaseManager.parseCharacters(6);
-//  DatabaseManager.parseCharacters(7);
-//  DatabaseManager.parseCharacters(8);
-//  DatabaseManager.parseCharacters(9);
-
-    //atabaseManager.postFavorite(1, false, context);
-    CharacterManager.getSearch('Ra');
-  }
-}
-
+/// This is the search screen, given a query, it lists the matching characters
 class Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -68,8 +37,6 @@ class Search extends StatelessWidget {
     await Future.delayed(Duration(seconds: 2));
     return CharacterManager.getSearch(search);
   }
-
-
 
 
 }

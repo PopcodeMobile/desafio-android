@@ -7,6 +7,9 @@ import 'package:starchars/user_interface/charlist.dart';
 import 'package:starchars/user_interface/favlist.dart';
 import 'package:starchars/user_interface/searchlist.dart';
 
+/// This is the tabview screen, it manages the tabs and the logic behind loading
+/// the right content in the right place.
+
 
 class TabPage extends StatefulWidget {
   @override
@@ -154,6 +157,9 @@ class _TabPageState extends State<TabPage> {
     );
   }
 
+  /// Updates and downloads all characters everytime app is opened.
+  /// Loads in parallel all the pages from SWAPI.
+
   void _StartBD(){
   DatabaseManager.parseCharacters(1);
   DatabaseManager.parseCharacters(2);
@@ -164,6 +170,5 @@ class _TabPageState extends State<TabPage> {
   DatabaseManager.parseCharacters(7);
   DatabaseManager.parseCharacters(8);
   DatabaseManager.parseCharacters(9);
-
   }
 }

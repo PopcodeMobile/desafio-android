@@ -7,9 +7,13 @@ import 'package:http/http.dart' as http;
 const baseUrl = "https://swapi.co/api/people/";
 const apiURL = 'http://private-782d3-starwarsfavorites.apiary-mock.com/favorite/';
 
+/// This class talks directly to SWAPI and Favorites API, parsing, saving and
+/// updating the characters in the database.
 
 class DatabaseManager {
 
+  /// Loads a page of character from SWAPI, saves characters to database, if
+  /// the character already existis in the database it is updated.
   static Future<bool> parseCharacters(int page) async {
     var url = baseUrl + "?page=" + page.toString();
     print(url);
@@ -18,6 +22,7 @@ class DatabaseManager {
     List lista = jsonData['results'];
 
     for (var i = 0; i < lista.length; i++) {
+
       // Get the character id
       String url = lista[i]['url'].toString();
       int id = int.parse(url.substring(28, url.length - 1));
@@ -31,13 +36,14 @@ class DatabaseManager {
           .length > 2) {
         speciesURL = lista[i]['species'][0];
       }
-
       String species = speciesURL;
       String planet = planetURL;
 
+      // Check if character exists
       bool exists = await charExists(id);
       int fav = 0;
 
+      // If it exists, find out if it is favorited
       if(exists){
         Character char = await DatabaseProvider.db.getCharacterWithId(id);
         fav = char.fav;
@@ -46,10 +52,8 @@ class DatabaseManager {
 
       // Create new character
       Character novo = Character.fromJson(lista[i], id, planet, species, fav);
-      print(novo.planet);
-      print(novo.species);
-      print("------");
 
+      // Save or update
       if(exists){
         DatabaseProvider.db.updateCharacter(novo);
       }
@@ -62,6 +66,8 @@ class DatabaseManager {
     return true;
   }
 
+
+  /// Gets a Species and a Homeworld from a URL.
   static Future<String> loadSpeciesPlanets(String url) async {
     if (url.length > 0) {
       final res = await http.get(url);
@@ -77,22 +83,21 @@ class DatabaseManager {
     return "unknown";
   }
 
+  /// Checks if a character with given id already exists in the database.
   static Future<bool> charExists(int id) async {
 
     Character char = await DatabaseProvider.db.getCharacterWithId(id);
 
     if(char != null){
-
       return true;
-
     }
-
     return false;
-
   }
 
-
-  static Future<int> postFavorite(int id, bool sucess, BuildContext context) async {
+  /// Post favorite to API, the success variable is a dummy to indicate if the
+  /// request is supposed to fail or success.
+  static Future<int> postFavorite(int id, bool sucess,
+      BuildContext context) async {
     var mensagem = "Não mudou";
     http.Response res;
 

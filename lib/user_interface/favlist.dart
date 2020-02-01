@@ -4,6 +4,8 @@ import 'package:starchars/data/CharacterManager.dart';
 import 'package:starchars/data/DatabaseManager.dart';
 import 'package:starchars/user_interface/char.dart';
 
+/// This is the list scroll screen that displays the favorites.
+
 class FavList extends StatefulWidget {
   _InfiniteScrollListViewState createState() => _InfiniteScrollListViewState();
 }
@@ -19,6 +21,7 @@ class _InfiniteScrollListViewState extends State<FavList> {
     getFavorites();
   }
 
+  /// Get a list of all the favorites.
   void getFavorites() async {
     _listViewData = await CharacterManager.getFavorites();
     setState(() {});

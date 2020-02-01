@@ -6,7 +6,10 @@ import 'package:starchars/data/DatabaseManager.dart';
 import 'package:starchars/data/DatabaseProvider.dart';
 import 'package:starchars/user_interface/detailscreen.dart';
 
+
 bool sucesso = true;
+
+/// Character card element, shows it's name, height, weight and gender
 
 class CharItem extends StatefulWidget {
 
@@ -96,6 +99,7 @@ class _CharItemState extends State<CharItem> {
             )));
   }
 
+  /// Calls DetailScreen when user click on character's card.
   _detailPage() {
     Navigator.push(
       context,
@@ -103,6 +107,7 @@ class _CharItemState extends State<CharItem> {
     );
   }
 
+  /// Favorite or un-favorite character when presses on star.
   _pressStar() async {
 
     if(widget.character.fav == 1){
@@ -132,6 +137,8 @@ class _CharItemState extends State<CharItem> {
 
   }
 
+
+  /// If weight is a valid number, add 'kg' to the end.
   String _getFormatedWeight(){
 
     if(isNumeric(widget.character.mass)){
@@ -143,6 +150,7 @@ class _CharItemState extends State<CharItem> {
 
   }
 
+  /// If height is a valid number, add 'cm' to the end.
   String _getFormatedHeight(){
 
     if(isNumeric(widget.character.height)){
@@ -154,6 +162,7 @@ class _CharItemState extends State<CharItem> {
 
   }
 
+  /// If gender is known, capitalize first letter.
   String _getFormatedGender(){
 
     if(widget.character.gender != "n/a"){
@@ -165,6 +174,8 @@ class _CharItemState extends State<CharItem> {
 
   }
 
+  /// Returns a full star when a character is marked as favorite, and a empty
+  /// star otherwise.
   IconData _getIcon(){
 
     if(widget.character.fav == 1){
@@ -177,7 +188,7 @@ class _CharItemState extends State<CharItem> {
 
 }
 
-
+  /// Check if string is numeric
 bool isNumeric(String s) {
   if(s == null) {
     return false;

@@ -4,6 +4,8 @@ import 'package:starchars/data/CharacterManager.dart';
 import 'package:starchars/data/DatabaseManager.dart';
 import 'package:starchars/user_interface/char.dart';
 
+/// This is the character list scroll screen
+
 
 class CharList extends StatefulWidget {
   _InfiniteScrollListViewState createState() => _InfiniteScrollListViewState();
@@ -27,6 +29,7 @@ class _InfiniteScrollListViewState extends State<CharList> {
     });
   }
 
+  /// Get first 10 characters to display.
   void getFirstBatch() async {
     _listViewData = await CharacterManager.getCharChunk(1, 10);
     setState(() {
@@ -34,7 +37,7 @@ class _InfiniteScrollListViewState extends State<CharList> {
     });
   }
 
-
+  /// If the end of the list is reached, load 10 more.
   _loadMore() async {
     List<Character> more = await CharacterManager.getCharChunk(_listViewData[_listViewData.length - 1].id + 1, 10);
     setState(() {

@@ -4,8 +4,15 @@ import 'package:starchars/data/DatabaseManager.dart';
 import 'package:starchars/data/DatabaseProvider.dart';
 
 
+/// This class manages the Characters given to the UI, it talks directly to
+/// DatabaseProvider and DatabaseManager and returns lists populated with valid
+/// characters.
+
 class CharacterManager{
 
+
+  /// Returns a chunk of characters with size 'amnt' from the database,
+  /// starting in 'fromID'.
   static Future<List<Character>> getCharChunk(int fromID, int amnt) async {
 
      List<Character> lst = new List();
@@ -21,7 +28,7 @@ class CharacterManager{
      return lst;
   }
 
-
+  /// Returns a list with all the characters marked as favorite in the database.
   static Future<List<Character>> getFavorites() async {
     List<Character> lst = new List();
 
@@ -34,6 +41,8 @@ class CharacterManager{
     return lst;
   }
 
+
+  /// Returns a list of characters that match a given search query.
   static Future<List<Character>> getSearch(String query) async {
     List<Character> lst = new List();
 
@@ -50,6 +59,7 @@ class CharacterManager{
     return lst;
   }
 
+  /// Loads the species and planet of a character and updates it on the database.
   static Future<bool> getSpeciesPlanet(Character character) async {
 
     print("GETTING SPECIES AND PLANET OF " + character.name);

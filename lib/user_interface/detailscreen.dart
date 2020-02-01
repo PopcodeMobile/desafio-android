@@ -10,6 +10,8 @@ import 'package:starchars/data/DatabaseManager.dart';
 bool sucesso = true;
 bool updated = false;
 
+/// This is the screen that shows the characters' details.
+
 class DetailScreen extends StatefulWidget {
   Character character;
 
@@ -28,6 +30,7 @@ class _DetailScreenState extends State<DetailScreen> {
     updateSpeciesPlanet();
   }
 
+  /// Get species and planet for that character.
   void updateSpeciesPlanet() async {
     updated = await CharacterManager.getSpeciesPlanet(widget.character);
     if (updated) {
@@ -334,6 +337,7 @@ class _DetailScreenState extends State<DetailScreen> {
     }
   }
 
+  /// Favorite or un-favorite character when presses on star.
   _pressStar(BuildContext context) async {
     if (widget.character.fav == 1) {
       widget.character.fav = 0;
@@ -353,6 +357,8 @@ class _DetailScreenState extends State<DetailScreen> {
     });
   }
 
+  /// Returns a full star when a character is marked as favorite, and a empty
+  /// star otherwise.
   IconData _getIcon() {
     if (widget.character.fav == 1) {
       return LineIcons.star;
@@ -361,6 +367,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return LineIcons.star_o;
   }
 
+  /// If weight is a valid number, add 'kg' to the end.
   String _getFormatedWeight() {
     if (isNumeric(widget.character.mass)) {
       return widget.character.mass + " kg";
@@ -369,6 +376,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return widget.character.mass;
   }
 
+  /// If height is a valid number, add 'cm' to the end.
   String _getFormatedHeight() {
     if (isNumeric(widget.character.height)) {
       return widget.character.height + " cm";
@@ -377,6 +385,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return widget.character.height;
   }
 
+  /// If gender is known, capitalize first letter.
   String _getFormatedGender() {
     if (widget.character.gender != "n/a") {
       return widget.character.gender[0].toUpperCase() +
@@ -386,6 +395,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return widget.character.gender;
   }
 
+  /// If hair color is known, capitalize first letter.
   String _getFormatedHair() {
     if (widget.character.hair != "n/a") {
       return widget.character.hair[0].toUpperCase() +
@@ -395,6 +405,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return widget.character.hair;
   }
 
+  /// If skin color is known, capitalize first letter.
   String _getFormatedSkin() {
     if (widget.character.skin != "n/a") {
       return widget.character.skin[0].toUpperCase() +
@@ -404,6 +415,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return widget.character.skin;
   }
 
+  /// If eye color is known, capitalize first letter.
   String _getFormatedEye() {
     if (widget.character.eye != "n/a") {
       return widget.character.eye[0].toUpperCase() +
@@ -414,9 +426,12 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 }
 
+/// Check if string is numeric
 bool isNumeric(String s) {
   if (s == null) {
     return false;
   }
+
+  s = s.replaceFirst(RegExp(','), '.');
   return double.parse(s, (e) => null) != null;
 }
