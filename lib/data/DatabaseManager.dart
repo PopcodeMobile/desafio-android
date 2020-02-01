@@ -10,7 +10,7 @@ const apiURL = 'http://private-782d3-starwarsfavorites.apiary-mock.com/favorite/
 
 class DatabaseManager {
 
-  static Future<Character> parseCharacters(int page) async {
+  static Future<bool> parseCharacters(int page) async {
     var url = baseUrl + "?page=" + page.toString();
     print(url);
     final res = await http.get(url);
@@ -22,6 +22,7 @@ class DatabaseManager {
       String url = lista[i]['url'].toString();
       int id = int.parse(url.substring(28, url.length - 1));
 
+
       // Get the Species and Planet
       String planetURL = lista[i]['homeworld'];
       String speciesURL = "";
@@ -30,18 +31,35 @@ class DatabaseManager {
           .length > 2) {
         speciesURL = lista[i]['species'][0];
       }
-      String species = await loadSpeciesPlanets(speciesURL);
-      String planet = await loadSpeciesPlanets(planetURL);
+
+      String species = speciesURL;
+      String planet = planetURL;
+
+      bool exists = await charExists(id);
+      int fav = 0;
+
+      if(exists){
+        Character char = await DatabaseProvider.db.getCharacterWithId(id);
+        fav = char.fav;
+      }
+
 
       // Create new character
-      Character novo = Character.fromJson(lista[i], id, planet, species);
+      Character novo = Character.fromJson(lista[i], id, planet, species, fav);
       print(novo.planet);
       print(novo.species);
       print("------");
-      DatabaseProvider.db.addCharacterToDatabase(novo);
+
+      if(exists){
+        DatabaseProvider.db.updateCharacter(novo);
+      }
+
+      else {
+        DatabaseProvider.db.addCharacterToDatabase(novo);
+      }
     }
 
-    return null;
+    return true;
   }
 
   static Future<String> loadSpeciesPlanets(String url) async {
@@ -57,6 +75,20 @@ class DatabaseManager {
       }
     }
     return "unknown";
+  }
+
+  static Future<bool> charExists(int id) async {
+
+    Character char = await DatabaseProvider.db.getCharacterWithId(id);
+
+    if(char != null){
+
+      return true;
+
+    }
+
+    return false;
+
   }
 
 

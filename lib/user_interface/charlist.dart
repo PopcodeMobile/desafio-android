@@ -36,7 +36,7 @@ class _InfiniteScrollListViewState extends State<CharList> {
 
 
   _loadMore() async {
-    List<Character> more = await CharacterManager.getCharChunk(_listViewData.length - 1, 10);
+    List<Character> more = await CharacterManager.getCharChunk(_listViewData[_listViewData.length - 1].id + 1, 10);
     setState(() {
       print('loading more,...');
 

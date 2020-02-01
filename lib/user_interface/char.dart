@@ -182,6 +182,8 @@ bool isNumeric(String s) {
   if(s == null) {
     return false;
   }
+
+  s = s.replaceFirst(RegExp(','), '.');
   return double.parse(s, (e) => null) != null;
 }
 

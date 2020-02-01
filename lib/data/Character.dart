@@ -29,7 +29,7 @@ class Character {
     species: json["species"],
     fav: json["fav"]);
 
-  factory Character.fromJson(Map<String, dynamic> json, int id, String planet, String species) => new Character(
+  factory Character.fromJson(Map<String, dynamic> json, int id, String planet, String species, int favo) => new Character(
       id: id,
       name: json["name"],
       height: json["height"],
@@ -41,7 +41,7 @@ class Character {
       gender: json["gender"],
       planet: planet,
       species: species,
-      fav: 0);
+      fav: favo);
 
   Map<String, dynamic> toMap() => {
     "id": id,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starchars/data/Character.dart';
+import 'package:starchars/data/DatabaseManager.dart';
 import 'package:starchars/data/DatabaseProvider.dart';
 
 
@@ -47,6 +48,30 @@ class CharacterManager{
     }
 
     return lst;
+  }
+
+  static Future<bool> getSpeciesPlanet(Character character) async {
+
+    print("GETTING SPECIES AND PLANET OF " + character.name);
+
+    String species = character.species;
+    String planet = character.planet;
+
+    if(Uri.parse(species).isAbsolute) {
+      species = await DatabaseManager.loadSpeciesPlanets(species);
+    }
+
+    if(Uri.parse(planet).isAbsolute) {
+      planet = await DatabaseManager.loadSpeciesPlanets(planet);
+    }
+
+    character.planet = planet;
+    character.species = species;
+
+    DatabaseProvider.db.updateCharacter(character);
+
+    return true;
+
   }
 
 }

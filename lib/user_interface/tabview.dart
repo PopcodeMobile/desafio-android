@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:starchars/data/DatabaseManager.dart';
+import 'package:starchars/data/DatabaseProvider.dart';
 import 'package:starchars/user_interface/charlist.dart';
 import 'package:starchars/user_interface/favlist.dart';
 import 'package:starchars/user_interface/searchlist.dart';
@@ -26,6 +28,8 @@ class _TabPageState extends State<TabPage> {
   @override
   void initState() {
     super.initState();
+
+    _StartBD();
 
     var padding = EdgeInsets.symmetric(horizontal: 12, vertical: 5);
     double gap = 30;
@@ -148,5 +152,18 @@ class _TabPageState extends State<TabPage> {
 
       ),
     );
+  }
+
+  void _StartBD(){
+  DatabaseManager.parseCharacters(1);
+  DatabaseManager.parseCharacters(2);
+  DatabaseManager.parseCharacters(3);
+  DatabaseManager.parseCharacters(4);
+  DatabaseManager.parseCharacters(5);
+  DatabaseManager.parseCharacters(6);
+  DatabaseManager.parseCharacters(7);
+  DatabaseManager.parseCharacters(8);
+  DatabaseManager.parseCharacters(9);
+
   }
 }
