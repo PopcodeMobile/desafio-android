@@ -17,51 +17,58 @@ class DatabaseManager {
   static Future<bool> parseCharacters(int page) async {
     var url = baseUrl + "?page=" + page.toString();
     print(url);
-    final res = await http.get(url);
-    final jsonData = json.decode(utf8.decode(res.bodyBytes));
-    List lista = jsonData['results'];
 
-    for (var i = 0; i < lista.length; i++) {
+    try{
+        final res = await http.get(url);
 
-      // Get the character id
-      String url = lista[i]['url'].toString();
-      int id = int.parse(url.substring(28, url.length - 1));
+        final jsonData = json.decode(utf8.decode(res.bodyBytes));
+        List lista = jsonData['results'];
 
-
-      // Get the Species and Planet
-      String planetURL = lista[i]['homeworld'];
-      String speciesURL = "";
-      if (lista[i]['species']
-          .toString()
-          .length > 2) {
-        speciesURL = lista[i]['species'][0];
-      }
-      String species = speciesURL;
-      String planet = planetURL;
-
-      // Check if character exists
-      bool exists = await charExists(id);
-      int fav = 0;
-
-      // If it exists, find out if it is favorited
-      if(exists){
-        Character char = await DatabaseProvider.db.getCharacterWithId(id);
-        fav = char.fav;
-      }
+        for (var i = 0; i < lista.length; i++) {
+          // Get the character id
+          String url = lista[i]['url'].toString();
+          int id = int.parse(url.substring(28, url.length - 1));
 
 
-      // Create new character
-      Character novo = Character.fromJson(lista[i], id, planet, species, fav);
+          // Get the Species and Planet
+          String planetURL = lista[i]['homeworld'];
+          String speciesURL = "";
+          if (lista[i]['species']
+              .toString()
+              .length > 2) {
+            speciesURL = lista[i]['species'][0];
+          }
+          String species = speciesURL;
+          String planet = planetURL;
 
-      // Save or update
-      if(exists){
-        DatabaseProvider.db.updateCharacter(novo);
-      }
+          // Check if character exists
+          bool exists = await charExists(id);
+          int fav = 0;
 
-      else {
-        DatabaseProvider.db.addCharacterToDatabase(novo);
-      }
-    }
+          // If it exists, find out if it is favorited
+          if (exists) {
+            Character char = await DatabaseProvider.db.getCharacterWithId(id);
+            fav = char.fav;
+          }
+
+
+          // Create new character
+          Character novo = Character.fromJson(lista[i], id, planet, species, fav);
+
+          // Save or update
+          if (exists) {
+            DatabaseProvider.db.updateCharacter(novo);
+          }
+
+          else {
+            DatabaseProvider.db.addCharacterToDatabase(novo);
+          }
+        }
+  }
+
+  catch(e){
+
+  }
 
     return true;
   }
@@ -98,34 +105,39 @@ class DatabaseManager {
   /// request is supposed to fail or success.
   static Future<int> postFavorite(int id, bool sucess,
       BuildContext context) async {
-    var mensagem = "Não mudou";
+    var mensagem = "";
     http.Response res;
 
-    if(sucess){
-      res = await http.post(apiURL + 'id');
+
+    try {
+      if (sucess) {
+        res = await http.post(apiURL + 'id');
+      }
+
+      else {
+        res = await http.post(apiURL + 'id', headers: {"prefer": "status=400"});
+      }
+
+      final jsonData = json.decode(res.body);
+      if (res.statusCode == 201) {
+        mensagem = "Success - " + jsonData["message"];
+      }
+
+      else if (res.statusCode == 400) {
+        mensagem = "Failed - " + jsonData["error_message"];
+      }
+      print(mensagem);
+
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(mensagem),
+      ));
+
+
+      return res.statusCode;
     }
-
-    else{
-      res = await http.post(apiURL + 'id', headers: {"prefer": "status=400"});
+    catch(e){
+      return null;
     }
-
-    final jsonData = json.decode(res.body);
-    if(res.statusCode == 201) {
-      mensagem = "Success - " + jsonData["message"];
-    }
-
-    else if(res.statusCode == 400){
-      mensagem = "Failed - " + jsonData["error_message"];
-    }
-    print(mensagem);
-
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(mensagem),
-    ));
-
-
-    return res.statusCode;
-
   }
 
 }
