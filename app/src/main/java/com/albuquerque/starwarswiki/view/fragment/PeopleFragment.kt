@@ -3,15 +3,18 @@ package com.albuquerque.starwarswiki.view.fragment
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
-
+import androidx.fragment.app.Fragment
 import com.albuquerque.starwarswiki.R
-import com.albuquerque.starwarswiki.custom.WikiSearchView
+import com.albuquerque.starwarswiki.core.custom.WikiSearchView
 import com.albuquerque.starwarswiki.extensions.setupToolbar
+import com.albuquerque.starwarswiki.viewmodel.PeopleViewModel
 import kotlinx.android.synthetic.main.fragment_people.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PeopleFragment : Fragment() {
+
+    private val peopleViewModel: PeopleViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_people, container, false)

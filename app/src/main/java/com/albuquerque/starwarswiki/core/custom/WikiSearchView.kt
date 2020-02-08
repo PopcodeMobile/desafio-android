@@ -1,4 +1,4 @@
-package com.albuquerque.starwarswiki.custom
+package com.albuquerque.starwarswiki.core.custom
 
 import android.content.Context
 import android.os.CountDownTimer

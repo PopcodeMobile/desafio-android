@@ -39,6 +39,9 @@ buildscript {
     ext.stetho_version = "1.5.0"
     ext.stetho_okhttpp3_version = "1.5.0"
 
+    // Koin version
+    ext.koin_version = "2.0.1"
+
     ext {
 
         kotlin_dependencies = {
@@ -108,6 +111,19 @@ buildscript {
             implementation "com.facebook.stetho:stetho-okhttp3:$stetho_okhttpp3_version", {
                 exclude group: 'com.google.code.findbugs', module: 'jsr305'
             }
+        }
+
+        injection_dependencies = {
+
+            // Koin for Android
+            implementation "org.koin:koin-android:$koin_version"
+
+            // Koin for Lifecycle scoping
+            implementation "org.koin:koin-androidx-scope:$koin_version"
+
+            // Koin for Android Architecture ViewModel
+            implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
         }
 
     }

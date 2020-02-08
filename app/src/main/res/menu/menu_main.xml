@@ -5,7 +5,7 @@
     <item android:id="@+id/action_search_people"
         android:icon="@drawable/ic_search"
         android:title="@string/action_search_people"
-        app:actionViewClass="com.albuquerque.starwarswiki.custom.WikiSearchView"
+        app:actionViewClass="com.albuquerque.starwarswiki.core.custom.WikiSearchView"
         app:showAsAction="always|collapseActionView"/>
 
 </menu>

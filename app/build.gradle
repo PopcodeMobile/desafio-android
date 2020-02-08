@@ -33,6 +33,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
 }
 
 dependencies(kotlin_dependencies)
@@ -43,16 +47,8 @@ dependencies(retrofit_dependencies)
 dependencies(rx_dependencies)
 dependencies(glide_dependencies)
 dependencies(utils_dependencies)
+dependencies(injection_dependencies)
 
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:+'
-}
-
-dependencies {
-    implementation 'androidx.legacy:legacy-support-v4:+'
-}
-
-dependencies {
-    implementation 'androidx.appcompat:appcompat:+'
-    implementation 'androidx.constraintlayout:constraintlayout:+'
 }
