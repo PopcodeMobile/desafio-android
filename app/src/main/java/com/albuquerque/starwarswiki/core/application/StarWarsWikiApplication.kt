@@ -5,6 +5,7 @@ import com.albuquerque.starwarswiki.app.database.AppDatabase
 import com.albuquerque.starwarswiki.app.repository.*
 import com.albuquerque.starwarswiki.app.usecase.FavoriteUseCase
 import com.albuquerque.starwarswiki.app.usecase.GetPeopleUseCase
+import com.albuquerque.starwarswiki.app.usecase.GetSearchUseCase
 import com.albuquerque.starwarswiki.app.viewmodel.PeopleViewModel
 import com.facebook.stetho.Stetho
 import org.koin.android.ext.koin.androidContext
@@ -54,10 +55,11 @@ class StarWarsWikiApplication : Application() {
             val useCaseModule = module {
                 factory { GetPeopleUseCase(wikiRepository = get()) }
                 factory { FavoriteUseCase(wikiRepository = get()) }
+                factory { GetSearchUseCase(wikiRepository = get()) }
             }
 
             val viewModelModule = module {
-                viewModel { PeopleViewModel(getPeopleUseCase = get(), favoriteUseCase = get()) }
+                viewModel { PeopleViewModel(getPeopleUseCase = get(), favoriteUseCase = get(), getSearchUseCase = get()) }
             }
 
             modules(listOf(databaseModule, repositoryModule, useCaseModule, viewModelModule))

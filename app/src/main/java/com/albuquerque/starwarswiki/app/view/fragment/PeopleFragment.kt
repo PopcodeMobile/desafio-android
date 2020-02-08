@@ -2,17 +2,16 @@ package com.albuquerque.starwarswiki.app.view.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import com.albuquerque.starwarswiki.R
 import com.albuquerque.starwarswiki.app.adapter.PeopleAdapter
-import com.albuquerque.starwarswiki.app.extensions.error
-import com.albuquerque.starwarswiki.core.custom.WikiSearchView
-import com.albuquerque.starwarswiki.app.extensions.setupToolbar
-import com.albuquerque.starwarswiki.app.extensions.success
+import com.albuquerque.starwarswiki.app.extensions.*
 import com.albuquerque.starwarswiki.app.viewmodel.PeopleViewModel
+import com.albuquerque.starwarswiki.core.custom.WikiSearchView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_people.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,6 +20,7 @@ class PeopleFragment : Fragment() {
 
     private val peopleViewModel: PeopleViewModel by viewModel()
     private lateinit var peopleAdapter: PeopleAdapter
+    private var isSearching = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,20 +42,17 @@ class PeopleFragment : Fragment() {
         val menuItem = menu.findItem(R.id.action_search_people)?.apply {
             setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
                 override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                    Toast.makeText(
-                        this@PeopleFragment.context,
-                        "onMenuItemActionExpand",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    // abre a barra de busca e sobe o teclado
+                    peopleViewModel.clearPeople()
+                    emptyViewSearch.setVisible()
                     return true
                 }
 
                 override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                    Toast.makeText(
-                        this@PeopleFragment.context,
-                        "onMenuItemActionCollapse",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    // some a barra de busca e baixa o teclado
+                    peopleViewModel.getPeoples()
+                    isSearching = false
+                    emptyViewSearch.setGone()
                     return true
                 }
 
@@ -64,20 +61,16 @@ class PeopleFragment : Fragment() {
 
         (menuItem?.actionView as? WikiSearchView)?.apply {
 
-            setOnQueryTextChange {
-                Toast.makeText(
-                    this@PeopleFragment.context,
-                    "setOnQueryTextChange",
-                    Toast.LENGTH_LONG
-                ).show()
+            setOnQueryTextSubmit {
+                isSearching = true
+                peopleViewModel.search(it)
             }
 
-            setOnQueryTextSubmit {
-                Toast.makeText(
-                    this@PeopleFragment.context,
-                    "setOnQueryTextSubmit",
-                    Toast.LENGTH_LONG
-                ).show()
+            findViewById<ImageView>(R.id.search_close_btn).setOnClickListener {
+                this.setQuery("", false)
+                setupDefaultEmptyView()
+                isSearching = false
+                peopleViewModel.clearPeople()
             }
 
         }
@@ -97,10 +90,19 @@ class PeopleFragment : Fragment() {
 
         with(peopleViewModel) {
 
-            people.observe(this@PeopleFragment) { list ->
-                list?.let {
-                    peopleAdapter.refresh(it)
-                }
+            people.observe(this@PeopleFragment) {
+                peopleAdapter.refresh(it)
+
+                if(it.isNotEmpty())
+                    emptyViewSearch.setGone()
+                else
+                    emptyViewSearch.setVisible()
+
+                if (it.isEmpty() && isSearching)
+                    setupSearchingEmptyView()
+                else
+                    setupDefaultEmptyView()
+
             }
 
             onError.observe(this@PeopleFragment) {
@@ -115,7 +117,7 @@ class PeopleFragment : Fragment() {
                 pair.first?.let {
                     peopleAdapter.notifyItemChanged(it)
 
-                    if(pair.second.isNotBlank() || pair.second.isNotEmpty())
+                    if (pair.second.isNotBlank() || pair.second.isNotEmpty())
                         Snackbar.make(rvPeople, pair.second, Snackbar.LENGTH_LONG).success()
 
                 } ?: kotlin.run {
@@ -127,6 +129,17 @@ class PeopleFragment : Fragment() {
 
         }
 
+    }
+
+    private fun setupSearchingEmptyView() {
+        imageEmptyView.setImageResource(R.drawable.ic_empty_list)
+        messageEmptyView.text = getString(R.string.search_message_empty)
+
+    }
+
+    private fun setupDefaultEmptyView() {
+        imageEmptyView.setImageResource(R.drawable.ic_person_search)
+        messageEmptyView.text = getString(R.string.search_message_start)
     }
 
 }

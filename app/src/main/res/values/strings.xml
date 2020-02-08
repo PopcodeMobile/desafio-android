@@ -6,4 +6,6 @@
 
     <string name="toolbar_people">Personagens</string>
     <string name="toolbar_favorites">Favoritos</string>
+    <string name="search_message_start">Encontre os personagens da sua saga preferida</string>
+    <string name="search_message_empty">Desculpe, não encontramos resultado para sua pesquisa</string>
 </resources>

@@ -28,4 +28,8 @@ class WikiRemoteRepository : WikiRemoteRepository(), IWikiRemoteDataSource {
                 favorite("status=400")
         }
     }
+
+    override suspend fun search(value: String): WikiResult<ResponsePeople> {
+        return executeRequest(API) { search(value) }
+    }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.albuquerque.starwarswiki.app.model.ui.PersonUI
 import com.albuquerque.starwarswiki.app.usecase.FavoriteUseCase
 import com.albuquerque.starwarswiki.app.usecase.GetPeopleUseCase
+import com.albuquerque.starwarswiki.app.usecase.GetSearchUseCase
 import com.albuquerque.starwarswiki.app.view.handler.PersonHandler
 import com.albuquerque.starwarswiki.core.mediator.SingleMediatorLiveData
 import com.albuquerque.starwarswiki.core.network.WikiException
@@ -17,19 +18,20 @@ import kotlinx.coroutines.launch
 
 class PeopleViewModel(
     private val getPeopleUseCase: GetPeopleUseCase,
-    private val favoriteUseCase: FavoriteUseCase
+    private val favoriteUseCase: FavoriteUseCase,
+    private val getSearchUseCase: GetSearchUseCase
 ): WikiViewModel(), PersonHandler {
 
-    val people = SingleMediatorLiveData<List<PersonUI>>()
+    var people: SingleMediatorLiveData<List<PersonUI>> = SingleMediatorLiveData()
+
     val onHandleFavorite = MutableLiveData<Pair<Int?, String>>()
 
     init {
         getPeoples()
     }
 
-    private fun getPeoples() {
+    fun getPeoples() {
         getPeopleUseCase(false).onEach {
-
             people.emit(it)
 
         }.catch { error ->
@@ -44,6 +46,29 @@ class PeopleViewModel(
 
         }.launchIn(viewModelScope)
     }
+
+    fun search(search: String) {
+
+        viewModelScope.launch {
+            val result = getSearchUseCase.invoke(search)
+
+            when (result) {
+
+                is WikiResult.Success -> {
+                    people.value = result.data
+                }
+
+                is WikiResult.Failure -> {
+                    onError.value = result.error.errorMessage
+                }
+
+            }
+
+        }
+
+    }
+
+    fun clearPeople() { people.value = listOf() }
 
     override fun handleFavorite(person: PersonUI, position: Int) {
 
