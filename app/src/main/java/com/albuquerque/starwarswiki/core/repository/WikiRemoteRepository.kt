@@ -8,7 +8,10 @@ import com.albuquerque.starwarswiki.core.network.WikiResult
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONObject
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -68,7 +71,17 @@ abstract class WikiRemoteRepository : CoroutineScope by CoroutineScope(Dispatche
                 repositoryResult = try {
                     WikiResult.Success(api.request())
                 } catch (e: Exception) {
-                    WikiResult.Failure(WikiException(message = e.message, cause = e.cause))
+
+                    var exception = WikiException(message = e.message, cause = e.cause)
+
+                    (e as? HttpException)?.response()?.errorBody()?.let { response ->
+                        try{
+                            val msg = JSONObject(response.string()).getString("error_message")
+                            exception = WikiException(message = msg, cause = e.cause)
+                        } catch (e: java.lang.Exception) { }
+                    }
+
+                    WikiResult.Failure(exception)
                 }
             }.join()
         }

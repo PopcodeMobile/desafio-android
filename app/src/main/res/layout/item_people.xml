@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="person"
+            type="com.albuquerque.starwarswiki.app.model.ui.PersonUI" />
+
+        <variable
+            name="handler"
+            type="com.albuquerque.starwarswiki.app.view.handler.PersonHandler" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/personName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@{person.name}"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/isFavorite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Luke Skywalker" />
+
+        <ImageView
+            android:id="@+id/isFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@{person.isFavorite}"
+            android:onClick="@{(v) -> handler.handleFavorite(person, position)}"
+            app:layout_constraintBottom_toBottomOf="@+id/personName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/personName"
+            tools:src="@drawable/ic_star_off"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/personHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{person.height}"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/labelHeight"
+            app:layout_constraintStart_toStartOf="@+id/labelHeight"
+            app:layout_constraintTop_toTopOf="@+id/personMass"
+            tools:text="172" />
+
+        <ImageView
+            android:id="@+id/separator1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_separator"
+            app:layout_constraintBottom_toBottomOf="@+id/labelHeight"
+            app:layout_constraintEnd_toStartOf="@+id/labelMass"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/labelHeight"
+            app:layout_constraintTop_toTopOf="@+id/personHeight"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/labelHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Altura"
+            app:layout_constraintBottom_toBottomOf="@+id/labelMass"
+            app:layout_constraintEnd_toStartOf="@+id/separator1"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/personMass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@{person.mass}"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/labelMass"
+            app:layout_constraintStart_toStartOf="@+id/labelMass"
+            app:layout_constraintTop_toBottomOf="@+id/personName"
+            tools:text="80" />
+
+        <ImageView
+            android:id="@+id/separator2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_separator"
+            app:layout_constraintBottom_toBottomOf="@+id/labelGender"
+            app:layout_constraintEnd_toStartOf="@+id/labelGender"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/labelMass"
+            app:layout_constraintTop_toTopOf="@+id/personGender"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/labelMass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Peso"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/separator2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/separator1"
+            app:layout_constraintTop_toBottomOf="@+id/personMass" />
+
+        <TextView
+            android:id="@+id/personGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{person.gender}"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/labelGender"
+            app:layout_constraintStart_toStartOf="@+id/labelGender"
+            app:layout_constraintTop_toTopOf="@+id/personMass"
+            tools:text="Male" />
+
+        <TextView
+            android:id="@+id/labelGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gênero"
+            app:layout_constraintBottom_toBottomOf="@+id/labelMass"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/separator2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
