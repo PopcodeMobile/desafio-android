@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Star Wars Wiki</string>
+    <string name="menu_navigation_favorites">Favoritos</string>
+    <string name="menu_navigation_people">Personagens</string>
+    <string name="action_search_people">Buscar personagens</string>
+
+    <string name="toolbar_people">Personagens</string>
+    <string name="toolbar_favorites">Favoritos</string>
 </resources>
