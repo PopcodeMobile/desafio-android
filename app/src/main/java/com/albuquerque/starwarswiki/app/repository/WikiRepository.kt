@@ -2,22 +2,23 @@ package com.albuquerque.starwarswiki.app.repository
 
 import androidx.lifecycle.LiveData
 import com.albuquerque.starwarswiki.app.model.dto.ResponseFavorite
-import com.albuquerque.starwarswiki.core.network.WikiResult
-import com.albuquerque.starwarswiki.core.repository.WikiRepository
 import com.albuquerque.starwarswiki.app.model.entity.PersonEntity
 import com.albuquerque.starwarswiki.app.model.mapper.toEntity
 import com.albuquerque.starwarswiki.app.model.mapper.toUI
 import com.albuquerque.starwarswiki.app.model.ui.PersonUI
+import com.albuquerque.starwarswiki.core.network.WikiResult
+import com.albuquerque.starwarswiki.core.repository.WikiRepository
 
 class WikiRepository(
     private val local: IWikiLocalDataSource,
     private val remote: IWikiRemoteDataSource
 ) : WikiRepository(), IWikiRepository {
 
-    override suspend fun getPeople(shouldClearTable: Boolean): WikiResult<List<PersonEntity>> {
-        return when (val result = remote.getPeople()) {
+    override suspend fun getPeople(shouldClearTable: Boolean, page: Int): WikiResult<List<PersonEntity>> {
+        return when (val result = remote.getPeople(page)) {
 
             is WikiResult.Success -> {
+
                 val peopleFromDB = local.getPeopleSuspend()
                 val peopleEntity = result.data.results?.map { it.toEntity() } ?: listOf()
 

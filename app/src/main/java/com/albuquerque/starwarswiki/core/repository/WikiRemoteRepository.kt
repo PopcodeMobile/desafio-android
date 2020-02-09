@@ -81,6 +81,8 @@ abstract class WikiRemoteRepository : CoroutineScope by CoroutineScope(Dispatche
                         } catch (e: java.lang.Exception) { }
                     }
 
+                    if(e is HttpException) exception.code = e.code()
+
                     WikiResult.Failure(exception)
                 }
             }.join()

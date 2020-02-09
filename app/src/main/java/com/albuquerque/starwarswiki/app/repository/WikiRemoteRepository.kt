@@ -15,8 +15,8 @@ class WikiRemoteRepository : WikiRemoteRepository(), IWikiRemoteDataSource {
         )
     }
 
-    override suspend fun getPeople(): WikiResult<ResponsePeople> {
-        return executeRequest(API) { fetchPeople() }
+    override suspend fun getPeople(page: Int): WikiResult<ResponsePeople> {
+        return executeRequest(API) { fetchPeople(page) }
     }
 
     override suspend fun favorite(): WikiResult<ResponseFavorite> {

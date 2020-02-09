@@ -10,14 +10,14 @@ import kotlinx.coroutines.withContext
 
 class GetPeopleUseCase(private val wikiRepository: IWikiRepository): PaginationUseCase() {
 
-    operator fun invoke(shouldClearTable: Boolean) = flow {
+    operator fun invoke(shouldClearTable: Boolean, page: Int) = flow {
 
         emit(wikiRepository.getPeopleFromDB().map { list ->
             list.map { it.toUI() }
         })
 
         val result = withContext(coroutineContext) {
-            wikiRepository.getPeople(shouldClearTable)
+            wikiRepository.getPeople(shouldClearTable, page)
         }
 
         if (result is WikiResult.Failure) {

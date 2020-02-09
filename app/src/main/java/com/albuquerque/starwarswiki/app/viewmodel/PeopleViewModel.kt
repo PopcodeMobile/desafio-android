@@ -8,7 +8,7 @@ import com.albuquerque.starwarswiki.app.usecase.GetPeopleUseCase
 import com.albuquerque.starwarswiki.app.usecase.GetSearchUseCase
 import com.albuquerque.starwarswiki.app.view.handler.PersonHandler
 import com.albuquerque.starwarswiki.core.mediator.SingleMediatorLiveData
-import com.albuquerque.starwarswiki.core.network.StringWrapper
+import com.albuquerque.starwarswiki.core.network.WikiException
 import com.albuquerque.starwarswiki.core.network.WikiResult
 import com.albuquerque.starwarswiki.core.viewmodel.WikiViewModel
 import kotlinx.coroutines.flow.catch
@@ -28,20 +28,29 @@ class PeopleViewModel(
     val onRequestStarted = MutableLiveData<Void>()
     val onRequestFinished = MutableLiveData<Void>()
 
+    val pagination = MutableLiveData<Int>()
+    private var stopPagination = false
+
     init {
-        getPeoples()
+        getPeople()
+        pagination.value = PAGINATION_FIRST_PAGE
     }
 
-    fun getPeoples() {
+    fun getPeople() {
         onRequestStarted.value = null
 
-        getPeopleUseCase(false).onEach {
+        getPeopleUseCase(
+            pagination.value == PAGINATION_FIRST_PAGE,
+            pagination.value ?: 1
+        ).onEach {
             people.emit(it)
+            pagination.value = pagination.value?.plus(1) ?: 1
             onRequestFinished.value = null
 
         }.catch { error ->
-
-            onError.value = StringWrapper(error.message ?: "Erro ao realizar requisição")
+            (error as WikiException).code?.let { code ->
+                if(code == 404) stopPagination = true
+            }
             onRequestFinished.value = null
 
         }.launchIn(viewModelScope)
@@ -69,6 +78,11 @@ class PeopleViewModel(
 
         }
 
+    }
+
+    fun handleNextPage() {
+        if(stopPagination) return
+        getPeople()
     }
 
     fun clearPeople() { people.value = listOf() }

@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface WikiAPI {
 
     @GET("people/")
-    suspend fun fetchPeople(): ResponsePeople
+    suspend fun fetchPeople(@Query("page") page: Int): ResponsePeople
 
     @POST("favorite/abc123")
     suspend fun favorite(

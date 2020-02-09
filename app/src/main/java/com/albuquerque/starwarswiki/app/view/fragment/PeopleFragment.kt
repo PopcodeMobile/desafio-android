@@ -15,6 +15,8 @@ import com.albuquerque.starwarswiki.core.custom.WikiSearchView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_people.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.recyclerview.widget.RecyclerView
+
 
 class PeopleFragment : Fragment() {
 
@@ -42,16 +44,14 @@ class PeopleFragment : Fragment() {
         val menuItem = menu.findItem(R.id.action_search_people)?.apply {
             setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
                 override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                    // abre a barra de busca e sobe o teclado
                     peopleViewModel.clearPeople()
                     emptyViewSearch.setVisible()
                     return true
                 }
 
                 override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                    // some a barra de busca e baixa o teclado
                     isSearching = false
-                    peopleViewModel.getPeoples()
+                    peopleViewModel.getPeople()
                     emptyViewSearch.setGone()
                     return true
                 }
@@ -83,6 +83,16 @@ class PeopleFragment : Fragment() {
         (activity as? AppCompatActivity)?.setupToolbar(toolbar, getString(R.string.toolbar_people))
         rvPeople.adapter = peopleAdapter
 
+        rvPeople.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    peopleViewModel.handleNextPage()
+                }
+            }
+        })
+
     }
 
     private fun subscribeUI() {
@@ -107,7 +117,7 @@ class PeopleFragment : Fragment() {
             onError.observe(this@PeopleFragment) {
 
                 this@PeopleFragment.context?.let { context ->
-                    Toast.makeText(context, it.invoke(context), Toast.LENGTH_LONG).show()
+                    Snackbar.make(rvPeople, it.invoke(context), Snackbar.LENGTH_LONG).error()
                 }
 
             }
