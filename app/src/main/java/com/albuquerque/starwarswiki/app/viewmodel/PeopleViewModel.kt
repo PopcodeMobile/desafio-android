@@ -8,7 +8,7 @@ import com.albuquerque.starwarswiki.app.usecase.GetPeopleUseCase
 import com.albuquerque.starwarswiki.app.usecase.GetSearchUseCase
 import com.albuquerque.starwarswiki.app.view.handler.PersonHandler
 import com.albuquerque.starwarswiki.core.mediator.SingleMediatorLiveData
-import com.albuquerque.starwarswiki.core.network.WikiException
+import com.albuquerque.starwarswiki.core.network.StringWrapper
 import com.albuquerque.starwarswiki.core.network.WikiResult
 import com.albuquerque.starwarswiki.core.viewmodel.WikiViewModel
 import kotlinx.coroutines.flow.catch
@@ -36,13 +36,7 @@ class PeopleViewModel(
 
         }.catch { error ->
 
-            if(people.value != null && people.value!!.isEmpty())
-                return@catch
-
-            if (error is WikiException) {
-                onError.value = error.errorMessage
-
-            }
+            onError.value = StringWrapper(error.message ?: "Erro ao realizar requisição")
 
         }.launchIn(viewModelScope)
     }
@@ -54,13 +48,9 @@ class PeopleViewModel(
 
             when (result) {
 
-                is WikiResult.Success -> {
-                    people.value = result.data
-                }
+                is WikiResult.Success -> people.value = result.data
 
-                is WikiResult.Failure -> {
-                    onError.value = result.error.errorMessage
-                }
+                is WikiResult.Failure -> onError.value = result.error.errorMessage
 
             }
 

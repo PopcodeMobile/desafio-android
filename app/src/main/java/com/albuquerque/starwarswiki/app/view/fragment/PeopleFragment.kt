@@ -50,8 +50,8 @@ class PeopleFragment : Fragment() {
 
                 override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                     // some a barra de busca e baixa o teclado
-                    peopleViewModel.getPeoples()
                     isSearching = false
+                    peopleViewModel.getPeoples()
                     emptyViewSearch.setGone()
                     return true
                 }
@@ -68,7 +68,6 @@ class PeopleFragment : Fragment() {
 
             findViewById<ImageView>(R.id.search_close_btn).setOnClickListener {
                 this.setQuery("", false)
-                setupDefaultEmptyView()
                 isSearching = false
                 peopleViewModel.clearPeople()
             }
@@ -93,19 +92,20 @@ class PeopleFragment : Fragment() {
             people.observe(this@PeopleFragment) {
                 peopleAdapter.refresh(it)
 
-                if(it.isNotEmpty())
+                if (it.isNotEmpty()) {
                     emptyViewSearch.setGone()
-                else
+                } else if(it.isEmpty() && isSearching) {
                     emptyViewSearch.setVisible()
-
-                if (it.isEmpty() && isSearching)
                     setupSearchingEmptyView()
-                else
+                } else if(it.isEmpty() && !isSearching) {
+                    emptyViewSearch.setVisible()
                     setupDefaultEmptyView()
+                }
 
             }
 
             onError.observe(this@PeopleFragment) {
+
                 this@PeopleFragment.context?.let { context ->
                     Toast.makeText(context, it.invoke(context), Toast.LENGTH_LONG).show()
                 }
@@ -138,7 +138,7 @@ class PeopleFragment : Fragment() {
     }
 
     private fun setupDefaultEmptyView() {
-        imageEmptyView.setImageResource(R.drawable.ic_person_search)
+        imageEmptyView.setImageResource(R.drawable.ic_star_wars)
         messageEmptyView.text = getString(R.string.search_message_start)
     }
 

@@ -11,7 +11,6 @@ class WikiInterceptor : Interceptor {
 
         val request = chain.request().newBuilder()
             .header("Content-Type", "application/json")
-            .addHeader("header1", "value")
             .build()
 
         return chain.proceed(request)
