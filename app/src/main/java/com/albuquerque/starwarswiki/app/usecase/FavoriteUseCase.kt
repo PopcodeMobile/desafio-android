@@ -3,11 +3,11 @@ package com.albuquerque.starwarswiki.app.usecase
 import com.albuquerque.starwarswiki.app.model.ui.PersonUI
 import com.albuquerque.starwarswiki.app.repository.IWikiRepository
 import com.albuquerque.starwarswiki.core.network.WikiResult
-import com.albuquerque.starwarswiki.core.usecase.PaginationUseCase
+import com.albuquerque.starwarswiki.core.usecase.ObservableUseCase
 import kotlinx.coroutines.withContext
 
 
-class FavoriteUseCase(private val wikiRepository: IWikiRepository): PaginationUseCase() {
+class FavoriteUseCase(private val wikiRepository: IWikiRepository): ObservableUseCase() {
 
     suspend fun invoke(person: PersonUI): WikiResult<String?> {
         person.isFavorite = !person.isFavorite

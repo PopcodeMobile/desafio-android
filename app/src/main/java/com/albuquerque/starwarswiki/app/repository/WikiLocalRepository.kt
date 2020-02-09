@@ -10,8 +10,12 @@ class WikiLocalRepository(
     private val wikiDao: WikiDAO
 ): WikiDataSource(), IWikiLocalDataSource {
 
-    override fun getPeople(): LiveData<List<PersonEntity>> {
-        return wikiDao.getPeople().distinctUntilChanged()
+    override fun getPeople(isFavorite: Boolean): LiveData<List<PersonEntity>> {
+
+        return if(!isFavorite)
+            wikiDao.getPeople().distinctUntilChanged()
+        else
+            wikiDao.getOnlyPeopleFavorited().distinctUntilChanged()
     }
 
     override suspend fun savePeoples(people: List<PersonEntity>, shouldClearTable: Boolean) {

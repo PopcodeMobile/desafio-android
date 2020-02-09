@@ -10,7 +10,7 @@ interface IWikiRepository {
 
     suspend fun getPeople(shouldClearTable: Boolean): WikiResult<List<PersonEntity>>
     suspend fun search(search: String): WikiResult<List<PersonUI>>
-    fun getPeopleFromDB():LiveData<List<PersonEntity>>
+    fun getPeopleFromDB(isFavorite: Boolean = false):LiveData<List<PersonEntity>>
     suspend fun updatePerson(person: PersonUI)
     suspend fun favorite(): WikiResult<ResponseFavorite>
 

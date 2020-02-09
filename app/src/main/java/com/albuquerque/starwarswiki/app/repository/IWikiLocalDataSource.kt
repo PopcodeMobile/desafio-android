@@ -5,7 +5,7 @@ import com.albuquerque.starwarswiki.app.model.entity.PersonEntity
 
 interface IWikiLocalDataSource {
 
-    fun getPeople(): LiveData<List<PersonEntity>>
+    fun getPeople(isFavorite: Boolean = false): LiveData<List<PersonEntity>>
     suspend fun getPeopleSuspend(): List<PersonEntity>
     suspend fun savePeoples(people: List<PersonEntity>, shouldClearTable: Boolean)
     suspend fun updatePerson(person: PersonEntity)

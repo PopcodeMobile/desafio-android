@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
                         supportFragmentManager,
                         R.id.container
                     )
-                    teste = true
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -41,7 +40,6 @@ class MainActivity : AppCompatActivity() {
                         supportFragmentManager,
                         R.id.container
                     )
-                    teste = false
                     return@OnNavigationItemSelectedListener true
                 }
             }

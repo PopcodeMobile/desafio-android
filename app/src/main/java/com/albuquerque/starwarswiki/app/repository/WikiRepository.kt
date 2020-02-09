@@ -12,10 +12,10 @@ import com.albuquerque.starwarswiki.app.model.ui.PersonUI
 class WikiRepository(
     private val local: IWikiLocalDataSource,
     private val remote: IWikiRemoteDataSource
-): WikiRepository(), IWikiRepository {
+) : WikiRepository(), IWikiRepository {
 
     override suspend fun getPeople(shouldClearTable: Boolean): WikiResult<List<PersonEntity>> {
-        return when(val result = remote.getPeople()) {
+        return when (val result = remote.getPeople()) {
 
             is WikiResult.Success -> {
                 val peopleFromDB = local.getPeopleSuspend()
@@ -24,7 +24,7 @@ class WikiRepository(
                 peopleFromDB.forEach { db ->
                     peopleEntity.forEach { person ->
 
-                        if(person.name == db.name)
+                        if (person.name == db.name)
                             person.isFavorite = db.isFavorite
 
                     }
@@ -41,7 +41,7 @@ class WikiRepository(
     }
 
     override suspend fun search(search: String): WikiResult<List<PersonUI>> {
-        return when(val result = remote.search(search)) {
+        return when (val result = remote.search(search)) {
 
             is WikiResult.Success -> {
                 val peopleFromDB = local.getPeopleSuspend()
@@ -50,7 +50,7 @@ class WikiRepository(
                 peopleFromDB.forEach { db ->
                     peopleEntity.forEach { person ->
 
-                        if(person.name == db.name)
+                        if (person.name == db.name)
                             person.isFavorite = db.isFavorite
 
                     }
@@ -65,7 +65,8 @@ class WikiRepository(
         }
     }
 
-    override fun getPeopleFromDB(): LiveData<List<PersonEntity>> = local.getPeople()
+    override fun getPeopleFromDB(isFavorite: Boolean): LiveData<List<PersonEntity>> =
+        local.getPeople(isFavorite)
 
     override suspend fun updatePerson(person: PersonUI) {
         local.updatePerson(person.toEntity())

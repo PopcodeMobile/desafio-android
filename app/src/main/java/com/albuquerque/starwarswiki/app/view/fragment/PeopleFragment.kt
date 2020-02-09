@@ -127,6 +127,15 @@ class PeopleFragment : Fragment() {
 
             }
 
+            onRequestStarted.observe(this@PeopleFragment) {
+                emptyViewSearch.setGone()
+                progress.setVisible()
+            }
+
+            onRequestFinished.observe(this@PeopleFragment) {
+                progress.setGone()
+            }
+
         }
 
     }

@@ -25,32 +25,45 @@ class PeopleViewModel(
     var people: SingleMediatorLiveData<List<PersonUI>> = SingleMediatorLiveData()
 
     val onHandleFavorite = MutableLiveData<Pair<Int?, String>>()
+    val onRequestStarted = MutableLiveData<Void>()
+    val onRequestFinished = MutableLiveData<Void>()
 
     init {
         getPeoples()
     }
 
     fun getPeoples() {
+        onRequestStarted.value = null
+
         getPeopleUseCase(false).onEach {
             people.emit(it)
+            onRequestFinished.value = null
 
         }.catch { error ->
 
             onError.value = StringWrapper(error.message ?: "Erro ao realizar requisição")
+            onRequestFinished.value = null
 
         }.launchIn(viewModelScope)
     }
 
     fun search(search: String) {
+        onRequestStarted.value = null
 
         viewModelScope.launch {
             val result = getSearchUseCase.invoke(search)
 
             when (result) {
 
-                is WikiResult.Success -> people.value = result.data
+                is WikiResult.Success -> {
+                    people.value = result.data
+                    onRequestFinished.value = null
+                }
 
-                is WikiResult.Failure -> onError.value = result.error.errorMessage
+                is WikiResult.Failure -> {
+                    onError.value = result.error.errorMessage
+                    onRequestFinished.value = null
+                }
 
             }
 

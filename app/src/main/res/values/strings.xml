@@ -6,7 +6,11 @@
 
     <string name="toolbar_people">Personagens</string>
     <string name="toolbar_favorites">Favoritos</string>
+
     <string name="search_message_start">Encontre os personagens da sua saga preferida</string>
     <string name="search_message_empty">Desculpe, não foram localizados personagens</string>
     <string name="search_message_no_list">Personagens indisponíveis no momento</string>
+
+    <string name="favorites_message_no_list">Você ainda não colocou nenhum personagem nos favoritos</string>
+
 </resources>
