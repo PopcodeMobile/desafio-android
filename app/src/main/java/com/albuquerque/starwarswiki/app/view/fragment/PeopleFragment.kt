@@ -1,21 +1,22 @@
 package com.albuquerque.starwarswiki.app.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.RecyclerView
 import com.albuquerque.starwarswiki.R
 import com.albuquerque.starwarswiki.app.adapter.PeopleAdapter
 import com.albuquerque.starwarswiki.app.extensions.*
+import com.albuquerque.starwarswiki.app.view.activity.DetailPersonActivity
 import com.albuquerque.starwarswiki.app.viewmodel.PeopleViewModel
 import com.albuquerque.starwarswiki.core.custom.WikiSearchView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_people.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.recyclerview.widget.RecyclerView
 
 
 class PeopleFragment : Fragment() {
@@ -135,6 +136,10 @@ class PeopleFragment : Fragment() {
                 }
 
 
+            }
+
+            onHandleClick.observe(this@PeopleFragment) {
+                startActivity(Intent(this@PeopleFragment.activity, DetailPersonActivity::class.java))
             }
 
             onRequestStarted.observe(this@PeopleFragment) {

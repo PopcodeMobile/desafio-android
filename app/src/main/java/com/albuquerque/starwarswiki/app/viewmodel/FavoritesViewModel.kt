@@ -37,4 +37,8 @@ class FavoritesViewModel(
 
         }
     }
+
+    override fun handleClick(person: PersonUI) {
+
+    }
 }

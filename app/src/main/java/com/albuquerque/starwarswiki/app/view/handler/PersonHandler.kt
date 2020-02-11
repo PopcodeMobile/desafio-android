@@ -6,4 +6,6 @@ interface PersonHandler {
 
     fun handleFavorite(person: PersonUI, position: Int)
 
+    fun handleClick(person: PersonUI)
+
 }

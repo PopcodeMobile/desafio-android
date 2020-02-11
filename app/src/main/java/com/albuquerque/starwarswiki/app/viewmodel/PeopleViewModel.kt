@@ -25,6 +25,7 @@ class PeopleViewModel(
     var people: SingleMediatorLiveData<List<PersonUI>> = SingleMediatorLiveData()
 
     val onHandleFavorite = MutableLiveData<Pair<Int?, String>>()
+    val onHandleClick = MutableLiveData<PersonUI>()
     val onRequestStarted = MutableLiveData<Void>()
     val onRequestFinished = MutableLiveData<Void>()
 
@@ -106,6 +107,9 @@ class PeopleViewModel(
 
         }
 
+    }
 
+    override fun handleClick(person: PersonUI) {
+        onHandleClick.value = person
     }
 }
