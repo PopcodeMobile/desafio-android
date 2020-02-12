@@ -8,13 +8,15 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.albuquerque.starwarswiki.core.utils.ListConverter
 import com.albuquerque.starwarswiki.app.dao.WikiDAO
+import com.albuquerque.starwarswiki.app.model.entity.ConfigEntity
 import com.albuquerque.starwarswiki.app.model.entity.PersonEntity
 
 @Database(
-    version = 1 ,
+    version = 1,
     exportSchema = false,
     entities = [
-        PersonEntity::class
+        PersonEntity::class,
+        ConfigEntity::class
     ]
 )
 @TypeConverters(ListConverter::class)
@@ -45,7 +47,9 @@ abstract class AppDatabase : RoomDatabase() {
                 DATABASE_NAME
             )
                 .addCallback(object : RoomDatabase.Callback() {
-                    override fun onCreate(db: SupportSQLiteDatabase) { super.onCreate(db) }
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                    }
                 })
                 .fallbackToDestructiveMigration()
                 .build()

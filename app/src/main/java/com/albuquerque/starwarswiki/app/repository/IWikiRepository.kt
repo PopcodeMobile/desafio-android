@@ -2,6 +2,7 @@ package com.albuquerque.starwarswiki.app.repository
 
 import androidx.lifecycle.LiveData
 import com.albuquerque.starwarswiki.app.model.dto.ResponseFavorite
+import com.albuquerque.starwarswiki.app.model.entity.ConfigEntity
 import com.albuquerque.starwarswiki.app.model.entity.PersonEntity
 import com.albuquerque.starwarswiki.app.model.ui.PersonUI
 import com.albuquerque.starwarswiki.core.network.WikiResult
@@ -14,5 +15,6 @@ interface IWikiRepository {
     fun getTryAgainFromDB():LiveData<MutableList<PersonEntity>>
     suspend fun updatePerson(person: PersonUI)
     suspend fun favorite(): WikiResult<ResponseFavorite>
+    fun getConfig(): LiveData<ConfigEntity?>
 
 }

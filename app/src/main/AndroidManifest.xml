@@ -14,7 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".app.view.activity.DetailPersonActivity"></activity>
+
+        <activity
+            android:name=".app.view.activity.PersonDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".app.view.activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

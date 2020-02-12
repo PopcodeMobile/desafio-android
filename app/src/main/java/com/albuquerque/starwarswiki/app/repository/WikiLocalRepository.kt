@@ -2,9 +2,10 @@ package com.albuquerque.starwarswiki.app.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
-import com.albuquerque.starwarswiki.core.repository.WikiDataSource
 import com.albuquerque.starwarswiki.app.dao.WikiDAO
+import com.albuquerque.starwarswiki.app.model.entity.ConfigEntity
 import com.albuquerque.starwarswiki.app.model.entity.PersonEntity
+import com.albuquerque.starwarswiki.core.repository.WikiDataSource
 
 class WikiLocalRepository(
     private val wikiDao: WikiDAO
@@ -31,4 +32,10 @@ class WikiLocalRepository(
     override suspend fun getPeopleSuspend(): List<PersonEntity> {
         return wikiDao.getPeopleSuspend()
     }
+
+    override suspend fun saveConfig(config: ConfigEntity) {
+        wikiDao.save(config)
+    }
+
+    override fun getConfig(): LiveData<ConfigEntity?> = wikiDao.getConfig()
 }

@@ -1,6 +1,7 @@
 package com.albuquerque.starwarswiki.app.repository
 
 import androidx.lifecycle.LiveData
+import com.albuquerque.starwarswiki.app.model.entity.ConfigEntity
 import com.albuquerque.starwarswiki.app.model.entity.PersonEntity
 
 interface IWikiLocalDataSource {
@@ -10,5 +11,7 @@ interface IWikiLocalDataSource {
     suspend fun getPeopleSuspend(): List<PersonEntity>
     suspend fun savePeoples(people: List<PersonEntity>, shouldClearTable: Boolean)
     suspend fun updatePerson(person: PersonEntity)
+    suspend fun saveConfig(config: ConfigEntity)
+    fun getConfig(): LiveData<ConfigEntity?>
 
 }

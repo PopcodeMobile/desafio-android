@@ -2,7 +2,9 @@ package com.albuquerque.starwarswiki.app.repository
 
 import androidx.lifecycle.LiveData
 import com.albuquerque.starwarswiki.app.model.dto.ResponseFavorite
+import com.albuquerque.starwarswiki.app.model.entity.ConfigEntity
 import com.albuquerque.starwarswiki.app.model.entity.PersonEntity
+import com.albuquerque.starwarswiki.app.model.mapper.toConfigEntity
 import com.albuquerque.starwarswiki.app.model.mapper.toEntity
 import com.albuquerque.starwarswiki.app.model.mapper.toUI
 import com.albuquerque.starwarswiki.app.model.ui.PersonUI
@@ -31,6 +33,7 @@ class WikiRepository(
                     }
                 }
 
+                local.saveConfig(result.data.toConfigEntity())
                 local.savePeoples(peopleEntity, shouldClearTable)
                 WikiResult.Success(peopleEntity)
             }
@@ -78,4 +81,6 @@ class WikiRepository(
     override suspend fun favorite(): WikiResult<ResponseFavorite> {
         return remote.favorite()
     }
+
+    override fun getConfig(): LiveData<ConfigEntity?> = local.getConfig()
 }

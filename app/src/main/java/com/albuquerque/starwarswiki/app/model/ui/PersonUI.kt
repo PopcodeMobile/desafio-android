@@ -1,5 +1,7 @@
 package com.albuquerque.starwarswiki.app.model.ui
 
+import java.io.Serializable
+
 data class PersonUI(
     var name: String,
     var height: String,
@@ -12,4 +14,4 @@ data class PersonUI(
     var homeworld: String,
     var isFavorite: Boolean,
     var tryAgainPosition: Int? = null
-)
+): Serializable

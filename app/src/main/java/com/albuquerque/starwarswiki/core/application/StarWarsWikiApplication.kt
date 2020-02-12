@@ -58,6 +58,7 @@ class StarWarsWikiApplication : Application() {
                 factory { GetFavoritesUseCase(wikiRepository = get()) }
                 factory { SetTryAgainUseCase(wikiRepository = get()) }
                 factory { GetTryAgainUseCase(wikiRepository = get()) }
+                factory { GetConfigUseCase(wikiRepository = get()) }
             }
 
 
@@ -69,7 +70,8 @@ class StarWarsWikiApplication : Application() {
                         favoriteUseCase = get(),
                         getSearchUseCase = get(),
                         setTryAgainUseCase = get(),
-                        getTryAgainUseCase = get()
+                        getTryAgainUseCase = get(),
+                        getConfigUseCase = get()
                     )
                 }
                 viewModel {

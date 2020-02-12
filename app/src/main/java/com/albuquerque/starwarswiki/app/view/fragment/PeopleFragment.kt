@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.albuquerque.starwarswiki.R
 import com.albuquerque.starwarswiki.app.adapter.PeopleAdapter
 import com.albuquerque.starwarswiki.app.extensions.*
-import com.albuquerque.starwarswiki.app.view.activity.DetailPersonActivity
+import com.albuquerque.starwarswiki.app.view.activity.PersonDetailActivity
+import com.albuquerque.starwarswiki.app.view.activity.PersonDetailActivity.Companion.PERSON
 import com.albuquerque.starwarswiki.app.viewmodel.PeopleViewModel
 import com.albuquerque.starwarswiki.core.custom.WikiSearchView
 import com.google.android.material.snackbar.Snackbar
@@ -102,6 +103,7 @@ class PeopleFragment : Fragment() {
 
             people.observe(this@PeopleFragment) {
                 peopleAdapter.refresh(it)
+                setLastPage(it.size)
 
                 if (it.isNotEmpty()) {
                     emptyViewSearch.setGone()
@@ -149,8 +151,11 @@ class PeopleFragment : Fragment() {
 
             }
 
-            onHandleClick.observe(this@PeopleFragment) {
-                startActivity(Intent(this@PeopleFragment.activity, DetailPersonActivity::class.java))
+            onHandleClick.observe(this@PeopleFragment) { person->
+                startActivity(
+                    Intent(this@PeopleFragment.activity, PersonDetailActivity::class.java)
+                        .putExtras(Bundle().apply { putSerializable(PERSON, person) })
+                )
             }
 
             onStartLoading.observe(this@PeopleFragment) {
@@ -161,6 +166,12 @@ class PeopleFragment : Fragment() {
             onFinishLoading.observe(this@PeopleFragment) {
                 progress.setGone()
                 rvPeople.setVisible()
+            }
+
+            config.observe(this@PeopleFragment) { config ->
+                config?.let {
+                    setCount(it.count)
+                }
             }
 
         }
