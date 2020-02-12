@@ -13,5 +13,6 @@ data class PersonUI(
     var gender: String,
     var homeworld: String,
     var isFavorite: Boolean,
+    var species: ArrayList<String>? = arrayListOf(),
     var tryAgainPosition: Int? = null
 ): Serializable

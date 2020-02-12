@@ -10,6 +10,18 @@
             type="com.albuquerque.starwarswiki.app.model.ui.PersonUI" />
 
         <variable
+            name="homePlanet"
+            type="String" />
+
+        <variable
+            name="species"
+            type="String" />
+
+        <variable
+            name="isFav"
+            type="Boolean" />
+
+        <variable
             name="handler"
             type="com.albuquerque.starwarswiki.app.view.handler.PersonHandler" />
 
@@ -18,9 +30,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context=".app.view.activity.PersonDetailActivity">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -46,35 +56,41 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/bg"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <!-- Linha 1 -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/firstInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="32dp"
+                    android:background="@android:color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/personHeight"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="@{person.height}"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/labelHeight"
                         app:layout_constraintStart_toStartOf="@+id/labelHeight"
@@ -83,23 +99,28 @@
 
                     <TextView
                         android:id="@+id/labelHeight"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Altura"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/label_altura"
+                        android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="@+id/labelMass"
-                        app:layout_constraintEnd_toStartOf="@+id/labelMass"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/personMass"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="@{person.mass}"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/labelMass"
                         app:layout_constraintStart_toStartOf="@+id/labelMass"
@@ -108,24 +129,29 @@
 
                     <TextView
                         android:id="@+id/labelMass"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginBottom="16dp"
-                        android:text="Peso"
+                        android:text="@string/label_peso"
+                        android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/labelGender"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/labelHeight"
+                        app:layout_constraintStart_toStartOf="@+id/guideline"
                         app:layout_constraintTop_toBottomOf="@+id/personMass" />
 
                     <TextView
                         android:id="@+id/personGender"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="@{person.gender}"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/labelGender"
                         app:layout_constraintStart_toStartOf="@+id/labelGender"
@@ -134,33 +160,68 @@
 
                     <TextView
                         android:id="@+id/labelGender"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Gênero"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/label_genero"
+                        android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="@+id/labelMass"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/labelMass" />
+                        app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.33" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.66" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <!-- Linha 2 -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/secondInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="16dp"
+                    android:background="@android:color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/firstInfo">
 
-                    <TextView
-                        android:id="@+id/personHairColor"
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.33" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.66" />
+
+                    <TextView
+                        android:id="@+id/personHairColor"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="@{person.hairColor}"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/labelHairColor"
                         app:layout_constraintStart_toStartOf="@+id/labelHairColor"
@@ -169,23 +230,28 @@
 
                     <TextView
                         android:id="@+id/labelHairColor"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Cor do cabelo"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/label_cor_cabelo"
+                        android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="@+id/labelSkinColor"
-                        app:layout_constraintEnd_toStartOf="@+id/labelSkinColor"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline3"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/personSkinColor"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="@{person.skinColor}"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/labelSkinColor"
                         app:layout_constraintEnd_toEndOf="@+id/labelSkinColor"
@@ -195,23 +261,28 @@
 
                     <TextView
                         android:id="@+id/labelSkinColor"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginBottom="16dp"
                         android:text="Cor da pele"
+                        android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/labelEyeColor"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline4"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/labelHairColor" />
+                        app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
                     <TextView
                         android:id="@+id/personEyeColor"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="@{person.eyeColor}"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/labelEyeColor"
                         app:layout_constraintStart_toStartOf="@+id/labelEyeColor"
@@ -220,16 +291,147 @@
 
                     <TextView
                         android:id="@+id/labelEyeColor"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Cor dos olhos"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/label_cor_olhos"
+                        android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="@+id/labelSkinColor"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/labelSkinColor" />
+                        app:layout_constraintStart_toStartOf="@+id/guideline4" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <!-- Linha 3 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/thirdInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@android:color/white"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/secondInfo">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.33" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.66" />
+
+                    <TextView
+                        android:id="@+id/personHomePlanet"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{homePlanet}"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/labelHomePlanet"
+                        app:layout_constraintStart_toStartOf="@+id/labelHomePlanet"
+                        app:layout_constraintTop_toTopOf="@+id/personSpecies"
+                        tools:text="Planeta X" />
+
+                    <TextView
+                        android:id="@+id/labelHomePlanet"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/label_planeta_natal"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toBottomOf="@+id/labelSpecies"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/personSpecies"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{species}"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/labelSpecies"
+                        app:layout_constraintEnd_toEndOf="@+id/labelSpecies"
+                        app:layout_constraintStart_toStartOf="@+id/labelSpecies"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Especie Y" />
+
+                    <TextView
+                        android:id="@+id/labelSpecies"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/label_especie"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                        app:layout_constraintStart_toStartOf="@+id/guideline5" />
+
+                    <TextView
+                        android:id="@+id/personBirth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{person.birthYear}"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/labelBirth"
+                        app:layout_constraintStart_toStartOf="@+id/labelBirth"
+                        app:layout_constraintTop_toTopOf="@+id/personSpecies"
+                        tools:text="Y1996" />
+
+                    <TextView
+                        android:id="@+id/labelBirth"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/label_nascimento"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toBottomOf="@+id/labelSpecies"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline6" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -242,7 +444,7 @@
             android:layout_margin="16dp"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@{person.isFavorite}" />
+            app:srcCompat="@{isFav}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

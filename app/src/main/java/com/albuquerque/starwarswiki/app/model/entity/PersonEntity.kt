@@ -16,5 +16,6 @@ class PersonEntity(
     @ColumnInfo(name = "gender") var gender: String,
     @ColumnInfo(name = "homeworld") var homeworld: String,
     @ColumnInfo(name = "isFavorite") var isFavorite: Boolean = false,
+    @ColumnInfo(name = "species") var species: ArrayList<String> = arrayListOf(),
     @ColumnInfo(name = "tryAgainPosition") var tryAgainPosition: Int? = null
 )

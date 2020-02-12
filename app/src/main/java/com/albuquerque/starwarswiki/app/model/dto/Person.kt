@@ -11,5 +11,6 @@ data class Person(
     @SerializedName("eye_color") val eyeColor: String? = null,
     @SerializedName("birth_year") val birthYear: String? = null,
     val gender: String? = null,
-    val homeworld: String? = null
+    val homeworld: String? = null,
+    val species: ArrayList<String>? = arrayListOf()
 )

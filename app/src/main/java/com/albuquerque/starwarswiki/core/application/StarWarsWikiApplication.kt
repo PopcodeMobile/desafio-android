@@ -6,6 +6,7 @@ import com.albuquerque.starwarswiki.app.repository.*
 import com.albuquerque.starwarswiki.app.usecase.*
 import com.albuquerque.starwarswiki.app.viewmodel.FavoritesViewModel
 import com.albuquerque.starwarswiki.app.viewmodel.PeopleViewModel
+import com.albuquerque.starwarswiki.app.viewmodel.PersonDetailViewModel
 import com.facebook.stetho.Stetho
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -59,8 +60,9 @@ class StarWarsWikiApplication : Application() {
                 factory { SetTryAgainUseCase(wikiRepository = get()) }
                 factory { GetTryAgainUseCase(wikiRepository = get()) }
                 factory { GetConfigUseCase(wikiRepository = get()) }
+                factory { GetSpeciesUseCase(wikiRepository = get()) }
+                factory { GetHomePlanetUseCase(wikiRepository = get()) }
             }
-
 
 
             val viewModelModule = module {
@@ -76,6 +78,15 @@ class StarWarsWikiApplication : Application() {
                 }
                 viewModel {
                     FavoritesViewModel(getFavoritesUseCase = get(), favoriteUseCase = get())
+                }
+
+                viewModel {
+                    PersonDetailViewModel(
+                        getSpeciesUseCase = get(),
+                        getHomePlanetUseCase = get(),
+                        favoriteUseCase = get(),
+                        setTryAgainUseCase = get()
+                    )
                 }
             }
 

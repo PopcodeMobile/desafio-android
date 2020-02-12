@@ -1,11 +1,10 @@
 package com.albuquerque.starwarswiki.app.repository
 
+import com.albuquerque.starwarswiki.app.model.dto.Species
+import com.albuquerque.starwarswiki.app.model.dto.Planet
 import com.albuquerque.starwarswiki.app.model.dto.ResponseFavorite
 import com.albuquerque.starwarswiki.app.model.dto.ResponsePeople
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface WikiAPI {
 
@@ -21,5 +20,15 @@ interface WikiAPI {
     suspend fun search(
         @Query("search") value: String
     ): ResponsePeople
+
+    @GET("planets/{planetID}")
+    suspend fun fetchHomePlanet(
+        @Path("planetID") id: String
+    ): Planet
+
+    @GET("species/{speciesID}")
+    suspend fun fetchSpecies(
+        @Path("speciesID") id: String
+    ): Species
 
 }

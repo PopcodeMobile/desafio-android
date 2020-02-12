@@ -1,5 +1,7 @@
 package com.albuquerque.starwarswiki.app.repository
 
+import com.albuquerque.starwarswiki.app.model.dto.Species
+import com.albuquerque.starwarswiki.app.model.dto.Planet
 import com.albuquerque.starwarswiki.app.model.dto.ResponseFavorite
 import com.albuquerque.starwarswiki.core.network.WikiResult
 import com.albuquerque.starwarswiki.core.repository.WikiRemoteRepository
@@ -32,4 +34,13 @@ class WikiRemoteRepository : WikiRemoteRepository(), IWikiRemoteDataSource {
     override suspend fun search(value: String): WikiResult<ResponsePeople> {
         return executeRequest(API) { search(value) }
     }
+
+    override suspend fun getHomePlanet(id: String): WikiResult<Planet> {
+        return executeRequest(API) { fetchHomePlanet(id) }
+    }
+
+    override suspend fun getSpecies(id: String): WikiResult<Species> {
+        return executeRequest(API) { fetchSpecies(id) }
+    }
+
 }

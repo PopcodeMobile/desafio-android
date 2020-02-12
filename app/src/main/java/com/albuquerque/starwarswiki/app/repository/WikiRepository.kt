@@ -7,7 +7,9 @@ import com.albuquerque.starwarswiki.app.model.entity.PersonEntity
 import com.albuquerque.starwarswiki.app.model.mapper.toConfigEntity
 import com.albuquerque.starwarswiki.app.model.mapper.toEntity
 import com.albuquerque.starwarswiki.app.model.mapper.toUI
+import com.albuquerque.starwarswiki.app.model.ui.SpeciesUI
 import com.albuquerque.starwarswiki.app.model.ui.PersonUI
+import com.albuquerque.starwarswiki.app.model.ui.PlanetUI
 import com.albuquerque.starwarswiki.core.network.WikiResult
 import com.albuquerque.starwarswiki.core.repository.WikiRepository
 
@@ -61,6 +63,35 @@ class WikiRepository(
                 }
 
                 WikiResult.Success(peopleEntity.map { it.toUI() })
+            }
+
+            is WikiResult.Failure -> {
+                WikiResult.Failure(result.error)
+            }
+        }
+    }
+
+    override suspend fun getPlanetHome(id: String): WikiResult<PlanetUI> {
+        return when (val result = remote.getHomePlanet(id)) {
+
+            is WikiResult.Success -> {
+
+                WikiResult.Success(result.data.toUI())
+            }
+
+            is WikiResult.Failure -> {
+                WikiResult.Failure(result.error)
+            }
+        }
+    }
+
+    override suspend fun getSpecies(id: String): WikiResult<SpeciesUI> {
+
+        return when (val result = remote.getSpecies(id)) {
+
+            is WikiResult.Success -> {
+
+                WikiResult.Success(result.data.toUI())
             }
 
             is WikiResult.Failure -> {

@@ -12,5 +12,13 @@
     <string name="search_message_no_list">Personagens indisponíveis no momento</string>
 
     <string name="favorites_message_no_list">Você ainda não colocou nenhum personagem nos favoritos</string>
+    <string name="label_altura">Altura</string>
+    <string name="label_peso">Peso</string>
+    <string name="label_genero">Gênero</string>
+    <string name="label_cor_cabelo">Cor do cabelo</string>
+    <string name="label_cor_olhos">Cor dos olhos</string>
+    <string name="label_planeta_natal">Planeta natal</string>
+    <string name="label_especie">Espécie</string>
+    <string name="label_nascimento">Nascimento</string>
 
 </resources>
