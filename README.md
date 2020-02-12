@@ -7,6 +7,7 @@ O aplicativo foi desenvolvido baseado na arquitetura MVVM, utilizando biblioteca
 <img src="https://user-images.githubusercontent.com/41158713/74381074-8eeec780-4dc9-11ea-96e6-e7f7cd68d780.png" width="250">
 <img src="https://user-images.githubusercontent.com/41158713/74381084-931ae500-4dc9-11ea-8f37-30a8da8df0d4.png" width="250">
 <img src="https://user-images.githubusercontent.com/41158713/74381110-a1690100-4dc9-11ea-85da-2e4b86faadf8.png" width="250">
+<img src="https://user-images.githubusercontent.com/41158713/74381117-a4fc8800-4dc9-11ea-9699-cc796ebfaab7.png" width="250">
 
 # Desafio Android
 
