@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':core', ':domain', ':data'
 rootProject.name='Star Wars Wiki'

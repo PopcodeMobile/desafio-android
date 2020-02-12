@@ -14,7 +14,7 @@ import com.albuquerque.starwarswiki.app.extensions.*
 import com.albuquerque.starwarswiki.app.view.activity.PersonDetailActivity
 import com.albuquerque.starwarswiki.app.view.activity.PersonDetailActivity.Companion.PERSON
 import com.albuquerque.starwarswiki.app.viewmodel.PeopleViewModel
-import com.albuquerque.starwarswiki.core.custom.WikiSearchView
+import com.albuquerque.starwarswiki.app.custom.WikiSearchView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_people.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

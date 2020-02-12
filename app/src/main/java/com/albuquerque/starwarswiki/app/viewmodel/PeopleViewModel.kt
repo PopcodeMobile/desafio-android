@@ -2,14 +2,14 @@ package com.albuquerque.starwarswiki.app.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.albuquerque.starwarswiki.app.model.ui.PersonUI
-import com.albuquerque.starwarswiki.app.usecase.*
+import br.albuquerque.data.ui.PersonUI
+import br.albuquerque.domain.usecase.*
 import com.albuquerque.starwarswiki.app.view.handler.PersonHandler
-import com.albuquerque.starwarswiki.core.livedata.SingleLiveEvent
-import com.albuquerque.starwarswiki.core.mediator.SingleMediatorLiveData
-import com.albuquerque.starwarswiki.core.network.StringWrapper
-import com.albuquerque.starwarswiki.core.network.WikiResult
-import com.albuquerque.starwarswiki.core.viewmodel.WikiViewModel
+import br.albuquerque.core.livedata.SingleLiveEvent
+import br.albuquerque.core.mediator.SingleMediatorLiveData
+import br.albuquerque.core.network.StringWrapper
+import br.albuquerque.core.network.WikiResult
+import br.albuquerque.core.viewmodel.WikiViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -80,7 +80,10 @@ class PeopleViewModel(
                 }
 
                 is WikiResult.Failure -> {
-                    onError.value = result.error.errorMessage
+                    result.error.errorMessage?.let {
+                        onError.value = it
+                    }
+
                     onFinishLoading.call()
                 }
 

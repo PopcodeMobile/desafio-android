@@ -1,0 +1,6 @@
+apply from: '../library.gradle'
+
+dependencies {
+    dependencies(room_dependencies)
+    implementation project(':core')
+}

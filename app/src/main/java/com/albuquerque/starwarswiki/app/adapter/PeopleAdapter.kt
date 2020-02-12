@@ -3,10 +3,10 @@ package com.albuquerque.starwarswiki.app.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.albuquerque.starwarswiki.R
-import com.albuquerque.starwarswiki.app.model.ui.PersonUI
+import br.albuquerque.data.ui.PersonUI
 import com.albuquerque.starwarswiki.app.view.handler.PersonHandler
 import com.albuquerque.starwarswiki.app.view.holder.PersonViewHolder
-import com.albuquerque.starwarswiki.core.adapter.BaseAdapter
+import br.albuquerque.core.adapter.BaseAdapter
 import com.albuquerque.starwarswiki.databinding.ItemPeopleBinding
 import com.albuquerque.starwarswiki.databinding.ItemPeopleBindingImpl
 

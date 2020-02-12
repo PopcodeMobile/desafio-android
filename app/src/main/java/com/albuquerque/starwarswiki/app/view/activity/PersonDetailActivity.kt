@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import com.albuquerque.starwarswiki.R
 import com.albuquerque.starwarswiki.app.extensions.*
-import com.albuquerque.starwarswiki.app.model.ui.PersonUI
+import br.albuquerque.data.ui.PersonUI
 import com.albuquerque.starwarswiki.app.viewmodel.PersonDetailViewModel
 import com.albuquerque.starwarswiki.databinding.ActivityPersonDetailBinding
 import com.google.android.material.snackbar.Snackbar

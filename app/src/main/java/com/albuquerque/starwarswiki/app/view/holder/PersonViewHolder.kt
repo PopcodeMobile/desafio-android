@@ -1,8 +1,8 @@
 package com.albuquerque.starwarswiki.app.view.holder
 
-import com.albuquerque.starwarswiki.app.model.ui.PersonUI
+import br.albuquerque.data.ui.PersonUI
 import com.albuquerque.starwarswiki.app.view.handler.PersonHandler
-import com.albuquerque.starwarswiki.core.holder.BaseViewHolder
+import br.albuquerque.core.holder.BaseViewHolder
 import com.albuquerque.starwarswiki.databinding.ItemPeopleBinding
 
 class PersonViewHolder(binding: ItemPeopleBinding): BaseViewHolder<PersonUI>(binding) {

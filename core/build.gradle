@@ -1,0 +1,4 @@
+apply from: '../library.gradle'
+
+dependencies(glide_dependencies)
+dependencies(injection_dependencies)

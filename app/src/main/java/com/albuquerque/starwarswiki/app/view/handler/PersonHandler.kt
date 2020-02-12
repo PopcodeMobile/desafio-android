@@ -1,6 +1,6 @@
 package com.albuquerque.starwarswiki.app.view.handler
 
-import com.albuquerque.starwarswiki.app.model.ui.PersonUI
+import br.albuquerque.data.ui.PersonUI
 
 interface PersonHandler {
 

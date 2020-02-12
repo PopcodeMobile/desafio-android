@@ -8,14 +8,14 @@ apply plugin: "kotlin-kapt"
 
 android {
 
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion rootProject.compile_sdk_version
+
     defaultConfig {
         applicationId "com.albuquerque.starwarswiki"
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.min_sdk_version
+        targetSdkVersion rootProject.target_sdk_version
+        versionCode rootProject.app_version_code
+        versionName rootProject.app_version_name
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,6 +37,7 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
+
 }
 
 dependencies(kotlin_dependencies)
@@ -50,10 +51,11 @@ dependencies(utils_dependencies)
 dependencies(injection_dependencies)
 
 dependencies {
-    implementation 'androidx.legacy:legacy-support-v4:+'
+    api project(':core')
+    api project(':domain')
+    api project(':data')
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:+'
-    implementation 'com.google.android.material:material:+'
+    implementation 'androidx.legacy:legacy-support-v4:+'
 }

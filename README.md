@@ -1,3 +1,13 @@
+# Star Wars Wiki
+O aplicativo foi desenvolvido baseado na arquitetura MVVM, utilizando bibliotecas como Data Binding, Room, Koin e etc, além de utilizar o repository pattern.
+
+# Screenshots
+<img src="https://user-images.githubusercontent.com/41158713/74380998-6d8ddb80-4dc9-11ea-9670-295261baf84b.png" width="250"> <img src="https://user-images.githubusercontent.com/41158713/74381046-85655f80-4dc9-11ea-8a62-4f9bc86627a8.png" width="250">
+<img src="https://user-images.githubusercontent.com/41158713/74381057-89917d00-4dc9-11ea-9c57-bddc6038feb0.png" width="250">
+<img src="https://user-images.githubusercontent.com/41158713/74381074-8eeec780-4dc9-11ea-96e6-e7f7cd68d780.png" width="250">
+<img src="https://user-images.githubusercontent.com/41158713/74381084-931ae500-4dc9-11ea-8f37-30a8da8df0d4.png" width="250">
+<img src="https://user-images.githubusercontent.com/41158713/74381110-a1690100-4dc9-11ea-85da-2e4b86faadf8.png" width="250">
+
 # Desafio Android
 
 O desafio consiste em criar uma Wiki de Star Wars onde é mostrada uma lista de personagens e o usuário pode favoritar alguns deles. É recomendado a utilização de Kotlin ou Java no projeto.
