@@ -10,5 +10,6 @@ data class PersonUI(
     var birthYear: String,
     var gender: String,
     var homeworld: String,
-    var isFavorite: Boolean
+    var isFavorite: Boolean,
+    var tryAgainPosition: Int? = null
 )

@@ -22,6 +22,8 @@ class WikiLocalRepository(
         wikiDao.saveAllTransaction(people, shouldClearTable)
     }
 
+    override fun getTryAgainPeople(): LiveData<MutableList<PersonEntity>> = wikiDao.getOnlyPeopleTryAgain()
+
     override suspend fun updatePerson(person: PersonEntity) {
         wikiDao.updatePerson(person)
     }

@@ -16,6 +16,9 @@ interface WikiDAO {
     @Query("select * from people where isFavorite = 1")
     fun getOnlyPeopleFavorited(): LiveData<List<PersonEntity>>
 
+    @Query("select * from people where tryAgainPosition is not null")
+    fun getOnlyPeopleTryAgain(): LiveData<MutableList<PersonEntity>>
+
     @Query("select * from people")
     suspend fun getPeopleSuspend(): List<PersonEntity>
 

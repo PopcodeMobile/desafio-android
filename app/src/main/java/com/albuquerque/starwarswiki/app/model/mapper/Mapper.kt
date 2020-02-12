@@ -29,7 +29,8 @@ fun PersonEntity.toUI(): PersonUI {
         this.birthYear,
         this.gender,
         this.homeworld,
-        this.isFavorite
+        this.isFavorite,
+        this.tryAgainPosition
     )
 }
 
@@ -44,6 +45,7 @@ fun PersonUI.toEntity(): PersonEntity {
         this.birthYear,
         this.gender,
         this.homeworld,
-        this.isFavorite
+        this.isFavorite,
+        this.tryAgainPosition
     )
 }

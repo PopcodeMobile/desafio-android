@@ -3,10 +3,7 @@ package com.albuquerque.starwarswiki.core.application
 import android.app.Application
 import com.albuquerque.starwarswiki.app.database.AppDatabase
 import com.albuquerque.starwarswiki.app.repository.*
-import com.albuquerque.starwarswiki.app.usecase.FavoriteUseCase
-import com.albuquerque.starwarswiki.app.usecase.GetFavoritesUseCase
-import com.albuquerque.starwarswiki.app.usecase.GetPeopleUseCase
-import com.albuquerque.starwarswiki.app.usecase.GetSearchUseCase
+import com.albuquerque.starwarswiki.app.usecase.*
 import com.albuquerque.starwarswiki.app.viewmodel.FavoritesViewModel
 import com.albuquerque.starwarswiki.app.viewmodel.PeopleViewModel
 import com.facebook.stetho.Stetho
@@ -59,11 +56,21 @@ class StarWarsWikiApplication : Application() {
                 factory { FavoriteUseCase(wikiRepository = get()) }
                 factory { GetSearchUseCase(wikiRepository = get()) }
                 factory { GetFavoritesUseCase(wikiRepository = get()) }
+                factory { SetTryAgainUseCase(wikiRepository = get()) }
+                factory { GetTryAgainUseCase(wikiRepository = get()) }
             }
+
+
 
             val viewModelModule = module {
                 viewModel {
-                    PeopleViewModel(getPeopleUseCase = get(), favoriteUseCase = get(), getSearchUseCase = get())
+                    PeopleViewModel(
+                        getPeopleUseCase = get(),
+                        favoriteUseCase = get(),
+                        getSearchUseCase = get(),
+                        setTryAgainUseCase = get(),
+                        getTryAgainUseCase = get()
+                    )
                 }
                 viewModel {
                     FavoritesViewModel(getFavoritesUseCase = get(), favoriteUseCase = get())

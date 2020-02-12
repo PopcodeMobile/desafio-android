@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".app.view.fragment.PeopleFragment">
 
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"

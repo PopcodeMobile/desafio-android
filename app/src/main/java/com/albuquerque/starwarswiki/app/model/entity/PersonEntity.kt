@@ -15,5 +15,6 @@ class PersonEntity(
     @ColumnInfo(name = "birthYear") var birthYear: String,
     @ColumnInfo(name = "gender") var gender: String,
     @ColumnInfo(name = "homeworld") var homeworld: String,
-    @ColumnInfo(name = "isFavorite") var isFavorite: Boolean = false
+    @ColumnInfo(name = "isFavorite") var isFavorite: Boolean = false,
+    @ColumnInfo(name = "tryAgainPosition") var tryAgainPosition: Int? = null
 )

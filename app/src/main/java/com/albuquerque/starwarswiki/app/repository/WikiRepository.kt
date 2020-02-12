@@ -69,6 +69,8 @@ class WikiRepository(
     override fun getPeopleFromDB(isFavorite: Boolean): LiveData<List<PersonEntity>> =
         local.getPeople(isFavorite)
 
+    override fun getTryAgainFromDB(): LiveData<MutableList<PersonEntity>> = local.getTryAgainPeople()
+
     override suspend fun updatePerson(person: PersonUI) {
         local.updatePerson(person.toEntity())
     }

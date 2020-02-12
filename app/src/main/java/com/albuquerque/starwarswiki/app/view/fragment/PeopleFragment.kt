@@ -115,6 +115,18 @@ class PeopleFragment : Fragment() {
 
             }
 
+            tryFavoriteAgainList.observe(this@PeopleFragment) { list ->
+
+                if(isTryAgainEnabled) {
+                    list.forEach {
+                        handleFavorite(it, it.tryAgainPosition!!)
+                    }
+
+                    isTryAgainEnabled = false
+                    clearTryAgainList()
+                }
+            }
+
             onError.observe(this@PeopleFragment) {
 
                 this@PeopleFragment.context?.let { context ->
@@ -126,7 +138,6 @@ class PeopleFragment : Fragment() {
             onHandleFavorite.observe(this@PeopleFragment) { pair ->
 
                 pair.first?.let {
-                    peopleAdapter.notifyItemChanged(it)
 
                     if (pair.second.isNotBlank() || pair.second.isNotEmpty())
                         Snackbar.make(rvPeople, pair.second, Snackbar.LENGTH_LONG).success()
@@ -142,13 +153,14 @@ class PeopleFragment : Fragment() {
                 startActivity(Intent(this@PeopleFragment.activity, DetailPersonActivity::class.java))
             }
 
-            onRequestStarted.observe(this@PeopleFragment) {
+            onStartLoading.observe(this@PeopleFragment) {
                 emptyViewSearch.setGone()
                 progress.setVisible()
             }
 
-            onRequestFinished.observe(this@PeopleFragment) {
+            onFinishLoading.observe(this@PeopleFragment) {
                 progress.setGone()
+                rvPeople.setVisible()
             }
 
         }

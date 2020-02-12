@@ -14,6 +14,8 @@ class FavoriteUseCase(private val wikiRepository: IWikiRepository): ObservableUs
 
         if(person.isFavorite) {
 
+            if(person.tryAgainPosition != null) person.tryAgainPosition = null
+
             val result = withContext(coroutineContext) {
                 wikiRepository.favorite()
             }
@@ -25,7 +27,10 @@ class FavoriteUseCase(private val wikiRepository: IWikiRepository): ObservableUs
                     WikiResult.Success(result.data.message)
                 }
 
-                is WikiResult.Failure -> WikiResult.Failure(result.error)
+                is WikiResult.Failure -> {
+                    person.isFavorite = !person.isFavorite
+                    WikiResult.Failure(result.error)
+                }
 
             }
         } else {
