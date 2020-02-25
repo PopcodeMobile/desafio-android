@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sw_wiki/pages/home.page.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:sw_wiki/app/app_module.dart';
 
-void main() => runApp(SWApp());
-
-class SWApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'SW Wiki',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
+void main() => runApp(
+      ModularApp(
+        module: AppModule(),
       ),
-      home: HomePage(),
     );
-  }
-}
