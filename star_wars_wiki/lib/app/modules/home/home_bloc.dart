@@ -15,6 +15,7 @@ class HomeBloc extends BlocBase {
   Observable<List<CharacterModel>> get responseOut => listPost.stream;
 
   List<CharacterModel> list = [];
+  CharacterModel selectedChar;
 
   void fetchCharacters({int page: 1}) async {
     // responseIn.add(null);
