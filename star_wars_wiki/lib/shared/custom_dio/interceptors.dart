@@ -9,13 +9,13 @@ class CustomInterceptors extends InterceptorsWrapper {
 
   @override
   onResponse(Response response) {
-    print('REQUEST(${response.statusCode}) => PATH: ${response.request.path}');
+    print('RESPONSE(${response.statusCode}) => PATH: ${response.request.path}');
     return response;
   }
 
   @override
   onError(DioError e) {
-    print('REQUEST(${e.response.statusCode}) => PATH: ${e.request.path}');
+    print('REQUEST(${e.message}) => PATH: ${e.request.path}');
     return e;
   }
 }

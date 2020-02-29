@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CaheInterceptor extends InterceptorsWrapper {
+class CacheInterceptor extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options) async {
     return options;
