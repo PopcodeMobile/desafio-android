@@ -64,9 +64,9 @@ flutter:
     - family: Star Jedi
       fonts:
         - asset: assets/fonts/Starjedi.ttf
-    - family: Star Jedi Monoline
+    - family: Star Jedi Holow
       fonts:
-        - asset: assets/fonts/Stjldbl1.ttf
+        - asset: assets/fonts/Starjhol.ttf
     
   # example:
   # fonts:
