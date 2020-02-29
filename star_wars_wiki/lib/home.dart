@@ -11,6 +11,7 @@ class Home extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
+            tooltip: 'Search',
             onPressed: (){},
           ),
         ],

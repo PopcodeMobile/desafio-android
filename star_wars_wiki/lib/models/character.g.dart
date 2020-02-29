@@ -179,6 +179,19 @@ mixin _$Character on _CharacterBase, Store {
     }, _$speciesAtom, name: '${_$speciesAtom.name}_set');
   }
 
+  final _$_CharacterBaseActionController =
+      ActionController(name: '_CharacterBase');
+
+  @override
+  dynamic setName(String value) {
+    final _$actionInfo = _$_CharacterBaseActionController.startAction();
+    try {
+      return super.setName(value);
+    } finally {
+      _$_CharacterBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     final string =

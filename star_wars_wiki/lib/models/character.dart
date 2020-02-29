@@ -4,8 +4,12 @@ part 'character.g.dart';
 class Character = _CharacterBase with _$Character;
 
 abstract class _CharacterBase with Store {
+  
   @observable
   String name;
+  @action
+  setName (String value) => name = value;
+
   @observable
   int height;
   @observable
