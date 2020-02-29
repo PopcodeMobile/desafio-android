@@ -1,3 +1,4 @@
+import 'package:star_wars_wiki/app/modules/detail/detail_bloc.dart';
 import 'package:star_wars_wiki/app/modules/home/home_bloc.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,13 @@ class HomeModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
         Bloc((i) => HomeBloc(HomeModule.to.getDependency<HomeRepository>())),
+        Bloc((i) => DetailBloc(HomeModule.to.getDependency<HomeRepository>())),
       ];
 
   @override
   List<Dependency> get dependencies => [
         Dependency(
-            (i) => HomeRepository(AppModule.to.getDependency<CustomDio>()))
+            (i) => HomeRepository(AppModule.to.getDependency<CustomDio>())),
       ];
 
   @override
