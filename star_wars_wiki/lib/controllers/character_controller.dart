@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:mobx/mobx.dart';
 import 'package:dio/dio.dart';
 import 'package:star_wars_wiki/models/character.dart';

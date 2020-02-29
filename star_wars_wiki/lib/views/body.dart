@@ -22,7 +22,7 @@ class Body extends StatelessWidget {
                 child: Text('Error while loading data. Try again later.'),
               );
             } else {
-              return CharactersList();
+              return CharactersList(snapshot);
             }
         }
       }
