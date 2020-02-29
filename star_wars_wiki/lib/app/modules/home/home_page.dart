@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  Widget _characterCard(CharacterModel item) {
+  Widget _characterCard(CharacterModel char) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
       elevation: 3.0,
@@ -122,35 +122,34 @@ class _HomePageState extends State<HomePage> {
       color: Colors.black54,
       child: ListTile(
         title: Text(
-          item.name,
+          char.name,
           style: TextStyle(
             fontFamily: 'Times',
           ),
         ),
         subtitle: Text(
-          'Mass:${item.mass}, Height: ${item.height}, Gender: ${item.gender}',
+          'Mass:${char.mass}, Height: ${char.height}, Gender: ${char.gender}',
         ),
         trailing: IconButton(
           tooltip: 'Favorite',
           icon: Icon(
-            item.fav ? Icons.star : Icons.star_border,
+            char.fav ? Icons.star : Icons.star_border,
             color: Colors.yellow.withAlpha(150),
             size: 35.0,
           ),
           onPressed: () {
             setState(() {
-              bloc.favoriteCharacter(item);
+              bloc.favoriteCharacter(char);
             });
           },
           // splashColor: Theme.of(context).primaryColor,
         ),
         onTap: () {
+          bloc.selectedChar = char;
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DetailPage(
-                char: item,
-              ),
+              builder: (context) => DetailPage(),
             ),
           );
         },
