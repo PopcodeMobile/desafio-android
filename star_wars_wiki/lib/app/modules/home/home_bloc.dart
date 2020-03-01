@@ -32,13 +32,22 @@ class HomeBloc extends BlocBase {
   }
 
   Future<String> favoriteCharacter(CharacterModel char) async {
-    char.fav = !char.fav;
-
-    list.where((item) => item.name == char.name).toList()[0].fav = char.fav;
-    if (char.fav)
-      return await repo.setFavorite(char.name);
-    else
-      return repo.removeFavorite(char.name);
+    String response;
+    if (!char.fav) {
+      response = await repo.setFavorite(char.name);
+      if (response.contains('force')) {
+        char.fav = !char.fav;
+        list.where((item) => item.name == char.name).toList()[0].fav = char.fav;
+      }
+      return response;
+    } else {
+      response = await repo.removeFavorite(char.name);
+      if (response.contains('Removed')) {
+        char.fav = !char.fav;
+        list.where((item) => item.name == char.name).toList()[0].fav = char.fav;
+      }
+      return response;
+    }
   }
 
   //dispose will be called automatically by closing its streams
