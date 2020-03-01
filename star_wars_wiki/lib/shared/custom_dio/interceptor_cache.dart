@@ -14,7 +14,6 @@ class CacheInterceptor extends InterceptorsWrapper {
     if (response.request.uri.toString().contains('https://swapi.co/api')) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("${response.request.uri}", jsonEncode(response.data));
-      print('Teje cacheado');
     }
     return response;
   }
