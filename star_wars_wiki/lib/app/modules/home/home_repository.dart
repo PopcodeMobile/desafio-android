@@ -43,7 +43,7 @@ class HomeRepository {
       var response = await _client.get('$BASE_URL$path');
       return SpecieModel.fromJson(response.data);
     } on DioError catch (e) {
-      // throw (e.message);
+      throw (e.message);
     }
   }
 
