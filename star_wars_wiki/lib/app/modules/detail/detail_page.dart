@@ -44,8 +44,8 @@ class _DetailPageState extends State<DetailPage> {
             builder: (context) => IconButton(
               icon: char.fav ? Icon(Icons.star) : Icon(Icons.star_border),
               onPressed: () {
-                setState(() {
-                  homeBloc.favoriteCharacter(char).then((result) {
+                homeBloc.favoriteCharacter(char).then((result) {
+                  setState(() {
                     Scaffold.of(context).showSnackBar(
                       SnackBar(
                         duration: Duration(milliseconds: 2000),
@@ -61,6 +61,24 @@ class _DetailPageState extends State<DetailPage> {
                     );
                   });
                 });
+
+                // setState(() {
+                //   homeBloc.favoriteCharacter(char).then((result) {
+                //     Scaffold.of(context).showSnackBar(
+                //       SnackBar(
+                //         duration: Duration(milliseconds: 2000),
+                //         backgroundColor: Colors.black38,
+                //         content: Text(
+                //           result,
+                //           textAlign: TextAlign.center,
+                //         ),
+                //         elevation: 10.0,
+                //         behavior: SnackBarBehavior.floating,
+                //         shape: StadiumBorder(),
+                //       ),
+                //     );
+                //   });
+                // });
               },
               iconSize: 35.0,
             ),
