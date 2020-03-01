@@ -5,10 +5,13 @@ class CustomInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options) {
     print('REQUEST(${options.method}) => PATH: ${options.path}');
-    if ((count++) % 2 == 1) {
-      options.headers = {
-        "Prefer": {'status': 400}
-      };
+    if (options.path
+        .contains('http://private-782d3-starwarsfavorites.apiary-mock.com')) {
+      if ((count++) % 2 == 1) {
+        options.headers = {
+          "Prefer": {'status': 400}
+        };
+      }
     }
     print('Request Headers: ${options.headers}');
     return options;
