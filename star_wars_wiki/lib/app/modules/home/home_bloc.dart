@@ -33,6 +33,8 @@ class HomeBloc extends BlocBase {
 
   Future<String> favoriteCharacter(CharacterModel char) async {
     char.fav = !char.fav;
+
+    list.where((item) => item.name == char.name).toList()[0].fav = char.fav;
     if (char.fav)
       return await repo.setFavorite(char.name);
     else
