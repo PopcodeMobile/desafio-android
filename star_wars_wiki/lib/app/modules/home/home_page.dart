@@ -16,32 +16,34 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final bloc = HomeModule.to.getBloc<HomeBloc>();
   List<CharacterModel> list = List<CharacterModel>();
-  List<CharacterModel> filter = List<CharacterModel>();
+  List<CharacterModel> showList = List<CharacterModel>();
+  String show = 'all';
+
   @override
   void initState() {
     for (int i = 1; i < 10; i++) {
       bloc.fetchCharacters(page: i);
     }
     list = bloc.list;
+    showList = bloc.list;
     super.initState();
   }
 
   void _refreshList(String s) {
-    if (s == 'all')
-      setState(() {
-        list = bloc.list;
-      });
-    else {
-      setState(() {
-        list = list.where((item) {
-          return item.fav;
-        }).toList();
-      });
-    }
+    setState(() {
+      show = s;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (show == 'all') {
+      list = bloc.list;
+    } else if (show == 'favs') {
+      list = list.where((item) {
+        return item.fav;
+      }).toList();
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -54,6 +56,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         actions: <Widget>[
           PopupMenuButton<String>(
+              icon: Icon(Icons.filter_list),
               onSelected: _refreshList,
               itemBuilder: (context) {
                 return [
@@ -80,7 +83,11 @@ class _HomePageState extends State<HomePage> {
               if (snapshot.hasData) {
                 return Column(
                   children: ([_searchBar()] +
-                      list.map((item) => _characterCard(item)).toList() +
+                      showList
+                          .map((item) => Builder(
+                              builder: (context) =>
+                                  _characterCard(context, item)))
+                          .toList() +
                       [
                         bloc.list.length < 87
                             ? Center(
@@ -105,7 +112,7 @@ class _HomePageState extends State<HomePage> {
           onChanged: (text) {
             text = text.toLowerCase();
             setState(() {
-              list = bloc.list.where((item) {
+              showList = list.where((item) {
                 var itemTitle = item.name.toLowerCase();
                 return itemTitle.contains(text);
               }).toList();
@@ -114,7 +121,7 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  Widget _characterCard(CharacterModel char) {
+  Widget _characterCard(BuildContext context, CharacterModel char) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
       elevation: 3.0,
@@ -139,7 +146,21 @@ class _HomePageState extends State<HomePage> {
           ),
           onPressed: () {
             setState(() {
-              bloc.favoriteCharacter(char);
+              bloc.favoriteCharacter(char).then((result) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    duration: Duration(milliseconds: 2000),
+                    backgroundColor: Colors.black38,
+                    content: Text(
+                      result,
+                      textAlign: TextAlign.center,
+                    ),
+                    elevation: 10.0,
+                    behavior: SnackBarBehavior.floating,
+                    shape: StadiumBorder(),
+                  ),
+                );
+              });
             });
           },
           // splashColor: Theme.of(context).primaryColor,
