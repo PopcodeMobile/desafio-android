@@ -6,7 +6,15 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Star Wars Wiki'),
+        title: Row(
+          children: <Widget>[
+            Image.asset(
+              'images/logo.png',
+              height: 50.0,
+              ),
+            Text('Wiki')
+          ],
+        ),
         elevation: 1.0,
         actions: <Widget>[
           IconButton(

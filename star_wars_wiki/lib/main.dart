@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Star Wars Wiki',
       theme: ThemeData(
-        primarySwatch: Colors.yellow,
+        accentColor: Colors.yellow[400],
+        primaryColor: Colors.black,
       ),
       home: Home(),
     );

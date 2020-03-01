@@ -7,13 +7,10 @@ abstract class _CharacterBase with Store {
   
   @observable
   String name;
-  @action
-  setName (String value) => name = value;
-
   @observable
-  int height;
+  String height;
   @observable
-  int mass;
+  String mass;
   @observable
   String hairColor;
   @observable
@@ -21,11 +18,13 @@ abstract class _CharacterBase with Store {
   @observable
   String eyeColor;
   @observable
-  int birthYear;
+  String birthYear;
   @observable
   String gender;
   @observable
   String homeworld;
   @observable
   String species;
+
+  // TRAZER A MUDANÇA PARA CÁ
 }

@@ -29,14 +29,14 @@ mixin _$Character on _CharacterBase, Store {
   final _$heightAtom = Atom(name: '_CharacterBase.height');
 
   @override
-  int get height {
+  String get height {
     _$heightAtom.context.enforceReadPolicy(_$heightAtom);
     _$heightAtom.reportObserved();
     return super.height;
   }
 
   @override
-  set height(int value) {
+  set height(String value) {
     _$heightAtom.context.conditionallyRunInAction(() {
       super.height = value;
       _$heightAtom.reportChanged();
@@ -46,14 +46,14 @@ mixin _$Character on _CharacterBase, Store {
   final _$massAtom = Atom(name: '_CharacterBase.mass');
 
   @override
-  int get mass {
+  String get mass {
     _$massAtom.context.enforceReadPolicy(_$massAtom);
     _$massAtom.reportObserved();
     return super.mass;
   }
 
   @override
-  set mass(int value) {
+  set mass(String value) {
     _$massAtom.context.conditionallyRunInAction(() {
       super.mass = value;
       _$massAtom.reportChanged();
@@ -114,14 +114,14 @@ mixin _$Character on _CharacterBase, Store {
   final _$birthYearAtom = Atom(name: '_CharacterBase.birthYear');
 
   @override
-  int get birthYear {
+  String get birthYear {
     _$birthYearAtom.context.enforceReadPolicy(_$birthYearAtom);
     _$birthYearAtom.reportObserved();
     return super.birthYear;
   }
 
   @override
-  set birthYear(int value) {
+  set birthYear(String value) {
     _$birthYearAtom.context.conditionallyRunInAction(() {
       super.birthYear = value;
       _$birthYearAtom.reportChanged();
@@ -177,19 +177,6 @@ mixin _$Character on _CharacterBase, Store {
       super.species = value;
       _$speciesAtom.reportChanged();
     }, _$speciesAtom, name: '${_$speciesAtom.name}_set');
-  }
-
-  final _$_CharacterBaseActionController =
-      ActionController(name: '_CharacterBase');
-
-  @override
-  dynamic setName(String value) {
-    final _$actionInfo = _$_CharacterBaseActionController.startAction();
-    try {
-      return super.setName(value);
-    } finally {
-      _$_CharacterBaseActionController.endAction(_$actionInfo);
-    }
   }
 
   @override
