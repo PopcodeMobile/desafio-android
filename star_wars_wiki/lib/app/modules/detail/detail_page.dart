@@ -39,41 +39,39 @@ class _DetailPageState extends State<DetailPage> {
           ),
         ),
         centerTitle: true,
+        actions: <Widget>[
+          Builder(
+            builder: (context) => IconButton(
+              icon: char.fav ? Icon(Icons.star) : Icon(Icons.star_border),
+              onPressed: () {
+                setState(() {
+                  homeBloc.favoriteCharacter(char).then((result) {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        duration: Duration(milliseconds: 2000),
+                        backgroundColor: Colors.black38,
+                        content: Text(
+                          result,
+                          textAlign: TextAlign.center,
+                        ),
+                        elevation: 10.0,
+                        behavior: SnackBarBehavior.floating,
+                        shape: StadiumBorder(),
+                      ),
+                    );
+                  });
+                });
+              },
+              iconSize: 35.0,
+            ),
+          ),
+        ],
       ),
       body: Container(
         color: Colors.black38,
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 10.0),
           children: <Widget>[
-            CustomCard(
-              label: 'Name',
-              text: char.name,
-            ),
-            CustomCard(
-              label: 'Height',
-              text:
-                  char.height == 'unknown' ? char.height : '${char.height} cm',
-            ),
-            CustomCard(
-              label: 'Mass',
-              text: char.mass == 'unknown' ? char.mass : '${char.mass} kg',
-            ),
-            CustomCard(
-              label: 'Hair',
-              text: char.hairColor,
-            ),
-            CustomCard(
-              label: 'Skin Color',
-              text: char.skinColor,
-            ),
-            CustomCard(
-              label: 'Birth Year',
-              text: char.birthYear,
-            ),
-            CustomCard(
-              label: 'Gender',
-              text: char.gender,
-            ),
             StreamBuilder(
                 stream: bloc.responseOut,
                 builder: (context, snapshot) {
@@ -85,6 +83,38 @@ class _DetailPageState extends State<DetailPage> {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                            CustomCard(
+                              label: 'Name',
+                              text: char.name,
+                            ),
+                            CustomCard(
+                              label: 'Height',
+                              text: char.height == 'unknown'
+                                  ? char.height
+                                  : '${char.height} cm',
+                            ),
+                            CustomCard(
+                              label: 'Mass',
+                              text: char.mass == 'unknown'
+                                  ? char.mass
+                                  : '${char.mass} kg',
+                            ),
+                            CustomCard(
+                              label: 'Hair',
+                              text: char.hairColor,
+                            ),
+                            CustomCard(
+                              label: 'Skin Color',
+                              text: char.skinColor,
+                            ),
+                            CustomCard(
+                              label: 'Birth Year',
+                              text: char.birthYear,
+                            ),
+                            CustomCard(
+                              label: 'Gender',
+                              text: char.gender,
+                            ),
                             CustomCard(
                               label: 'Home World',
                               text: bloc.planet.name,
