@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:star_wars_wiki/app/modules/detail/custom_card.dart';
+import 'package:star_wars_wiki/app/modules/detail/custom_card_widget.dart';
 import 'package:star_wars_wiki/app/modules/home/home_bloc.dart';
 import 'package:star_wars_wiki/app/modules/home/home_module.dart';
 import 'package:star_wars_wiki/shared/models/character_model.dart';
