@@ -43,7 +43,7 @@ class HomeRepository {
       var response = await _client.get('$BASE_URL$path');
       return SpecieModel.fromJson(response.data);
     } on DioError catch (e) {
-      throw (e.message);
+      // throw (e.message);
     }
   }
 
@@ -55,8 +55,8 @@ class HomeRepository {
       );
       message = response.data['message'];
     } on DioError catch (e) {
-      message = e.message;
-      throw (e.message);
+      message = e.response.data['error_message'];
+      // throw (e.message);
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("favorites/$id", id);
@@ -67,11 +67,11 @@ class HomeRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey('favorites/$id')) {
       if (await prefs.remove('favorites/$id'))
-        return 'Removido dos favoritos';
+        return 'Removed from favorites';
       else
-        return 'Erro ao remover dos favoritos';
+        return 'Error removing from favorites';
     } else {
-      return 'Você não deveria estar vendo isso';
+      return "I don't know what just happened here";
     }
   }
 
