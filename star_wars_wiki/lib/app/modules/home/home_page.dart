@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
               bloc.favoriteCharacter(char).then((result) {
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
-                    duration: Duration(milliseconds: 2000),
+                    duration: Duration(milliseconds: 3000),
                     backgroundColor: Colors.black38,
                     content: Text(
                       result,
