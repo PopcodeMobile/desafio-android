@@ -8,9 +8,7 @@ class CustomInterceptors extends InterceptorsWrapper {
     if (options.path
         .contains('http://private-782d3-starwarsfavorites.apiary-mock.com')) {
       if ((count++) % 2 == 1) {
-        options.headers = {
-          "Prefer": {'status': 400}
-        };
+        options.headers = {"Prefer": 'status=400'};
       }
     }
     print('Request Headers: ${options.headers}');
