@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:star_wars_wiki/controllers/character_controller.dart';
-import 'package:star_wars_wiki/views/character_profile.dart';
 
 class CharactersList extends StatelessWidget {
 
@@ -17,7 +14,7 @@ class CharactersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = GetIt.I.get<CharacterController>();
+    //final controller = GetIt.I.get<CharacterController>();
     var results = snapshot.data['results'];
     return ListView.separated(
       itemCount: results.length,
@@ -33,11 +30,11 @@ class CharactersList extends StatelessWidget {
           ),
           trailing: Icon(Icons.chevron_right),
           onTap: () {
-            controller.setCharacterInfo(results[index]);
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => CharacterProfile()
-              )
-            );
+            //controller.setCharacterInfo(results[index]);
+            //Navigator.push(context, MaterialPageRoute(
+            ////  builder: (context) => CharacterProfile()
+            //  )
+            //);
           },
         );
       },

@@ -6,25 +6,43 @@ part 'character_controller.g.dart';
 class CharacterController = _CharacterControllerBase with _$CharacterController;
 
 abstract class _CharacterControllerBase with Store {
-  final character = Character();
+  
+  final dio = Dio();
+  String nextPage = 'https://swapi.co/api/people/';
+
+  @observable
+  ObservableList<Character> charList = ObservableList<Character>().asObservable();
 
   @action
-  setCharacterInfo (selected) {
-    character.name = selected['name'];
-    character.height = selected['height'];
-    character.mass = selected['mass'];
-    character.hairColor = selected['hair_color'];
-    character.skinColor = selected['skin_color'];
-    character.eyeColor = selected['eye_color'];
-    character.birthYear = selected['birth_year'];
-    character.gender = selected['gender'];
-    character.homeworld = selected['homeworld'];
-    //character.species = selected['species'];
+  getMoreData () async {
+    final response = await dio.get(nextPage);
+    if (response.statusCode == 200) {
+      nextPage = response.data['next'];
+      print(nextPage);
+      List<Character> tempList = List<Character>();
+      for (int i = 0; i < response.data['results'].length; i++) {
+        tempList.add(
+          Character(
+            name: response.data['results'][i]['name'],
+            gender: response.data['results'][i]['gender'],
+            height: response.data['results'][i]['height'],
+            mass: response.data['results'][i]['mass'],
+          ),
+        );
+      }
+      charList.addAll(tempList);
+      //print(response.data['results'][0]['name']);
+      for (Character c in charList) {
+        print(c.name);
+      }
+    }
   }
 
-  Future<Map> getData () async {
-    final dio = Dio();
-    Response response = await dio.get('https://swapi.co/api/people/');
-    return response.data;
+  @action
+  String formatSubtitle(index) {
+    String gender = charList[index].gender;
+    String height = charList[index].height + 'cm';
+    String mass = charList[index].mass + 'kg';
+    return '$gender  •  $height  •  $mass';
   }
 }

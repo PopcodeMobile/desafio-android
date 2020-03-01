@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:star_wars_wiki/controllers/character_controller.dart';
 
 class CharacterProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = GetIt.I.get<CharacterController>();
+    //final controller = GetIt.I.get<CharacterController>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
@@ -21,7 +19,7 @@ class CharacterProfile extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _showCard('Name: ${controller.character.name}'),
+          /*_showCard('Name: ${controller.character.name}'),
           _showCard('Height: ${controller.character.height}'),
           _showCard('Mass: ${controller.character.mass}'),
           _showCard('Hair Color: ${controller.character.hairColor}'),
@@ -30,12 +28,12 @@ class CharacterProfile extends StatelessWidget {
           _showCard('Birth Year: ${controller.character.birthYear}'),
           _showCard('Gender: ${controller.character.gender}'),
           _showCard('Homeworld: ${controller.character.homeworld}'),
-          _showCard('Species: ${controller.character.species}'),
+          _showCard('Species: ${controller.character.species}'),*/
         ],
       ),
     );
   }
-
+/*
   _showCard (String cardText) {
     return Card(
       elevation: 2.0,
@@ -46,5 +44,5 @@ class CharacterProfile extends StatelessWidget {
         ),
       ),
     );
-  }
+  }*/
 }

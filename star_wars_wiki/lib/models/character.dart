@@ -5,6 +5,10 @@ class Character = _CharacterBase with _$Character;
 
 abstract class _CharacterBase with Store {
   
+  _CharacterBase({this.isFavorite, this.name, this.gender, this.height, this.mass});
+
+  @observable
+  bool isFavorite;
   @observable
   String name;
   @observable

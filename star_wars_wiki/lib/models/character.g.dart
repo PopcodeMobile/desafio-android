@@ -9,6 +9,23 @@ part of 'character.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Character on _CharacterBase, Store {
+  final _$isFavoriteAtom = Atom(name: '_CharacterBase.isFavorite');
+
+  @override
+  bool get isFavorite {
+    _$isFavoriteAtom.context.enforceReadPolicy(_$isFavoriteAtom);
+    _$isFavoriteAtom.reportObserved();
+    return super.isFavorite;
+  }
+
+  @override
+  set isFavorite(bool value) {
+    _$isFavoriteAtom.context.conditionallyRunInAction(() {
+      super.isFavorite = value;
+      _$isFavoriteAtom.reportChanged();
+    }, _$isFavoriteAtom, name: '${_$isFavoriteAtom.name}_set');
+  }
+
   final _$nameAtom = Atom(name: '_CharacterBase.name');
 
   @override
@@ -182,7 +199,7 @@ mixin _$Character on _CharacterBase, Store {
   @override
   String toString() {
     final string =
-        'name: ${name.toString()},height: ${height.toString()},mass: ${mass.toString()},hairColor: ${hairColor.toString()},skinColor: ${skinColor.toString()},eyeColor: ${eyeColor.toString()},birthYear: ${birthYear.toString()},gender: ${gender.toString()},homeworld: ${homeworld.toString()},species: ${species.toString()}';
+        'isFavorite: ${isFavorite.toString()},name: ${name.toString()},height: ${height.toString()},mass: ${mass.toString()},hairColor: ${hairColor.toString()},skinColor: ${skinColor.toString()},eyeColor: ${eyeColor.toString()},birthYear: ${birthYear.toString()},gender: ${gender.toString()},homeworld: ${homeworld.toString()},species: ${species.toString()}';
     return '{$string}';
   }
 }
