@@ -12,22 +12,22 @@ class HomeBloc extends BlocBase {
 
   HomeBloc(this.repo);
 
-  var listPost = BehaviorSubject<List<CharacterModel>>();
-  Sink<List<CharacterModel>> get responseIn => listPost.sink;
+  var listChar = BehaviorSubject<List<CharacterModel>>();
+  Sink<List<CharacterModel>> get responseIn => listChar.sink;
 
-  Observable<List<CharacterModel>> get responseOut => listPost.stream;
+  Observable<List<CharacterModel>> get responseOut => listChar.stream;
 
   List<CharacterModel> list = [];
   CharacterModel selectedChar;
 
   void fetchCharacters({int page: 1}) async {
-    // responseIn.add(null);
+    responseIn.add(null);
     try {
       var res = await repo.getCharacters(page: page);
       responseIn.add(res);
       for (var item in res) list.add(item);
     } catch (e) {
-      listPost.addError(e);
+      listChar.addError(e);
     }
   }
 
@@ -44,7 +44,7 @@ class HomeBloc extends BlocBase {
   //dispose will be called automatically by closing its streams
   @override
   void dispose() {
-    // listPost.close();
+    listChar.close();
     super.dispose();
   }
 }
