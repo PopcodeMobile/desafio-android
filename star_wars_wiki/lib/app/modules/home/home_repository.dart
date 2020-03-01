@@ -55,6 +55,7 @@ class HomeRepository {
       );
       message = response.data['message'];
     } on DioError catch (e) {
+      message = e.message;
       throw (e.message);
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
