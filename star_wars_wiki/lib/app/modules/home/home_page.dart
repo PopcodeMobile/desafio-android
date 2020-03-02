@@ -23,10 +23,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     for (int i = 1; i < 10; i++) {
-      bloc.fetchCharacters(page: i);
+      bloc.fetchCharacters(page: i).then((onValue) {
+        setState(() {
+          list = bloc.list;
+          showList = bloc.list;
+          bloc.retryFavorites();
+        });
+      });
     }
-    list = bloc.list;
-    showList = bloc.list;
+
     super.initState();
   }
 
@@ -84,7 +89,18 @@ class _HomePageState extends State<HomePage> {
             stream: bloc.responseOut,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Center(child: Text(snapshot.error.toString()));
+                return Center(
+                    child: RaisedButton(
+                  child: Text("Reload"),
+                  onPressed: () {
+                    bloc.fetchCharacters().then((onValue) {
+                      setState(() {
+                        list = bloc.list;
+                        showList = bloc.list;
+                      });
+                    });
+                  },
+                ));
               }
 
               if (snapshot.hasData) {
