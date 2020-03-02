@@ -16,18 +16,15 @@ class HomeRepository {
   Future<List<CharacterModel>> getCharacters({int page: 1}) async {
     try {
       var response = await _client.get('$BASE_URL/people/?page=$page');
-      if ((response.statusCode == 200) || (response.statusCode == 201)) {
-        var charList = (response.data['results'] as List)
-            .map((item) => CharacterModel.fromJson(item))
-            .toList();
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        for (var char in charList) {
-          if (prefs.containsKey('favorites/${char.name}')) char.fav = true;
-        }
-        return charList;
-      } else {
-        return null;
+
+      var charList = (response.data['results'] as List)
+          .map((item) => CharacterModel.fromJson(item))
+          .toList();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      for (var char in charList) {
+        if (prefs.containsKey('favorites/${char.name}')) char.fav = true;
       }
+      return charList;
     } on DioError catch (e) {
       print(e.message);
       return null;
@@ -83,9 +80,13 @@ class HomeRepository {
 
   Future retryFavorites() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     List<String> pendingFavs = prefs.getStringList('pending_favorites');
-    for (var pending in pendingFavs) {
-      await setFavorite(pending);
+
+    if (pendingFavs != null) {
+      for (var pending in pendingFavs) {
+        await setFavorite(pending);
+      }
     }
   }
 
