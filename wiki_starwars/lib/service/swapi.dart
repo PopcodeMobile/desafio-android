@@ -9,6 +9,8 @@ class SWAPI{
   String _urlBase = "https://swapi.co/api";
   String _paramPerson = '/people/?page=';
 
+  var _db = PersonHelper();
+
   Future<List<PersonModel>> getAllPersons() async {
     List<PersonModel> personList = List();
     for (int i = 1; i <= 9; i++){
@@ -33,7 +35,7 @@ class SWAPI{
           personModel.species = dataJson['results'][i]['species'][0];
           personModel.url = dataJson['results'][i]['url'];
           personModel.favorite = false;
-
+          await _db.savePerson(personModel);
           personList.add(personModel);
         }
       }catch(e) {

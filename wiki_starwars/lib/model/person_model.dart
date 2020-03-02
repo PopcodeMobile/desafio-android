@@ -81,7 +81,7 @@ class PersonModel {
       "gender": this._gender,
       "homeWorld": this._homeWorld,
       "species": this._species,
-      "favorite": this._favorite,
+      "favorite": this._favorite.toString(),
       "url": this._url,
     };
 
