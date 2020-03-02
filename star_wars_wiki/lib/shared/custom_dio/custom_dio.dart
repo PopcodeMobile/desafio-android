@@ -7,6 +7,6 @@ class CustomDio extends Dio {
   CustomDio() {
     interceptors.add(CustomInterceptors());
     interceptors.add(CacheInterceptor());
-    options.connectTimeout = 5000;
+    options.connectTimeout = 10000;
   }
 }
