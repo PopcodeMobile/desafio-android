@@ -6,7 +6,7 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Slidy',
+      title: 'Star Wars Wiki',
       theme: ThemeData(
         primarySwatch: Colors.yellow,
       ),
