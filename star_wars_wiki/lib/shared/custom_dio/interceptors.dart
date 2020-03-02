@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:star_wars_wiki/shared/constants.dart';
 
+import '../constants.dart';
+
 class CustomInterceptors extends InterceptorsWrapper {
   static int count = 0;
   @override
