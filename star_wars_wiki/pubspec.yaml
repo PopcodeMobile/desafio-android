@@ -17,11 +17,10 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  # dio: ^3.0.9
   dio: ^2.1.13
   rxdart: ^0.22.1+1
   bloc_pattern: ^2.2.3
-  shared_preferences:
+  shared_preferences: ^0.5.6+2
   flutter:
     sdk: flutter
 
@@ -64,9 +63,6 @@ flutter:
     - family: Star Jedi
       fonts:
         - asset: assets/fonts/Starjedi.ttf
-    - family: Star Jedi Holow
-      fonts:
-        - asset: assets/fonts/Starjhol.ttf
     
   # example:
   # fonts:
