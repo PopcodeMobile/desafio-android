@@ -8,15 +8,19 @@ class CharacterController = _CharacterControllerBase with _$CharacterController;
 abstract class _CharacterControllerBase with Store {
   
   final _dio = Dio();
+
+  @observable
   String _nextPage = 'https://swapi.co/api/people/';
+  @computed
+  bool get hasNextPage => _nextPage != null;
 
   @observable
   ObservableList<Character> charList = ObservableList<Character>().asObservable();
 
   @action
   getMoreData () async {
-    final response = await _dio.get(_nextPage);
-    if (response.statusCode == 200) {
+    if (hasNextPage) {
+      final response = await _dio.get(_nextPage);
       _nextPage = response.data['next'];
       print(_nextPage);
       List<Character> tempList = List<Character>();

@@ -9,6 +9,29 @@ part of 'character_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CharacterController on _CharacterControllerBase, Store {
+  Computed<bool> _$hasNextPageComputed;
+
+  @override
+  bool get hasNextPage =>
+      (_$hasNextPageComputed ??= Computed<bool>(() => super.hasNextPage)).value;
+
+  final _$_nextPageAtom = Atom(name: '_CharacterControllerBase._nextPage');
+
+  @override
+  String get _nextPage {
+    _$_nextPageAtom.context.enforceReadPolicy(_$_nextPageAtom);
+    _$_nextPageAtom.reportObserved();
+    return super._nextPage;
+  }
+
+  @override
+  set _nextPage(String value) {
+    _$_nextPageAtom.context.conditionallyRunInAction(() {
+      super._nextPage = value;
+      _$_nextPageAtom.reportChanged();
+    }, _$_nextPageAtom, name: '${_$_nextPageAtom.name}_set');
+  }
+
   final _$charListAtom = Atom(name: '_CharacterControllerBase.charList');
 
   @override
@@ -49,7 +72,8 @@ mixin _$CharacterController on _CharacterControllerBase, Store {
 
   @override
   String toString() {
-    final string = 'charList: ${charList.toString()}';
+    final string =
+        'charList: ${charList.toString()},hasNextPage: ${hasNextPage.toString()}';
     return '{$string}';
   }
 }

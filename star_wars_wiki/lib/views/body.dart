@@ -33,7 +33,6 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    //controller.getMoreData();
     return Observer(
       builder: (_) {
         return ListView.separated(
@@ -41,21 +40,11 @@ class _BodyState extends State<Body> {
           itemCount: controller.charList.length + 1,
           itemBuilder: (context, index) {
             if (index == controller.charList.length) {
-              return _buildProgressIndicator();
+              return controller.hasNextPage ?
+                _buildProgressIndicator() :
+                null;
             } else {
-              String subtitle = controller.formatSubtitle(index);
-              return Observer(builder: (_) {
-                return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  title: Text(controller.charList[index].name),
-                  subtitle: Text(subtitle),
-                  leading: IconButton(
-                    icon: Icon(Icons.star_border),
-                    onPressed: () {}
-                  ),
-                  trailing: Icon(Icons.chevron_right),
-                );
-              });
+              return _customListTile(index);
             }
           },
           separatorBuilder: (context, index) { 
@@ -68,6 +57,22 @@ class _BodyState extends State<Body> {
         );
       }
     );
+  }
+
+  _customListTile(int index) {
+    String subtitle = controller.formatSubtitle(index);
+    return Observer(builder: (_) {
+      return ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+        title: Text('$index ${controller.charList[index].name}'),
+        subtitle: Text(subtitle),
+        leading: IconButton(
+          icon: Icon(Icons.star_border),
+          onPressed: () {}
+        ),
+        trailing: Icon(Icons.chevron_right),
+      );
+    });
   }
 
   _buildProgressIndicator() {
