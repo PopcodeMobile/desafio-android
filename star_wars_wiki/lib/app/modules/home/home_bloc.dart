@@ -20,7 +20,7 @@ class HomeBloc extends BlocBase {
   List<CharacterModel> list = [];
   CharacterModel selectedChar;
 
-  void fetchCharacters({int page: 1}) async {
+  Future fetchCharacters({int page: 1}) async {
     responseIn.add(null);
     try {
       var res = await repo.getCharacters(page: page);
@@ -48,6 +48,10 @@ class HomeBloc extends BlocBase {
       }
       return response;
     }
+  }
+
+  retryFavorites() async {
+    await repo.retryFavorites();
   }
 
   //dispose will be called automatically by closing its streams
