@@ -17,6 +17,7 @@ class _HomeState extends State<Home> {
   TextEditingController _search = TextEditingController();
 
   var _db = PersonHelper();
+
   List<PersonModel> _listCharacters = List<PersonModel>();
 
   _setFavorite() async {
@@ -25,6 +26,22 @@ class _HomeState extends State<Home> {
 
   _getCharacters() async {
     List peoples = await _db.getChar();
+    List<PersonModel> listTemp = List<PersonModel>();
+    for (var person in peoples){
+      PersonModel personModel = PersonModel.fromMap(person);
+      listTemp.add(personModel);
+    }
+    setState(() {
+      _listCharacters = listTemp;
+    });
+    listTemp = null;
+    if(_listCharacters.length < 73){
+      _getCharacters();
+    }
+  }
+
+  _searchCharacters(String param) async {
+    List peoples = await _db.searchChar(param);
 
     List<PersonModel> listTemp = List<PersonModel>();
     for (var person in peoples){
@@ -45,8 +62,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    SWAPI().getAllPersons();
     _getCharacters();
+    SWAPI().getAllPersons();
   }
 
   @override
@@ -73,18 +90,24 @@ class _HomeState extends State<Home> {
                   width: 250,
                   height: 40,
                   child: TextField(
+                      style: TextStyle(color: Colors.white),
+                      onChanged: (value){
+                        _searchCharacters(value);
+                      },
                       decoration: InputDecoration(
                           hintStyle: TextStyle(fontSize: 12, color: Colors.white),
                           labelStyle: TextStyle(color: Color(0xFF0387E9)),
                           border: OutlineInputBorder(),
                           suffixIcon: IconButton(
-                            onPressed: (){},
+                            onPressed: (){
+                              _searchCharacters('R2-D2');
+                            },
                             tooltip: 'Pesquisar',
                             icon: Icon(Icons.search),
                             color: Color(0xFF0387E9),
                           ),
                           labelText: 'Pesquisar',
-                          hintText: 'Nome, planeta ou especie'
+                          hintText: 'Nome, planeta ou espécie'
                       )
                   ),
                 ),
@@ -101,8 +124,10 @@ class _HomeState extends State<Home> {
 
                 SizedBox(
                   child: IconButton(
-                    tooltip: 'Favoritos',
-                    onPressed: (){},
+                    tooltip: 'Recarregar',
+                    onPressed: (){
+                      _getCharacters();
+                    },
                     icon: Icon(Icons.cached, color: Color(0xFF0387E9), size: 32,),
                   ),
                 )
