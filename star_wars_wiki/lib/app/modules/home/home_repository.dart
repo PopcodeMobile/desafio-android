@@ -25,7 +25,9 @@ class HomeRepository {
       }
       return charList;
     } on DioError catch (e) {
-      throw (e.message);
+      print(e.message);
+      return List<CharacterModel>();
+      // throw (e.message);
     }
   }
 
@@ -71,12 +73,20 @@ class HomeRepository {
       else
         return 'Error removing from favorites';
     } else {
-      return "I don't know what just happened here";
+      return "Something weird happened";
     }
   }
 
-  Future<bool> isFavorite(String id) async {
+  Future retryFavorites() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey('favorites/$id');
+    List<String> pendingFavs = prefs.getStringList('pending_favorites');
+    for (var pending in pendingFavs) {
+      await setFavorite(pending);
+    }
   }
+
+  // Future<bool> isFavorite(String id) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.containsKey('favorites/$id');
+  // }
 }
