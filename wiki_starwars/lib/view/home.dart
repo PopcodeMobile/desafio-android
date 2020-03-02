@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wikistarwars/helper/person_helper.dart';
 import 'package:wikistarwars/model/person_model.dart';
 import 'package:wikistarwars/service/swapi.dart';
 import 'package:http/http.dart' as HTTP;
@@ -15,6 +16,28 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TextEditingController _search = TextEditingController();
 
+  var _db = PersonHelper();
+  List<PersonModel> _listCharacters = List<PersonModel>();
+
+  _setFavorite() async {
+
+  }
+
+  _getCharacters() async {
+    List peoples = await _db.getChar();
+
+    List<PersonModel> listTemp = List<PersonModel>();
+    for (var person in peoples){
+      PersonModel personModel = PersonModel.fromMap(person);
+      listTemp.add(personModel);
+    }
+    setState(() {
+      _listCharacters = listTemp;
+    });
+    listTemp = null;
+  }
+
+
   _openDetails(PersonModel person){
     Navigator.push(context, MaterialPageRoute(builder: (_) => PersonDetail(personModel: person,)));
   }
@@ -22,6 +45,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    SWAPI().getAllPersons();
+    _getCharacters();
   }
 
   @override
@@ -45,7 +70,7 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  width: 290,
+                  width: 250,
                   height: 40,
                   child: TextField(
                       decoration: InputDecoration(
@@ -72,55 +97,42 @@ class _HomeState extends State<Home> {
                     hoverColor: Colors.yellowAccent,
                     splashColor: Colors.yellowAccent,
                   ),
+                ),
+
+                SizedBox(
+                  child: IconButton(
+                    tooltip: 'Favoritos',
+                    onPressed: (){},
+                    icon: Icon(Icons.cached, color: Color(0xFF0387E9), size: 32,),
+                  ),
                 )
               ],
             ),
 
-            Expanded(
-              child: FutureBuilder<List<PersonModel>>(
-                future: SWAPI().getAllPersons(),
-                builder: (_, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                      break;
-                    case ConnectionState.active :
-                    case ConnectionState.done :
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Problema com os Dados", style: TextStyle(color: Colors.white),),
-                        );
-                      } else {
-                        return ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              List<PersonModel> lista = snapshot.data;
-                              PersonModel person = lista[index];
-                              return ListTile(
+            SizedBox(height: 16,),
 
-                                onTap: (){
-                                  _openDetails(person);
-                                },
-                                title: Text('Nome: ${person.name}\nAltura: ${person.height}',
-                                            style: TextStyle(color: Colors.white),),
-                                subtitle: Text('Genero: ${person.gender}\nPeso: ${person.mass}',
-                                            style: TextStyle(color: Colors.white),),
-                                trailing: IconButton(
-                                  onPressed: (){},
-                                  icon: person.favorite == false
-                                        ? Icon(Icons.star_border, color: Colors.yellow,)
-                                        : Icon(Icons.star, color: Colors.yellow,)
-                                ),
-                              );
-                            }
-                        );
-                      }
-                  }
+            Expanded(
+              child: ListView.builder(
+                itemCount: _listCharacters.length,
+                itemBuilder: (_, index) {
+                  final person = _listCharacters[index];
+                  return ListTile(
+                    onTap: (){
+                      _openDetails(person);
+                    },
+                    title: Text('Nome: ${person.name}\nAltura: ${person.height}',
+                      style: TextStyle(color: Colors.white),),
+                    subtitle: Text('Genero: ${person.gender}\nPeso: ${person.mass}',
+                      style: TextStyle(color: Colors.white),),
+                    trailing: IconButton(
+                        onPressed: (){},
+                        icon: person.favorite == 'false'
+                            ? Icon(Icons.star_border, color: Colors.yellow,)
+                            : Icon(Icons.star, color: Colors.yellow,)
+                    ),
+                  );
                 }
-                ),
+              ),
             ),
 
           ],

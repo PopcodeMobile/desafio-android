@@ -34,7 +34,7 @@ class SWAPI{
           personModel.homeWorld = dataJson['results'][i]['homeworld'];
           personModel.species = dataJson['results'][i]['species'][0];
           personModel.url = dataJson['results'][i]['url'];
-          personModel.favorite = false;
+          personModel.favorite = 'false';
           await _db.savePerson(personModel);
           personList.add(personModel);
         }

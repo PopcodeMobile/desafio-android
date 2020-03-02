@@ -22,8 +22,8 @@ class PersonHelper {
     String sql = "CREATE TABLE ${Constants.nameTable}" +
         "(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR UNIQUE, height VARCHAR," +
             "mass VARCHAR, hair_color VARCHAR, skin_color VARCHAR, eye_color VARCHAR,"+
-                "birth_year VARCHAR, gender VARCHAR, homeworld VARCHAR, speciesVARCHAR)" +
-                    "favorite VARCHAR, url VARCHAR UNIQUE";
+                "birth_year VARCHAR, gender VARCHAR, homeworld VARCHAR, species VARCHAR," +
+                    "favorite VARCHAR, url VARCHAR UNIQUE)";
     await db.execute(sql);
   }
 

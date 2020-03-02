@@ -10,7 +10,7 @@ class PersonModel {
   String _gender;
   String _homeWorld;
   String _species;
-  bool _favorite;
+  String _favorite;
   String _url;
 
   PersonModel();
@@ -48,25 +48,25 @@ class PersonModel {
   String get species => _species;
   set species(String species) => _species = species;
 
-  bool get favorite => _favorite;
-  set favorite(bool favorite) => _favorite = favorite;
+  String get favorite => _favorite;
+  set favorite(String favorite) => _favorite = favorite;
 
   String get url => _url;
   set url(String url) => _url = url;
 
-  PersonModel.toMap(Map<String, dynamic> json) {
-    _name = json['name'];
-    _height = json['height'];
-    _mass = json['mass'];
-    _hairColor = json['hair_color'];
-    _skinColor = json['skin_color'];
-    _eyeColor = json['eye_color'];
-    _birthYear = json['birth_year'];
-    _gender = json['gender'];
-    _homeWorld = json['homeWorld'];
-    _species = json['species'];
-    _favorite = json['favorite'];
-    _url = json['url'];
+  PersonModel.fromMap(Map<String, dynamic> map) {
+    this._name = map['name'];
+    this._height = map['height'];
+    this._mass = map['mass'];
+    this._hairColor = map['hair_color'];
+    this._skinColor = map['skin_color'];
+    this._eyeColor = map['eye_color'];
+    this._birthYear = map['birth_year'];
+    this._gender = map['gender'];
+    this._homeWorld = map['homeworld'];
+    this._species = map['species'];
+    this._favorite = map['favorite'];
+    this._url = map['url'];
   }
 
   Map toMap(){
@@ -79,9 +79,9 @@ class PersonModel {
       "eye_color": this._eyeColor,
       "birth_year": this._birthYear,
       "gender": this._gender,
-      "homeWorld": this._homeWorld,
+      "homeworld": this._homeWorld,
       "species": this._species,
-      "favorite": this._favorite.toString(),
+      "favorite": this._favorite,
       "url": this._url,
     };
 
@@ -102,7 +102,7 @@ class PersonModel {
     data['eye_color'] = this._eyeColor;
     data['birth_year'] = this._birthYear;
     data['gender'] = this._gender;
-    data['homeWorld'] = this._homeWorld;
+    data['homeworld'] = this._homeWorld;
     data['species'] = this._species;
     data['favorite'] = this._favorite;
     data['url'] = this._url;
