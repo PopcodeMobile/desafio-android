@@ -90,17 +90,18 @@ class _HomePageState extends State<HomePage> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(
-                    child: RaisedButton(
-                  child: Text("Reload"),
-                  onPressed: () {
-                    bloc.fetchCharacters().then((onValue) {
-                      setState(() {
-                        list = bloc.list;
-                        showList = bloc.list;
+                  child: RaisedButton(
+                    child: Text("Reload"),
+                    onPressed: () {
+                      bloc.fetchCharacters().then((onValue) {
+                        setState(() {
+                          list = bloc.list;
+                          showList = bloc.list;
+                        });
                       });
-                    });
-                  },
-                ));
+                    },
+                  ),
+                );
               }
 
               if (snapshot.hasData) {
