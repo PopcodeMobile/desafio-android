@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:wikistarwars/model/person_model.dart';
+import 'package:wikistarwars/service/swapi.dart';
+import 'package:http/http.dart' as HTTP;
+import 'dart:convert';
+import 'dart:async';
 
 class Home extends StatefulWidget {
   @override
@@ -7,11 +12,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   TextEditingController _search = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,52 @@ class _HomeState extends State<Home> {
               ],
             ),
 
+            Expanded(
+              child: FutureBuilder<List<PersonModel>>(
+                future: SWAPI().getAllPersons(),
+                builder: (_, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                      break;
+                    case ConnectionState.active :
+                    case ConnectionState.done :
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text("Problema com os Dados", style: TextStyle(color: Colors.white),),
+                        );
+                      } else {
+                        return ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              List<PersonModel> lista = snapshot.data;
+                              PersonModel person = lista[index];
+                              return ListTile(
 
+                                onTap: (){
+                                  // passar pessoa
+                                },
+                                title: Text('Nome: ${person.name}\nAltura: ${person.height}',
+                                            style: TextStyle(color: Colors.white),),
+                                subtitle: Text('Genero: ${person.gender}\nPeso: ${person.mass}',
+                                            style: TextStyle(color: Colors.white),),
+                                trailing: IconButton(
+                                  onPressed: (){},
+                                  icon: person.favorite == false
+                                        ? Icon(Icons.star_border, color: Colors.yellow,)
+                                        : Icon(Icons.star, color: Colors.yellow,)
+                                ),
+                              );
+                            }
+                        );
+                      }
+                  }
+                }
+                ),
+            ),
 
           ],
         ),

@@ -21,18 +21,19 @@ class SWAPI{
       var dataJson = json.decode(response.body);
       try{
         for (int i = 0; i < 10; i++){
-          PersonModel personModel = PersonModel(
-            name: dataJson['results'][i]['name'],
-            height: dataJson['results'][i]['height'],
-            mass: dataJson['results'][i]['mass'],
-            hairColor: dataJson['results'][i]['hair_color'],
-            skinColor: dataJson['results'][i]['skin_color'],
-            eyeColor: dataJson['results'][i]['eye_color'],
-            birthYear: dataJson['results'][i]['birth_year'],
-            gender: dataJson['results'][i]['gender'],
-            homeWorld: dataJson['results'][i]['homeworld'],
-            species: dataJson['results'][i]['species'][0]
-          );
+          PersonModel personModel = PersonModel();
+          personModel.name = dataJson['results'][i]['name'];
+          personModel.height = dataJson['results'][i]['height'];
+          personModel.mass = dataJson['results'][i]['mass'];
+          personModel.hairColor = dataJson['results'][i]['hair_color'];
+          personModel.skinColor = dataJson['results'][i]['skin_color'];
+          personModel.eyeColor = dataJson['results'][i]['eye_color'];
+          personModel.birthYear = dataJson['results'][i]['birth_year'];
+          personModel.gender = dataJson['results'][i]['gender'];
+          personModel.homeWorld = dataJson['results'][i]['homeworld'];
+          personModel.species = dataJson['results'][i]['species'][0];
+          personModel.favorite = false;
+
           personList.add(personModel);
         }
       }catch(e) {
@@ -42,7 +43,7 @@ class SWAPI{
 
   }
 
-  Future<String> getPlanet(String url) async {
+  getPlanet(String url) async {
     String planet = "Sem dado";
     if( url.isNotEmpty || url != null){
       HTTP.Response response = await HTTP.get(url);
@@ -52,7 +53,7 @@ class SWAPI{
     return planet;
   }
 
-  Future<String> getSpecie(String url) async {
+  getSpecie(String url) async {
     String specie = "Sem dado";
     if( url.isNotEmpty || url != null){
       HTTP.Response response = await HTTP.get(url);

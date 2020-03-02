@@ -12,18 +12,7 @@ class PersonModel {
   String _species;
   bool _favorite;
 
-  PersonModel(
-      {String name,
-        String height,
-        String mass,
-        String hairColor,
-        String skinColor,
-        String eyeColor,
-        String birthYear,
-        String gender,
-        String homeWorld,
-        String species,
-        bool favorite});
+  PersonModel();
 
   String get name => _name;
   set name(String name) => _name = name;
