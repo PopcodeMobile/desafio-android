@@ -11,6 +11,7 @@ class PersonModel {
   String _homeWorld;
   String _species;
   bool _favorite;
+  String _url;
 
   PersonModel();
 
@@ -47,6 +48,9 @@ class PersonModel {
   bool get favorite => _favorite;
   set favorite(bool favorite) => _favorite = favorite;
 
+  String get url => _url;
+  set url(String url) => _url = url;
+
   PersonModel.toMap(Map<String, dynamic> json) {
     _name = json['name'];
     _height = json['height'];
@@ -59,6 +63,7 @@ class PersonModel {
     _homeWorld = json['homeWorld'];
     _species = json['species'];
     _favorite = json['favorite'];
+    _url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -74,6 +79,7 @@ class PersonModel {
     data['homeWorld'] = this._homeWorld;
     data['species'] = this._species;
     data['favorite'] = this._favorite;
+    data['url'] = this._url;
     return data;
   }
 }

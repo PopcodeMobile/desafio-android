@@ -5,6 +5,8 @@ import 'package:http/http.dart' as HTTP;
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:wikistarwars/view/person_detail.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -12,6 +14,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   TextEditingController _search = TextEditingController();
+
+  _openDetails(PersonModel person){
+    Navigator.push(context, MaterialPageRoute(builder: (_) => PersonDetail(personModel: person,)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +97,7 @@ class _HomeState extends State<Home> {
                               return ListTile(
 
                                 onTap: (){
-                                  // passar pessoa
+                                  _openDetails(person);
                                 },
                                 title: Text('Nome: ${person.name}\nAltura: ${person.height}',
                                             style: TextStyle(color: Colors.white),),

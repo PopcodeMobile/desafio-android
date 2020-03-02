@@ -32,6 +32,7 @@ class SWAPI{
           personModel.gender = dataJson['results'][i]['gender'];
           personModel.homeWorld = dataJson['results'][i]['homeworld'];
           personModel.species = dataJson['results'][i]['species'][0];
+          personModel.url = dataJson['results'][i]['url'];
           personModel.favorite = false;
 
           personList.add(personModel);
@@ -41,26 +42,6 @@ class SWAPI{
     }
     return personList;
 
-  }
-
-  getPlanet(String url) async {
-    String planet = "Sem dado";
-    if( url.isNotEmpty || url != null){
-      HTTP.Response response = await HTTP.get(url);
-      var dataJson = json.decode(response.body);
-      planet = dataJson['name'];
-    }
-    return planet;
-  }
-
-  getSpecie(String url) async {
-    String specie = "Sem dado";
-    if( url.isNotEmpty || url != null){
-      HTTP.Response response = await HTTP.get(url);
-      var dataJson = json.decode(response.body);
-      specie = dataJson['name'];
-    }
-    return specie;
   }
 
 }
