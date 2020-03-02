@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="star_wars_wiki"
+        android:label="Star Wiki"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
