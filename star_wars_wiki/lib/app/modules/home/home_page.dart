@@ -84,47 +84,52 @@ class _HomePageState extends State<HomePage> {
               })
         ],
       ),
-      body: SingleChildScrollView(
-        child: StreamBuilder<List<CharacterModel>>(
-            stream: bloc.responseOut,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: RaisedButton(
-                    child: Text("Reload"),
-                    onPressed: () {
-                      initState();
-                      // bloc.fetchCharacters().then((onValue) {
-                      //   setState(() {
-                      //     list = bloc.list;
-                      //     showList = bloc.list;
-                      //   });
-                      // });
-                    },
-                  ),
-                );
-              }
+      body: Container(
+        color: Colors.yellow.withOpacity(0.5),
+        alignment: Alignment.center,
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: StreamBuilder<List<CharacterModel>>(
+              stream: bloc.responseOut,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: RaisedButton(
+                      child: Text("Reload"),
+                      onPressed: () {
+                        initState();
+                        // bloc.fetchCharacters().then((onValue) {
+                        //   setState(() {
+                        //     list = bloc.list;
+                        //     showList = bloc.list;
+                        //   });
+                        // });
+                      },
+                    ),
+                  );
+                }
 
-              if (snapshot.hasData) {
-                return Column(
-                  children: ([_searchBar()] +
-                      showList
-                          .map((item) => Builder(
-                              builder: (context) =>
-                                  _characterCard(context, item)))
-                          .toList() +
-                      [
-                        bloc.list.length < 87
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : Container()
-                      ]),
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            }),
+                if (snapshot.hasData) {
+                  return Column(
+                    children: ([_searchBar()] +
+                        showList
+                            .map((item) => Builder(
+                                builder: (context) =>
+                                    _characterCard(context, item)))
+                            .toList() +
+                        [
+                          bloc.list.length < 87
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Container()
+                        ]),
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              }),
+        ),
       ),
     );
   }
