@@ -93,12 +93,13 @@ class _HomePageState extends State<HomePage> {
                   child: RaisedButton(
                     child: Text("Reload"),
                     onPressed: () {
-                      bloc.fetchCharacters().then((onValue) {
-                        setState(() {
-                          list = bloc.list;
-                          showList = bloc.list;
-                        });
-                      });
+                      initState();
+                      // bloc.fetchCharacters().then((onValue) {
+                      //   setState(() {
+                      //     list = bloc.list;
+                      //     showList = bloc.list;
+                      //   });
+                      // });
                     },
                   ),
                 );
