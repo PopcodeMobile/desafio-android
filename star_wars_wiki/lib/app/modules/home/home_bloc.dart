@@ -24,8 +24,10 @@ class HomeBloc extends BlocBase {
     responseIn.add(null);
     try {
       var res = await repo.getCharacters(page: page);
+
       responseIn.add(res);
-      for (var item in res) list.add(item);
+      // for (var item in res) list.add(item);
+      list.addAll(res);
     } catch (e) {
       listChar.addError(e);
     }
