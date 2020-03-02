@@ -1,5 +1,5 @@
 class PersonModel {
-
+  int _id;
   String _name;
   String _height;
   String _mass;
@@ -14,6 +14,9 @@ class PersonModel {
   String _url;
 
   PersonModel();
+
+  int get id => _id;
+  set id(int id) => _id = id;
 
   String get name => _name;
   set name(String name) => _name = name;
@@ -64,6 +67,29 @@ class PersonModel {
     _species = json['species'];
     _favorite = json['favorite'];
     _url = json['url'];
+  }
+
+  Map toMap(){
+    Map<String, dynamic> newPerson = {
+      "name": this._name,
+      "height": this._height,
+      "mass": this._mass,
+      "hair_color": this._hairColor,
+      "skin_color": this._skinColor,
+      "eye_color": this._eyeColor,
+      "birth_year": this._birthYear,
+      "gender": this._gender,
+      "homeWorld": this._homeWorld,
+      "species": this._species,
+      "favorite": this._favorite,
+      "url": this._url,
+    };
+
+    if (this.id != null){
+      newPerson["id"] = this._id;
+    }
+
+    return newPerson;
   }
 
   Map<String, dynamic> toJson() {
