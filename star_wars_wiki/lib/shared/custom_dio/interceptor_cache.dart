@@ -18,28 +18,21 @@ class CacheInterceptor extends InterceptorsWrapper {
     return response;
   }
 
-  // @override
-  // onError(DioError error) async {
-  //   return error;
-  //   // if ((error.type == DioErrorType.CONNECT_TIMEOUT ||
-  //   //         error.type == DioErrorType.DEFAULT) &&
-  //   //     error.request.uri.toString().contains('https://swapi.co/api')) {
-  //   //   SharedPreferences prefs;
-  //   //   await SharedPreferences.getInstance().then((preferences) {
-  //   //     prefs = preferences;
-  //   //   });
-  //   //   if (prefs != null) {
-  //   //     if (prefs.containsKey('${error.request.uri}')) {
-  //   //       var res = jsonDecode(prefs.getString('${error.request.uri}'));
-  //   //       return Response(data: res, statusCode: 200);
-  //   //     } else {
-  //   //       return error;
-  //   //     }
-  //   //   } else {
-  //   //     return error;
-  //   //   }
-  //   // } else {
-  //   //   return error;
-  //   // }
-  // }
+  @override
+  onError(DioError error) async {
+    if (error.type == DioErrorType.CONNECT_TIMEOUT ||
+        error.type == DioErrorType.DEFAULT) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      if (prefs.containsKey('${error.request.uri}')) {
+        var res = jsonDecode(prefs.getString('${error.request.uri}'));
+        return Response(
+          data: res,
+          statusCode: 200,
+        );
+      }
+    } else {
+      return error;
+    }
+  }
 }
