@@ -20,11 +20,16 @@ class CacheInterceptor extends InterceptorsWrapper {
 
   @override
   onError(DioError error) async {
-    if (error.type == DioErrorType.CONNECT_TIMEOUT ||
-        error.type == DioErrorType.DEFAULT) {
+    if ((error.type == DioErrorType.CONNECT_TIMEOUT ||
+            error.type == DioErrorType.DEFAULT) &&
+        error.request.uri.toString().contains('https://swapi.co/api')) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var res = jsonDecode(prefs.getString('${error.request.uri}'));
-      return Response(data: res, statusCode: 200);
+      if (prefs.containsKey('banana')) {
+        var res = jsonDecode(prefs.getString('banana'));
+        return Response(data: res, statusCode: 200);
+      } else {
+        return DioError(error: error);
+      }
     } else {
       return error;
     }
