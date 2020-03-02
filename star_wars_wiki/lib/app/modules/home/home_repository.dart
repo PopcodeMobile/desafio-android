@@ -16,7 +16,7 @@ class HomeRepository {
   Future<List<CharacterModel>> getCharacters({int page: 1}) async {
     try {
       var response = await _client.get('$BASE_URL/people/?page=$page');
-      if (response != null) {
+      if ((response.statusCode == 200) || (response.statusCode == 201)) {
         var charList = (response.data['results'] as List)
             .map((item) => CharacterModel.fromJson(item))
             .toList();
@@ -30,7 +30,7 @@ class HomeRepository {
       }
     } on DioError catch (e) {
       print(e.message);
-      return List<CharacterModel>();
+      return null;
       // throw (e.message);
     }
   }
