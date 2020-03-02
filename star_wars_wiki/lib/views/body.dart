@@ -11,35 +11,33 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
 
   final controller = GetIt.I.get<CharacterController>();
-  
-  /*
-  ScrollController _scrollController = new ScrollController();
+  final _scrollController = new ScrollController();
 
   @override
   void initState() {
     controller.getMoreData();
     super.initState();
-    //_scrollController.addListener(() {
-    //  if (_scrollController.position.pixels ==
-    //      _scrollController.position.maxScrollExtent) {
-    //    controller.getMoreData();
-    //  }
-    //});
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        controller.getMoreData();
+      }
+    });
   }
   
   @override
   void dispose() {
-    //_scrollController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
-  */
 
   @override
   Widget build(BuildContext context) {
-    controller.getMoreData();
+    //controller.getMoreData();
     return Observer(
       builder: (_) {
         return ListView.separated(
+          controller: _scrollController,
           itemCount: controller.charList.length + 1,
           itemBuilder: (context, index) {
             if (index == controller.charList.length) {

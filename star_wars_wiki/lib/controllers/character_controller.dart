@@ -7,18 +7,18 @@ class CharacterController = _CharacterControllerBase with _$CharacterController;
 
 abstract class _CharacterControllerBase with Store {
   
-  final dio = Dio();
-  String nextPage = 'https://swapi.co/api/people/';
+  final _dio = Dio();
+  String _nextPage = 'https://swapi.co/api/people/';
 
   @observable
   ObservableList<Character> charList = ObservableList<Character>().asObservable();
 
   @action
   getMoreData () async {
-    final response = await dio.get(nextPage);
+    final response = await _dio.get(_nextPage);
     if (response.statusCode == 200) {
-      nextPage = response.data['next'];
-      print(nextPage);
+      _nextPage = response.data['next'];
+      print(_nextPage);
       List<Character> tempList = List<Character>();
       for (int i = 0; i < response.data['results'].length; i++) {
         tempList.add(
@@ -32,9 +32,9 @@ abstract class _CharacterControllerBase with Store {
       }
       charList.addAll(tempList);
       //print(response.data['results'][0]['name']);
-      for (Character c in charList) {
-        print(c.name);
-      }
+      //for (Character c in charList) {
+      //  print(c.name);
+      //}
     }
   }
 
