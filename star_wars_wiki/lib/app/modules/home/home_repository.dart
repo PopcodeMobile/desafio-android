@@ -16,14 +16,18 @@ class HomeRepository {
   Future<List<CharacterModel>> getCharacters({int page: 1}) async {
     try {
       var response = await _client.get('$BASE_URL/people/?page=$page');
-      var charList = (response.data['results'] as List)
-          .map((item) => CharacterModel.fromJson(item))
-          .toList();
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      for (var char in charList) {
-        if (prefs.containsKey('favorites/${char.name}')) char.fav = true;
+      if (response != null) {
+        var charList = (response.data['results'] as List)
+            .map((item) => CharacterModel.fromJson(item))
+            .toList();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        for (var char in charList) {
+          if (prefs.containsKey('favorites/${char.name}')) char.fav = true;
+        }
+        return charList;
+      } else {
+        return null;
       }
-      return charList;
     } on DioError catch (e) {
       print(e.message);
       return List<CharacterModel>();
