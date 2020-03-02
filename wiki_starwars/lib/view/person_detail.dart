@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wikistarwars/model/person_model.dart';
-import 'package:wikistarwars/model/planet_model.dart';
-import 'package:wikistarwars/model/specie_model.dart';
-import 'package:wikistarwars/service/swapi.dart';
 import 'package:http/http.dart' as HTTP;
 import 'dart:async';
 import 'dart:convert';
