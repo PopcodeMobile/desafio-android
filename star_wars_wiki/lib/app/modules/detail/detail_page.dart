@@ -61,24 +61,6 @@ class _DetailPageState extends State<DetailPage> {
                     );
                   });
                 });
-
-                // setState(() {
-                //   homeBloc.favoriteCharacter(char).then((result) {
-                //     Scaffold.of(context).showSnackBar(
-                //       SnackBar(
-                //         duration: Duration(milliseconds: 2000),
-                //         backgroundColor: Colors.black38,
-                //         content: Text(
-                //           result,
-                //           textAlign: TextAlign.center,
-                //         ),
-                //         elevation: 10.0,
-                //         behavior: SnackBarBehavior.floating,
-                //         shape: StadiumBorder(),
-                //       ),
-                //     );
-                //   });
-                // });
               },
               iconSize: 35.0,
             ),
@@ -86,7 +68,7 @@ class _DetailPageState extends State<DetailPage> {
         ],
       ),
       body: Container(
-        color: Colors.black38,
+        color: Colors.orange.withOpacity(0.4),
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 10.0),
           children: <Widget>[
@@ -101,10 +83,10 @@ class _DetailPageState extends State<DetailPage> {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                            CustomCard(
-                              label: 'Name',
-                              text: char.name,
-                            ),
+                            // CustomCard(
+                            //   label: 'Name',
+                            //   text: char.name,
+                            // ),
                             CustomCard(
                               label: 'Height',
                               text: char.height == 'unknown'
@@ -134,7 +116,7 @@ class _DetailPageState extends State<DetailPage> {
                               text: char.gender,
                             ),
                             CustomCard(
-                              label: 'Home World',
+                              label: 'Homeworld',
                               text: bloc.planet.name,
                             ),
                           ] +
