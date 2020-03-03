@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:wikistarwars/helper/person_helper.dart';
 import 'package:wikistarwars/model/person_model.dart';
 import 'package:http/http.dart' as HTTP;
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:wikistarwars/service/sw_fav.dart';

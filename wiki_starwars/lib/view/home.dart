@@ -3,9 +3,6 @@ import 'package:wikistarwars/helper/person_helper.dart';
 import 'package:wikistarwars/model/person_model.dart';
 import 'package:wikistarwars/service/sw_fav.dart';
 import 'package:wikistarwars/service/swapi.dart';
-import 'package:http/http.dart' as HTTP;
-import 'dart:convert';
-import 'dart:async';
 
 import 'package:wikistarwars/view/person_detail.dart';
 
@@ -15,7 +12,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  TextEditingController _search = TextEditingController();
 
   var _db = PersonHelper();
   String _message = "Carregando";
