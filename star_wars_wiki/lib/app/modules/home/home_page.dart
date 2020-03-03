@@ -114,6 +114,7 @@ class _HomePageState extends State<HomePage> {
                         return Column(
                           children: (showList
                                   .map((item) => Container(
+                                        height: 80.0,
                                         child: Builder(
                                             builder: (context) =>
                                                 _characterCard(context, item)),
@@ -121,9 +122,10 @@ class _HomePageState extends State<HomePage> {
                                   .toList() +
                               [
                                 bloc.list.length < 87
-                                    ? Center(
-                                        child: CircularProgressIndicator(
-                                          backgroundColor: Colors.black,
+                                    ? Container(
+                                        padding: EdgeInsets.only(top: 50.0),
+                                        child: Center(
+                                          child: CircularProgressIndicator(),
                                         ),
                                       )
                                     : Container()
@@ -148,6 +150,7 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   }
 
+  //Card para exibir dados do personagem
   Widget _characterCard(BuildContext context, CharacterModel char) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
