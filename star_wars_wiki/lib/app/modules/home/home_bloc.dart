@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:star_wars_wiki/app/modules/home/home_repository.dart';
 import 'package:star_wars_wiki/shared/models/character_model.dart';
@@ -14,7 +11,6 @@ class HomeBloc extends BlocBase {
 
   var listChar = BehaviorSubject<List<CharacterModel>>();
   Sink<List<CharacterModel>> get responseIn => listChar.sink;
-
   Observable<List<CharacterModel>> get responseOut => listChar.stream;
 
   List<CharacterModel> list = [];
@@ -26,7 +22,6 @@ class HomeBloc extends BlocBase {
       var res = await repo.getCharacters(page: page);
 
       responseIn.add(res);
-      // for (var item in res) list.add(item);
       list.addAll(res);
     } catch (e) {
       listChar.addError(e);

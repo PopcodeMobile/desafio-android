@@ -1,3 +1,4 @@
+import 'package:star_wars_wiki/app/app_module.dart';
 import 'package:star_wars_wiki/app/modules/detail/detail_bloc.dart';
 import 'package:star_wars_wiki/app/modules/home/home_bloc.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -5,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:star_wars_wiki/app/modules/home/home_page.dart';
 import 'package:star_wars_wiki/app/modules/home/home_repository.dart';
 import 'package:star_wars_wiki/shared/custom_dio/custom_dio.dart';
-
-import '../../app_module.dart';
 
 class HomeModule extends ModuleWidget {
   @override

@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final bloc = HomeModule.to.getBloc<HomeBloc>();
+  var bloc = HomeModule.to.getBloc<HomeBloc>();
   List<CharacterModel> list = List<CharacterModel>();
   List<CharacterModel> showList = List<CharacterModel>();
   String show = 'all';
@@ -27,10 +27,10 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           list = bloc.list;
           showList = bloc.list;
-          bloc.retryFavorites();
         });
       });
     }
+    bloc.retryFavorites();
 
     super.initState();
   }
@@ -47,13 +47,13 @@ class _HomePageState extends State<HomePage> {
     if (show == 'all') {
       //Mostrar todos os personagens
       list = bloc.list;
-      _filterList(searchText);
+      _filterList(searchText); //Filtro de busca
     } else if (show == 'favs') {
       //Mostrar os personagens favoritos
       list = list.where((item) {
         return item.fav;
       }).toList();
-      _filterList(searchText);
+      _filterList(searchText); //Filtro de busca
     }
 
     return Scaffold(
@@ -86,7 +86,6 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         color: Colors.yellow.withOpacity(0.5),
-        // alignment: Alignment.center,
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: StreamBuilder<List<CharacterModel>>(
@@ -98,12 +97,6 @@ class _HomePageState extends State<HomePage> {
                       child: Text("Reload"),
                       onPressed: () {
                         initState();
-                        // bloc.fetchCharacters().then((onValue) {
-                        //   setState(() {
-                        //     list = bloc.list;
-                        //     showList = bloc.list;
-                        //   });
-                        // });
                       },
                     ),
                   );
@@ -120,7 +113,9 @@ class _HomePageState extends State<HomePage> {
                         [
                           bloc.list.length < 87
                               ? Center(
-                                  child: CircularProgressIndicator(),
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: Colors.black,
+                                  ),
                                 )
                               : Container()
                         ]),

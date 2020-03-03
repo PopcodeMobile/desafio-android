@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:star_wars_wiki/shared/constants.dart';
@@ -26,9 +24,7 @@ class HomeRepository {
       }
       return charList;
     } on DioError catch (e) {
-      print(e.message);
-      return null;
-      // throw (e.message);
+      throw (e.message);
     }
   }
 
@@ -59,7 +55,7 @@ class HomeRepository {
       message = response.data['message'];
     } on DioError catch (e) {
       message = e.response.data['error_message'];
-      // throw (e.message);
+      throw (e.message);
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("favorites/$id", id);
