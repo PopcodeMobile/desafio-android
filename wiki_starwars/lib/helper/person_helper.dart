@@ -87,7 +87,7 @@ class PersonHelper {
     String attribute = param;
     
     var database = await db;
-    String sql = "SELECT name, height, gender, mass, favorite  FROM ${Constants.nameTable}" +
+    String sql = "SELECT id, name, height, gender, mass, favorite  FROM ${Constants.nameTable}" +
         " WHERE name LIKE '$attribute%' OR homeworld LIKE '$attribute%' AND species LIKE '$attribute%'";
     List listChar = await database.rawQuery(sql);
     return listChar;
