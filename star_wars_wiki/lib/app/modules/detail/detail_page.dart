@@ -81,7 +81,14 @@ class _DetailPageState extends State<DetailPage> {
                 stream: bloc.responseOut,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return Center(child: Text(snapshot.error.toString()));
+                    return Center(
+                      child: RaisedButton(
+                        child: Text("Reload"),
+                        onPressed: () {
+                          initState();
+                        },
+                      ),
+                    );
                   }
 
                   if (snapshot.hasData) {
