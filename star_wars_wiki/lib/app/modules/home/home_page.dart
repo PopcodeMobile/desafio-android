@@ -65,6 +65,7 @@ class _HomePageState extends State<HomePage> {
             fontSize: 25.0,
           ),
         ),
+        elevation: 0.0,
         centerTitle: true,
         actions: <Widget>[
           PopupMenuButton<String>(
@@ -85,45 +86,56 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Container(
-        color: Colors.yellow.withOpacity(0.5),
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: StreamBuilder<List<CharacterModel>>(
-              stream: bloc.responseOut,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: RaisedButton(
-                      child: Text("Reload"),
-                      onPressed: () {
-                        initState();
-                      },
-                    ),
-                  );
-                }
+        // color: Colors.orange,
+        child: Column(
+          children: <Widget>[
+            _searchBar(),
+            Container(
+              color: Colors.amber.withOpacity(0.3),
+              height: MediaQuery.of(context).size.height -
+                  140 -
+                  MediaQuery.of(context).viewInsets.bottom,
+              child: SingleChildScrollView(
+                child: StreamBuilder<List<CharacterModel>>(
+                    stream: bloc.responseOut,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: RaisedButton(
+                            child: Text("Reload"),
+                            onPressed: () {
+                              initState();
+                            },
+                          ),
+                        );
+                      }
 
-                if (snapshot.hasData) {
-                  return Column(
-                    children: ([_searchBar()] +
-                        showList
-                            .map((item) => Builder(
-                                builder: (context) =>
-                                    _characterCard(context, item)))
-                            .toList() +
-                        [
-                          bloc.list.length < 87
-                              ? Center(
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: Colors.black,
-                                  ),
-                                )
-                              : Container()
-                        ]),
-                  );
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              }),
+                      if (snapshot.hasData) {
+                        return Column(
+                          children: (showList
+                                  .map((item) => Container(
+                                        child: Builder(
+                                            builder: (context) =>
+                                                _characterCard(context, item)),
+                                      ))
+                                  .toList() +
+                              [
+                                bloc.list.length < 87
+                                    ? Center(
+                                        child: CircularProgressIndicator(
+                                          backgroundColor: Colors.black,
+                                        ),
+                                      )
+                                    : Container()
+                              ]),
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    }),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -140,7 +152,7 @@ class _HomePageState extends State<HomePage> {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
       elevation: 3.0,
-      color: Colors.black54,
+      color: Colors.white70,
       child: ListTile(
         title: Text(
           char.name,
@@ -161,7 +173,7 @@ class _HomePageState extends State<HomePage> {
           tooltip: 'Favorite',
           icon: Icon(
             char.fav ? Icons.star : Icons.star_border,
-            color: Colors.yellow.withAlpha(150),
+            color: Colors.orange.withGreen(140),
             size: 35.0,
           ),
           //Ao clicar na estrela é executada a ação de favoritar no Bloc
@@ -200,10 +212,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _searchBar() {
-    return Padding(
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    return Container(
+        // color: Colors.amber.withOpacity(0.3),
+        color: Colors.orange,
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 4.0),
         child: TextField(
-          decoration: InputDecoration(hintText: 'Search character'),
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+            hintText: 'Search character',
+            suffixIcon: Icon(Icons.search),
+            border: OutlineInputBorder(borderSide: BorderSide()),
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 0.0,
+              horizontal: 10.0,
+            ),
+          ),
           onChanged: (text) {
             searchText = text.toLowerCase();
             setState(() {
