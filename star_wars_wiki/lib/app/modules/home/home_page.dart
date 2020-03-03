@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         color: Colors.yellow.withOpacity(0.5),
-        alignment: Alignment.center,
+        // alignment: Alignment.center,
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: StreamBuilder<List<CharacterModel>>(
