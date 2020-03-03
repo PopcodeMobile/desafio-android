@@ -55,30 +55,89 @@ class CharacterDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _showCard(controller.charList[index].name),
-          _showCard('Height: ${controller.charList[index].height}'),
-          _showCard('Mass: ${controller.charList[index].mass}'),
-          _showCard('Hair Color: ${controller.charList[index].hairColor}'),
-          _showCard('Skin Color: ${controller.charList[index].skinColor}'),
-          _showCard('Eye Color: ${controller.charList[index].eyeColor}'),
-          _showCard('Birth Year: ${controller.charList[index].birthYear}'),
-          _showCard('Gender: ${controller.charList[index].gender}'),
-          _showCard('Homeworld: ${controller.charList[index].homeworld}'),
-          _showCard('Species: ${controller.charList[index].species[0]}'),
+          _showBasicInfo(),
+          _showAdicionalInfo(),
         ],
       ),
     );
   }
 
-  _showCard (String cardText) {
+  _showBasicInfo () {
     return Card(
-      elevation: 2.0,
+      elevation: 1.0,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Text(
-          cardText.toUpperCase(),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(bottom: 18.0),
+              child: Text(
+                controller.charList[index].name.toUpperCase(),
+              ),
+            ),
+            Row(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              //crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'Gender: ${controller.charList[index].gender}',
+                    textAlign: TextAlign.center,
+                  )
+                ),
+                Expanded(
+                  child: Text(
+                    'Height: ${controller.charList[index].height}',
+                    textAlign: TextAlign.center,
+                ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Mass: ${controller.charList[index].mass}',
+                    textAlign: TextAlign.center,
+                  )
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  _showAdicionalInfo () {
+    return Card(
+      child: Column(
+        children: <Widget>[
+          Text(
+            'Hair Color: ${controller.charList[index].hairColor}',
+          ),
+          Text(
+            'Skin Color: ${controller.charList[index].skinColor}',
+          ),
+          Text(
+            'Eye Color: ${controller.charList[index].eyeColor}',
+          ),
+          Text(
+            'Birth Year: ${controller.charList[index].birthYear}',
+          ),
+          Text(
+            'Homeworld: ${controller.charList[index].homeworld}',
+          ),
+          Text(
+            'Species: ',
+          ),
+          _getSpecies(),
+        ],
+      ),
+    );
+  }
+
+  _getSpecies () {
+    for (String specie in controller.charList[index].species) {
+      return Text(
+        specie,
+      );
+    }
   }
 }

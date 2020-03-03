@@ -62,6 +62,9 @@ abstract class _CharacterControllerBase with Store {
         Response response = await Dio().get(s);
         charList[index].species.add(response.data['name']);
       }
+      if (charList[index].species.isEmpty) {
+        charList[index].species.add('none');
+      }
     }
   }
 
