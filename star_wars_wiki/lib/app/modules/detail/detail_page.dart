@@ -35,7 +35,7 @@ class _DetailPageState extends State<DetailPage> {
           homeBloc.selectedChar.name.toLowerCase(),
           style: TextStyle(
             fontFamily: 'Star Jedi',
-            fontSize: 24.0,
+            fontSize: 16.0,
           ),
         ),
         centerTitle: true,
@@ -83,10 +83,6 @@ class _DetailPageState extends State<DetailPage> {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                            // CustomCard(
-                            //   label: 'Name',
-                            //   text: char.name,
-                            // ),
                             CustomCard(
                               label: 'Height',
                               text: char.height == 'unknown'
