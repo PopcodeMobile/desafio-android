@@ -46,19 +46,19 @@ class HomeRepository {
     }
   }
 
-  Future<String> setFavorite(String id) async {
+  Future<String> setFavorite(String id, {retry: false}) async {
     String message;
     try {
       var response = await _client.post(
         '$FAVS_BASE_URL/favorite/$id',
+        options: Options(extra: {'retry': retry}),
       );
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("favorites/$id", id);
       message = response.data['message'];
     } on DioError catch (e) {
       message = e.response.data['error_message'];
-      throw (e.message);
     }
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("favorites/$id", id);
     return message;
   }
 
@@ -80,8 +80,12 @@ class HomeRepository {
     List<String> pendingFavs = prefs.getStringList('pending_favorites');
 
     if (pendingFavs != null) {
+      // while (pendingFavs.isNotEmpty) {
+      //   setFavorite(pendingFavs[0]);
+
+      // }
       for (var pending in pendingFavs) {
-        await setFavorite(pending);
+        await setFavorite(pending, retry: true);
       }
     }
   }
