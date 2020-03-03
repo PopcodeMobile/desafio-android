@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:star_wars_wiki/shared/constants.dart';
@@ -11,9 +9,7 @@ class CustomInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options) async {
     print('REQUEST(${options.method}) => PATH: ${options.path}');
-    if (options.uri
-        .toString()
-        .contains('http://private-782d3-starwarsfavorites.apiary-mock.com')) {
+    if (options.uri.toString().contains('$FAVS_BASE_URL')) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       List<String> pendingFavs =
@@ -43,8 +39,7 @@ class CustomInterceptors extends InterceptorsWrapper {
   @override
   onError(DioError e) async {
     print('REQUEST(${e.message}) => PATH: ${e.request.path}');
-    if (e.request.path
-        .contains('http://private-782d3-starwarsfavorites.apiary-mock.com')) {
+    if (e.request.path.contains('$FAVS_BASE_URL')) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       // prefs.setString('pending_favorites', e.request.uri.toString());
       var id = e.request.path

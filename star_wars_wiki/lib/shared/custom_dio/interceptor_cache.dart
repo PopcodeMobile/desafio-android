@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:star_wars_wiki/shared/constants.dart';
 
 class CacheInterceptor extends InterceptorsWrapper {
   @override
@@ -11,7 +12,7 @@ class CacheInterceptor extends InterceptorsWrapper {
 
   @override
   onResponse(Response response) async {
-    if (response.request.uri.toString().contains('https://swapi.co/api')) {
+    if (response.request.uri.toString().contains('$BASE_URL')) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("${response.request.uri}", jsonEncode(response.data));
     }
@@ -24,7 +25,7 @@ class CacheInterceptor extends InterceptorsWrapper {
     await prefs.setString('error', 'true');
     if ((error.type == DioErrorType.CONNECT_TIMEOUT ||
             error.type == DioErrorType.DEFAULT) &&
-        error.request.uri.toString().contains('https://swapi.co/api')) {
+        error.request.uri.toString().contains('$BASE_URL')) {
       if (prefs.containsKey('${error.request.uri}')) {
         var res = jsonDecode(prefs.getString('${error.request.uri}'));
         return Response(
