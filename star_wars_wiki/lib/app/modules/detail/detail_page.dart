@@ -29,13 +29,18 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    var _titleSize = 300 / homeBloc.selectedChar.name.length;
+    if (_titleSize > 30)
+      _titleSize = 30;
+    else if (_titleSize < 16) _titleSize = 16;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           homeBloc.selectedChar.name.toLowerCase(),
           style: TextStyle(
             fontFamily: 'Star Jedi',
-            fontSize: 16.0,
+            fontSize: _titleSize,
           ),
         ),
         centerTitle: true,
