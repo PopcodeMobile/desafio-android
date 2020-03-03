@@ -5,7 +5,20 @@ class Character = _CharacterBase with _$Character;
 
 abstract class _CharacterBase with Store {
   
-  _CharacterBase({this.isFavorite, this.name, this.gender, this.height, this.mass});
+  _CharacterBase(
+    { this.isFavorite,
+      this.name,
+      this.gender,
+      this.height, 
+      this.mass,
+      this.hairColor,
+      this.skinColor,
+      this.eyeColor,
+      this.birthYear, 
+      this.homeworldReference,
+      this.speciesReference
+    }
+  );
 
   @observable
   bool isFavorite;
@@ -26,9 +39,12 @@ abstract class _CharacterBase with Store {
   @observable
   String gender;
   @observable
+  String homeworldReference;
+  @observable
   String homeworld;
   @observable
-  String species;
+  List speciesReference;
+  @observable
+  List species = List<String>();
 
-  // TRAZER A MUDANÇA PARA CÁ
 }

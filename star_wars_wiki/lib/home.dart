@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:star_wars_wiki/views/body.dart';
+import 'package:star_wars_wiki/views/home_page/body.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -15,7 +15,6 @@ class Home extends StatelessWidget {
             Text('Wiki')
           ],
         ),
-        elevation: 1.0,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),

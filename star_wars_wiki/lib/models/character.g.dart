@@ -162,6 +162,25 @@ mixin _$Character on _CharacterBase, Store {
     }, _$genderAtom, name: '${_$genderAtom.name}_set');
   }
 
+  final _$homeworldReferenceAtom =
+      Atom(name: '_CharacterBase.homeworldReference');
+
+  @override
+  String get homeworldReference {
+    _$homeworldReferenceAtom.context
+        .enforceReadPolicy(_$homeworldReferenceAtom);
+    _$homeworldReferenceAtom.reportObserved();
+    return super.homeworldReference;
+  }
+
+  @override
+  set homeworldReference(String value) {
+    _$homeworldReferenceAtom.context.conditionallyRunInAction(() {
+      super.homeworldReference = value;
+      _$homeworldReferenceAtom.reportChanged();
+    }, _$homeworldReferenceAtom, name: '${_$homeworldReferenceAtom.name}_set');
+  }
+
   final _$homeworldAtom = Atom(name: '_CharacterBase.homeworld');
 
   @override
@@ -179,17 +198,34 @@ mixin _$Character on _CharacterBase, Store {
     }, _$homeworldAtom, name: '${_$homeworldAtom.name}_set');
   }
 
+  final _$speciesReferenceAtom = Atom(name: '_CharacterBase.speciesReference');
+
+  @override
+  List<dynamic> get speciesReference {
+    _$speciesReferenceAtom.context.enforceReadPolicy(_$speciesReferenceAtom);
+    _$speciesReferenceAtom.reportObserved();
+    return super.speciesReference;
+  }
+
+  @override
+  set speciesReference(List<dynamic> value) {
+    _$speciesReferenceAtom.context.conditionallyRunInAction(() {
+      super.speciesReference = value;
+      _$speciesReferenceAtom.reportChanged();
+    }, _$speciesReferenceAtom, name: '${_$speciesReferenceAtom.name}_set');
+  }
+
   final _$speciesAtom = Atom(name: '_CharacterBase.species');
 
   @override
-  String get species {
+  List<dynamic> get species {
     _$speciesAtom.context.enforceReadPolicy(_$speciesAtom);
     _$speciesAtom.reportObserved();
     return super.species;
   }
 
   @override
-  set species(String value) {
+  set species(List<dynamic> value) {
     _$speciesAtom.context.conditionallyRunInAction(() {
       super.species = value;
       _$speciesAtom.reportChanged();
@@ -199,7 +235,7 @@ mixin _$Character on _CharacterBase, Store {
   @override
   String toString() {
     final string =
-        'isFavorite: ${isFavorite.toString()},name: ${name.toString()},height: ${height.toString()},mass: ${mass.toString()},hairColor: ${hairColor.toString()},skinColor: ${skinColor.toString()},eyeColor: ${eyeColor.toString()},birthYear: ${birthYear.toString()},gender: ${gender.toString()},homeworld: ${homeworld.toString()},species: ${species.toString()}';
+        'isFavorite: ${isFavorite.toString()},name: ${name.toString()},height: ${height.toString()},mass: ${mass.toString()},hairColor: ${hairColor.toString()},skinColor: ${skinColor.toString()},eyeColor: ${eyeColor.toString()},birthYear: ${birthYear.toString()},gender: ${gender.toString()},homeworldReference: ${homeworldReference.toString()},homeworld: ${homeworld.toString()},speciesReference: ${speciesReference.toString()},species: ${species.toString()}';
     return '{$string}';
   }
 }

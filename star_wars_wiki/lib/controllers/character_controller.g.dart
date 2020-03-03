@@ -56,6 +56,21 @@ mixin _$CharacterController on _CharacterControllerBase, Store {
     return _$getMoreDataAsyncAction.run(() => super.getMoreData());
   }
 
+  final _$loadHomeworldDataAsyncAction = AsyncAction('loadHomeworldData');
+
+  @override
+  Future loadHomeworldData(dynamic index) {
+    return _$loadHomeworldDataAsyncAction
+        .run(() => super.loadHomeworldData(index));
+  }
+
+  final _$loadSpeciesDataAsyncAction = AsyncAction('loadSpeciesData');
+
+  @override
+  Future loadSpeciesData(dynamic index) {
+    return _$loadSpeciesDataAsyncAction.run(() => super.loadSpeciesData(index));
+  }
+
   final _$_CharacterControllerBaseActionController =
       ActionController(name: '_CharacterControllerBase');
 

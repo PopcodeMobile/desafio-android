@@ -11,6 +11,7 @@ abstract class _CharacterControllerBase with Store {
 
   @observable
   String _nextPage = 'https://swapi.co/api/people/';
+
   @computed
   bool get hasNextPage => _nextPage != null;
 
@@ -25,22 +26,45 @@ abstract class _CharacterControllerBase with Store {
       print(_nextPage);
       List<Character> tempList = List<Character>();
       for (int i = 0; i < response.data['results'].length; i++) {
+        var char = response.data['results'][i];
         tempList.add(
           Character(
-            name: response.data['results'][i]['name'],
-            gender: response.data['results'][i]['gender'],
-            height: response.data['results'][i]['height'],
-            mass: response.data['results'][i]['mass'],
+            isFavorite: false,
+            name: char['name'],
+            gender: char['gender'],
+            height: char['height'],
+            mass: char['mass'],
+            hairColor: char['hair_color'],
+            skinColor: char['skin_color'],
+            eyeColor: char['eye_color'],
+            birthYear: char['birth_year'],
+            homeworldReference: char['homeworld'],
+            speciesReference: char['species'],
           ),
         );
       }
       charList.addAll(tempList);
-      //print(response.data['results'][0]['name']);
-      //for (Character c in charList) {
-      //  print(c.name);
-      //}
     }
   }
+
+  @action
+  loadHomeworldData (index) async {
+    if (charList[index].homeworld == null) {
+      Response response = await Dio().get(charList[index].homeworldReference);
+      charList[index].homeworld = response.data['name'];
+    }
+  }
+
+  @action
+  loadSpeciesData (index) async {
+    if (charList[index].species.isEmpty) {
+      for (String s in charList[index].speciesReference) {
+        Response response = await Dio().get(s);
+        charList[index].species.add(response.data['name']);
+      }
+    }
+  }
+
 
   @action
   String formatSubtitle(index) {
