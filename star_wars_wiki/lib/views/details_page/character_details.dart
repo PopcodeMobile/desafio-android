@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:star_wars_wiki/controllers/character_controller.dart';
 
@@ -14,11 +15,25 @@ class CharacterDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text('Details'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.star_border),
-            tooltip: 'Add To Favorites',
-            onPressed: () {}
-          )
+          Observer(builder: (_) {
+            return IconButton(
+              icon: controller.charList[index].isFavorite ?
+                Icon(
+                  Icons.star,
+                  color: Theme.of(context).accentColor,
+                ) :
+                Icon(
+                  Icons.star_border
+                ),
+              tooltip: controller.charList[index].isFavorite ?
+                'Remove from Favorites' :
+                'Add To Favorites',
+              onPressed: () {
+                controller.setFavorite(index);
+              },
+            );
+          }
+          ),
         ],
       ),
       body: FutureBuilder(

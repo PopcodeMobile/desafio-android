@@ -68,6 +68,10 @@ abstract class _CharacterControllerBase with Store {
     }
   }
 
+  @action
+  setFavorite (index) {
+    charList[index].isFavorite = !charList[index].isFavorite;
+  }
 
   @action
   String formatSubtitle(index) {

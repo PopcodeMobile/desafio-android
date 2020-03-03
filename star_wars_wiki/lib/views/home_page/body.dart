@@ -42,16 +42,23 @@ class Body extends StatelessWidget {
         title: Text('$index ${controller.charList[index].name}'),
         subtitle: Text(subtitle),
         leading: IconButton(
-          icon: Icon(Icons.star_border),
+          icon: controller.charList[index].isFavorite ?
+            Icon(
+              Icons.star,
+              color: Theme.of(context).accentColor,
+            ) :
+            Icon(
+              Icons.star_border
+            ),
           onPressed: () {
-
+            controller.setFavorite(index);
           }
         ),
         trailing: Icon(Icons.chevron_right),
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CharacterDetails(index))
+            MaterialPageRoute(builder: (context) => CharacterDetails(index)),
           );
         },
       );

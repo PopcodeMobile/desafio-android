@@ -75,6 +75,17 @@ mixin _$CharacterController on _CharacterControllerBase, Store {
       ActionController(name: '_CharacterControllerBase');
 
   @override
+  dynamic setFavorite(dynamic index) {
+    final _$actionInfo =
+        _$_CharacterControllerBaseActionController.startAction();
+    try {
+      return super.setFavorite(index);
+    } finally {
+      _$_CharacterControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String formatSubtitle(dynamic index) {
     final _$actionInfo =
         _$_CharacterControllerBaseActionController.startAction();
