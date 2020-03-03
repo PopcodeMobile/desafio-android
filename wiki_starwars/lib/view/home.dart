@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wikistarwars/helper/person_helper.dart';
 import 'package:wikistarwars/model/person_model.dart';
+import 'package:wikistarwars/service/sw_fav.dart';
 import 'package:wikistarwars/service/swapi.dart';
 import 'package:http/http.dart' as HTTP;
 import 'dart:convert';
@@ -17,11 +18,31 @@ class _HomeState extends State<Home> {
   TextEditingController _search = TextEditingController();
 
   var _db = PersonHelper();
-
+  String _message = "Carregando";
   List<PersonModel> _listCharacters = List<PersonModel>();
 
-  _setFavorite() async {
+  _setFavorite(PersonModel personModel) async {
 
+    String message = await SW_FAV().favorite(personModel);
+    setState(() {
+      _message = message;
+    });
+    await _db.setFavorite(personModel);
+    _getCharacters();
+
+  }
+
+  _getFavorites() async {
+    List peoples = await _db.getCharFav();
+    List<PersonModel> listTemp = List<PersonModel>();
+    for (var person in peoples){
+      PersonModel personModel = PersonModel.fromMap(person);
+      listTemp.add(personModel);
+    }
+    setState(() {
+      _listCharacters = listTemp;
+    });
+    listTemp = null;
   }
 
   _getCharacters() async {
@@ -56,7 +77,7 @@ class _HomeState extends State<Home> {
 
 
   _openDetails(PersonModel person){
-    Navigator.push(context, MaterialPageRoute(builder: (_) => PersonDetail(personModel: person,)));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => PersonDetail(personModel: person)));
   }
 
   @override
@@ -98,14 +119,6 @@ class _HomeState extends State<Home> {
                           hintStyle: TextStyle(fontSize: 12, color: Colors.white),
                           labelStyle: TextStyle(color: Color(0xFF0387E9)),
                           border: OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                            onPressed: (){
-                              _searchCharacters('R2-D2');
-                            },
-                            tooltip: 'Pesquisar',
-                            icon: Icon(Icons.search),
-                            color: Color(0xFF0387E9),
-                          ),
                           labelText: 'Pesquisar',
                           hintText: 'Nome, planeta ou espécie'
                       )
@@ -115,7 +128,9 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   child: IconButton(
                     tooltip: 'Favoritos',
-                    onPressed: (){},
+                    onPressed: (){
+                      _getFavorites();
+                    },
                     icon: Icon(Icons.star, color: Colors.yellow, size: 32,),
                     hoverColor: Colors.yellowAccent,
                     splashColor: Colors.yellowAccent,
@@ -145,13 +160,44 @@ class _HomeState extends State<Home> {
                     onTap: (){
                       _openDetails(person);
                     },
+                    leading: Text('${person.id}',
+                      style: TextStyle(color: Colors.yellow, fontSize: 24, fontWeight: FontWeight.bold),),
                     title: Text('Nome: ${person.name}\nAltura: ${person.height}',
                       style: TextStyle(color: Colors.white),),
                     subtitle: Text('Genero: ${person.gender}\nPeso: ${person.mass}',
                       style: TextStyle(color: Colors.white),),
                     trailing: IconButton(
-                        onPressed: (){},
-                        icon: person.favorite == 'false'
+                        onPressed: (){
+                          _setFavorite(person);
+                          return showDialog(
+                              context: context,
+                              builder: (context) {
+                                return SingleChildScrollView(
+                                    child: AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(20.0))
+                                      ),
+                                      title: Text("MENSAGEM",
+                                          style: TextStyle( color: Color(0xFF182E59),)),
+                                      content: Text(_message,
+                                        style: TextStyle(color: Color(0xFF0387E9)),),
+                                      actions: <Widget>[
+                                        IconButton(
+                                            splashColor: Colors.redAccent,
+                                            icon: Icon(Icons.clear),
+                                            color: Colors.red,
+                                            onPressed: (){
+                                              Navigator.pop(context);
+                                              _getCharacters();
+                                            }
+                                        ),
+                                      ],
+                                    )
+                                );
+                              }
+                          );
+                        },
+                        icon: person.favorite != 'true'
                             ? Icon(Icons.star_border, color: Colors.yellow,)
                             : Icon(Icons.star, color: Colors.yellow,)
                     ),

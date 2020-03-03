@@ -55,6 +55,7 @@ class PersonModel {
   set url(String url) => _url = url;
 
   PersonModel.fromMap(Map<String, dynamic> map) {
+    this._id = map['id'];
     this._name = map['name'];
     this._height = map['height'];
     this._mass = map['mass'];

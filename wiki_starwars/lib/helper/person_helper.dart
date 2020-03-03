@@ -5,7 +5,6 @@ import 'package:http/http.dart' as HTTP;
 import 'dart:async';
 import 'dart:convert';
 import 'package:wikistarwars/constants/constants.dart' as Constants;
-import 'package:wikistarwars/service/swapi.dart';
 
 class PersonHelper {
   static final PersonHelper _personHelper = PersonHelper._internal();
@@ -60,6 +59,14 @@ class PersonHelper {
     return listChar;
   }
 
+  getCharFav() async {
+    var database = await db;
+
+    String sql = "SELECT * FROM ${Constants.nameTable} WHERE favorite = 'true'";
+    List listChar = await database.rawQuery(sql);
+    return listChar;
+  }
+
   getPlanet(String url) async {
     if( url.isNotEmpty || url != null){
       HTTP.Response response = await HTTP.get(url);
@@ -87,12 +94,20 @@ class PersonHelper {
 
   }
 
-  Future<int> setFavorite(PersonModel personModel) async {
+  setFavorite(PersonModel personModel) async {
+    print(personModel.favorite);
     var database = await db;
+    if (personModel.favorite == 'false'){
+      personModel.favorite = 'true';
+    }else{
+      personModel.favorite = 'false';
+    }
+    print(personModel.favorite);
     return await database.update(
       Constants.nameTable,
       personModel.toMap(),
-      where: "id = ?", whereArgs: [personModel.id]
+      where: "id = ?",
+      whereArgs: [personModel.id]
     );
   }
 

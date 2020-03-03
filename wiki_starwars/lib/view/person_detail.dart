@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wikistarwars/helper/person_helper.dart';
 import 'package:wikistarwars/model/person_model.dart';
 import 'package:http/http.dart' as HTTP;
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:wikistarwars/service/sw_fav.dart';
 
 class PersonDetail extends StatefulWidget {
 
@@ -17,6 +20,49 @@ class _PersonDetailState extends State<PersonDetail> {
 
   String _planet = "Carregando";
   String _specie = "Carregando";
+  String _message = "";
+  String _name = "Carregando";
+  String _height = "Carregando";
+  String _mass = "Carregando";
+  String _hairColor = "Carregando";
+  String _skinColor = "Carregando";
+  String _eyeColor = "Carregando";
+  String _birthYear = "Carregando";
+  String _gender = "Carregando";
+  String _favorite = "Carregando";
+
+  var _db = PersonHelper();
+
+  _setFavorite(PersonModel personModel) async {
+    String status;
+    String message = await SW_FAV().favorite(personModel);
+    if (widget.personModel.favorite == 'false'){
+      status = 'true';
+    }else{
+      status = 'false';
+    }
+    setState(() {
+      _message = message;
+      _favorite = status;
+    });
+
+    await _db.setFavorite(widget.personModel);
+
+  }
+
+  _loadPerson(){
+    setState(() {
+      _name = widget.personModel.name;
+      _height = widget.personModel.height;
+      _mass = widget.personModel.mass;
+      _hairColor = widget.personModel.hairColor;
+      _skinColor = widget.personModel.skinColor;
+      _eyeColor = widget.personModel.eyeColor;
+      _birthYear = widget.personModel.birthYear;
+      _gender = widget.personModel.gender;
+      _favorite = widget.personModel.favorite;
+    });
+  }
 
   getPlanet(String url) async {
     String planet = "Sem dado";
@@ -45,6 +91,8 @@ class _PersonDetailState extends State<PersonDetail> {
   @override
   void initState() {
     super.initState();
+    print(widget.personModel.favorite);
+    _loadPerson();
     getPlanet(widget.personModel.homeWorld);
     getSpecie(widget.personModel.species);
   }
@@ -54,8 +102,18 @@ class _PersonDetailState extends State<PersonDetail> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(widget.personModel.name),
+        title: Text(_name),
         backgroundColor: Color(0xFF182E59),
+        actions: <Widget>[
+          IconButton(
+              onPressed: (){
+                _setFavorite(widget.personModel);
+              },
+              icon: _favorite != 'true'
+                  ? Icon(Icons.star_border, color: Colors.yellow,)
+                  : Icon(Icons.star, color: Colors.yellow,)
+          ),
+        ],
       ),
 
       body: Container(
@@ -66,49 +124,49 @@ class _PersonDetailState extends State<PersonDetail> {
             children: <Widget>[
               SizedBox(height: 16,),
 
-              Text('Nome: ${widget.personModel.name}',
+              Text('Nome: $_name',
                     style: TextStyle(color: Colors.white, fontSize: 18),
               ),
 
               SizedBox(height: 16,),
 
-              Text('Altura: ${widget.personModel.height}',
+              Text('Altura: $_height',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
 
               SizedBox(height: 16,),
 
-              Text('Peso: ${widget.personModel.mass}',
+              Text('Peso: $_mass',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
 
               SizedBox(height: 16,),
 
-              Text('Cor do Cabelo: ${widget.personModel.hairColor}',
+              Text('Cor do Cabelo: $_hairColor',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
 
               SizedBox(height: 16,),
 
-              Text('Cor da Pele: ${widget.personModel.skinColor}',
+              Text('Cor da Pele: $_skinColor',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
 
               SizedBox(height: 16,),
 
-              Text('Cor dos Olhos: ${widget.personModel.eyeColor}',
+              Text('Cor dos Olhos: $_eyeColor',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
 
               SizedBox(height: 16,),
 
-              Text('Ano de Nascimento: ${widget.personModel.birthYear}',
+              Text('Ano de Nascimento: $_birthYear',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
 
               SizedBox(height: 16,),
 
-              Text('Genero: ${widget.personModel.gender}',
+              Text('Genero: $_gender',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
 
@@ -124,6 +182,12 @@ class _PersonDetailState extends State<PersonDetail> {
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
 
+              SizedBox(height: 30,),
+
+              _favorite == "true"
+              ? Text(_message,
+                  style: TextStyle(fontSize: 24, color: Colors.yellow))
+              : Container()
 
             ],
           ),
