@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:star_wars_wiki/controllers/character_controller.dart';
+import 'package:star_wars_wiki/database/database_provider.dart';
 import 'package:star_wars_wiki/views/details_page/character_details.dart';
 
 class Body extends StatelessWidget {
@@ -10,6 +11,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //DatabaseProvider.db.deleteAll();
     return Observer(
       builder: (_) {
         return ListView.separated(
@@ -35,12 +37,12 @@ class Body extends StatelessWidget {
   }
 
   _customListTile(context, index) {
-    String subtitle = controller.formatSubtitle(index);
+    //String subtitle = controller.formatSubtitle(index);
     return Observer(builder: (_) {
       return ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-        title: Text('$index ${controller.charList[index].name}'),
-        subtitle: Text(subtitle),
+        title: Text('${controller.charList[index].id} ${controller.charList[index].name}'),
+        //subtitle: Text(subtitle),
         leading: IconButton(
           icon: controller.charList[index].isFavorite ?
             Icon(

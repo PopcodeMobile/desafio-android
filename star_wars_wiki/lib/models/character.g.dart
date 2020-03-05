@@ -9,6 +9,23 @@ part of 'character.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Character on _CharacterBase, Store {
+  final _$idAtom = Atom(name: '_CharacterBase.id');
+
+  @override
+  int get id {
+    _$idAtom.context.enforceReadPolicy(_$idAtom);
+    _$idAtom.reportObserved();
+    return super.id;
+  }
+
+  @override
+  set id(int value) {
+    _$idAtom.context.conditionallyRunInAction(() {
+      super.id = value;
+      _$idAtom.reportChanged();
+    }, _$idAtom, name: '${_$idAtom.name}_set');
+  }
+
   final _$isFavoriteAtom = Atom(name: '_CharacterBase.isFavorite');
 
   @override
@@ -235,7 +252,7 @@ mixin _$Character on _CharacterBase, Store {
   @override
   String toString() {
     final string =
-        'isFavorite: ${isFavorite.toString()},name: ${name.toString()},height: ${height.toString()},mass: ${mass.toString()},hairColor: ${hairColor.toString()},skinColor: ${skinColor.toString()},eyeColor: ${eyeColor.toString()},birthYear: ${birthYear.toString()},gender: ${gender.toString()},homeworldReference: ${homeworldReference.toString()},homeworld: ${homeworld.toString()},speciesReference: ${speciesReference.toString()},species: ${species.toString()}';
+        'id: ${id.toString()},isFavorite: ${isFavorite.toString()},name: ${name.toString()},height: ${height.toString()},mass: ${mass.toString()},hairColor: ${hairColor.toString()},skinColor: ${skinColor.toString()},eyeColor: ${eyeColor.toString()},birthYear: ${birthYear.toString()},gender: ${gender.toString()},homeworldReference: ${homeworldReference.toString()},homeworld: ${homeworld.toString()},speciesReference: ${speciesReference.toString()},species: ${species.toString()}';
     return '{$string}';
   }
 }

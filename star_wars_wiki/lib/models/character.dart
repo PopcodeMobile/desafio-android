@@ -6,7 +6,8 @@ class Character = _CharacterBase with _$Character;
 abstract class _CharacterBase with Store {
   
   _CharacterBase(
-    { this.isFavorite,
+    { 
+      this.isFavorite,
       this.name,
       this.gender,
       this.height, 
@@ -20,6 +21,15 @@ abstract class _CharacterBase with Store {
     }
   );
 
+  _CharacterBase.fromMap(Map map) {
+    id = map['idColumn'];
+    isFavorite = (map['isFavoriteColumn'] == 1) ? true : false;
+    name = map['nameColumn'];
+    height = map['heightColumn'];
+  }
+
+  @observable
+  int id;
   @observable
   bool isFavorite;
   @observable
@@ -46,5 +56,17 @@ abstract class _CharacterBase with Store {
   List speciesReference;
   @observable
   List species = List<String>();
+
+  Map toMap () {
+    Map<String, dynamic> map = {
+      'isFavoriteColumn': (isFavorite) ? 1 : 0,
+      'nameColumn': name,
+      'heightColumn': height,
+    };
+    if (id != null) {
+      map['idColumn'] = id;
+    }
+    return map;
+  }
 
 }
