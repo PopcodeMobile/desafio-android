@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //DatabaseProvider.db.deleteAll();
+    DatabaseProvider.db.deleteAll();
     return Observer(
       builder: (_) {
         return ListView.separated(

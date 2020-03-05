@@ -24,11 +24,12 @@ abstract class _CharacterControllerBase with Store {
 
   @action
   getMoreData () async {
-    List<Character> tempList = await _loadDataFromDB();
+    List<Character> tempList = await _loadDataFromApi();
     if (tempList.isEmpty)
-      tempList = await _loadDataFromApi();
+      tempList = await _loadDataFromDB();
     _numLoads++;
-    _nextPage = 'https://swapi.co/api/people/?page=${_numLoads + 1}';
+    //_nextPage = 'https://swapi.co/api/people/?page=${_numLoads + 1}';
+    print(await DatabaseProvider.db.readAllCharacters());
     charList.addAll(tempList);
   }
 
@@ -50,11 +51,10 @@ abstract class _CharacterControllerBase with Store {
     if (hasNextPage) {
       final response = await _dio.get(_nextPage);
       if (response.statusCode == 200) {
-        //_nextPage = response.data['next'];
+        _nextPage = response.data['next'];
         for (int i = 0; i < response.data['results'].length; i++) {
           var info = response.data['results'][i];
           Character tempChar = Character(
-            isFavorite: false,
             name: info['name'],
             gender: info['gender'],
             height: info['height'],
@@ -66,7 +66,7 @@ abstract class _CharacterControllerBase with Store {
             homeworldReference: info['homeworld'],
             speciesReference: info['species'],
           );
-          tempChar.id = await DatabaseProvider.db.saveCharacter(tempChar);
+          tempChar.id = await DatabaseProvider.db.replaceCharacter(tempChar);
           tempList.add(tempChar);
         }
       }

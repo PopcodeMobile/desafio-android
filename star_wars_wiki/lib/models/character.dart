@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:star_wars_wiki/database/database_provider.dart';
 part 'character.g.dart';
 
 class Character = _CharacterBase with _$Character;
@@ -6,8 +7,8 @@ class Character = _CharacterBase with _$Character;
 abstract class _CharacterBase with Store {
   
   _CharacterBase(
-    { 
-      this.isFavorite,
+    {
+      this.isFavorite = false,
       this.name,
       this.gender,
       this.height, 
@@ -17,15 +18,25 @@ abstract class _CharacterBase with Store {
       this.eyeColor,
       this.birthYear, 
       this.homeworldReference,
-      this.speciesReference
+      this.speciesReference,
     }
   );
 
   _CharacterBase.fromMap(Map map) {
-    id = map['idColumn'];
-    isFavorite = (map['isFavoriteColumn'] == 1) ? true : false;
-    name = map['nameColumn'];
-    height = map['heightColumn'];
+    id = map[idColumn];
+    isFavorite = (map[isFavoriteColumn] == 1) ? true : false;
+    name = map[nameColumn];
+    height = map[heightColumn];
+    mass = map[massColumn];
+    hairColor = map[hairColorColumn];
+    skinColor = map[skinColorColumn];
+    eyeColor = map[eyeColorColumn];
+    birthYear = map[birthYearColumn];
+    gender = map[genderColumn];
+    homeworldReference = map[homeworldReferenceColumn];
+    speciesReference.add(map[speciesReferenceColumn]); // bugado
+    homeworld = map[homeworldColumn];
+    species.add(map[speciesColumn]);
   }
 
   @observable
@@ -59,13 +70,22 @@ abstract class _CharacterBase with Store {
 
   Map toMap () {
     Map<String, dynamic> map = {
-      'isFavoriteColumn': (isFavorite) ? 1 : 0,
-      'nameColumn': name,
-      'heightColumn': height,
+      isFavoriteColumn: (isFavorite) ? 1 : 0,
+      nameColumn: name,
+      heightColumn: height,
+      massColumn:  mass,
+      hairColorColumn: hairColor,
+      skinColorColumn: skinColor,
+      eyeColorColumn: eyeColor,
+      birthYearColumn: birthYear,
+      genderColumn: gender,
+      homeworldColumn: homeworld,
+      speciesColumn: species.isEmpty ? 'unknown' : species[0],
+      homeworldReferenceColumn: homeworldReference,
+      speciesReferenceColumn: speciesReference.isEmpty ? null : speciesReference[0],
     };
-    if (id != null) {
-      map['idColumn'] = id;
-    }
+    if (id != null)
+      map[idColumn] = id;
     return map;
   }
 
