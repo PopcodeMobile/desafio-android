@@ -140,19 +140,10 @@ class CharacterDetails extends StatelessWidget {
             'Homeworld: ${controller.charList[index].homeworld}',
           ),
           Text(
-            'Species: ',
+            'Species: ${controller.charList[index].species}',
           ),
-          _getSpecies(),
         ],
       ),
     );
-  }
-
-  _getSpecies () {
-    for (String specie in controller.charList[index].species) {
-      return Text(
-        specie,
-      );
-    }
   }
 }

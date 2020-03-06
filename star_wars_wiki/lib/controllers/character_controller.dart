@@ -10,7 +10,6 @@ abstract class _CharacterControllerBase with Store {
   
   final _dio = Dio();
 
-  //@observable
   int _numLoads = 0;
 
   @observable
@@ -26,9 +25,9 @@ abstract class _CharacterControllerBase with Store {
   getMoreData () async {
     List<Character> tempList = await _loadDataFromApi();
     if (tempList.isEmpty)
-      tempList = await _loadDataFromDB();
+      tempList = await Future.delayed(Duration(seconds: 1), _loadDataFromDB);
     _numLoads++;
-    //_nextPage = 'https://swapi.co/api/people/?page=${_numLoads + 1}';
+    _nextPage = 'https://swapi.co/api/people/?page=${_numLoads+1}';
     print(await DatabaseProvider.db.readAllCharacters());
     charList.addAll(tempList);
   }
@@ -41,16 +40,16 @@ abstract class _CharacterControllerBase with Store {
       if (tempChar == null)
         continue;
       tempList.add(tempChar);
-      print('deu bom: $i');
     }
     return tempList;
   }
 
   Future<List<Character>> _loadDataFromApi() async {
-    List<Character> tempList = List<Character>();
+    List tempList = List<Character>();
     if (hasNextPage) {
-      final response = await _dio.get(_nextPage);
-      if (response.statusCode == 200) {
+      try {
+        final response = await _dio.get(_nextPage);
+        print('>>> ${response.statusCode}');
         _nextPage = response.data['next'];
         for (int i = 0; i < response.data['results'].length; i++) {
           var info = response.data['results'][i];
@@ -64,14 +63,16 @@ abstract class _CharacterControllerBase with Store {
             eyeColor: info['eye_color'],
             birthYear: info['birth_year'],
             homeworldReference: info['homeworld'],
-            speciesReference: info['species'],
+            speciesReference: info['species'].isNotEmpty ? info['species'][0] : null,
           );
           tempChar.id = await DatabaseProvider.db.replaceCharacter(tempChar);
           tempList.add(tempChar);
         }
+      } catch (e) {
+        return tempList;
       }
     }
-    return tempList; // talvez subir
+    return tempList;
   }
 
   @action
@@ -84,14 +85,9 @@ abstract class _CharacterControllerBase with Store {
 
   @action
   loadSpeciesData (index) async {
-    if (charList[index].species.isEmpty) {
-      for (String s in charList[index].speciesReference) {
-        Response response = await Dio().get(s);
-        charList[index].species.add(response.data['name']);
-      }
-      if (charList[index].species.isEmpty) {
-        charList[index].species.add('none');
-      }
+    if (charList[index].species == null) {
+      Response response = await Dio().get(charList[index].speciesReference);
+      charList[index].species = response.data['name'];
     }
   }
 

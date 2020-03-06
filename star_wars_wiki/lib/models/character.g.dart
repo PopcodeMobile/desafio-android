@@ -218,14 +218,14 @@ mixin _$Character on _CharacterBase, Store {
   final _$speciesReferenceAtom = Atom(name: '_CharacterBase.speciesReference');
 
   @override
-  List<dynamic> get speciesReference {
+  String get speciesReference {
     _$speciesReferenceAtom.context.enforceReadPolicy(_$speciesReferenceAtom);
     _$speciesReferenceAtom.reportObserved();
     return super.speciesReference;
   }
 
   @override
-  set speciesReference(List<dynamic> value) {
+  set speciesReference(String value) {
     _$speciesReferenceAtom.context.conditionallyRunInAction(() {
       super.speciesReference = value;
       _$speciesReferenceAtom.reportChanged();
@@ -235,14 +235,14 @@ mixin _$Character on _CharacterBase, Store {
   final _$speciesAtom = Atom(name: '_CharacterBase.species');
 
   @override
-  List<dynamic> get species {
+  String get species {
     _$speciesAtom.context.enforceReadPolicy(_$speciesAtom);
     _$speciesAtom.reportObserved();
     return super.species;
   }
 
   @override
-  set species(List<dynamic> value) {
+  set species(String value) {
     _$speciesAtom.context.conditionallyRunInAction(() {
       super.species = value;
       _$speciesAtom.reportChanged();

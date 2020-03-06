@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DatabaseProvider.db.deleteAll();
+    //DatabaseProvider.db.deleteAll();
     return Observer(
       builder: (_) {
         return ListView.separated(
@@ -24,7 +24,7 @@ class Body extends StatelessWidget {
               return (controller.hasNextPage) ? _buildProgressIndicator() : null;
             }
           },
-          separatorBuilder: (context, index) { 
+          separatorBuilder: (context, index) {
             return Divider(
               height: 2.0,
               indent: 20.0,
@@ -37,12 +37,12 @@ class Body extends StatelessWidget {
   }
 
   _customListTile(context, index) {
-    //String subtitle = controller.formatSubtitle(index);
+    String subtitle = controller.formatSubtitle(index);
     return Observer(builder: (_) {
       return ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
         title: Text('${controller.charList[index].id} ${controller.charList[index].name}'),
-        //subtitle: Text(subtitle),
+        subtitle: Text(subtitle),
         leading: IconButton(
           icon: controller.charList[index].isFavorite ?
             Icon(

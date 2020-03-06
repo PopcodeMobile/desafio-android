@@ -34,9 +34,9 @@ abstract class _CharacterBase with Store {
     birthYear = map[birthYearColumn];
     gender = map[genderColumn];
     homeworldReference = map[homeworldReferenceColumn];
-    speciesReference.add(map[speciesReferenceColumn]); // bugado
+    speciesReference = map[speciesReferenceColumn];
     homeworld = map[homeworldColumn];
-    species.add(map[speciesColumn]);
+    species = map[speciesColumn];
   }
 
   @observable
@@ -64,13 +64,13 @@ abstract class _CharacterBase with Store {
   @observable
   String homeworld;
   @observable
-  List speciesReference;
+  String speciesReference;
   @observable
-  List species = List<String>();
+  String species;
 
   Map toMap () {
     Map<String, dynamic> map = {
-      isFavoriteColumn: (isFavorite) ? 1 : 0,
+      //isFavoriteColumn: (isFavorite) ? 1 : 0,
       nameColumn: name,
       heightColumn: height,
       massColumn:  mass,
@@ -80,9 +80,9 @@ abstract class _CharacterBase with Store {
       birthYearColumn: birthYear,
       genderColumn: gender,
       homeworldColumn: homeworld,
-      speciesColumn: species.isEmpty ? 'unknown' : species[0],
+      speciesColumn: species,
       homeworldReferenceColumn: homeworldReference,
-      speciesReferenceColumn: speciesReference.isEmpty ? null : speciesReference[0],
+      speciesReferenceColumn: speciesReference,
     };
     if (id != null)
       map[idColumn] = id;
