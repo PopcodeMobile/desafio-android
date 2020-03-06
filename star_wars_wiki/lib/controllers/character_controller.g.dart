@@ -56,6 +56,20 @@ mixin _$CharacterController on _CharacterControllerBase, Store {
     return _$getMoreDataAsyncAction.run(() => super.getMoreData());
   }
 
+  final _$_loadDataFromDBAsyncAction = AsyncAction('_loadDataFromDB');
+
+  @override
+  Future<List<Character>> _loadDataFromDB() {
+    return _$_loadDataFromDBAsyncAction.run(() => super._loadDataFromDB());
+  }
+
+  final _$_loadDataFromApiAsyncAction = AsyncAction('_loadDataFromApi');
+
+  @override
+  Future<List<Character>> _loadDataFromApi() {
+    return _$_loadDataFromApiAsyncAction.run(() => super._loadDataFromApi());
+  }
+
   final _$loadHomeworldDataAsyncAction = AsyncAction('loadHomeworldData');
 
   @override
@@ -71,15 +85,22 @@ mixin _$CharacterController on _CharacterControllerBase, Store {
     return _$loadSpeciesDataAsyncAction.run(() => super.loadSpeciesData(index));
   }
 
+  final _$setFavoriteAsyncAction = AsyncAction('setFavorite');
+
+  @override
+  Future<String> setFavorite(dynamic char, dynamic index) {
+    return _$setFavoriteAsyncAction.run(() => super.setFavorite(char, index));
+  }
+
   final _$_CharacterControllerBaseActionController =
       ActionController(name: '_CharacterControllerBase');
 
   @override
-  dynamic setFavorite(dynamic index) {
+  dynamic refresh() {
     final _$actionInfo =
         _$_CharacterControllerBaseActionController.startAction();
     try {
-      return super.setFavorite(index);
+      return super.refresh();
     } finally {
       _$_CharacterControllerBaseActionController.endAction(_$actionInfo);
     }

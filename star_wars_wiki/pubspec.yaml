@@ -29,6 +29,7 @@ dependencies:
   get_it:
   sqflite: ^1.2.1
   path_provider: ^1.6.5
+  toast: ^0.1.5
 
 
 dev_dependencies:

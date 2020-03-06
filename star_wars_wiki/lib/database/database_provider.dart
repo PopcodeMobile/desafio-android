@@ -70,28 +70,40 @@ class DatabaseProvider {
     } else {
       id = await getUpdatedId(char);
     }
-    print('>>> $id');
     return id;
   }
 
   Future<int> updateCharacter(Character char) async {
     Database dbChar = await database;
-    //print(char.name);
-    //await db.rawQuery('SELECT COUNT(*) FROM');
-    //var res = await dbChar.update(characterTable, char.toMap(),
-    //  where: '$nameColumn = ?', whereArgs: [char.name]);
-    //
     var res = await dbChar.rawUpdate(
       'UPDATE $characterTable SET '
-      '$nameColumn = ? '
+      '$heightColumn = ?, '
+      '$massColumn = ?, '
+      '$hairColorColumn = ?, '
+      '$skinColorColumn = ?, '
+      '$eyeColorColumn = ?, '
+      '$birthYearColumn = ?, '
+      '$genderColumn = ?, '
+      '$homeworldReferenceColumn = ?, '
+      '$speciesReferenceColumn = ? '
       'WHERE $nameColumn = ?',
-      [char.name, char.name]
+      [
+        char.height,
+        char.mass,
+        char.hairColor,
+        char.skinColor,
+        char.eyeColor,
+        char.birthYear,
+        char.gender,
+        char.homeworldReference,
+        char.speciesReference,
+        char.name
+      ]
     );
     return res;
-    /* characterTable, char.toMap(), where: '$nameColumn = ?', whereArgs: [char.name] */
   }
 
-  Future<int> getUpdatedId (Character char) async {
+  Future<int> getUpdatedId(Character char) async {
     Database dbChar = await database;
     var res = await dbChar.rawQuery(
       'SELECT $idColumn FROM $characterTable '
@@ -103,6 +115,7 @@ class DatabaseProvider {
   Future<int> insertCharacter(Character char) async {
     Database dbChar = await database;
     int id = await dbChar.insert(characterTable, char.toMap());
+    print(char.isFavorite);
     return id;
   }
 
@@ -122,7 +135,17 @@ class DatabaseProvider {
 
   deleteAll() async {
     final dbChar = await database;
-    dbChar.rawDelete("DELETE FROM $characterTable");
+    dbChar.rawDelete('DELETE FROM $characterTable');
+  }
+
+  Future<int> getIsFavorite(Character tempChar) async {
+    final dbChar = await database;
+    var res = await dbChar.rawQuery(
+      'SELECT $isFavoriteColumn FROM $characterTable '
+      'WHERE $nameColumn = ?',
+      [tempChar.name]
+    );
+    return res[0][isFavoriteColumn];
   }
 
   updateIsFavorite(isFavorite, id) async {
