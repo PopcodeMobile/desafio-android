@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:starwiki/people.dart';
+import 'package:starwiki/fetcher.dart';
+
+//const String peopleURL = "https://swapi.co/api/people/20/";
 
 void main() => runApp(MyApp());
 
@@ -25,39 +29,75 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  //List<People> _peopleList = new List();
+  final _peopleList = List();
+  final _pageFetcher = PageFetcher();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  bool _isLoading;
+  bool _hasMore;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLoading = true;
+    _hasMore = true;
+    _getPeople();
   }
+
+  void _getPeople() {
+    _isLoading = true;
+
+    _pageFetcher.fetch().then((List<People> fetchedPage) {
+      if (fetchedPage.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          _hasMore = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+          _peopleList.addAll(fetchedPage);
+        });
+      }
+    });
+  } 
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+      body: ListView.builder(
+        itemCount: _hasMore ? _peopleList.length + 1 : _peopleList.length,
+        itemBuilder: (BuildContext context, int index) {
+          if (index >= _peopleList.length) {
+            if (!_isLoading) {
+              _getPeople();
+            }
+            return Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),                
+                height: 24,
+                width: 24,
+              ),
+            );
+          }
+          return Column(
+            children: <Widget>[
+              ListTile(
+                title: Text(_peopleList[index].nome),
+                subtitle: Text(
+                  "Altura: " + _peopleList[index].altura + "cm; " +
+                  "Genero: " + _peopleList[index].genero + "; " +
+                  "Peso: " + _peopleList[index].massa + "kg"),
+              ),
+              Divider(),
+            ],
+          );
+        }
+      )
     );
   }
 }
