@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:starwiki/people.dart';
+import 'package:starwiki/database_helper.dart';
 import 'package:http/http.dart' as http;
 
 class PageFetcher {
@@ -7,16 +7,16 @@ class PageFetcher {
   int _maxPages = 9;
 
   Future<List<People>> fetch() async {
-    List list = new List<People>();
-
-    if (_currentPage <= _maxPages) {
-      Page page = new Page();
+    List peopleList = new List<People>();
+    Page peoplePage = new Page();
+    
+    while (_currentPage <= _maxPages) {
       var res = await http.get("https://swapi.co/api/people/?page=$_currentPage");
-      page = Page.fromJson(jsonDecode(res.body));
-      list = page.results;
+      peoplePage = Page.fromJson(jsonDecode(res.body));
+      peopleList.addAll(peoplePage.results);
       _currentPage++;
     }
-    
-    return list;
+
+    return peopleList;
   }
 }
