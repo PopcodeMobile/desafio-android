@@ -72,6 +72,24 @@ class Page {
       .toList();
 }
 
+class Planet {
+  String name;
+
+  Planet({this.name});
+
+  Planet.fromJson(Map<String, dynamic> json)
+      : name = json['name'];
+}
+
+class Species {
+  String name;
+
+  Species({this.name});
+
+  Species.fromJson(Map<String, dynamic> json)
+      : name = json['name'];
+}
+
 class DatabaseHelper {
 
   static DatabaseHelper _databaseHelper;
@@ -121,9 +139,9 @@ class DatabaseHelper {
     }
   }
 
-  Future<List<People>> getPeopleList(int offset, int limit) async {
+  Future<List<People>> getPeopleList() async {
     Database db = await this.database;
-    List<Map<String, dynamic>> maps = await db.query('$personTable', offset: offset, limit: limit);
+    List<Map<String, dynamic>> maps = await db.query('$personTable');
     List<People> peopleList = new List<People>();
     People person;
     for (var row in maps) {
@@ -147,7 +165,6 @@ class DatabaseHelper {
     Database db = await this.database;
     Batch batch = db.batch();
     List<Map> result;
-    await db.execute("DELETE FROM $personTable");
     for (People person in people) {
       result = await db.query('$personTable', where: '$personName = ?', whereArgs: [person.name]);
       if (result.isEmpty) {

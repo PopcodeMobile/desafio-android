@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:starwiki/fetcher.dart';
 import 'package:starwiki/database_helper.dart';
+import 'package:starwiki/personDetailScreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,18 +34,19 @@ class _MyHomePageState extends State<MyHomePage> {
   DatabaseHelper databaseHelper = DatabaseHelper(); 
 
   bool _isLoading;
-  bool _hasMore;
+  //bool _hasMore;
   bool _dbUpdated = false;
-  int _peopleIndex = 0;
-  int _peoplePageResults = 10;
+  //int _peopleIndex = 0;
+  //int _peoplePageResults = 10;
   //int _maxPeople = 0;
   final _peopleList = List<People>();
+  var _people = List<People>();
 
   @override
   void initState() {
     super.initState();
     _isLoading = true;
-    _hasMore = true;
+    //_hasMore = true;
     _getPeople();
   }
 
@@ -57,24 +59,42 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
 
-    await databaseHelper.getPeopleList(_peopleIndex, _peoplePageResults).then((List<People> fetchedPeople) {
-      _peopleIndex += fetchedPeople.length;
+    await databaseHelper.getPeopleList().then((List<People> fetchedPeople) {
       if (fetchedPeople.isEmpty) {
         setState(() {
           _isLoading = false;
-          _hasMore = false;
         });
       } else {
         setState(() {
           _isLoading = false;
           _peopleList.addAll(fetchedPeople);
+          _people.addAll(_peopleList);
         });
       }
     });
   }
 
   void _filterSearch(String query) async {
-    
+    List<People> dummySearchList = List<People>();
+    dummySearchList.addAll(_peopleList);
+    if (query.isNotEmpty) {
+      List<People> dummyListData = List<People>();
+      dummySearchList.forEach((item) {
+        if (item.name.contains(query)) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        _people.clear();
+        _people.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {
+        _people.clear();
+        _people.addAll(_peopleList);
+      });
+    }
   }
 
   @override
@@ -82,12 +102,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     ListView resultsList() {
       return ListView.builder(
-        itemCount: _hasMore ? _peopleList.length + 1 : _peopleList.length,
+        itemCount: _isLoading ? 1 : _people.length,
         itemBuilder: (BuildContext context, int index) {
-          if (index >= _peopleList.length) {
-            if (!_isLoading) {
-              _getPeople();
-            }
+          if (_isLoading) {
             return Center(
               child: SizedBox(
                 child: CircularProgressIndicator(),                
@@ -96,15 +113,21 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             );
           }
-
           return Column(
             children: <Widget>[
               ListTile(
-                title: Text(_peopleList[index].name),
+                title: Text(_people[index].name),
                 subtitle: Text(
-                  "Altura: " + _peopleList[index].height + "cm; " +
-                  "Genero: " + _peopleList[index].gender + "; " +
-                  "Peso: " + _peopleList[index].mass + "kg"),
+                  "Height: " + _people[index].height + " cm; " +
+                  "Gender: " + _people[index].gender + "; " +
+                  "Mass: " + _people[index].mass + " kg"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PersonDetailScreen(person: _people[index],))
+                  );
+                },
               ),
             ],
           );
