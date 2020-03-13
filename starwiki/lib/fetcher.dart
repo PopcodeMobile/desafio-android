@@ -13,9 +13,6 @@ class PageFetcher {
     while (_currentPage <= _maxPages) {
       var res = await http.get("https://swapi.co/api/people/?page=$_currentPage");
       peoplePage = Page.fromJson(jsonDecode(res.body));
-      //for (People person in peoplePage.results) {
-
-      //}
       peopleList.addAll(peoplePage.results);
       _currentPage++;
     }
@@ -37,5 +34,26 @@ class SpeciesFetcher {
     var res = await http.get(url);
     Species species = Species.fromJson(jsonDecode(res.body));
     return species;
+  }
+}
+
+class FavoriteHandler {
+  final String _baseURL = "http://private-782d3-starwarsfavorites.apiary-mock.com/favorite/";
+
+  Future<Map<String, String>> createFavorite(People person, String id) async {
+    var res = await http.post(_baseURL + id, body: person.toMap());    
+    var resBody = jsonDecode(res.body);
+    Map<String, String> result;
+    
+    if (res.statusCode == 201) {
+      result = {"status": resBody["status"],
+                "message": resBody["message"]};
+    } else if (res.statusCode == 400) {
+      result = {"status": resBody["error"],
+                "message": resBody["error_message"]};
+      //Save request for later
+    }
+
+    return result;
   }
 }

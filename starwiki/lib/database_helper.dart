@@ -15,6 +15,8 @@ final String personBirthYear = 'birth_year';
 final String personGender = 'gender';
 final String personPlanet = 'homeworld';
 final String personSpecies = 'species';
+final String personIsFav = 'isFav';
+final String personFavLater = 'favLater';
 
 class People{
   String name;
@@ -27,11 +29,11 @@ class People{
   String gender;
   String planet;
   String species;
+  String isFav;
+  String favLater;
 
   People({this.name, this.height, this.mass, this.hairColor, this.skinColor,
-  this.eyeColor, this.birthYear, this.gender, this.planet, this.species});
-
-  
+  this.eyeColor, this.birthYear, this.gender, this.planet, this.species, this.isFav, this.favLater});
 
   People.fromMap(Map<String, dynamic> map)
         : name = map[personName],
@@ -45,7 +47,7 @@ class People{
           planet = map[personPlanet],
           species = map[personSpecies].isEmpty ? "" : map[personSpecies][0];
 
-  Map<String, dynamic> toMap() {
+  Map<String, String> toMap() {
     return {
       personName : name,
       personHeight : height,
@@ -57,6 +59,7 @@ class People{
       personGender : gender,
       personPlanet : planet,
       personSpecies : species,
+      personIsFav : isFav,
     };
   }
 }
@@ -95,7 +98,7 @@ class DatabaseHelper {
   static DatabaseHelper _databaseHelper;
   static Database _database;
   static final _databaseName = "swWiki.db";
-  static final _databaseVersion = 2;
+  static final _databaseVersion = 4;
 
   DatabaseHelper._createInstance();
 
@@ -114,28 +117,25 @@ class DatabaseHelper {
   }
 
   Future<Database> initializeDatabase() async {
-    Stopwatch stopwatch = new Stopwatch();
-    stopwatch.start();
     //Directory directory = await getApplicationDocumentsDirectory();
     String path = join(await getDatabasesPath(), _databaseName);
     var swWikiDatabase = await openDatabase(path, version: _databaseVersion, onCreate: _createDb, onUpgrade: _upgradeDb);
-    stopwatch.stop();
-    print("Database initialized: " + stopwatch.elapsed.toString());
     return swWikiDatabase;
   }
 
   void _createDb(Database db, int newVersion) async {
     await db.execute('CREATE TABLE $personTable($personName TEXT PRIMARY KEY, '+
       '$personHeight TEXT, $personMass TEXT, $personHairColor TEXT, $personSkinColor TEXT, $personEyeColor TEXT, '+
-      '$personBirthYear TEXT, $personGender TEXT, $personPlanet TEXT, $personSpecies TEXT)');
+      '$personBirthYear TEXT, $personGender TEXT, $personPlanet TEXT, $personSpecies TEXT, $personIsFav TEXT, $personFavLater TEXT)');
   }
 
   void _upgradeDb(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < newVersion){
+      await db.execute("DROP TABLE favoritePersonTable");
       await db.execute('DROP TABLE $personTable');
       await db.execute('CREATE TABLE $personTable($personName TEXT PRIMARY KEY, '+
       '$personHeight TEXT, $personMass TEXT, $personHairColor TEXT, $personSkinColor TEXT, $personEyeColor TEXT, '+
-      '$personBirthYear TEXT, $personGender TEXT, $personPlanet TEXT, $personSpecies TEXT)');
+      '$personBirthYear TEXT, $personGender TEXT, $personPlanet TEXT, $personSpecies TEXT, $personIsFav TEXT, $personFavLater TEXT)');
     }
   }
 
@@ -155,7 +155,9 @@ class DatabaseHelper {
         birthYear: row['$personBirthYear'],
         gender: row['$personGender'],
         planet: row['$personPlanet'],
-        species: row['$personSpecies']);
+        species: row['$personSpecies'],
+        isFav: row['$personIsFav'],
+        favLater: row['$personFavLater']);
       peopleList.add(person);
     }
     return peopleList;    
@@ -168,12 +170,60 @@ class DatabaseHelper {
     for (People person in people) {
       result = await db.query('$personTable', where: '$personName = ?', whereArgs: [person.name]);
       if (result.isEmpty) {
-        batch.insert("$personTable", person.toMap());
+        batch.rawInsert("INSERT INTO $personTable($personName,$personHeight,$personMass,"+
+        "$personHairColor,$personSkinColor,$personEyeColor,$personBirthYear,$personGender,"+
+        "$personPlanet,$personSpecies,$personIsFav,$personFavLater) "+
+        "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [person.name, person.height, person.mass, person.hairColor, person.skinColor, person.eyeColor,
+        person.birthYear, person.gender, person.planet, person.species, 'false', 'false']);
       } else {
-        batch.update('$personTable', person.toMap(), where: '$personName = ?', whereArgs: [person.name]);
+        batch.rawUpdate('''
+        UPDATE $personTable
+        SET $personHeight = ?, $personMass = ?, $personHairColor = ?, $personSkinColor = ?, $personEyeColor = ?,
+        $personBirthYear = ?, $personGender = ?, $personPlanet = ?, $personSpecies = ?
+        WHERE $personName = ?        
+        ''',
+        [person.height, person.mass, person.hairColor, person.skinColor, person.eyeColor,
+        person.birthYear, person.gender, person.planet, person.species, person.name]);
       }
     }
-
     await batch.commit();
   }
+
+  Future<void> addFavoritePeople(People person) async {
+    Database db = await this.database;
+    await db.update('$personTable', {'$personIsFav': 'true', '$personFavLater': 'false'},
+    where: '$personName = ?', whereArgs: [person.name]);
+  }
+
+  Future<void> removeFavoritePeople(People person) async {
+    Database db = await this.database;
+    await db.update("$personTable", {'$personIsFav': 'false'},
+    where: "$personName = ?", whereArgs: [person.name]);
+  }
+
+  Future<List<People>> getFavoriteList() async {
+    Database db = await this.database;
+    List<Map<String, dynamic>> maps = await db.query('$personTable', where: '$personIsFav = ?', whereArgs: ['true']);
+    List<People> peopleList = new List<People>();
+    People person;
+    for (var row in maps) {
+      person = new People(
+        name: row['$personName'],
+        height: row['$personHeight'],
+        mass: row['$personMass'],
+        hairColor: row['$personHairColor'],
+        skinColor: row['$personSkinColor'],
+        eyeColor: row['$personEyeColor'],
+        birthYear: row['$personBirthYear'],
+        gender: row['$personGender'],
+        planet: row['$personPlanet'],
+        species: row['$personSpecies'],
+        isFav: row['$personIsFav'],
+        favLater: row['$personFavLater'],
+      );
+      peopleList.add(person);
+    }
+    return peopleList;
+  } 
 }
