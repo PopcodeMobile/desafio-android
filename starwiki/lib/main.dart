@@ -53,23 +53,31 @@ class _MyHomePageState extends State<MyHomePage> {
   void _getPeople() async {
     _isLoading = true;
     List<People> databaseList = List<People>();
+    var result;
 
     try {
-      final result = await InternetAddress.lookup('example.com').timeout(Duration(seconds: 30));
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        await _pageFetcher.fetch().then((List<People> fetchedPeople) async {
-          await databaseHelper.createOrUpdatePeople(fetchedPeople);
-        });
-      }
+      result = await InternetAddress.lookup('example.com').timeout(Duration(seconds: 15));
     } on SocketException catch (_) {
       print("SocketException");
+    }
+
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      await _pageFetcher.fetch().then((List<People> fetchedPeople) async {
+        await databaseHelper.createOrUpdatePeople(fetchedPeople);
+      });
     }
 
     await databaseHelper.getPeopleList().then((List<People> fetchedPeople) {
       databaseList.addAll(fetchedPeople);
     });
 
-    // add favorites as needed
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      for (var i = 0; i < databaseList.length; i++) {
+        if (databaseList[i].favLater != 'false') {
+          databaseList[i] = await _addFavoriteOnStart(databaseList[i], databaseList[i].favLater);
+        }
+      }
+    }
 
     setState(() {
       _peopleDatabaseList.addAll(databaseList);
@@ -78,33 +86,54 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<People> _addFavoriteOnStart(People person, String id) async {
+    await _favoriteHandler.createFavorite(person, id).then((Map<String, String> response) async {
+      if (response["status"] == "success") {
+        await databaseHelper.addFavoritePeople(person);
+        person.isFav = 'true';
+        person.favLater = 'false';
+      }
+    });
+    return person;
+  }
+
   Future<Map<String, String>> _addFavorite(People person, String id) async {
     Map<String, String> message;
-    int personDatabaseIndex, personListIndex;
     await _favoriteHandler.createFavorite(person, id).then((Map<String, String> response) async {
       message = response;
       if (response["status"] == "success") {
         await databaseHelper.addFavoritePeople(person);
-        personDatabaseIndex = _peopleDatabaseList.indexOf(person);
-        personListIndex = _peopleList.indexOf(person);
-        setState(() {
-          _peopleDatabaseList[personDatabaseIndex].isFav = 'true';
-          _peopleList[personListIndex].isFav = 'true';
-        });
-      } // else { treat error; }
+        _updateFavorite(person, 'true');
+      } else {
+        await databaseHelper.saveFavoriteForLater(person, id);
+        _saveFavoriteForLater(person, id);
+      }
     });
     return message;
   }
 
   void _removeFavorite(People person) async {
     await databaseHelper.removeFavoritePeople(person);
+    _updateFavorite(person, 'false');
+  }
+
+  void _updateFavorite(People person, String isFav) async {
+    int personDatabaseIndex, personListIndex;
+    personDatabaseIndex = _peopleDatabaseList.indexOf(person);
+    personListIndex = _peopleList.indexOf(person);
     setState(() {
-      _peopleDatabaseList.map((item) {
-        if (item.name == person.name) item.isFav = 'false';
-      });
-      _peopleList.map((item) {
-        if (item.name == person.name) item.isFav = 'false';
-      });
+      _peopleDatabaseList[personDatabaseIndex].isFav = isFav;
+      _peopleList[personListIndex].isFav = isFav;
+    });
+  }
+
+  void _saveFavoriteForLater(People person, String id) async {
+    int personDatabaseIndex, personListIndex;
+    personDatabaseIndex = _peopleDatabaseList.indexOf(person);
+    personListIndex = _peopleList.indexOf(person);
+    setState(() {
+      _peopleDatabaseList[personDatabaseIndex].favLater = id;
+      _peopleList[personListIndex].favLater = id;
     });
   }
 
@@ -284,7 +313,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PersonDetailScreen(person: person,))
+                      builder: (context) => PersonDetailScreen(
+                        person: person,
+                        onFavorite: (String isFav) {
+                          _updateFavorite(person, isFav);
+                        },
+                        onFavoriteFail: (String id) {
+                          _saveFavoriteForLater(person, id);
+                        },
+                      )
+                    )
                   );
                 },
                 trailing: IconButton(
@@ -304,3 +342,10 @@ class _MyHomePageState extends State<MyHomePage> {
               );
     }
 }
+
+/*
+
+1. Implement lazy loading
+2. Optional aesthetic changes
+
+*/

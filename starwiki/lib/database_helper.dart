@@ -1,7 +1,5 @@
-//import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-//import 'dart:io';
 
 
 final String personTable = 'personTable';
@@ -200,6 +198,12 @@ class DatabaseHelper {
     Database db = await this.database;
     await db.update("$personTable", {'$personIsFav': 'false'},
     where: "$personName = ?", whereArgs: [person.name]);
+  }
+
+  Future<void> saveFavoriteForLater(People person, String id) async {
+    Database db = await this.database;
+    await db.update('$personTable', {'$personFavLater': id},
+    where: '$personName = ?', whereArgs: [person.name]);
   }
 
   Future<List<People>> getFavoriteList() async {
