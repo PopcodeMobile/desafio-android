@@ -344,10 +344,3 @@ class _MyHomePageState extends State<MyHomePage> {
               );
     }
 }
-
-/*
-
-1. Implement lazy loading
-2. Optional aesthetic changes
-
-*/

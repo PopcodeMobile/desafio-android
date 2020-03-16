@@ -65,8 +65,6 @@ class FavoriteHandler {
     Response res;
     if (_useHeader) {      
       _useHeader = false;
-      //headers = {"Prefer": "status=400"};
-      //res = await http.post(_baseURL + id, body: person.toMap(), headers: headers);
       try {
         res = await dio.post(
           _baseURL + id,
@@ -95,16 +93,6 @@ class FavoriteHandler {
       }
     }
 
-    /*resBody = jsonDecode(res.body);
-    if (res.statusCode == 201) {
-      result = {"status": resBody["status"],
-                "message": resBody["message"]};
-    } else if (res.statusCode == 400) {
-      result = {"status": resBody["error"],
-                "message": resBody["error_message"]};
-    }*/
-
-    //
     if (res.statusCode == 201) {
       result = {"status": res.data["status"],
                 "message": res.data["message"]};
