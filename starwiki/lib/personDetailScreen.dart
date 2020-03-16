@@ -39,12 +39,25 @@ class _PersonDetailScreenState extends State<PersonDetailScreen> {
     String newPlanetName;
     String newSpeciesName;
 
-    await _planetFetcher.fetch(widget.person.planet).then((Planet planet) {
+    await _planetFetcher.fetch(widget.person.planet)
+      .timeout(
+        Duration(seconds: 3), 
+        onTimeout: () {
+          newPlanetName = "Unknown";
+          return;
+        }
+      ).then((Planet planet) {
         newPlanetName = planet.name;
     });
 
     if (widget.person.species.contains("species")) {
-      await _speciesFetcher.fetch(widget.person.species).then((Species species) {
+      await _speciesFetcher.fetch(widget.person.species)
+        .timeout(
+          Duration(seconds: 3),
+          onTimeout: () {
+            newSpeciesName = "Unknown";
+            return;
+          }).then((Species species) {
         newSpeciesName = species.name;
       });
     } else {
@@ -65,8 +78,6 @@ class _PersonDetailScreenState extends State<PersonDetailScreen> {
       if (response["status"] == "success") {
         await databaseHelper.addFavoritePeople(person);
         widget.onFavorite('true');
-      } else if (response["status"] == "connection error") {
-        //do nothing
       } else {
         await databaseHelper.saveFavoriteForLater(person, id);
         widget.onFavoriteFail(id);

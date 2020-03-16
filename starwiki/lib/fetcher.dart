@@ -29,7 +29,7 @@ class PlanetFetcher {
   Dio dio = new Dio();
 
   Future<Planet> fetch(url) async {
-    Planet planet;
+    Planet planet = new Planet();
     try {
       Response res = await dio.get(url);
       planet = Planet.fromJson(res.data);
@@ -44,7 +44,7 @@ class SpeciesFetcher {
   Dio dio = new Dio();
 
   Future<Species> fetch(url) async {
-    Species species;
+    Species species = new Species();
     try {
       Response res = await dio.get(url);
       species = Species.fromJson(res.data);      

@@ -104,8 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
       if (response["status"] == "success") {
         await databaseHelper.addFavoritePeople(person);
         _updateFavorite(person, 'true');
-      } else if (response["status"] == "connection error") {
-        //do nothing
       } else {
         await databaseHelper.saveFavoriteForLater(person, id);
         _saveFavoriteForLater(person, id);
