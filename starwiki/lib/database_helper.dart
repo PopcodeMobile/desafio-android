@@ -1,7 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-
 final String personTable = 'personTable';
 final String personName = 'name';
 final String personHeight = 'height';
@@ -115,7 +114,6 @@ class DatabaseHelper {
   }
 
   Future<Database> initializeDatabase() async {
-    //Directory directory = await getApplicationDocumentsDirectory();
     String path = join(await getDatabasesPath(), _databaseName);
     var swWikiDatabase = await openDatabase(path, version: _databaseVersion, onCreate: _createDb, onUpgrade: _upgradeDb);
     return swWikiDatabase;
@@ -129,7 +127,6 @@ class DatabaseHelper {
 
   void _upgradeDb(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < newVersion){
-      await db.execute("DROP TABLE favoritePersonTable");
       await db.execute('DROP TABLE $personTable');
       await db.execute('CREATE TABLE $personTable($personName TEXT PRIMARY KEY, '+
       '$personHeight TEXT, $personMass TEXT, $personHairColor TEXT, $personSkinColor TEXT, $personEyeColor TEXT, '+

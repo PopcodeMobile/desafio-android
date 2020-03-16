@@ -37,7 +37,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _isLoading;
   bool _showingFavorites;
-  //String _searchQuery;
   final _peopleDatabaseList = List<People>();
   final _peopleList = List<People>();
 
@@ -46,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _isLoading = true;
     _showingFavorites = false;
-    //_searchQuery = '';
     _getPeople();
   }
 
