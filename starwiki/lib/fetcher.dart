@@ -29,13 +29,14 @@ class PlanetFetcher {
   Dio dio = new Dio();
 
   Future<Planet> fetch(url) async {
+    Planet planet;
     try {
       Response res = await dio.get(url);
-      Planet planet = Planet.fromJson(res.data);
-      return planet;
+      planet = Planet.fromJson(res.data);
     } catch (e) {
-      print(e);
+      planet.name = "Unknown";
     }
+    return planet;
   }
 }
 
@@ -43,13 +44,14 @@ class SpeciesFetcher {
   Dio dio = new Dio();
 
   Future<Species> fetch(url) async {
+    Species species;
     try {
       Response res = await dio.get(url);
-      Species species = Species.fromJson(res.data);
-      return species;
+      species = Species.fromJson(res.data);      
     } catch (e) {
-      print(e);
+      species.name = "Unknown";
     }
+    return species;
   }
 }
 
@@ -65,21 +67,32 @@ class FavoriteHandler {
       _useHeader = false;
       //headers = {"Prefer": "status=400"};
       //res = await http.post(_baseURL + id, body: person.toMap(), headers: headers);
-      res = await dio.post(
-        _baseURL + id,
-        data: person.toMap(),
-        options: Options(
-          headers: {
-            "Prefer": "status=400"
-          }
-        )
-      );
+      try {
+        res = await dio.post(
+          _baseURL + id,
+          data: person.toMap(),
+          options: Options(
+            headers: {
+              "Prefer": "status=400"
+            },
+            validateStatus: (status) { return status < 500;}
+          )
+        );
+      } catch (_) {
+        return {"status": "connection error",
+                "message": "I felt a great disturbance in the Force."};
+      }
     } else {
       _useHeader = true;
-      res = await dio.post(
-        _baseURL + id,
-        data: person.toMap(),
-      );
+      try {
+        res = await dio.post(
+          _baseURL + id,
+          data: person.toMap(),
+        );
+      } catch (_) {
+        return {"status": "connection error",
+                "message": "I felt a great disturbance in the Force."};
+      }
     }
 
     /*resBody = jsonDecode(res.body);

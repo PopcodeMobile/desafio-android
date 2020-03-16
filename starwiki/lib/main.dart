@@ -56,12 +56,12 @@ class _MyHomePageState extends State<MyHomePage> {
     var result;
 
     try {
-      result = await InternetAddress.lookup('example.com').timeout(Duration(seconds: 15));
+      result = await InternetAddress.lookup('example.com').timeout(Duration(seconds: 10));
     } on SocketException catch (_) {
       print("SocketException");
     }
 
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+    if (result != null && result[0].rawAddress.isNotEmpty) {
       await _pageFetcher.fetch().then((List<People> fetchedPeople) async {
         await databaseHelper.createOrUpdatePeople(fetchedPeople);
       });
@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
       databaseList.addAll(fetchedPeople);
     });
 
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+    if (result != null && result[0].rawAddress.isNotEmpty) {
       for (var i = 0; i < databaseList.length; i++) {
         if (databaseList[i].favLater != 'false') {
           databaseList[i] = await _addFavoriteOnStart(databaseList[i], databaseList[i].favLater);
@@ -104,6 +104,8 @@ class _MyHomePageState extends State<MyHomePage> {
       if (response["status"] == "success") {
         await databaseHelper.addFavoritePeople(person);
         _updateFavorite(person, 'true');
+      } else if (response["status"] == "connection error") {
+        //do nothing
       } else {
         await databaseHelper.saveFavoriteForLater(person, id);
         _saveFavoriteForLater(person, id);
@@ -263,7 +265,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 controller: editingController,
                 decoration: InputDecoration(
                   labelText: "Search",
-                  hintText: "Search",
+                  hintText: "e.g. \"Obi\", \"vader\", \"kywalker\"",
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(25.0)))
                 ),

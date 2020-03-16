@@ -65,6 +65,8 @@ class _PersonDetailScreenState extends State<PersonDetailScreen> {
       if (response["status"] == "success") {
         await databaseHelper.addFavoritePeople(person);
         widget.onFavorite('true');
+      } else if (response["status"] == "connection error") {
+        //do nothing
       } else {
         await databaseHelper.saveFavoriteForLater(person, id);
         widget.onFavoriteFail(id);
