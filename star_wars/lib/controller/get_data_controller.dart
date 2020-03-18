@@ -14,18 +14,23 @@ class GetDataController implements BlocBase {
 
   Future<void> getData() async {
     List<Person> people = List<Person>();
-    for (int id = 1; id <= 3; id++) { // Por enquanto, pegar somente os três primeiros para teste
+    for (int id = 1; id <= 1; id++) { // Por enquanto, pegar somente 1 para teste
       http.Response response =
           await http.get("https://swapi.co/api/people/$id/");
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
         people.add(Person.fromJson(decoded, id));
-        print("---------------------------------------------");
         print(Person.fromJson(decoded,id).id);
         print(Person.fromJson(decoded,id).name);
         print(Person.fromJson(decoded,id).height);
         print(Person.fromJson(decoded,id).mass);
+        print(Person.fromJson(decoded,id).hairColor);
+        print(Person.fromJson(decoded,id).skinColor);
+        print(Person.fromJson(decoded,id).eyeColor);
+        print(Person.fromJson(decoded,id).birthYear);
         print(Person.fromJson(decoded,id).gender);
+        print(Person.fromJson(decoded,id).nomePlaneta);
+        print(Person.fromJson(decoded,id).nomeEspecie);
         inData.add(people);
       }
     }
