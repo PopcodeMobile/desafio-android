@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:starwars/model/person.dart';
+import 'package:starwars/model/person_model.dart';
+import 'package:starwars/view/person_view.dart';
 
 class PersonTile extends StatelessWidget {
   final Person person;
@@ -15,6 +16,9 @@ class PersonTile extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: GestureDetector(
         onTap: () {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => PersonView(person)
+          ));
         },
         child: Card(
           elevation: 10,
