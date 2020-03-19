@@ -12,21 +12,33 @@ class PersonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 5),
       child: GestureDetector(
         onTap: () {},
         child: Card(
           elevation: 10,
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-            child: Column(
-                children: <Widget>[
-                  Text("Nome: ${person.name}"),
-                  Text("Altura: ${person.height}"),
-                  Text("Gênero: ${person.gender}"),
-                  Text("Peso: ${person.mass}")
-                ]
-            ),
+            padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+            child: Container(
+                child: Row(
+              children: <Widget>[
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Nome: ${person.name}"),
+                      Text("Altura: ${person.height}"),
+                      Text("Gênero: ${person.gender}"),
+                      Text("Peso: ${person.mass}")
+                    ]),
+                Spacer(),
+                IconButton(
+                  icon: Icon(
+                    Icons.star_border,
+                  ),
+                  onPressed: () {},
+                )
+              ],
+            )),
           ),
         ),
       ),
