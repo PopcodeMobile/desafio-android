@@ -10,7 +10,7 @@ class Person {
   final String birthYear;
   final String gender;
   final String nomePlaneta;
-  final List<dynamic> nomeEspecie;
+  final String nomeEspecie;
 
   Person({this.id, this.name, this.height, this.mass, this.hairColor, this.skinColor, this.eyeColor, this.birthYear, this.gender, this.nomePlaneta, this.nomeEspecie});
 

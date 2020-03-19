@@ -14,7 +14,8 @@ class PersonTile extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+        },
         child: Card(
           elevation: 10,
           child: Padding(
