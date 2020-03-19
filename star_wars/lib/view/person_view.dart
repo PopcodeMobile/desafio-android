@@ -26,6 +26,11 @@ class _PersonViewState extends State<PersonView> {
       appBar: AppBar(
         title: Text("Personagem"),
         backgroundColor: Colors.black38,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.star_border), onPressed: (){
+
+          })
+        ],
       ),body: Padding(
       padding: EdgeInsets.only(left: 10.0),
       child: ListView(

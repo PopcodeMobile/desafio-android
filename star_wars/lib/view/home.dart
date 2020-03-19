@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:starwars/controller/get_data_controller.dart';
+import 'package:starwars/delegate/search_person.dart';
 import 'package:starwars/view/person_tile.dart';
 
 class Home extends StatelessWidget {
@@ -22,7 +23,9 @@ class Home extends StatelessWidget {
               Icons.search,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showSearch(context: context, delegate: SearchPerson());
+            },
           )
         ],
       ),

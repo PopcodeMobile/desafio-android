@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:starwars/controller/aux_get_data.dart';
+import 'package:starwars/helper/aux_get_data.dart';
 import 'package:starwars/model/person_model.dart';
 import 'package:http/http.dart' as http;
 
