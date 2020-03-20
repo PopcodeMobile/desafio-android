@@ -45,21 +45,38 @@ class Person {
     this.sent,
     this.favorite});
 
-  factory Person.fromJson(Map<String, dynamic> json, int identifier) {
-    return Person(
-        id: identifier.toString(),
-        name: json[nameString],
-        mass: json[massString],
-        height: json[heightString],
-        hairColor: json[hairString],
-        skinColor: json[skinString],
-        eyeColor: json[eyeString],
-        birthYear: json[birthString],
-        nomePlaneta: json[worldString],
-        nomeEspecie: json[specieString],
-        gender: json[genderString],
-        sent: json[sentString],
-        favorite: json[favString]);
+  factory Person.fromJson(Map<String, dynamic> json,{int identifier}) {
+    if(identifier == null) {
+      return Person(
+          id: json[idString],
+          name: json[nameString],
+          mass: json[massString],
+          height: json[heightString],
+          hairColor: json[hairString],
+          skinColor: json[skinString],
+          eyeColor: json[eyeString],
+          birthYear: json[birthString],
+          nomePlaneta: json[worldString],
+          nomeEspecie: json[specieString],
+          gender: json[genderString],
+          sent: json[sentString],
+          favorite: json[favString]);
+    }else{
+      return Person(
+          id: identifier.toString(),
+          name: json[nameString],
+          mass: json[massString],
+          height: json[heightString],
+          hairColor: json[hairString],
+          skinColor: json[skinString],
+          eyeColor: json[eyeString],
+          birthYear: json[birthString],
+          nomePlaneta: json[worldString],
+          nomeEspecie: json[specieString],
+          gender: json[genderString],
+          sent: json[sentString],
+          favorite: json[favString]);
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -138,7 +155,7 @@ class PersonDatabase {
         where: "$idString = ?",
         whereArgs: [id]);
     if (maps.length > 0) {
-      return Person.fromJson(maps.first, int.parse(id));
+      return Person.fromJson(maps.first);
     } else {
       return null;
     }
@@ -159,7 +176,7 @@ class PersonDatabase {
     List<Person> listPerson = List();
     for(Map m in listMap){
       count++;
-      listPerson.add(Person.fromJson(m,count));
+      listPerson.add(Person.fromJson(m));
     }
     return listPerson;
   }
