@@ -9,7 +9,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PersonDataController getData =
-        BlocProvider.of<PersonDataController>(context);
+    BlocProvider.of<PersonDataController>(context);
 
     getData.getData();
 

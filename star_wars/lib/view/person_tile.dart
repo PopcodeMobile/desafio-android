@@ -1,7 +1,10 @@
+
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:starwars/controller/person_data_controller.dart';
 import 'package:starwars/model/person_model.dart';
 import 'package:starwars/view/person_view.dart';
 
@@ -10,8 +13,12 @@ class PersonTile extends StatelessWidget {
 
   PersonTile(this.person);
 
+
   @override
   Widget build(BuildContext context) {
+    final PersonDataController getData =
+    BlocProvider.of<PersonDataController>(context);
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: GestureDetector(
@@ -38,9 +45,11 @@ class PersonTile extends StatelessWidget {
                 Spacer(),
                 IconButton(
                   icon: Icon(
-                    Icons.star_border,
+                    person.favorite == "1" ? Icons.star:Icons.star_border,
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await getData.updateList(person.id);
+                  },
                 )
               ],
             )),

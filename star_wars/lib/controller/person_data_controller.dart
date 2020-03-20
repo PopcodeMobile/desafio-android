@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:starwars/helper/aux_test_connexion.dart';
+import 'package:starwars/model/favorite_model.dart';
 import 'package:starwars/model/person_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,7 +28,7 @@ class PersonDataController implements BlocBase {
         if (response.statusCode == 200) {
           var decoded = await _getPersonModified(response);
           Person character = Person.fromJson(decoded, identifier: id);
-          await datab.savePerson(character);
+          character = await datab.savePerson(character);
           people.add(character);
           inData.add(people);
         }
@@ -38,6 +39,12 @@ class PersonDataController implements BlocBase {
     }
   }
 
+  Future<void> updateList(String id) async {
+    await FavoriteModel().setFav(id);
+    List<Person> people = await datab.getAllPersons();
+    inData.add(people);
+  }
+
   _getPersonModified(http.Response resp) async {
     var decoded = json.decode(resp.body); //Para atribuir nome ao planeta natal
     http.Response name = await http.get(decoded["homeworld"]);
@@ -46,7 +53,6 @@ class PersonDataController implements BlocBase {
 
     List<dynamic> species = decoded["species"];
 
-    decoded["species"] = "";
     decoded["species"] = "";
     for (int index = 0; index < species.length; index++) {
       // Para atribuir nome das especies

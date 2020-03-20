@@ -128,9 +128,12 @@ class PersonDatabase {
   }
 
   Future<Person> savePerson(Person person) async {
-    if(await getPerson(person.id) == null){
+    Person per = await getPerson(person.id);
+    if(per == null){
       Database dbPerson = await db;
       await dbPerson.insert(personTable, person.toJson());
+    }else{
+      return per;
     }
     return person;
   }
@@ -150,7 +153,8 @@ class PersonDatabase {
           worldString,
           specieString,
           genderString,
-          sentString
+          sentString,
+          favString
         ],
         where: "$idString = ?",
         whereArgs: [id]);
