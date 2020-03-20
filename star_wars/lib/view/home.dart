@@ -10,6 +10,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final GetDataController getData =
         BlocProvider.of<GetDataController>(context);
+
     getData.getData();
 
     return Scaffold(

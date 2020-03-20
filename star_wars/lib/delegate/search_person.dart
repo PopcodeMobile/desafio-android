@@ -31,7 +31,6 @@ class SearchPerson extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
     return Container();
   }
 }
