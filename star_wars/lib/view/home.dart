@@ -1,15 +1,15 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:starwars/controller/get_data_controller.dart';
+import 'package:starwars/controller/person_data_controller.dart';
 import 'package:starwars/delegate/search_person.dart';
 import 'package:starwars/view/person_tile.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final GetDataController getData =
-        BlocProvider.of<GetDataController>(context);
+    final PersonDataController getData =
+        BlocProvider.of<PersonDataController>(context);
 
     getData.getData();
 
@@ -31,7 +31,7 @@ class Home extends StatelessWidget {
         ],
       ),
       body: StreamBuilder(
-        stream: BlocProvider.of<GetDataController>(context).outData,
+        stream: BlocProvider.of<PersonDataController>(context).outData,
         builder: (context, snapshot) {
           if (snapshot.hasData)
             return ListView.builder(

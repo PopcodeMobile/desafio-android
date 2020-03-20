@@ -6,7 +6,7 @@ import 'package:starwars/helper/aux_test_connexion.dart';
 import 'package:starwars/model/person_model.dart';
 import 'package:http/http.dart' as http;
 
-class GetDataController implements BlocBase {
+class PersonDataController implements BlocBase {
   BehaviorSubject<List<Person>> _dataController =
       BehaviorSubject<List<Person>>();
 
@@ -26,7 +26,7 @@ class GetDataController implements BlocBase {
             await http.get("https://swapi.co/api/people/$id/");
         if (response.statusCode == 200) {
           var decoded = await _getPersonModified(response);
-          Person character = Person.fromJson(decoded,identifier:id);
+          Person character = Person.fromJson(decoded, identifier: id);
           await datab.savePerson(character);
           people.add(character);
           inData.add(people);
