@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:starwars/controller/person_data_controller.dart';
 import 'package:starwars/delegate/search_person.dart';
+import 'package:starwars/view/favorites_view.dart';
 import 'package:starwars/view/person_tile.dart';
 
 class Home extends StatelessWidget {
@@ -19,6 +20,17 @@ class Home extends StatelessWidget {
         backgroundColor: Colors.black38,
         centerTitle: true,
         actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.star,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => Favorites()
+              ));
+            },
+          ),
           IconButton(
             icon: Icon(
               Icons.search,

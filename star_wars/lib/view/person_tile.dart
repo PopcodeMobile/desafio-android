@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:starwars/controller/favorite_controller.dart';
 import 'package:starwars/controller/person_data_controller.dart';
 import 'package:starwars/model/person_model.dart';
 import 'package:starwars/view/person_view.dart';

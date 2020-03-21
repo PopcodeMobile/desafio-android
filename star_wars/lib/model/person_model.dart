@@ -185,6 +185,16 @@ class PersonDatabase {
     return listPerson;
   }
 
+  Future<List> favoritesPersons() async {
+    Database dbPerson = await db;
+    List listMap = await dbPerson.rawQuery("SELECT * FROM $personTable WHERE favorito = 1");
+    List<Person> listPerson = List();
+    for(Map m in listMap){
+      listPerson.add(Person.fromJson(m));
+    }
+    return listPerson;
+  }
+
   Future close() async {
     Database dbPerson = await db;
     dbPerson.close();
