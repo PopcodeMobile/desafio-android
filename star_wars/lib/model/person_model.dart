@@ -195,6 +195,16 @@ class PersonDatabase {
     return listPerson;
   }
 
+  Future<List> searchPersons(String name) async {
+    Database dbPerson = await db;
+    List listMap = await dbPerson.rawQuery("SELECT * FROM $personTable WHERE name LIKE '$name%'");
+    List<Person> listPerson = List();
+    for(Map m in listMap){
+      listPerson.add(Person.fromJson(m));
+    }
+    return listPerson;
+  }
+
   Future close() async {
     Database dbPerson = await db;
     dbPerson.close();

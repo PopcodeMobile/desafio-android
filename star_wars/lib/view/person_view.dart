@@ -32,24 +32,34 @@ class _PersonViewState extends State<PersonView> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
-              appBar: AppBar(
-                title: Text("Personagem"),
-                backgroundColor: Colors.black38,
-                actions: <Widget>[
-                  IconButton(
-                      icon: Icon(
-                        _fav == "1" ? Icons.star : Icons.star_border,
-                      ),
-                      onPressed: () async {
-                        await getData.updateList(_person.id);
-                        if (_fav == "1") {
-                          _fav = "0";
-                        } else {
-                          _fav = "1";
-                        }
-                      })
-                ],
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(56),
+                child: Builder(
+                  builder: (context) =>  AppBar(
+                    title: Text("Personagem"),
+                    backgroundColor: Colors.black38,
+                    actions: <Widget>[
+                      IconButton(
+                          icon: Icon(
+                            _fav == "1" ? Icons.star : Icons.star_border,
+                          ),
+                          onPressed: () async {
+                            final snackbar = SnackBar(
+                              content: Text(await getData.updateList(_person.id),textAlign: TextAlign.center),
+                              duration: Duration(seconds: 3),
+                            );
+                            Scaffold.of(context).showSnackBar(snackbar);
+                            if (_fav == "1") {
+                              _fav = "0";
+                            } else {
+                              _fav = "1";
+                            }
+                          })
+                    ],
+                  ),
+                ),
               ),
+
               body: Padding(
                 padding: EdgeInsets.only(left: 10.0),
                 child: ListView(

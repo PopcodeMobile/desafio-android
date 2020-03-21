@@ -53,7 +53,9 @@ class Home extends StatelessWidget {
               itemCount: snapshot.data.length,
             );
           else
-            return Container(
+            return Center(
+              child: CircularProgressIndicator(
+              ),
             );
         },
       ),

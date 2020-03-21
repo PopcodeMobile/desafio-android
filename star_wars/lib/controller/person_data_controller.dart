@@ -22,8 +22,7 @@ class PersonDataController implements BlocBase {
     bool connected = await AuxTestConnexion("https://swapi.co/").connexion();
     if (connected) {
       List<Person> people = List<Person>();
-      for (int id = 1; id <= 4; id++) {
-        // Por enquanto, pegar somente 4 para teste
+      for (int id = 1; id <= 87; id++) {
         http.Response response =
             await http.get("https://swapi.co/api/people/$id/");
         if (response.statusCode == 200) {

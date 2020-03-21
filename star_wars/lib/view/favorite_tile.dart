@@ -31,18 +31,17 @@ class FavoriteTile extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
             child: Container(
-                child: Row(
-                  children: <Widget>[
+                child:
                     Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text("Nome: ${person.name}"),
                           Text("Altura: ${person.height}"),
                           Text("Gênero: ${person.gender}"),
                           Text("Peso: ${person.mass}")
                         ]),
-                  ],
-                )),
+
+                ),
           ),
         ),
       ),
