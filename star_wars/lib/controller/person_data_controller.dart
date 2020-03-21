@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:starwars/helper/aux_test_connexion.dart';
 import 'package:starwars/model/favorite_model.dart';
@@ -29,6 +30,7 @@ class PersonDataController implements BlocBase {
           var decoded = await _getPersonModified(response);
           Person character = Person.fromJson(decoded, identifier: id);
           character = await datab.savePerson(character);
+          FavoriteModel().favOnline(character.id); // Para enviar os favoritos quando ficar online
           people.add(character);
           inData.add(people);
         }
@@ -39,10 +41,11 @@ class PersonDataController implements BlocBase {
     }
   }
 
-  Future<void> updateList(String id) async {
-    await FavoriteModel().setFav(id);
+  Future<String> updateList(String id) async {
+    String message = await FavoriteModel().setFav(id);
     List<Person> people = await datab.getAllPersons();
     inData.add(people);
+    return message;
   }
 
   _getPersonModified(http.Response resp) async {

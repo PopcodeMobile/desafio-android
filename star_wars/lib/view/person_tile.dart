@@ -48,7 +48,11 @@ class PersonTile extends StatelessWidget {
                     person.favorite == "1" ? Icons.star:Icons.star_border,
                   ),
                   onPressed: () async {
-                    await getData.updateList(person.id);
+                    final snackbar = SnackBar(
+                      content: Text(await getData.updateList(person.id),textAlign: TextAlign.center),
+                      duration: Duration(seconds: 3),
+                    );
+                    Scaffold.of(context).showSnackBar(snackbar);
                   },
                 )
               ],
