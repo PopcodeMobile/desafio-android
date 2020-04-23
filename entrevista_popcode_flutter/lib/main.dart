@@ -1,5 +1,8 @@
 import 'package:entrevista_popcode_flutter/interfaces/pages/boas_vindas.dart';
+import 'package:entrevista_popcode_flutter/interfaces/pages/tela_principal.dart';
 import 'package:flutter/material.dart';
+
+void main() => runApp(WikiStarWars()); 
 
 class WikiStarWars extends StatelessWidget {
   @override
@@ -12,7 +15,7 @@ class WikiStarWars extends StatelessWidget {
       ),
       initialRoute: './',
        routes: <String, WidgetBuilder>{
-         '/': (context) => BoasVindas(),
+         '/': (context) => TelaPrincipal(),
        },
     );
   }
