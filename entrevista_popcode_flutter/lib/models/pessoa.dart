@@ -1,7 +1,7 @@
 class ColecaoPessoas {
   int count;
   String next;
-  Null previous;
+  String previous;
   List<Pessoa> results;
 
   ColecaoPessoas({this.count, this.next, this.previous, this.results});
@@ -13,7 +13,7 @@ class ColecaoPessoas {
     if (json['results'] != null) {
       results = new List<Pessoa>();
       json['results'].forEach((v) {
-        results.add(new Pessoa.fromJson(v));
+        results.add(new Pessoa.fromJson(v, false));
       });
     }
   }
@@ -31,6 +31,7 @@ class ColecaoPessoas {
 }
 
 class Pessoa {
+  int idPessoa;
   String name;
   String height;
   String mass;
@@ -40,13 +41,13 @@ class Pessoa {
   String birthYear;
   String gender;
   String homeworld;
-  List<String> films;
-  List<String> species;
-  List<String> vehicles;
-  List<String> starships;
-  String created;
-  String edited;
-  String url;
+  // List<String> films;
+  // List<String> species;
+  // List<String> vehicles;
+  // List<String> starships;
+  // String created;
+  // String edited;
+  // String url;
 
   Pessoa(
       {this.name,
@@ -57,52 +58,59 @@ class Pessoa {
       this.eyeColor,
       this.birthYear,
       this.gender,
-      this.homeworld,
-      this.films,
-      this.species,
-      this.vehicles,
-      this.starships,
-      this.created,
-      this.edited,
-      this.url});
+      this.homeworld});
+  // this.films,
+  // this.species,
+  // this.vehicles,
+  // this.starships,
+  // this.created,
+  // this.edited,
+  // this.url});
 
-  Pessoa.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    height = json['height'];
-    mass = json['mass'];
-    hairColor = json['hair_color'];
-    skinColor = json['skin_color'];
-    eyeColor = json['eye_color'];
-    birthYear = json['birth_year'];
-    gender = json['gender'];
-    homeworld = json['homeworld'];
-    films = json['films'].cast<String>();
-    species = json['species'].cast<String>();
-    vehicles = json['vehicles'].cast<String>();
-    starships = json['starships'].cast<String>();
-    created = json['created'];
-    edited = json['edited'];
-    url = json['url'];
+  Pessoa.fromJson(Map<String, dynamic> json, bool localDatabase) {
+    if (localDatabase) {
+      name = json['nameColumn'];
+      height = json['heightColumn'];
+      mass = json['massColumn'];
+      hairColor = json['hairColorColumn'];
+      skinColor = json['skinColorColumn'];
+      eyeColor = json['eyeColorColumn'];
+      birthYear = json['birthYearColumn'];
+      gender = json['genderColumn'];
+      homeworld = json['homeWorldColumn'];
+    } else {
+      name = json['name'];
+      height = json['height'];
+      mass = json['mass'];
+      hairColor = json['hair_color'];
+      skinColor = json['skin_color'];
+      eyeColor = json['eye_color'];
+      birthYear = json['birth_year'];
+      gender = json['gender'];
+      homeworld = json['homeworld'];
+    }
+    // films = json['films'].cast<String>();
+    // species = json['species'].cast<String>();
+    // vehicles = json['vehicles'].cast<String>();
+    // starships = json['starships'].cast<String>();
+    // created = json['created'];
+    // edited = json['edited'];
+    // url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['height'] = this.height;
-    data['mass'] = this.mass;
-    data['hair_color'] = this.hairColor;
-    data['skin_color'] = this.skinColor;
-    data['eye_color'] = this.eyeColor;
-    data['birth_year'] = this.birthYear;
-    data['gender'] = this.gender;
-    data['homeworld'] = this.homeworld;
-    data['films'] = this.films;
-    data['species'] = this.species;
-    data['vehicles'] = this.vehicles;
-    data['starships'] = this.starships;
-    data['created'] = this.created;
-    data['edited'] = this.edited;
-    data['url'] = this.url;
+
+    data['nameColumn'] = this.name;
+    data['heightColumn'] = this.height;
+    data['massColumn'] = this.mass;
+    data['hairColorColumn'] = this.hairColor;
+    data['skinColorColumn'] = this.skinColor;
+    data['eyeColorColumn'] = this.eyeColor;
+    data['birthYearColumn'] = this.birthYear;
+    data['genderColumn'] = this.gender;
+    data['homeWorldColumn'] = this.homeworld;
+
     return data;
   }
 }

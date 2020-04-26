@@ -1,11 +1,12 @@
+import 'package:entrevista_popcode_flutter/models/pessoa.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
-import 'package:entrevista_popcode_flutter/models/personagem.dart';
+import 'package:entrevista_popcode_flutter/helpers/helperPessoa.dart';
 
 class ListaPersonagens extends StatelessWidget {
-  final List<Personagem> personagens;
-
+  final List<Pessoa> personagens;
+  HelperPessoa helper = HelperPessoa();
   ListaPersonagens({Key key, this.personagens}) : super(key: key);
 
   @override
@@ -15,6 +16,7 @@ class ListaPersonagens extends StatelessWidget {
       itemCount: personagens.length,
       itemBuilder: (context, index) {
         var pessoa = personagens[index];
+        helper.save(pessoa);
         return Container(
           height: 480.0,
           child: GFCard(
@@ -26,7 +28,7 @@ class ListaPersonagens extends StatelessWidget {
             title: GFListTile(
               padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
               title: Text(
-                pessoa.nome,
+                pessoa.name,
                 style: TextStyle(
                     color: Colors.black, fontFamily: 'Kanit', fontSize: 20.0),
               ),
@@ -45,14 +47,14 @@ class ListaPersonagens extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Altura: ' + double.parse(pessoa.altura).toString(),
+                    'Altura: ' + double.parse(pessoa.height).toString(),
                     style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0),
                   ),
                   Text(
-                    'Peso: ' + double.parse(pessoa.peso).toString(),
+                    'Peso: ' + double.parse(pessoa.mass).toString(),
                     style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0),
                   ),
-                  Text('Gênero: ' + pessoa.genero,
+                  Text('Gênero: ' + pessoa.gender,
                       style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0)),
                 ],
               ),

@@ -1,5 +1,5 @@
-import 'package:entrevista_popcode_flutter/interfaces/pages/boas_vindas.dart';
-import 'package:entrevista_popcode_flutter/interfaces/pages/tela_principal.dart';
+import 'package:entrevista_popcode_flutter/views/pages/boas_vindas.dart';
+import 'package:entrevista_popcode_flutter/views/pages/tela_principal.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(WikiStarWars()); 

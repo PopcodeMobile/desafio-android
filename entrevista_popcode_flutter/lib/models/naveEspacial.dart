@@ -70,7 +70,7 @@ class NaveEspacial {
       this.edited,
       this.url});
 
-  NaveEspacial.fromJson(Map<String, dynamic> json) {
+  NaveEspacial.fromJson(Map<String, dynamic> json)  {
     name = json['name'];
     model = json['model'];
     manufacturer = json['manufacturer'];
