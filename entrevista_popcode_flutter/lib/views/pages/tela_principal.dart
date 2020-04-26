@@ -16,7 +16,7 @@ class TelaPrincipal extends StatefulWidget {
 class _TelaPrincipalState extends State<TelaPrincipal> {
   HelperPessoa helper = HelperPessoa();
   List<Pessoa> pessoas = List();
-
+  
   void initState() {
     super.initState();
     if (size() != 0) {

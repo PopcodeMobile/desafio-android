@@ -9,6 +9,17 @@ class ListaPersonagens extends StatelessWidget {
   HelperPessoa helper = HelperPessoa();
   ListaPersonagens({Key key, this.personagens}) : super(key: key);
 
+  void apresentarMensagem(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Adicionado aos favoritos'),
+        action: SnackBarAction(
+            label: 'Fechar', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.green),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -33,7 +44,7 @@ class ListaPersonagens extends StatelessWidget {
                     color: Colors.black, fontFamily: 'Kanit', fontSize: 20.0),
               ),
               icon: GFIconButton(
-                onPressed: () {},
+                onPressed: () => apresentarMensagem(context),
                 icon: Icon(Icons.favorite, size: 25.0, color: Colors.red),
                 color: Colors.white,
                 size: 40.0,
