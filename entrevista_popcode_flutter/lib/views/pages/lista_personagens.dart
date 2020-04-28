@@ -12,7 +12,8 @@ import 'package:sprintf/sprintf.dart';
 
 class ListaPersonagens extends StatefulWidget {
   List<Pessoa> personagens;
-  ListaPersonagens({Key key, this.personagens}) : super(key: key);
+  bool isSearching;
+  ListaPersonagens({Key key, this.personagens, this.isSearching}) : super(key: key);
 
   @override
   _ListaPersonagensState createState() => _ListaPersonagensState();
@@ -24,6 +25,8 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   int numeroPagina = 2;
+  Icon _favoriteIcon = new Icon(Icons.favorite_border, size: 25.0, color: Colors.red);
+
   void _onRefresh() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
@@ -33,7 +36,7 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
 
   void _onLoading() async {
     await Future.delayed(Duration(milliseconds: 1000));
-    if(this.numeroPagina < 9){
+    if(this.numeroPagina < 9 && !widget.isSearching){
       List<Pessoa> pessoas = await Requisicao().getPersonagens(http.Client(), this.numeroPagina);
       widget.personagens.addAll(pessoas);
       pessoas.forEach((personagem) => helper.save(personagem));
@@ -62,7 +65,10 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
       child: SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
-        header: WaterDropHeader(),
+        header: WaterDropMaterialHeader(
+          backgroundColor: Colors.amber[400],
+          color: Colors.black,
+        ),
         footer: CustomFooter(
           builder: (BuildContext context, LoadStatus mode) {
             Widget body;
@@ -110,11 +116,21 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
                         fontSize: 20.0),
                   ),
                   icon: GFIconButton(
-                    onPressed: () => apresentarMensagem(context),
-                    icon: Icon(Icons.favorite, size: 25.0, color: Colors.red),
+                    onPressed: () {
+                      setState(() {
+                         if (this._favoriteIcon.icon == Icons.favorite_border) {
+                            this._favoriteIcon = new Icon(Icons.favorite, size: 25.0, color: Colors.red);
+                         } else {
+                            this._favoriteIcon = new Icon(Icons.favorite_border, size: 25.0, color: Colors.red);
+                         }
+                      });
+                      apresentarMensagem(context);
+                    },
+                    icon: _favoriteIcon,
                     color: Colors.white,
                     size: 40.0,
                     type: GFButtonType.transparent,
+                    splashColor: Colors.transparent,
                   ),
                 ),
                 content: Container(
