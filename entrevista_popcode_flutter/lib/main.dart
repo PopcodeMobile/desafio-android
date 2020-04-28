@@ -1,4 +1,5 @@
 import 'package:entrevista_popcode_flutter/views/pages/boas_vindas.dart';
+import 'package:entrevista_popcode_flutter/views/pages/detalhe_personagem.dart';
 import 'package:entrevista_popcode_flutter/views/pages/tela_principal.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class WikiStarWars extends StatelessWidget {
       initialRoute: './',
        routes: <String, WidgetBuilder>{
          '/': (context) => TelaPrincipal(),
+         '/detalhePers': (context) => DetalhePersonagem(),
        },
     );
   }

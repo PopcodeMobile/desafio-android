@@ -1,5 +1,6 @@
 import 'package:entrevista_popcode_flutter/helpers/requisicao.dart';
 import 'package:entrevista_popcode_flutter/models/pessoa.dart';
+import 'package:entrevista_popcode_flutter/views/pages/detalhe_personagem.dart';
 import 'package:entrevista_popcode_flutter/views/widgets/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -106,6 +107,7 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
                 //color: Colors.lightBlueAccent[400],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
+                    elevation: 4.0,
                 title: GFListTile(
                   padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
                   title: Text(
@@ -160,7 +162,7 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
                       minWidth: 100,
                       height: 40,
                       child: RaisedButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.pushNamed(context, '/detalhePers', arguments: DetalhePersonagem(personagem: pessoa)),
                         child:
                             const Text('Ver', style: TextStyle(fontSize: 15)),
                         color: Colors.amber[400],
