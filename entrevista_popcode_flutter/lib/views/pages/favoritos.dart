@@ -9,30 +9,35 @@ class Favoritos extends StatefulWidget {
 }
 
 class _FavoritosState extends State<Favoritos> {
-  List<Pessoa> listaFavoritos = List();
+  List<Pessoa> listaFavoritos = new List();
   HelperFavoritos helperFavoritos = HelperFavoritos();
 
-  // @override
-  // void initState() {
-  //   _getAllFavoritos();
-  //   super.initState();
-  // }
+  void initState() {
+    super.initState();
+    _getAllPessoas();
+  }
 
-  // void _getAllFavoritos() {
-  //   helperFavoritos.getAll().then((list) {
-  //     setState(() {
-  //       this.listaFavoritos = list;
-  //     });
-  //   });
-  // }
+  Future<List<Pessoa>> _getAllFavoritos() async {
+    return await helperFavoritos.getAll();
+  }
+
+  void _getAllPessoas() {
+    HelperFavoritos().getAll().then((list) {
+      setState(() {
+        listaFavoritos = list;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: helperFavoritos.getAll(),
+    return FutureBuilder<List<Pessoa>>(
+      future: _getAllFavoritos(),
       builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
         return TelaPrincipal(
-            favoritos: (this.listaFavoritos != null && this.listaFavoritos.length > 0)
+            favoritos:
+                (this.listaFavoritos != null && this.listaFavoritos.length > 0)
                     ? this.listaFavoritos
                     : snapshot.data);
       },

@@ -106,7 +106,7 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
           itemCount: widget.personagens.length,
           itemBuilder: (context, index) {
             Pessoa pessoa = widget.personagens[index];
-            helper.save(pessoa);
+            HelperPessoa().save(pessoa);
             return Container(
               height: 500.0,
               child: GFCard(
@@ -132,13 +132,13 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
                           if (pessoa.isFavorite == null ||
                               pessoa.isFavorite == 0) {
                             pessoa.isFavorite = 1;
-                            helper.update(pessoa);
-                            helperFavoritos.save(pessoa);
+                            HelperPessoa().update(pessoa);
+                            HelperFavoritos().save(pessoa);
                             adicionou = true;
                           } else {
                             pessoa.isFavorite = 0;
-                            helper.update(pessoa);
-                            helperFavoritos.delete(pessoa);
+                            HelperPessoa().update(pessoa);
+                            HelperFavoritos().delete(pessoa);
                             adicionou = false;
                           }
                           apresentarMensagem(context, adicionou);

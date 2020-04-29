@@ -70,8 +70,12 @@ class HelperPessoa extends HelperBase<Pessoa> {
   @override
   Future<int> update(Pessoa pessoa) async {
     Database database = await db;
-    return database.update(pessoaTable, pessoa.toJson(),
-        where: "$idColumn = ?", whereArgs: [pessoa.idPessoa]);
+    int atualizou = await database.rawUpdate("UPDATE $pessoaTable SET $nameColumn = '${pessoa.name}', "
+    "$heightColumn = '${pessoa.height}', $massColumn = '${pessoa.mass}',  $hairColorColumn = '${pessoa.hairColor}', "
+    "$skinColorColumn = '${pessoa.skinColor}',  $eyeColorColumn = '${pessoa.eyeColor}', $birthYearColumn = '${pessoa.birthYear}', "
+    "$genderColumn = '${pessoa.gender}', $homeWorldColumn = '${pessoa.homeworld}', $specieColumn = '${pessoa.specie}', $isFavoriteColumn = ${pessoa.isFavorite} "
+    "WHERE $nameColumn = '${pessoa.name}'");
+    return atualizou;
   }
 
   @override

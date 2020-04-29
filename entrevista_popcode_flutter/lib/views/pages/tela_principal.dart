@@ -22,18 +22,13 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   List<Pessoa> pessoas = new List();
   List<Pessoa> pessoasFiltradas = new List();
   String _searchText = "";
+  bool apresentandoFavoritos = false;
   Icon _searchIcon = new Icon(Icons.search, color: Colors.black);
   Widget _appBarTitle = new Text('Star Wars Wiki',
       style: TextStyle(fontFamily: "Kanit", color: Colors.black));
 
   void initState() {
-    if (widget.favoritos == null || widget.favoritos.length == 0) {
-      setState(() {
-        _getAllPessoas();
-      });
-    } else {
-      this.pessoas = widget.favoritos;
-    }
+    _getAllPessoas();
     super.initState();
   }
 
@@ -61,14 +56,9 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   void _getAllPessoas() {
     helper.getAll().then((list) {
       setState(() {
-        this.pessoas = list;
+        pessoas = list;
       });
     });
-  }
-
-  size() async {
-    int number = await helper.getNumber();
-    return number;
   }
 
   void _searchPressed() {
@@ -109,6 +99,13 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.favoritos != null && widget.favoritos.length > 0) {
+      setState(() {
+        this.pessoas = widget.favoritos;
+        this.apresentandoFavoritos = true;
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -134,9 +131,11 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             return (snapshot.hasData || pessoas.length > 0)
                 ? ListaPersonagens(
                     personagens: ((_buildPersonagens() != null)
-                        ? _buildPersonagens() : (pessoas != null && pessoas.length > 0)
-                            ? pessoas : snapshot.data),
-                    isSearching: (_searchText.isEmpty) ? false : true)
+                        ? _buildPersonagens()
+                        : (pessoas != null && pessoas.length > 0)
+                            ? pessoas
+                            : snapshot.data),
+                    isSearching: (_searchText.isEmpty && !this.apresentandoFavoritos) ? false : true)
                 : Loading();
           },
         ),

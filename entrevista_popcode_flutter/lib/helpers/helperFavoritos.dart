@@ -55,7 +55,7 @@ class HelperFavoritos extends HelperBase<Pessoa> {
   Future<int> update(Pessoa pessoa) async {
     Database database = await db;
     return database.update(pessoaTable, pessoa.toJson(),
-        where: "$idColumn = ?", whereArgs: [pessoa.idPessoa]);
+        where: "$nameColumn = ?", whereArgs: [pessoa.name]);
   }
 
   @override
