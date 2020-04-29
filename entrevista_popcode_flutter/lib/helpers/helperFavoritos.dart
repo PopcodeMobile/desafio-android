@@ -1,10 +1,9 @@
 import 'package:entrevista_popcode_flutter/helpers/helperBase.dart';
-import 'package:entrevista_popcode_flutter/helpers/requisicao.dart';
 import 'package:entrevista_popcode_flutter/models/pessoa.dart';
 import 'package:sqflite/sqflite.dart';
 
-class HelperPessoa extends HelperBase<Pessoa> {
-  static final String pessoaTable = "tb_pessoa";
+class HelperFavoritos extends HelperBase<Pessoa> {
+  static final String pessoaTable = "tb_favoritos";
   static final String idColumn = "idColumn";
   static final String nameColumn = "nameColumn";
   static final String heightColumn = "heightColumn";
@@ -17,33 +16,17 @@ class HelperPessoa extends HelperBase<Pessoa> {
   static final String homeWorldColumn = "homeWorldColumn";
   static final String specieColumn = "specieColumn";
   static final String isFavoriteColumn = "isFavoriteColumn";
-  static final HelperPessoa _instance = HelperPessoa.getInstance();
+  static final HelperFavoritos _instance = HelperFavoritos.getInstance();
 
-  factory HelperPessoa() => _instance;
-  HelperPessoa.getInstance();
+  factory HelperFavoritos() => _instance;
+  HelperFavoritos.getInstance();
 
   @override
   Future<Pessoa> save(Pessoa pessoa) async {
     Database database = await db;
     Pessoa personagem = await getFirst(pessoa.name);
-    String nomePlaneta = "";
-    String nomeEspecie = "";
 
     if (personagem == null) {
-      if (pessoa.homeworld.isNotEmpty || (pessoa.species != null)) {
-        try {
-          if (pessoa.homeworld.isNotEmpty)
-            nomePlaneta = await Requisicao().getNomePlaneta(pessoa.homeworld);
-          if (pessoa.species != null && pessoa.species.length > 0)
-            nomeEspecie = await Requisicao().getNomeEspecie(pessoa.species.first);
-        } catch (e) {
-          throw new Exception("Não foi possível realizar a requisição!");
-        }
-      }
-
-      pessoa.homeworld = nomePlaneta;
-      pessoa.specie = nomeEspecie;
-
       pessoa.idPessoa = await database.insert(pessoaTable, pessoa.toJson());
     }
     return pessoa;
@@ -61,6 +44,7 @@ class HelperPessoa extends HelperBase<Pessoa> {
     }
   }
 
+  @override
   Future<int> delete(Pessoa pessoa) async {
     Database database = await db;
     return await database

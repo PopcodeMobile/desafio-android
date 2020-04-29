@@ -1,3 +1,4 @@
+import 'package:entrevista_popcode_flutter/helpers/helperFavoritos.dart';
 import 'package:entrevista_popcode_flutter/helpers/requisicao.dart';
 import 'package:entrevista_popcode_flutter/models/pessoa.dart';
 import 'package:entrevista_popcode_flutter/views/pages/detalhe_personagem.dart';
@@ -14,19 +15,23 @@ import 'package:sprintf/sprintf.dart';
 class ListaPersonagens extends StatefulWidget {
   List<Pessoa> personagens;
   bool isSearching;
-  ListaPersonagens({Key key, this.personagens, this.isSearching}) : super(key: key);
+  ListaPersonagens({Key key, this.personagens, this.isSearching})
+      : super(key: key);
 
   @override
   _ListaPersonagensState createState() => _ListaPersonagensState();
 }
 
 class _ListaPersonagensState extends State<ListaPersonagens> {
-
   HelperPessoa helper = HelperPessoa();
+  HelperFavoritos helperFavoritos = HelperFavoritos();
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  Icon _favoriteIcon =
+      new Icon(Icons.favorite_border, size: 25.0, color: Colors.red);
+  Icon _fullFavoriteIcon =
+      new Icon(Icons.favorite, size: 25.0, color: Colors.red);
   int numeroPagina = 2;
-  Icon _favoriteIcon = new Icon(Icons.favorite_border, size: 25.0, color: Colors.red);
 
   void _onRefresh() async {
     // monitor network fetch
@@ -37,8 +42,9 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
 
   void _onLoading() async {
     await Future.delayed(Duration(milliseconds: 1000));
-    if(this.numeroPagina < 9 && !widget.isSearching){
-      List<Pessoa> pessoas = await Requisicao().getPersonagens(http.Client(), this.numeroPagina);
+    if (this.numeroPagina < 9 && !widget.isSearching) {
+      List<Pessoa> pessoas =
+          await Requisicao().getPersonagens(http.Client(), this.numeroPagina);
       widget.personagens.addAll(pessoas);
       pessoas.forEach((personagem) => helper.save(personagem));
       this.numeroPagina++;
@@ -47,11 +53,13 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
     _refreshController.loadComplete();
   }
 
-  void apresentarMensagem(BuildContext context) {
+  void apresentarMensagem(BuildContext context, bool adicionou) {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        content: const Text('Adicionado aos favoritos'),
+        content: Text(
+            (adicionou) ? 'Adicionado aos favoritos' : 'Removido dos favoritos',
+            style: TextStyle(fontFamily: 'Kanit')),
         action: SnackBarAction(
             label: 'Fechar',
             onPressed: scaffold.hideCurrentSnackBar,
@@ -97,17 +105,17 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
           padding: EdgeInsets.all(2.0),
           itemCount: widget.personagens.length,
           itemBuilder: (context, index) {
-            var pessoa = widget.personagens[index];
+            Pessoa pessoa = widget.personagens[index];
             helper.save(pessoa);
             return Container(
-              height: 480.0,
+              height: 500.0,
               child: GFCard(
                 boxFit: BoxFit.cover,
                 image: Image.asset('assets/images/star_wars.jpg'),
                 //color: Colors.lightBlueAccent[400],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
-                    elevation: 4.0,
+                elevation: 4.0,
                 title: GFListTile(
                   padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
                   title: Text(
@@ -118,22 +126,31 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
                         fontSize: 20.0),
                   ),
                   icon: GFIconButton(
-                    onPressed: () {
-                      setState(() {
-                         if (this._favoriteIcon.icon == Icons.favorite_border) {
-                            this._favoriteIcon = new Icon(Icons.favorite, size: 25.0, color: Colors.red);
-                         } else {
-                            this._favoriteIcon = new Icon(Icons.favorite_border, size: 25.0, color: Colors.red);
-                         }
-                      });
-                      apresentarMensagem(context);
-                    },
-                    icon: _favoriteIcon,
-                    color: Colors.white,
-                    size: 40.0,
-                    type: GFButtonType.transparent,
-                    splashColor: Colors.transparent,
-                  ),
+                      onPressed: () {
+                        bool adicionou;
+                        setState(() {
+                          if (pessoa.isFavorite == null ||
+                              pessoa.isFavorite == 0) {
+                            pessoa.isFavorite = 1;
+                            helper.update(pessoa);
+                            helperFavoritos.save(pessoa);
+                            adicionou = true;
+                          } else {
+                            pessoa.isFavorite = 0;
+                            helper.update(pessoa);
+                            helperFavoritos.delete(pessoa);
+                            adicionou = false;
+                          }
+                          apresentarMensagem(context, adicionou);
+                        });
+                      },
+                      icon: (pessoa.isFavorite != 1)
+                          ? this._favoriteIcon
+                          : this._fullFavoriteIcon,
+                      color: Colors.white,
+                      size: 40.0,
+                      type: GFButtonType.transparent,
+                      splashColor: Colors.transparent),
                 ),
                 content: Container(
                   padding: EdgeInsets.only(left: 20.0, bottom: 20.0),
@@ -142,11 +159,27 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        sprintf('Altura: %s', (pessoa.height != 'unknown') ? [double.parse(pessoa.height.replaceFirst(',', '.')).toString()] : ['unknown']),
+                        sprintf(
+                            'Altura: %s',
+                            (pessoa.height != 'unknown')
+                                ? [
+                                    double.parse(pessoa.height
+                                            .replaceFirst(',', '.'))
+                                        .toString()
+                                  ]
+                                : ['unknown']),
                         style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0),
                       ),
                       Text(
-                        sprintf('Peso: %s', (pessoa.mass != 'unknown') ? [double.parse(pessoa.mass.replaceFirst(',', '.')).toString()] : ['unknown']),
+                        sprintf(
+                            'Peso: %s',
+                            (pessoa.mass != 'unknown')
+                                ? [
+                                    double.parse(
+                                            pessoa.mass.replaceFirst(',', '.'))
+                                        .toString()
+                                  ]
+                                : ['unknown']),
                         style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0),
                       ),
                       Text('Gênero: ' + pessoa.gender,
@@ -162,7 +195,9 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
                       minWidth: 100,
                       height: 40,
                       child: RaisedButton(
-                        onPressed: () => Navigator.pushNamed(context, '/detalhePers', arguments: DetalhePersonagem(personagem: pessoa)),
+                        onPressed: () => Navigator.pushNamed(
+                            context, '/detalhePers',
+                            arguments: DetalhePersonagem(personagem: pessoa)),
                         child:
                             const Text('Ver', style: TextStyle(fontSize: 15)),
                         color: Colors.amber[400],

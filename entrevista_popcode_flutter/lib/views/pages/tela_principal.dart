@@ -1,6 +1,6 @@
 import 'package:entrevista_popcode_flutter/models/pessoa.dart';
+import 'package:entrevista_popcode_flutter/views/widgets/home_menu_drawer.dart';
 import 'package:entrevista_popcode_flutter/views/widgets/loading.dart';
-import 'package:entrevista_popcode_flutter/views/widgets/searchBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -9,6 +9,9 @@ import 'package:entrevista_popcode_flutter/helpers/helperPessoa.dart';
 import 'package:entrevista_popcode_flutter/helpers/requisicao.dart';
 
 class TelaPrincipal extends StatefulWidget {
+  List<Pessoa> favoritos;
+
+  TelaPrincipal({this.favoritos});
   @override
   _TelaPrincipalState createState() => _TelaPrincipalState();
 }
@@ -24,10 +27,14 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
       style: TextStyle(fontFamily: "Kanit", color: Colors.black));
 
   void initState() {
-    super.initState();
-    if (size() != 0) {
-      _getAllPessoas();
+    if (widget.favoritos == null || widget.favoritos.length == 0) {
+      setState(() {
+        _getAllPessoas();
+      });
+    } else {
+      this.pessoas = widget.favoritos;
     }
+    super.initState();
   }
 
   _TelaPrincipalState() {
@@ -54,7 +61,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   void _getAllPessoas() {
     helper.getAll().then((list) {
       setState(() {
-        pessoas = list;
+        this.pessoas = list;
       });
     });
   }
@@ -63,7 +70,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     int number = await helper.getNumber();
     return number;
   }
-  
+
   void _searchPressed() {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
@@ -90,10 +97,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     if (_searchText.isNotEmpty) {
       List<Pessoa> tempList = new List();
       for (int i = 0; i < pessoas.length; i++) {
-        if (pessoas[i]
-            .name
-            .toLowerCase()
-            .contains(_searchText.toLowerCase())) {
+        if (pessoas[i].name.toLowerCase().contains(_searchText.toLowerCase())) {
           tempList.add(pessoas[i]);
         }
       }
@@ -110,7 +114,6 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
       appBar: AppBar(
         backgroundColor: Colors.amber[400],
         centerTitle: true,
-        //leading: _searchIcon,
         actions: <Widget>[
           IconButton(
             onPressed: () => _searchPressed(),
@@ -118,33 +121,24 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           )
         ],
         title: this._appBarTitle,
-        // bottom: PreferredSize(
-        //   preferredSize: Size(50, 50),
-        //   child: Container(),
-        // ),
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      drawer: Drawer(
+        child: HomeMenuDrawer(),
       ),
       body: Container(
-        child: Column(
-          children: <Widget>[
-            //SearchBar(personagens: pessoas),
-            Expanded(
-              child: FutureBuilder<List<Pessoa>>(
-                future: Requisicao().getPersonagens(http.Client(), 1),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.error);
-                  return (snapshot.hasData || pessoas.length > 0)
-                      ? ListaPersonagens(
-                          personagens: ((_buildPersonagens() != null)
-                              ? _buildPersonagens()
-                              : (pessoas != null && pessoas.length > 0)
-                                  ? pessoas
-                                  : snapshot.data),
-                          isSearching: (_searchText.isEmpty) ? false : true)
-                      : Loading();
-                },
-              ),
-            )
-          ],
+        child: FutureBuilder<List<Pessoa>>(
+          future: Requisicao().getPersonagens(http.Client(), 1),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) print(snapshot.error);
+            return (snapshot.hasData || pessoas.length > 0)
+                ? ListaPersonagens(
+                    personagens: ((_buildPersonagens() != null)
+                        ? _buildPersonagens() : (pessoas != null && pessoas.length > 0)
+                            ? pessoas : snapshot.data),
+                    isSearching: (_searchText.isEmpty) ? false : true)
+                : Loading();
+          },
         ),
         decoration: BoxDecoration(
           image: DecorationImage(

@@ -17,6 +17,34 @@ class _DetalhePersonagemState extends State<DetalhePersonagem> {
 
     List<Widget> _personagemInf(BuildContext context) {
       var _informacoes = <Widget>[
+         Container(
+          padding: EdgeInsets.only(left: 10.0, right: 5.0),
+          child: Card(
+            color: Colors.amber[400],
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            elevation: 0.0,
+            child: ListTile(
+              title: RichText(
+                text: TextSpan(
+                    text: "Espécie: ",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Kanit',
+                        fontSize: 20.0),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: (personagem.specie == null || personagem.specie.isEmpty) ? "unknown" : personagem.specie,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Kanit',
+                            fontSize: 20.0),
+                      ),
+                    ]),
+              ),
+            ),
+          ),
+        ),
         Container(
           padding: EdgeInsets.only(left: 10.0, right: 5.0),
           child: Card(
@@ -236,7 +264,7 @@ class _DetalhePersonagemState extends State<DetalhePersonagem> {
               ),
               SizedBox(height: 25.0),
               Container(
-                height: 400,
+                height: 430,
                 width: 400,
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
