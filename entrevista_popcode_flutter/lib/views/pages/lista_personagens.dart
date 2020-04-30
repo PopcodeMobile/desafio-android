@@ -40,6 +40,7 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
     _refreshController.refreshCompleted();
   }
 
+  //FAZER REQUISIÇÕES HTTP DE PÁGINAS DOS PERSONAGENS AO REALIZAR O PULL REFRESH
   void _onLoading() async {
     await Future.delayed(Duration(milliseconds: 1000));
     if (this.numeroPagina < 9 && !widget.isSearching) {
@@ -53,7 +54,8 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
     _refreshController.loadComplete();
   }
 
-  void apresentarMensagem(BuildContext context, bool adicionou) {
+  //APRESENTAR MENSAGEM AO CLICAR NO BOTÃO PARA ADICIONAR AOS FAVORITOS
+  void _apresentarMensagem(BuildContext context, bool adicionou) {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
@@ -65,6 +67,116 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
             onPressed: scaffold.hideCurrentSnackBar,
             textColor: Colors.green),
       ),
+    );
+  }
+  
+  //WIDGET QUE CONSTROE OS CARDS QUE SÃO EXIBIDOS NA PAGINA INICIAL
+  _buildCards() {
+    return ListView.builder(
+      padding: EdgeInsets.all(2.0),
+      itemCount: widget.personagens.length,
+      itemBuilder: (context, index) {
+        Pessoa pessoa = widget.personagens[index];
+        HelperPessoa().save(pessoa);
+        return Container(
+          height: 520.0,
+          child: GFCard(
+            boxFit: BoxFit.cover,
+            image: Image.asset('assets/images/star_wars.jpg'),
+            //color: Colors.lightBlueAccent[400],
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            elevation: 4.0,
+            title: GFListTile(
+              padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+              title: Text(
+                pessoa.name,
+                style: TextStyle(
+                    color: Colors.black, fontFamily: 'Kanit', fontSize: 20.0),
+              ),
+              icon: GFIconButton(
+                  onPressed: () {
+                    bool adicionou;
+                    setState(() {
+                      if (pessoa.isFavorite == null || pessoa.isFavorite == 0) {
+                        pessoa.isFavorite = 1;
+                        HelperPessoa().update(pessoa);
+                        HelperFavoritos().save(pessoa);
+                        Requisicao().adicionaFavoritos(pessoa);
+                        adicionou = true;
+                      } else {
+                        pessoa.isFavorite = 0;
+                        HelperPessoa().update(pessoa);
+                        HelperFavoritos().delete(pessoa);
+                        adicionou = false;
+                      }
+                      _apresentarMensagem(context, adicionou);
+                    });
+                  },
+                  icon: (pessoa.isFavorite != 1)
+                      ? this._favoriteIcon
+                      : this._fullFavoriteIcon,
+                  color: Colors.white,
+                  size: 40.0,
+                  type: GFButtonType.transparent,
+                  splashColor: Colors.transparent),
+            ),
+            content: Container(
+              padding: EdgeInsets.only(left: 20.0, bottom: 20.0),
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    sprintf(
+                        'Altura: %s',
+                        (pessoa.height != 'unknown')
+                            ? [
+                                double.parse(
+                                        pessoa.height.replaceFirst(',', '.'))
+                                    .toString()
+                              ]
+                            : ['unknown']),
+                    style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0),
+                  ),
+                  Text(
+                    sprintf(
+                        'Peso: %s',
+                        (pessoa.mass != 'unknown')
+                            ? [
+                                double.parse(pessoa.mass.replaceFirst(',', '.'))
+                                    .toString()
+                              ]
+                            : ['unknown']),
+                    style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0),
+                  ),
+                  Text('Gênero: ' + pessoa.gender,
+                      style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0)),
+                ],
+              ),
+            ),
+            buttonBar: GFButtonBar(
+              alignment: WrapAlignment.center,
+              children: <Widget>[
+                ButtonTheme(
+                  minWidth: 100,
+                  height: 40,
+                  child: RaisedButton(
+                    onPressed: () => Navigator.pushNamed(
+                        context, '/detalhePers',
+                        arguments: DetalhePersonagem(personagem: pessoa)),
+                    child: const Text('Ver', style: TextStyle(fontSize: 15)),
+                    color: Colors.amber[400],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(80)),
+                    splashColor: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -101,117 +213,7 @@ class _ListaPersonagensState extends State<ListaPersonagens> {
         controller: _refreshController,
         onRefresh: _onRefresh,
         onLoading: _onLoading,
-        child: ListView.builder(
-          padding: EdgeInsets.all(2.0),
-          itemCount: widget.personagens.length,
-          itemBuilder: (context, index) {
-            Pessoa pessoa = widget.personagens[index];
-            HelperPessoa().save(pessoa);
-            return Container(
-              height: 500.0,
-              child: GFCard(
-                boxFit: BoxFit.cover,
-                image: Image.asset('assets/images/star_wars.jpg'),
-                //color: Colors.lightBlueAccent[400],
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                elevation: 4.0,
-                title: GFListTile(
-                  padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
-                  title: Text(
-                    pessoa.name,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Kanit',
-                        fontSize: 20.0),
-                  ),
-                  icon: GFIconButton(
-                      onPressed: () {
-                        bool adicionou;
-                        setState(() {
-                          if (pessoa.isFavorite == null ||
-                              pessoa.isFavorite == 0) {
-                            pessoa.isFavorite = 1;
-                            HelperPessoa().update(pessoa);
-                            HelperFavoritos().save(pessoa);
-                            adicionou = true;
-                          } else {
-                            pessoa.isFavorite = 0;
-                            HelperPessoa().update(pessoa);
-                            HelperFavoritos().delete(pessoa);
-                            adicionou = false;
-                          }
-                          apresentarMensagem(context, adicionou);
-                        });
-                      },
-                      icon: (pessoa.isFavorite != 1)
-                          ? this._favoriteIcon
-                          : this._fullFavoriteIcon,
-                      color: Colors.white,
-                      size: 40.0,
-                      type: GFButtonType.transparent,
-                      splashColor: Colors.transparent),
-                ),
-                content: Container(
-                  padding: EdgeInsets.only(left: 20.0, bottom: 20.0),
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        sprintf(
-                            'Altura: %s',
-                            (pessoa.height != 'unknown')
-                                ? [
-                                    double.parse(pessoa.height
-                                            .replaceFirst(',', '.'))
-                                        .toString()
-                                  ]
-                                : ['unknown']),
-                        style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0),
-                      ),
-                      Text(
-                        sprintf(
-                            'Peso: %s',
-                            (pessoa.mass != 'unknown')
-                                ? [
-                                    double.parse(
-                                            pessoa.mass.replaceFirst(',', '.'))
-                                        .toString()
-                                  ]
-                                : ['unknown']),
-                        style: TextStyle(fontFamily: 'Kanit', fontSize: 17.0),
-                      ),
-                      Text('Gênero: ' + pessoa.gender,
-                          style:
-                              TextStyle(fontFamily: 'Kanit', fontSize: 17.0)),
-                    ],
-                  ),
-                ),
-                buttonBar: GFButtonBar(
-                  alignment: WrapAlignment.center,
-                  children: <Widget>[
-                    ButtonTheme(
-                      minWidth: 100,
-                      height: 40,
-                      child: RaisedButton(
-                        onPressed: () => Navigator.pushNamed(
-                            context, '/detalhePers',
-                            arguments: DetalhePersonagem(personagem: pessoa)),
-                        child:
-                            const Text('Ver', style: TextStyle(fontSize: 15)),
-                        color: Colors.amber[400],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(80)),
-                        splashColor: Colors.green,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+        child: _buildCards(),
       ),
     );
   }

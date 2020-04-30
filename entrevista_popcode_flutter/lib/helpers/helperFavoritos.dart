@@ -2,6 +2,7 @@ import 'package:entrevista_popcode_flutter/helpers/helperBase.dart';
 import 'package:entrevista_popcode_flutter/models/pessoa.dart';
 import 'package:sqflite/sqflite.dart';
 
+//TABELA DOS PERSONAGENS FAVORITOS
 class HelperFavoritos extends HelperBase<Pessoa> {
   static final String pessoaTable = "tb_favoritos";
   static final String idColumn = "idColumn";
@@ -16,6 +17,7 @@ class HelperFavoritos extends HelperBase<Pessoa> {
   static final String homeWorldColumn = "homeWorldColumn";
   static final String specieColumn = "specieColumn";
   static final String isFavoriteColumn = "isFavoriteColumn";
+  static final String requestFailedColumn = "requestFailedColumn";
   static final HelperFavoritos _instance = HelperFavoritos.getInstance();
 
   factory HelperFavoritos() => _instance;

@@ -12,9 +12,10 @@ class DetalhePersonagem extends StatefulWidget {
 class _DetalhePersonagemState extends State<DetalhePersonagem> {
   @override
   Widget build(BuildContext context) {
-    final DetalhePersonagem args = ModalRoute.of(context).settings.arguments;
+    final DetalhePersonagem args = ModalRoute.of(context).settings.arguments; //ESSA FUNÇÃO RETORNA OS ARGUMENTOS QUE PASSEI COMO PARÂMETRO AO NAVEGAR ENTRE AS TELAS
     Pessoa personagem = args.personagem;
 
+    //CRIANDO OS WIDGETS COM AS INFORMAÇÕES ESPECÍFICAS DOS PERSONAGENS
     List<Widget> _personagemInf(BuildContext context) {
       var _informacoes = <Widget>[
          Container(
@@ -170,6 +171,7 @@ class _DetalhePersonagemState extends State<DetalhePersonagem> {
       );
     }
 
+    //CONSTRUINDO PERFIL DO PERSONAGEM
     _buildPerfil() {
       String maleGender = "assets/images/male.png";
       String femaleGender = "assets/images/female.png";
@@ -305,11 +307,6 @@ class _DetalhePersonagemState extends State<DetalhePersonagem> {
             style: TextStyle(fontFamily: "Kanit", color: Colors.black)),
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      // bottomSheet: Container(
-      //   height: 300,
-      //   decoration: BoxDecoration(color: Colors.black),
-      //   child: Column(),
-      // ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

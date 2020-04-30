@@ -39,6 +39,7 @@ class _HomeMenuDrawerState extends State<HomeMenuDrawer> {
   }
 }
 
+//WIDGET COM TINTA AO PRESSIONAR BOTÃO / REDIRECIONA PARA OUTRAS TELAS
 Widget linkMenuDrawer(String title, Function onPressed) {
   return InkWell(
     onTap: onPressed,

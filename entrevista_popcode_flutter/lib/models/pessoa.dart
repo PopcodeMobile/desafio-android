@@ -1,6 +1,7 @@
 class Pessoa {
   int idPessoa;
   int isFavorite;
+  int requestFailed;
   String name;
   String height;
   String mass;
@@ -25,10 +26,11 @@ class Pessoa {
       this.homeworld,
       this.species,
       this.isFavorite,
+      this.requestFailed,
       this.specie});
 
   Pessoa.fromJson(Map<String, dynamic> json, bool localDatabase) {
-    if (localDatabase) {
+    if (localDatabase) { //CASO A CONVERSÃO SEJA FEITA ATRAVÉS DO BANCO DE DADOS LOCAL
       name = json['nameColumn'];
       height = json['heightColumn'];
       mass = json['massColumn'];
@@ -40,7 +42,8 @@ class Pessoa {
       homeworld = json['homeWorldColumn'];
       specie = json['specieColumn'];
       isFavorite = json['isFavoriteColumn'];
-    } else {
+      requestFailed = json['requestFailedColumn'];
+    } else { //CASO SEJA FEITA ATRAVÉS DA 'RESPONSE' DO JSON
       name = json['name'];
       height = json['height'];
       mass = json['mass'];
@@ -68,6 +71,7 @@ class Pessoa {
     data['homeWorldColumn'] = this.homeworld;
     data['specieColumn'] = this.specie;
     data['isFavoriteColumn'] = this.isFavorite;
+    data['requestFailedColumn'] = this.requestFailed;
 
     return data;
   }

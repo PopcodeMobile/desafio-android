@@ -9,24 +9,11 @@ class Favoritos extends StatefulWidget {
 }
 
 class _FavoritosState extends State<Favoritos> {
-  List<Pessoa> listaFavoritos = new List();
   HelperFavoritos helperFavoritos = HelperFavoritos();
 
-  void initState() {
-    super.initState();
-    _getAllPessoas();
-  }
-
+  //BUSCAR TODOS OS PERSONAGENS FAVORITOS E PASSAR COMO PARÂMETRO PARA A CLASSE TELA_PRINCIPAL
   Future<List<Pessoa>> _getAllFavoritos() async {
     return await helperFavoritos.getAll();
-  }
-
-  void _getAllPessoas() {
-    HelperFavoritos().getAll().then((list) {
-      setState(() {
-        listaFavoritos = list;
-      });
-    });
   }
 
   @override
@@ -35,11 +22,7 @@ class _FavoritosState extends State<Favoritos> {
       future: _getAllFavoritos(),
       builder: (context, snapshot) {
         if (snapshot.hasError) print(snapshot.error);
-        return TelaPrincipal(
-            favoritos:
-                (this.listaFavoritos != null && this.listaFavoritos.length > 0)
-                    ? this.listaFavoritos
-                    : snapshot.data);
+        return TelaPrincipal(favoritos: snapshot.data);
       },
     );
   }

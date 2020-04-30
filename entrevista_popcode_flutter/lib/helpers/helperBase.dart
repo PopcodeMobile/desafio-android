@@ -3,6 +3,7 @@ import 'package:entrevista_popcode_flutter/helpers/helperPessoa.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+//CRIAÇÃO DO BANCO DE DADOS LOCAL
 abstract class HelperBase<T> {
   static final String dataBaseName = "starWars.db";
   Database _database;
@@ -36,13 +37,13 @@ abstract class HelperBase<T> {
             "CREATE TABLE IF NOT EXISTS ${HelperPessoa.pessoaTable}(${HelperPessoa.idColumn} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${HelperPessoa.heightColumn} TEXT, ${HelperPessoa.massColumn} TEXT, ${HelperPessoa.nameColumn} TEXT, ${HelperPessoa.hairColorColumn} TEXT, "
             "${HelperPessoa.skinColorColumn} TEXT, ${HelperPessoa.eyeColorColumn} TEXT, ${HelperPessoa.birthYearColumn} TEXT, ${HelperPessoa.genderColumn} TEXT, "
-            "${HelperPessoa.homeWorldColumn} TEXT, ${HelperPessoa.specieColumn} TEXT, ${HelperPessoa.isFavoriteColumn} INTEGER)");
+            "${HelperPessoa.homeWorldColumn} TEXT, ${HelperPessoa.specieColumn} TEXT, ${HelperPessoa.isFavoriteColumn} INTEGER, ${HelperPessoa.requestFailedColumn} INTEGER)");
 
         await db.execute(
             "CREATE TABLE IF NOT EXISTS ${HelperFavoritos.pessoaTable}(${HelperFavoritos.idColumn} INTEGER PRIMARY KEY AUTOINCREMENT,"
             "${HelperFavoritos.heightColumn} TEXT, ${HelperFavoritos.massColumn} TEXT, ${HelperFavoritos.nameColumn} TEXT, ${HelperFavoritos.hairColorColumn} TEXT, "
             "${HelperFavoritos.skinColorColumn} TEXT, ${HelperFavoritos.eyeColorColumn} TEXT, ${HelperFavoritos.birthYearColumn} TEXT, ${HelperFavoritos.genderColumn} TEXT, "
-            "${HelperFavoritos.homeWorldColumn} TEXT, ${HelperFavoritos.specieColumn} TEXT, ${HelperFavoritos.isFavoriteColumn} INTEGER)");
+            "${HelperFavoritos.homeWorldColumn} TEXT, ${HelperFavoritos.specieColumn} TEXT, ${HelperFavoritos.isFavoriteColumn} INTEGER, ${HelperPessoa.requestFailedColumn} INTEGER)");
       },
     );
   }
