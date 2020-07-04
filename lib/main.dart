@@ -1,6 +1,9 @@
-import 'package:entrevista_pop/screens/home_screen.dart';
-import 'package:entrevista_pop/utils/app_routes.dart';
 import 'package:flutter/material.dart';
+
+import 'package:entrevista_pop/utils/app_routes.dart';
+
+import 'package:entrevista_pop/screens/favorites_screen.dart';
+import 'package:entrevista_pop/screens/home_screen.dart';
 
 void main() {
   runApp(StarWarsWikiApp());
@@ -16,6 +19,7 @@ class StarWarsWikiApp extends StatelessWidget {
       ),
       routes: {
         AppRoutes.HOME: (ctx) => HomeScreen(),
+        AppRoutes.FAVORITES: (ctx) => FavoritesScreen(),
       },
     );
   }
