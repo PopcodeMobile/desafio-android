@@ -6,7 +6,7 @@ O candidato deve dar **fork** neste repositório e após o termino do desenvolvi
 
 A documentação das APIs que serão utilizadas no desafio estão disponíveis nos links abaixo:
 
-http://swapi.co/
+http://swapi.dev/
 
 http://docs.starwarsfavorites.apiary.io/#
 
