@@ -127,23 +127,26 @@ class _CharactersListState extends State<CharactersList> {
                       ),
                       if (_scrollLoading)
                         Positioned.fill(
-                          bottom: 15,
+                          bottom: 20,
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
-                                padding: EdgeInsets.all(10),
+                                width: 35,
+                                height: 35,
+                                padding: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
                                         blurRadius: 1,
-                                        color: Colors.black,
-                                        offset: Offset.fromDirection(1, 1),
+                                        color: Colors.black38,
+                                        offset: Offset.fromDirection(1),
                                         spreadRadius: 1)
                                   ],
                                   color: Colors.white,
                                   shape: BoxShape.circle,
                                 ),
                                 child: CircularProgressIndicator(
+                                  strokeWidth: 3,
                                   backgroundColor: Colors.white,
                                 )),
                           ),

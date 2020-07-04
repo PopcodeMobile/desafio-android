@@ -1,5 +1,6 @@
 import 'package:entrevista_pop/providers/character.dart';
 import 'package:entrevista_pop/utils/app_routes.dart';
+import 'package:entrevista_pop/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,8 +12,7 @@ class CharacterTile extends StatelessWidget {
      * um nível acima.  
      */
     final Character character = Provider.of(context, listen: false);
-    final gender =
-        "${character.gender[0].toUpperCase()}${character.gender.substring(1)}";
+    final gender = capitalize(character.gender);
 
     /* Apresentação visual da personagem */
     return Card(

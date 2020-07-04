@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:entrevista_pop/providers/character.dart';
+import 'package:entrevista_pop/widgets/character_detail.dart';
 
 class CharacterDetailScreen extends StatelessWidget {
   @override
@@ -13,6 +14,7 @@ class CharacterDetailScreen extends StatelessWidget {
           style: TextStyle(color: Theme.of(context).accentColor),
         ),
       ),
+      body: CharacterDetail(character),
     );
   }
 }
