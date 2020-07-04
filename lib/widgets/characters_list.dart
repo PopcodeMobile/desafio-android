@@ -38,8 +38,12 @@ class _CharactersListState extends State<CharactersList> {
   }
 
   controlScrollAndLoading() {
+    /**
+     * Escuta aos eventos de rolagem para detectar
+     * quando realizar o carregamento de novos itens.
+     */
     _scrollController.addListener(() {
-      final fetchTrigger = 0.9 * _scrollController.position.maxScrollExtent;
+      final fetchTrigger = 0.85 * _scrollController.position.maxScrollExtent;
       final nextPage = Provider.of<Characters>(context, listen: false).nextPage;
 
       if (_scrollController.position.pixels > fetchTrigger &&
@@ -71,23 +75,36 @@ class _CharactersListState extends State<CharactersList> {
       */
       child: Consumer<Characters>(
         builder: (context, characters, child) {
-          return ListView.builder(
-            controller: _scrollController..addListener(() {}),
-            itemCount: characters.totalCharactersCount,
-            itemBuilder: (context, index) {
-              final character = characters.characters.values.elementAt(index);
+          return Stack(
+            children: [
+              ListView.builder(
+                controller: _scrollController..addListener(() {}),
+                itemCount: characters.totalCharactersCount,
+                itemBuilder: (context, index) {
+                  final character =
+                      characters.characters.values.elementAt(index);
 
-              /**
-               * Provém os dados de cada personagem
-               * para o componente abaixo afim de evitar
-               * passagem de parâmetros desnecessários
-               * através de contrutor.
-               */
-              return ChangeNotifierProvider.value(
-                value: character,
-                child: CharacterTile(),
-              );
-            },
+                  /**
+                 * Provém os dados de cada personagem
+                 * para o componente abaixo afim de evitar
+                 * passagem de parâmetros desnecessários
+                 * através de contrutor.
+                 */
+                  return ChangeNotifierProvider.value(
+                    value: character,
+                    child: CharacterTile(),
+                  );
+                },
+              ),
+              if (scrollLoading)
+                Positioned.fill(
+                  bottom: 15,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+            ],
           );
         },
         /** 
