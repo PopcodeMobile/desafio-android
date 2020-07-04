@@ -1,4 +1,6 @@
 import 'package:entrevista_pop/providers/characters.dart';
+import 'package:entrevista_pop/utils/app_routes.dart';
+import 'package:entrevista_pop/widgets/character_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,14 +14,18 @@ class _CharactersListState extends State<CharactersList> {
 
   int currentPage = 1;
   bool scrollLoading = true;
+  Function _clearList;
   @override
   void initState() {
     super.initState();
     fetchCharacters(currentPage);
+
     this.controlScrollAndLoading();
+
+    _clearList = Provider.of<Characters>(context, listen: false).clearList;
   }
 
-  fetchCharacters(int page) async {
+  Future<void> fetchCharacters(int page) async {
     final Characters characters = Provider.of(context, listen: false);
     await characters.fetchCharacters(page);
 
@@ -52,13 +58,17 @@ class _CharactersListState extends State<CharactersList> {
   void dispose() {
     super.dispose();
     _scrollController.dispose();
-    Provider.of<Characters>(context, listen: false).clearList();
+    _clearList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
+      /** 
+      * Consome o provider de personagens maneira a evitar renderizações 
+      * desnecessárias do componente pai;
+      */
       child: Consumer<Characters>(
         builder: (context, characters, child) {
           return ListView.builder(
@@ -66,39 +76,25 @@ class _CharactersListState extends State<CharactersList> {
             itemCount: characters.totalCharactersCount,
             itemBuilder: (context, index) {
               final character = characters.characters.values.elementAt(index);
-              final gender =
-                  "${character.gender[0].toUpperCase()}${character.gender.substring(1)}";
 
-              return Card(
-                child: InkWell(
-                  onTap: () {},
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: Text(
-                          character.name
-                              .replaceAll(new RegExp(r"(\W)"), '')
-                              .substring(0, 2)
-                              .toUpperCase(),
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
-                        ),
-                      ),
-                      title: Text(character.name),
-                      subtitle: Row(children: [
-                        Text("${character.mass} KGs - "),
-                        Text("$gender - "),
-                        Text("${character.height} cm")
-                      ]),
-                    ),
-                  ),
-                ),
+              /**
+               * Provém os dados de cada personagem
+               * para o componente abaixo afim de evitar
+               * passagem de parâmetros desnecessários
+               * através de contrutor.
+               */
+              return ChangeNotifierProvider.value(
+                value: character,
+                child: CharacterTile(),
               );
             },
           );
         },
+        /** 
+         * Informa qual componente pai 
+         * para apresentaao dos dados consumidos a partir
+         * do provider.
+         */
         child: CharactersList(),
       ),
     );

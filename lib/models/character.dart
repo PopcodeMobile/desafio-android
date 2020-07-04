@@ -1,4 +1,6 @@
-class Character {
+import 'package:flutter/foundation.dart';
+
+class Character with ChangeNotifier {
   final String name;
   final String height;
   final String gender;
