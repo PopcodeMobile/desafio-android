@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:entrevista_pop/models/character.dart';
+import 'package:entrevista_pop/providers/character.dart';
 import 'package:entrevista_pop/utils/urls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;

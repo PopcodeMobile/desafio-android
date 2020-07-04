@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:entrevista_pop/models/character.dart';
+import 'package:entrevista_pop/providers/character.dart';
 import 'package:provider/provider.dart';
 
 class CharacterDetailScreen extends StatelessWidget {
