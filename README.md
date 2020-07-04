@@ -21,7 +21,7 @@ A lista de itens deve exibir as seguintes informações:
 - Genero [gender]
 - Peso [mass]
 
-Os dados devem ser salvos em banco de dados local para acesso offline e atualizados sempre que a tela for aberta.
+Os dados devem ser salvos em banco de dados local para acesso offline e atualizados sempre que a tela for aberta.00
 
 ### Detalhes do Personagem
 
