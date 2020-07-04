@@ -16,7 +16,7 @@ class Characters with ChangeNotifier {
     return _characters.values.length;
   }
 
-  int _nextPage = 2;
+  int _nextPage = 1;
 
   int get nextPage {
     return _nextPage;
@@ -27,13 +27,15 @@ class Characters with ChangeNotifier {
       final response = await http.get("${AppUrls.BASE_URL}/people/?page=$page");
       final responseBody = json.decode(response.body);
 
-      if (responseBody['next'] == null) {
+      if (["", null, false, 0].contains(responseBody) ||
+          responseBody['next'] == null) {
         _nextPage = null;
       } else {
         _nextPage++;
       }
 
-      if (_nextPage == null) {
+      if (_nextPage == null || responseBody['results'] == null) {
+        Future.value();
         return;
       }
 
@@ -69,6 +71,7 @@ class Characters with ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
+      print(e);
       throw "Impossível requisitar os dados no momento";
     }
   }

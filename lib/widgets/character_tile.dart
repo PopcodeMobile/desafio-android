@@ -30,15 +30,21 @@ class CharacterTile extends StatelessWidget {
               ),
             ),
             title: Text(character.name),
-            subtitle: Row(children: [
-              Text(character.mass != "unknown"
-                  ? "${character.mass} KG - "
-                  : 'N/A - '),
-              Text("$gender - "),
-              Text(character.height != "unknown"
-                  ? "${character.height} cm"
-                  : "N/A")
-            ]),
+            subtitle: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Text(character.mass != "unknown"
+                      ? "${character.mass} KG - "
+                      : 'N/A - '),
+                  Text("$gender - "),
+                  Text(character.height != "unknown"
+                      ? "${character.height} cm"
+                      : "N/A")
+                ],
+              ),
+            ),
             trailing: IconButton(
               onPressed: () {},
               icon: Icon(

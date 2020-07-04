@@ -12,13 +12,14 @@ class CharactersList extends StatefulWidget {
 class _CharactersListState extends State<CharactersList> {
   ScrollController _scrollController = ScrollController();
 
-  int currentPage = 1;
-  bool scrollLoading = true;
+  int _currentPage = 1;
+  bool _scrollLoading = true;
+  bool _loadingError = false;
   Function _clearList;
   @override
   void initState() {
     super.initState();
-    fetchCharacters(currentPage);
+    fetchCharacters(_currentPage);
 
     this.controlScrollAndLoading();
 
@@ -27,14 +28,28 @@ class _CharactersListState extends State<CharactersList> {
 
   Future<void> fetchCharacters(int page) async {
     final Characters characters = Provider.of(context, listen: false);
-    await characters.fetchCharacters(page);
+    try {
+      await characters.fetchCharacters(page);
+      if (_loadingError) {
+        setState(() {
+          _loadingError = false;
+        });
+      }
+      final nextPage = Provider.of<Characters>(context, listen: false).nextPage;
 
-    final nextPage = Provider.of<Characters>(context, listen: false).nextPage;
-
-    setState(() {
-      currentPage = nextPage;
-      scrollLoading = false;
-    });
+      setState(() {
+        _currentPage = nextPage;
+      });
+    } catch (error) {
+      print(error);
+      setState(() {
+        _loadingError = true;
+      });
+    } finally {
+      setState(() {
+        _scrollLoading = false;
+      });
+    }
   }
 
   controlScrollAndLoading() {
@@ -46,14 +61,14 @@ class _CharactersListState extends State<CharactersList> {
       final fetchTrigger = 0.85 * _scrollController.position.maxScrollExtent;
       final nextPage = Provider.of<Characters>(context, listen: false).nextPage;
 
-      if (_scrollController.position.pixels > fetchTrigger &&
-          nextPage != null &&
-          !scrollLoading) {
+      if (nextPage != null &&
+          _scrollController.position.pixels > fetchTrigger &&
+          !_scrollLoading) {
         setState(() {
-          scrollLoading = true;
+          _scrollLoading = true;
         });
 
-        fetchCharacters(currentPage);
+        fetchCharacters(_currentPage);
       }
     });
   }
@@ -67,52 +82,82 @@ class _CharactersListState extends State<CharactersList> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      /** 
-      * Consome o provider de personagens maneira a evitar renderizações 
-      * desnecessárias do componente pai;
-      */
-      child: Consumer<Characters>(
-        builder: (context, characters, child) {
-          return Stack(
-            children: [
-              ListView.builder(
-                controller: _scrollController..addListener(() {}),
-                itemCount: characters.totalCharactersCount,
-                itemBuilder: (context, index) {
-                  final character =
-                      characters.characters.values.elementAt(index);
+    final _characters = Provider.of<Characters>(context, listen: false);
 
-                  /**
-                 * Provém os dados de cada personagem
-                 * para o componente abaixo afim de evitar
-                 * passagem de parâmetros desnecessários
-                 * através de contrutor.
-                 */
-                  return ChangeNotifierProvider.value(
-                    value: character,
-                    child: CharacterTile(),
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {
+          _currentPage = 1;
+        });
+        _clearList();
+        await fetchCharacters(_currentPage);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        /** 
+        * Consome o provider de personagens maneira a evitar renderizações 
+        * desnecessárias do componente pai;
+        */
+        child: _loadingError && _characters.totalCharactersCount == 0
+            ? Center(
+                child: Text('Impossível carregar a lista de personagens.'),
+              )
+            : Consumer<Characters>(
+                builder: (context, characters, child) {
+                  return Stack(
+                    children: [
+                      ListView.builder(
+                        controller: _scrollController..addListener(() {}),
+                        itemCount: characters.totalCharactersCount,
+                        itemBuilder: (context, index) {
+                          final character =
+                              characters.characters.values.elementAt(index);
+
+                          /**
+                           * Provém os dados de cada personagem
+                           * para o componente abaixo afim de evitar
+                           * passagem de parâmetros desnecessários
+                           * através de contrutor.
+                           */
+                          return ChangeNotifierProvider.value(
+                            value: character,
+                            child: CharacterTile(),
+                          );
+                        },
+                      ),
+                      if (_scrollLoading)
+                        Positioned.fill(
+                          bottom: 15,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        blurRadius: 1,
+                                        color: Colors.black,
+                                        offset: Offset.fromDirection(1, 1),
+                                        spreadRadius: 1)
+                                  ],
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: CircularProgressIndicator(
+                                  backgroundColor: Colors.white,
+                                )),
+                          ),
+                        ),
+                    ],
                   );
                 },
+                /** 
+           * Informa qual componente pai 
+           * para apresentaao dos dados consumidos a partir
+           * do provider.
+           */
+                child: CharactersList(),
               ),
-              if (scrollLoading)
-                Positioned.fill(
-                  bottom: 15,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-            ],
-          );
-        },
-        /** 
-         * Informa qual componente pai 
-         * para apresentaao dos dados consumidos a partir
-         * do provider.
-         */
-        child: CharactersList(),
       ),
     );
   }
