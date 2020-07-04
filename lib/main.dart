@@ -1,4 +1,6 @@
+import 'package:entrevista_pop/providers/characters.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:entrevista_pop/utils/app_routes.dart';
 
@@ -6,7 +8,12 @@ import 'package:entrevista_pop/screens/favorites_screen.dart';
 import 'package:entrevista_pop/screens/home_screen.dart';
 
 void main() {
-  runApp(StarWarsWikiApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => Characters(),
+      child: StarWarsWikiApp(),
+    ),
+  );
 }
 
 class StarWarsWikiApp extends StatelessWidget {

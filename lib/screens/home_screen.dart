@@ -1,3 +1,4 @@
+import 'package:entrevista_pop/widgets/characters_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:entrevista_pop/widgets/app_drawer.dart';
@@ -14,6 +15,7 @@ class HomeScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
+        body: CharactersList(),
         drawer: ApplicationDrawer(),
       ),
     );
