@@ -83,7 +83,7 @@ class Characters with ChangeNotifier {
 
       //   _characters[person['url']] = character;
       //   notifyListeners();
-      _characters = await fetch(responseBody);
+      _characters.addAll(await fetch(responseBody));
       charactersListBox.put('list', _characters);
       // });
 
@@ -112,7 +112,10 @@ class Characters with ChangeNotifier {
         // return {};
       }
 
-      (responseBody['results'] as List<dynamic>).forEach((person) async {
+      for (int i = 0;
+          i < (responseBody['results'] as List<dynamic>).length;
+          i++) {
+        final person = (responseBody['results'] as List<dynamic>)[i];
         final homeworldReponse = await http.get(person['homeworld']);
         final String homeWorld = json.decode(homeworldReponse.body)['name'];
 
@@ -140,12 +143,10 @@ class Characters with ChangeNotifier {
         );
 
         characters[person['url']] = character;
-        notifyListeners();
-      });
-      return characters;
+      }
+      notifyListeners();
 
-      // notifyListeners();
-      // return characters;
+      return characters;
     } catch (e) {
       throw "Impossível requisitar os dados no momento";
     }
@@ -170,13 +171,24 @@ class Characters with ChangeNotifier {
 
   Map<String, Character> get searchResult => _searchResult;
 
-  Future<void> search(String name) async {
-    final response = await http.get("${AppUrls.BASE_URL}/people/?search=$name");
+  Future<void> search(String name, int page) async {
+    final response =
+        await http.get("${AppUrls.BASE_URL}/people/?search=$name&page=$page");
     final responseBody = json.decode(response.body);
 
-    _searchResult = await fetch(responseBody);
+    if (responseBody['previous'] == null && responseBody['next'] == null) {
+      print('pagina única');
+      _nextPage = null;
+      clearSearch();
+    } else if (responseBody['next'] == null) {
+      print('ultima pagina');
+      _nextPage = null;
+    } else {
+      _nextPage = page + 1;
+      print(nextPage);
+    }
 
-    notifyListeners();
+    _searchResult.addAll(await fetch(responseBody));
   }
 
   void clearSearch() {

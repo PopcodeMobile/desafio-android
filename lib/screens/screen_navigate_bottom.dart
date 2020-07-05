@@ -29,7 +29,8 @@ class NavigateBottomScreenState extends State<NavigateBottomScreen> {
           onTap: (index) {
             if (index != 2) {
               characters.clearSearch();
-            } else if (index == 1) {
+            }
+            if (index == 1) {
               characters.setFavorites();
             }
             setState(() {
