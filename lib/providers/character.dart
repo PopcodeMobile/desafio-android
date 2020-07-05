@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class Character with ChangeNotifier {
+  final String id;
   final String name;
   final String height;
   final String gender;
@@ -12,7 +13,10 @@ class Character with ChangeNotifier {
   final String homeworld;
   final String species;
 
+  bool isFavorite = false;
+
   Character({
+    this.id,
     this.name,
     this.height,
     this.gender,
@@ -24,4 +28,11 @@ class Character with ChangeNotifier {
     this.homeworld,
     this.species,
   });
+
+  Future<void> toggleAsFavorite() async {
+    isFavorite = !isFavorite;
+
+    notifyListeners();
+    return;
+  }
 }

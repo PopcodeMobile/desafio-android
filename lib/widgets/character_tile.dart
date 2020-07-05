@@ -11,7 +11,7 @@ class CharacterTile extends StatelessWidget {
      * Recebe a personagem a partir do provider definido
      * um nível acima.  
      */
-    final Character character = Provider.of(context, listen: false);
+    final Character character = Provider.of(context, listen: true);
     final gender = capitalize(character.gender);
 
     /* Apresentação visual da personagem */
@@ -46,10 +46,12 @@ class CharacterTile extends StatelessWidget {
               ),
             ),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: character.toggleAsFavorite,
               icon: Icon(
                 Icons.star,
-                color: Theme.of(context).primaryColor,
+                color: character.isFavorite
+                    ? Theme.of(context).accentColor
+                    : Theme.of(context).primaryColor,
               ),
             ),
           ),

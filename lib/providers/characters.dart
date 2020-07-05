@@ -53,6 +53,7 @@ class Characters with ChangeNotifier {
         }
 
         final character = Character(
+          id: person['url'],
           name: person['name'],
           birth_year: person['birth_year'],
           eye_color: person['eye_color'],
