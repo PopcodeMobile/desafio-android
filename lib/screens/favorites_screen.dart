@@ -1,8 +1,6 @@
 import 'package:entrevista_pop/widgets/favorite_characters_list.dart';
 import 'package:flutter/material.dart';
 
-import 'package:entrevista_pop/widgets/app_drawer.dart';
-
 class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,7 +14,6 @@ class FavoritesScreen extends StatelessWidget {
           ),
         ),
         body: FavoriteCharactersList(),
-        drawer: ApplicationDrawer(),
       ),
     );
   }

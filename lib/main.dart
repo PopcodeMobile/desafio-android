@@ -1,3 +1,4 @@
+import 'package:entrevista_pop/screens/screen_navigate_bottom.dart';
 import 'package:entrevista_pop/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -60,9 +61,8 @@ class _StarWarsWikiAppState extends State<StarWarsWikiApp> {
         primaryColor: Colors.black,
         accentColor: Colors.yellow[600],
       ),
+      home: NavigateBottomScreen(),
       routes: {
-        AppRoutes.HOME: (ctx) => HomeScreen(),
-        AppRoutes.FAVORITES: (ctx) => FavoritesScreen(),
         AppRoutes.CHARACTER_DETAIL: (ctx) => CharacterDetailScreen(),
       },
     );
