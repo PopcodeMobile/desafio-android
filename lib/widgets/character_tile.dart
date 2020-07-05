@@ -1,10 +1,27 @@
-import 'package:entrevista_pop/providers/character.dart';
-import 'package:entrevista_pop/utils/app_routes.dart';
-import 'package:entrevista_pop/utils/functions.dart';
 import 'package:flutter/material.dart';
+
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
-class CharacterTile extends StatelessWidget {
+import 'package:entrevista_pop/providers/character.dart';
+import 'package:entrevista_pop/utils/app_routes.dart';
+import 'package:entrevista_pop/utils/constants.dart';
+import 'package:entrevista_pop/utils/functions.dart';
+
+class CharacterTile extends StatefulWidget {
+  @override
+  _CharacterTileState createState() => _CharacterTileState();
+}
+
+class _CharacterTileState extends State<CharacterTile> {
+  Box<String> favoriteBox;
+
+  @override
+  void initState() {
+    super.initState();
+    favoriteBox = Hive.box(Constants.favoritesBox);
+  }
+
   @override
   Widget build(BuildContext context) {
     /**
@@ -46,10 +63,10 @@ class CharacterTile extends StatelessWidget {
               ),
             ),
             trailing: IconButton(
-              onPressed: character.toggleAsFavorite,
+              onPressed: () => character.toggleAsFavorite(favoriteBox, context),
               icon: Icon(
                 Icons.star,
-                color: character.isFavorite
+                color: favoriteBox.get(character.id) != null
                     ? Theme.of(context).accentColor
                     : Theme.of(context).primaryColor,
               ),

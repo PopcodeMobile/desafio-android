@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 
 class Character with ChangeNotifier {
   final String id;
@@ -29,8 +32,21 @@ class Character with ChangeNotifier {
     this.species,
   });
 
-  Future<void> toggleAsFavorite() async {
+  Future<void> toggleAsFavorite([Box boxInstance, BuildContext context]) async {
     isFavorite = !isFavorite;
+
+    if (!isFavorite && boxInstance.containsKey(id)) {
+      boxInstance.delete(id);
+    } else {
+      boxInstance.put(id, id);
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Favorito adicionado com sucesso!'),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: () {},
+        ),
+      ));
+    }
 
     notifyListeners();
     return;
