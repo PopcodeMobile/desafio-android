@@ -1,8 +1,11 @@
-import 'package:entrevista_pop/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:hive/hive.dart';
+
+import 'package:entrevista_pop/utils/constants.dart';
 
 @HiveType()
 class Character with ChangeNotifier {
@@ -33,21 +36,55 @@ class Character with ChangeNotifier {
   });
 
   Future<void> toggleAsFavorite([BuildContext context]) async {
-    final Box<Character> locaBox = Hive.box(Constants.favoritesBox);
+    final String baseURL = 'http://polls.apiblueprint.org/favorite';
+    final Box<Character> favoritesBox = Hive.box(Constants.favoritesBox);
+    final Box<String> favoritesApiRequestCountBox =
+        Hive.box(Constants.favoritesApiRequestCountBox);
 
-    if (locaBox.containsKey(id)) {
-      locaBox.delete(id);
+    final Box<Character> favoritesApiFaieldRequestsBox =
+        Hive.box(Constants.favoritesApiFaieldRequestsBox);
+
+    if (favoritesBox.containsKey(id)) {
+      favoritesBox.delete(id);
     } else {
       try {
-        locaBox.put(id, this);
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('Favorito adicionado com sucesso!'),
-          duration: Duration(seconds: 2),
-          action: SnackBarAction(
-            label: 'OK',
-            onPressed: () {},
-          ),
-        ));
+        favoritesBox.put(id, this);
+        favoritesApiRequestCountBox.add(id);
+        final apiRequestQuantity = favoritesApiRequestCountBox.keys.length;
+
+        try {
+          if (apiRequestQuantity % 2 == 0) {
+            await http.post(
+              "$baseURL/$id",
+              headers: {'Prefer': 'status=400'},
+            );
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text('Favorito adicionado com sucesso!'),
+              duration: Duration(seconds: 2),
+              action: SnackBarAction(
+                label: 'OK',
+                onPressed: () {},
+              ),
+            ));
+          } else {
+            await http.post("$baseURL/$id");
+          }
+        } catch (e) {
+          favoritesApiFaieldRequestsBox.put(id, this);
+          favoritesBox.delete(id);
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+              'Erro ao adicionar favorito!',
+              style: TextStyle(color: Theme.of(context).errorColor),
+            ),
+            duration: Duration(seconds: 2),
+            action: SnackBarAction(
+              textColor: Theme.of(context).errorColor,
+              label: 'OK',
+              onPressed: () {},
+            ),
+          ));
+        }
       } catch (error) {}
     }
 

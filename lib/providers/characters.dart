@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:connectivity/connectivity.dart';
 import 'package:entrevista_pop/providers/character.dart';
 import 'package:entrevista_pop/utils/constants.dart';
 import 'package:entrevista_pop/utils/urls.dart';

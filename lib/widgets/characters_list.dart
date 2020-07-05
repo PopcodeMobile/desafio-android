@@ -22,9 +22,8 @@ class _CharactersListState extends State<CharactersList> {
   @override
   void initState() {
     super.initState();
-    _charactersListBox = Hive.box(Constants.charactersListBox);
-
     this.controlScrollAndLoading();
+    _charactersListBox = Hive.box(Constants.charactersListBox);
 
     _clearList = Provider.of<Characters>(context, listen: false).clearList;
 
@@ -32,7 +31,9 @@ class _CharactersListState extends State<CharactersList> {
       if (!value && _charactersListBox.get('list') != null) {
         loadCharactersFromLocalStorage();
       } else {
-        _clearList();
+        setState(() {
+          _clearList();
+        });
         fetchCharacters(_currentPage);
       }
     });

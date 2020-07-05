@@ -1,6 +1,8 @@
+import 'package:entrevista_pop/providers/characters.dart';
 import 'package:flutter/material.dart';
 
 import 'package:entrevista_pop/utils/app_routes.dart';
+import 'package:provider/provider.dart';
 
 class ApplicationDrawer extends StatelessWidget {
   @override
@@ -26,6 +28,7 @@ class ApplicationDrawer extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
+                Provider.of<Characters>(context, listen: false).setFavorites();
                 Navigator.of(context).pushReplacementNamed(AppRoutes.FAVORITES);
               },
               child: ListTile(

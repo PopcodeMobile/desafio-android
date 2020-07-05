@@ -1,3 +1,4 @@
+import 'package:entrevista_pop/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +19,12 @@ void main() async {
   Hive.registerAdapter(CharacterAdapter());
   // await Hive.deleteBoxFromDisk(Constants.favoritesBox);
   // await Hive.deleteBoxFromDisk(Constants.charactersListBox);
+  // await Hive.deleteBoxFromDisk(Constants.favoritesApiRequestCountBox);
+  // await Hive.deleteBoxFromDisk(Constants.favoritesApiFaieldRequestsBox);
   await Hive.openBox<Character>(Constants.favoritesBox);
   await Hive.openBox<Map<dynamic, dynamic>>(Constants.charactersListBox);
+  await Hive.openBox<String>(Constants.favoritesApiRequestCountBox);
+  await Hive.openBox<Character>(Constants.favoritesApiFaieldRequestsBox);
 
   runApp(
     ChangeNotifierProvider(
@@ -27,6 +32,8 @@ void main() async {
       child: StarWarsWikiApp(),
     ),
   );
+
+  resendFaieldRequests();
 }
 
 class StarWarsWikiApp extends StatefulWidget {
@@ -35,6 +42,11 @@ class StarWarsWikiApp extends StatefulWidget {
 }
 
 class _StarWarsWikiAppState extends State<StarWarsWikiApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   void dispose() {
     super.dispose();
