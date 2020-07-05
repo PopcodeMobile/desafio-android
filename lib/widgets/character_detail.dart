@@ -1,16 +1,49 @@
+import 'package:entrevista_pop/widgets/request_error_message.dart';
 import 'package:flutter/material.dart';
 
 import 'package:entrevista_pop/providers/character.dart';
 import 'package:entrevista_pop/utils/functions.dart';
 
-class CharacterDetail extends StatelessWidget {
+class CharacterDetail extends StatefulWidget {
   final Character _character;
 
   CharacterDetail(this._character);
 
   @override
+  _CharacterDetailState createState() => _CharacterDetailState();
+}
+
+class _CharacterDetailState extends State<CharacterDetail> {
+  bool _loading = true;
+  bool _loadingError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getServerInfo();
+  }
+
+  Future<void> getServerInfo() async {
+    try {
+      await Future.wait([
+        widget._character.fetchSpecieInfo(),
+        widget._character.fetchHomeWorldInfo()
+      ]);
+    } catch (e) {
+      setState(() {
+        _loadingError = true;
+      });
+    } finally {
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
+
+  fetchInfo() {}
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    Widget mainWidget = SingleChildScrollView(
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.all(15),
@@ -33,7 +66,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          _character.name,
+                          widget._character.name,
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -50,7 +83,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${_character.mass} kg",
+                          "${widget._character.mass} kg",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -75,7 +108,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${_character.height} cm",
+                          "${widget._character.height} cm",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -92,7 +125,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${capitalize(_character.hair_color)} ",
+                          "${capitalize(widget._character.hair_color)} ",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -117,7 +150,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${capitalize(_character.skin_color)}",
+                          "${capitalize(widget._character.skin_color)}",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -134,7 +167,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${capitalize(_character.eye_color)} ",
+                          "${capitalize(widget._character.eye_color)} ",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -159,7 +192,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${_character.birth_year}",
+                          "${widget._character.birth_year}",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -176,7 +209,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${capitalize(_character.gender)} ",
+                          "${capitalize(widget._character.gender)} ",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -201,7 +234,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${capitalize(_character.homeworld)}",
+                          "${capitalize(widget._character.homeworld)}",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -218,7 +251,7 @@ class CharacterDetail extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${capitalize(_character.species)} ",
+                          "${capitalize(widget._character.species)} ",
                           style: TextStyle(fontSize: 16),
                         ),
                       ],
@@ -231,5 +264,10 @@ class CharacterDetail extends StatelessWidget {
         ),
       ),
     );
+
+    if (_loadingError) {
+      mainWidget = RequestErrorMessage();
+    }
+    return _loading ? Center(child: CircularProgressIndicator()) : mainWidget;
   }
 }

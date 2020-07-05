@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:entrevista_pop/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -37,6 +39,23 @@ class Character with ChangeNotifier {
     this.species,
   });
 
+  Future<void> fetchSpecieInfo() async {
+    if (species.startsWith('http')) {
+      final response = await http.get(species);
+      final responseBody = json.decode(response.body);
+      species = responseBody['name'];
+    }
+  }
+
+  Future<void> fetchHomeWorldInfo() async {
+    if (homeworld.startsWith('http')) {
+      final response = await http.get(homeworld);
+      final responseBody = json.decode(response.body);
+
+      homeworld = responseBody['name'];
+    }
+  }
+
   Future<void> toggleAsFavorite([BuildContext context]) async {
     final Box<Character> favoritesBox = Hive.box(Constants.favoritesBox);
     final Box<String> favoritesApiRequestCountBox =
@@ -53,10 +72,9 @@ class Character with ChangeNotifier {
         favoritesApiRequestCountBox.add(id);
         final apiRequestQuantity = favoritesApiRequestCountBox.keys.length;
 
-        Response response;
         try {
           if (apiRequestQuantity % 2 == 0) {
-            response = await http.post(
+            await http.post(
               "${AppUrls.FAVORITE_URL}/$id/",
               headers: {'Prefer': 'status=400'},
             );
@@ -69,7 +87,7 @@ class Character with ChangeNotifier {
               ),
             ));
           } else {
-            response = await http.post("${AppUrls.FAVORITE_URL}/$id/");
+            await http.post("${AppUrls.FAVORITE_URL}/$id/");
           }
         } catch (e) {
           favoritesApiFaieldRequestsBox.put(id, this);

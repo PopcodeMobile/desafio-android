@@ -116,16 +116,17 @@ class Characters with ChangeNotifier {
           i < (responseBody['results'] as List<dynamic>).length;
           i++) {
         final person = (responseBody['results'] as List<dynamic>)[i];
-        final homeworldReponse = await http.get(person['homeworld']);
-        final String homeWorld = json.decode(homeworldReponse.body)['name'];
+        // final homeworldReponse = await http.get(person['homeworld']);
+        // final String homeWorld = json.decode(homeworldReponse.body)['name'];
+        final String homeWorld = person['homeworld'];
 
         String specie = 'Human';
 
         if ((person['species'] as List<dynamic>).isNotEmpty) {
-          final specieReponse = await http.get(person['species'][0]);
-          final specieReponseBody = json.decode(specieReponse.body);
-
-          specie = specieReponseBody['name'];
+          // final specieReponse = await http.get(person['species'][0]);
+          // final specieReponseBody = json.decode(specieReponse.body);
+          specie = person['species'][0];
+          // specie = specieReponseBody['name'];
         }
 
         final character = Character(
