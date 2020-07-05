@@ -1,11 +1,17 @@
 import 'dart:convert';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:entrevista_pop/providers/character.dart';
+import 'package:entrevista_pop/utils/constants.dart';
 import 'package:entrevista_pop/utils/urls.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 class Characters with ChangeNotifier {
+  Box<Map<dynamic, dynamic>> charactersListBox =
+      Hive.box(Constants.charactersListBox);
+
   Map<String, Character> _characters = {};
 
   Map<String, Character> get characters {
@@ -20,6 +26,10 @@ class Characters with ChangeNotifier {
 
   int get nextPage {
     return _nextPage;
+  }
+
+  void loadCharactersFromLocalStorage() {
+    _characters = charactersListBox.get('list').cast<String, Character>();
   }
 
   Future<void> fetchCharacters([int page = 1]) async {
@@ -68,16 +78,17 @@ class Characters with ChangeNotifier {
 
         _characters[person['url']] = character;
         notifyListeners();
+
+        charactersListBox.put('list', _characters);
       });
 
       notifyListeners();
     } catch (e) {
-      print(e);
       throw "Impossível requisitar os dados no momento";
     }
   }
 
-  void clearList() {
+  void clearList() async {
     _characters.clear();
   }
 }

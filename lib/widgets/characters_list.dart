@@ -1,7 +1,10 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:entrevista_pop/providers/characters.dart';
 import 'package:entrevista_pop/utils/app_routes.dart';
+import 'package:entrevista_pop/utils/constants.dart';
 import 'package:entrevista_pop/widgets/character_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 class CharactersList extends StatefulWidget {
@@ -11,6 +14,7 @@ class CharactersList extends StatefulWidget {
 
 class _CharactersListState extends State<CharactersList> {
   ScrollController _scrollController = ScrollController();
+  Box<Map<dynamic, dynamic>> _charactersListBox;
 
   int _currentPage = 1;
   bool _scrollLoading = true;
@@ -19,11 +23,35 @@ class _CharactersListState extends State<CharactersList> {
   @override
   void initState() {
     super.initState();
-    fetchCharacters(_currentPage);
+    _charactersListBox = Hive.box(Constants.charactersListBox);
 
     this.controlScrollAndLoading();
 
     _clearList = Provider.of<Characters>(context, listen: false).clearList;
+
+    _isConnectionActive().then((value) {
+      if (!value && _charactersListBox.get('list') != null) {
+        loadCharactersFromLocalStorage();
+      } else {
+        _clearList();
+        fetchCharacters(_currentPage);
+      }
+    });
+  }
+
+  void loadCharactersFromLocalStorage() {
+    Provider.of<Characters>(context, listen: false)
+        .loadCharactersFromLocalStorage();
+    setState(() {
+      _scrollLoading = false;
+    });
+  }
+
+  Future<bool> _isConnectionActive() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+
+    return connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi;
   }
 
   Future<void> fetchCharacters(int page) async {
@@ -57,27 +85,30 @@ class _CharactersListState extends State<CharactersList> {
      * Escuta aos eventos de rolagem para detectar
      * quando realizar o carregamento de novos itens.
      */
-    _scrollController.addListener(() {
-      final fetchTrigger = 0.85 * _scrollController.position.maxScrollExtent;
-      final nextPage = Provider.of<Characters>(context, listen: false).nextPage;
+    _scrollController.addListener(() async {
+      if (await _isConnectionActive()) {
+        final fetchTrigger = 0.85 * _scrollController.position.maxScrollExtent;
+        final nextPage =
+            Provider.of<Characters>(context, listen: false).nextPage;
 
-      if (nextPage != null &&
-          _scrollController.position.pixels > fetchTrigger &&
-          !_scrollLoading) {
-        setState(() {
-          _scrollLoading = true;
-        });
+        if (nextPage != null &&
+            _scrollController.position.pixels > fetchTrigger &&
+            !_scrollLoading) {
+          setState(() {
+            _scrollLoading = true;
+          });
 
-        fetchCharacters(_currentPage);
+          fetchCharacters(_currentPage);
+        }
       }
     });
   }
 
   @override
   void dispose() {
-    super.dispose();
     _scrollController.dispose();
-    _clearList();
+
+    super.dispose();
   }
 
   @override
@@ -86,11 +117,19 @@ class _CharactersListState extends State<CharactersList> {
 
     return RefreshIndicator(
       onRefresh: () async {
-        setState(() {
-          _currentPage = 1;
-        });
-        _clearList();
-        await fetchCharacters(_currentPage);
+        if (await _isConnectionActive()) {
+          setState(() {
+            _currentPage = 1;
+          });
+          _clearList();
+          await fetchCharacters(_currentPage);
+        } else {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text('Não é possível detectar conexão à internet!'),
+            duration: Duration(seconds: 2),
+            action: SnackBarAction(label: 'OK', onPressed: () {}),
+          ));
+        }
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

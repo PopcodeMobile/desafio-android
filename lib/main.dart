@@ -11,9 +11,15 @@ import 'package:entrevista_pop/screens/character_detail_screen.dart';
 import 'package:entrevista_pop/screens/favorites_screen.dart';
 import 'package:entrevista_pop/screens/home_screen.dart';
 
+import 'providers/character.dart';
+
 void main() async {
   await Hive.initFlutter();
+  Hive.registerAdapter(CharacterAdapter());
+  // await Hive.deleteBoxFromDisk(Constants.favoritesBox);
+  // await Hive.deleteBoxFromDisk(Constants.charactersListBox);
   await Hive.openBox<String>(Constants.favoritesBox);
+  await Hive.openBox<Map<dynamic, dynamic>>(Constants.charactersListBox);
   runApp(
     ChangeNotifierProvider(
       create: (_) => Characters(),

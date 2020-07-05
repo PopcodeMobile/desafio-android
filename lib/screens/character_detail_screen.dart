@@ -8,7 +8,6 @@ import 'package:hive/hive.dart';
 class CharacterDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('built');
     final Character character = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
