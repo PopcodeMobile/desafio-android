@@ -1,3 +1,4 @@
+import 'package:entrevista_pop/utils/urls.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,8 +10,6 @@ String capitalize(String string) {
 }
 
 Future<void> resendFaieldRequests() async {
-  final String baseURL = 'http://polls.apiblueprint.org/favorite';
-
   Box<Character> favoritesApiFaieldRequestsBox =
       Hive.box(Constants.favoritesApiFaieldRequestsBox);
 
@@ -26,11 +25,11 @@ Future<void> resendFaieldRequests() async {
       try {
         if (apiRequestQuantity % 2 == 0) {
           await http.post(
-            "$baseURL/$key",
+            "${AppUrls.FAVORITE_URL}/$key",
             headers: {'Prefer': 'status=400'},
           );
         } else {
-          await http.post("$baseURL/$key");
+          await http.post("${AppUrls.FAVORITE_URL}/$key");
         }
         favoritesApiRequestCountBox.add(key);
         favoritesBox.put(key, favoritesApiFaieldRequestsBox.get(key));

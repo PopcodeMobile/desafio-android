@@ -1,3 +1,4 @@
+import 'package:entrevista_pop/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -6,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 
 import 'package:entrevista_pop/utils/constants.dart';
+import 'package:http/http.dart';
 
 @HiveType()
 class Character with ChangeNotifier {
@@ -36,7 +38,6 @@ class Character with ChangeNotifier {
   });
 
   Future<void> toggleAsFavorite([BuildContext context]) async {
-    final String baseURL = 'http://polls.apiblueprint.org/favorite';
     final Box<Character> favoritesBox = Hive.box(Constants.favoritesBox);
     final Box<String> favoritesApiRequestCountBox =
         Hive.box(Constants.favoritesApiRequestCountBox);
@@ -52,10 +53,11 @@ class Character with ChangeNotifier {
         favoritesApiRequestCountBox.add(id);
         final apiRequestQuantity = favoritesApiRequestCountBox.keys.length;
 
+        Response response;
         try {
           if (apiRequestQuantity % 2 == 0) {
-            await http.post(
-              "$baseURL/$id",
+            response = await http.post(
+              "${AppUrls.FAVORITE_URL}/$id/",
               headers: {'Prefer': 'status=400'},
             );
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -67,7 +69,7 @@ class Character with ChangeNotifier {
               ),
             ));
           } else {
-            await http.post("$baseURL/$id");
+            response = await http.post("${AppUrls.FAVORITE_URL}/$id/");
           }
         } catch (e) {
           favoritesApiFaieldRequestsBox.put(id, this);
