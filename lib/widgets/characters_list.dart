@@ -69,7 +69,6 @@ class _CharactersListState extends State<CharactersList> {
         _currentPage = nextPage;
       });
     } catch (error) {
-      print(error);
       setState(() {
         _loadingError = true;
       });

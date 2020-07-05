@@ -177,15 +177,12 @@ class Characters with ChangeNotifier {
     final responseBody = json.decode(response.body);
 
     if (responseBody['previous'] == null && responseBody['next'] == null) {
-      print('pagina única');
       _nextPage = null;
       clearSearch();
     } else if (responseBody['next'] == null) {
-      print('ultima pagina');
       _nextPage = null;
     } else {
       _nextPage = page + 1;
-      print(nextPage);
     }
 
     _searchResult.addAll(await fetch(responseBody));

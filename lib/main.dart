@@ -1,5 +1,3 @@
-import 'package:entrevista_pop/screens/screen_navigate_bottom.dart';
-import 'package:entrevista_pop/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,20 +6,19 @@ import 'package:entrevista_pop/providers/characters.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:entrevista_pop/utils/constants.dart';
 import 'package:entrevista_pop/screens/character_detail_screen.dart';
-import 'package:entrevista_pop/screens/favorites_screen.dart';
-import 'package:entrevista_pop/screens/home_screen.dart';
+import 'package:entrevista_pop/screens/screen_navigate_bottom.dart';
+
+import 'package:entrevista_pop/utils/functions.dart';
+import 'package:entrevista_pop/utils/constants.dart';
 
 import 'providers/character.dart';
 
 void main() async {
   await Hive.initFlutter();
+
   Hive.registerAdapter(CharacterAdapter());
-  // await Hive.deleteBoxFromDisk(Constants.favoritesBox);
-  // await Hive.deleteBoxFromDisk(Constants.charactersListBox);
-  // await Hive.deleteBoxFromDisk(Constants.favoritesApiRequestCountBox);
-  // await Hive.deleteBoxFromDisk(Constants.favoritesApiFaieldRequestsBox);
+
   await Hive.openBox<Character>(Constants.favoritesBox);
   await Hive.openBox<Map<dynamic, dynamic>>(Constants.charactersListBox);
   await Hive.openBox<String>(Constants.favoritesApiRequestCountBox);
