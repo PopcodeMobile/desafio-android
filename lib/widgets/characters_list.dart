@@ -1,6 +1,5 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:entrevista_pop/providers/characters.dart';
-import 'package:entrevista_pop/utils/app_routes.dart';
 import 'package:entrevista_pop/utils/constants.dart';
 import 'package:entrevista_pop/widgets/character_tile.dart';
 import 'package:flutter/material.dart';

@@ -1,3 +1,4 @@
+import 'package:entrevista_pop/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/foundation.dart';
@@ -31,19 +32,23 @@ class Character with ChangeNotifier {
     this.species,
   });
 
-  Future<void> toggleAsFavorite([Box boxInstance, BuildContext context]) async {
-    if (boxInstance.containsKey(id)) {
-      boxInstance.delete(id);
+  Future<void> toggleAsFavorite([BuildContext context]) async {
+    final Box<Character> locaBox = Hive.box(Constants.favoritesBox);
+
+    if (locaBox.containsKey(id)) {
+      locaBox.delete(id);
     } else {
-      boxInstance.put(id, id);
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Favorito adicionado com sucesso!'),
-        duration: Duration(seconds: 2),
-        action: SnackBarAction(
-          label: 'OK',
-          onPressed: () {},
-        ),
-      ));
+      try {
+        locaBox.put(id, this);
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('Favorito adicionado com sucesso!'),
+          duration: Duration(seconds: 2),
+          action: SnackBarAction(
+            label: 'OK',
+            onPressed: () {},
+          ),
+        ));
+      } catch (error) {}
     }
 
     notifyListeners();

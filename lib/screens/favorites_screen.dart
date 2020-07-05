@@ -1,3 +1,4 @@
+import 'package:entrevista_pop/widgets/favorite_characters_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:entrevista_pop/widgets/app_drawer.dart';
@@ -14,6 +15,7 @@ class FavoritesScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
+        body: FavoriteCharactersList(),
         drawer: ApplicationDrawer(),
       ),
     );

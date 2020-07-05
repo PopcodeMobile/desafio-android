@@ -18,8 +18,9 @@ void main() async {
   Hive.registerAdapter(CharacterAdapter());
   // await Hive.deleteBoxFromDisk(Constants.favoritesBox);
   // await Hive.deleteBoxFromDisk(Constants.charactersListBox);
-  await Hive.openBox<String>(Constants.favoritesBox);
+  await Hive.openBox<Character>(Constants.favoritesBox);
   await Hive.openBox<Map<dynamic, dynamic>>(Constants.charactersListBox);
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => Characters(),

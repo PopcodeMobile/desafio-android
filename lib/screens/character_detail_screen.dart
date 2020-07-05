@@ -1,9 +1,11 @@
+import 'package:entrevista_pop/providers/characters.dart';
 import 'package:entrevista_pop/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:entrevista_pop/providers/character.dart';
 import 'package:entrevista_pop/widgets/character_detail.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 class CharacterDetailScreen extends StatelessWidget {
   @override
@@ -30,7 +32,7 @@ class FavoriteFloatButton extends StatefulWidget {
 }
 
 class _FavoriteFloatButtonState extends State<FavoriteFloatButton> {
-  Box<String> favoritesBox;
+  Box<Character> favoritesBox;
 
   @override
   void initState() {
@@ -50,7 +52,8 @@ class _FavoriteFloatButtonState extends State<FavoriteFloatButton> {
       ),
       onPressed: () {
         setState(() {
-          widget.character.toggleAsFavorite(favoritesBox, context);
+          widget.character.toggleAsFavorite(context);
+          Provider.of<Characters>(context, listen: false).setFavorites();
         });
       },
     );

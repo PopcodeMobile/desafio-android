@@ -12,6 +12,8 @@ class Characters with ChangeNotifier {
   Box<Map<dynamic, dynamic>> charactersListBox =
       Hive.box(Constants.charactersListBox);
 
+  Box<Character> favoritesCharactersBox = Hive.box(Constants.favoritesBox);
+
   Map<String, Character> _characters = {};
 
   Map<String, Character> get characters {
@@ -41,7 +43,11 @@ class Characters with ChangeNotifier {
           responseBody['next'] == null) {
         _nextPage = null;
       } else {
-        _nextPage++;
+        if (_nextPage != null) {
+          _nextPage++;
+        } else {
+          _nextPage = 1;
+        }
       }
 
       if (_nextPage == null || responseBody['results'] == null) {
@@ -86,6 +92,21 @@ class Characters with ChangeNotifier {
     } catch (e) {
       throw "Impossível requisitar os dados no momento";
     }
+  }
+
+  List<Character> _favoriteCharacters = [];
+
+  void setFavorites() {
+    _favoriteCharacters = favoritesCharactersBox.values.toList();
+    notifyListeners();
+  }
+
+  List<Character> get favoriteCharacters {
+    return _favoriteCharacters;
+  }
+
+  int get favoriteCharactersCount {
+    return _favoriteCharacters.length;
   }
 
   void clearList() async {

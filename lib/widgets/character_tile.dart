@@ -1,3 +1,4 @@
+import 'package:entrevista_pop/providers/characters.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hive/hive.dart';
@@ -9,12 +10,15 @@ import 'package:entrevista_pop/utils/constants.dart';
 import 'package:entrevista_pop/utils/functions.dart';
 
 class CharacterTile extends StatefulWidget {
+  final Function updateParentOnFavoriteToggle;
+
+  CharacterTile([this.updateParentOnFavoriteToggle]);
   @override
   _CharacterTileState createState() => _CharacterTileState();
 }
 
 class _CharacterTileState extends State<CharacterTile> {
-  Box<String> favoriteBox;
+  Box<Character> favoriteBox;
 
   @override
   void initState() {
@@ -28,7 +32,7 @@ class _CharacterTileState extends State<CharacterTile> {
      * Recebe a personagem a partir do provider definido
      * um nível acima.  
      */
-    final Character character = Provider.of(context, listen: true);
+    final Character character = Provider.of(context);
     final gender = capitalize(character.gender);
 
     /* Apresentação visual da personagem */
@@ -63,7 +67,10 @@ class _CharacterTileState extends State<CharacterTile> {
               ),
             ),
             trailing: IconButton(
-              onPressed: () => character.toggleAsFavorite(favoriteBox, context),
+              onPressed: () {
+                character.toggleAsFavorite(context);
+                Provider.of<Characters>(context, listen: false).setFavorites();
+              },
               icon: Icon(
                 Icons.star,
                 color: favoriteBox.get(character.id) != null
