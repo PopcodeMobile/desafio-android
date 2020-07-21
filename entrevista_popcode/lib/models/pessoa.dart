@@ -25,18 +25,18 @@ class Pessoa {
       this.specie,
       this.species});
 
-  factory Pessoa.fromJson(Map<String, dynamic> json) => Pessoa(
-        name: json['name'],
-        height: json['height'],
-        mass: json['mass'],
-        hairColor: json['hair_color'],
-        skinColor: json['skin_color'],
-        eyeColor: json['eye_color'],
-        birthYear: json['birth_year'],
-        gender: json['gender'],
-        homeWorld: json['homeworld'],
-        species: json['species'].cast<String>(),
-      );
+  Pessoa.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    height = json['height'];
+    mass = json['mass'];
+    hairColor = json['hair_color'];
+    skinColor = json['skin_color'];
+    eyeColor = json['eye_color'];
+    birthYear = json['birth_year'];
+    gender = json['gender'];
+    homeWorld = json['homeworld'];
+    species = json['species'].cast<String>();
+  }
 
   Map<String, dynamic> toJson() {
     return {

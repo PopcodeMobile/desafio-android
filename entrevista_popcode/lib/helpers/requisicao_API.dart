@@ -29,7 +29,10 @@ class RequisicaoApi {
 }
 
 List<Pessoa> parsePessoa(String responseBody) {
-  final parsed = jsonDecode(responseBody);
-  var results = parsed['results'];
-  return results.map<Pessoa>((json) => Pessoa.fromJson(json)).toList();
+  if (responseBody != "") {
+    final parsed = jsonDecode(responseBody);
+    var results = parsed['results'];
+    return results.map<Pessoa>((json) => Pessoa.fromJson(json)).toList();
+  }
+  return null;
 }

@@ -12,6 +12,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      // title: appTitle,
+      theme: new ThemeData(
+        primaryColor: Color.fromRGBO(58, 66, 86, 1.0),
+      ),
       routes: {
         '/': (context) => HomePage(
               title: 'Wiki Star Wars',

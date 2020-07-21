@@ -31,7 +31,7 @@ class _Personagem extends State<Personagem> {
   void _onLoading() async {
     await Future.delayed(Duration(milliseconds: 1000));
 
-    if (this.page < 9) {
+    if (this.page < 9 && widget.isSearching) {
       List<Pessoa> listPessoa =
           await RequisicaoApi().getPessoas(http.Client(), this.page);
       widget.personagens.addAll(listPessoa);
@@ -45,49 +45,49 @@ class _Personagem extends State<Personagem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-      body: SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: true,
-        header: WaterDropHeader(),
-        footer: CustomFooter(
-          builder: (BuildContext context, LoadStatus mode) {
-            Widget body;
-            if (mode == LoadStatus.idle) {
-              body = Text("pull up load");
-            } else if (mode == LoadStatus.loading) {
-              body = CupertinoActivityIndicator();
-            } else if (mode == LoadStatus.failed) {
-              body = Text("Falha ao carregar. Tente novamente!");
-            } else if (mode == LoadStatus.canLoading) {
-              body = Text("Solte para carregar mais");
-            } else {
-              body = Text("Não há mais dados");
-            }
-            return Container(
-              height: 55.0,
-              child: Center(child: body),
-            );
-          },
-        ),
-        controller: _refreshController,
-        onRefresh: _onRefresh,
-        onLoading: _onLoading,
-        child: _buildListItem(),
-        // child: ListView.builder(
-        // itemCount: widget.personagens.length,
-        //  itemBuilder: (context, index) {
-        //     Pessoa p = widget.personagens[index];
-        //    PessoaHelper().savePeople(p);
-        //    return Card(
-        //        child: Center(
-        //            child: ListTile(
-        //      title: Text(p.name),
-        //      subtitle: Text(p.birthYear),
-        //    )));
-        //   },
-      ),
-    );
+        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+        body: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
+          header: WaterDropHeader(),
+          footer: CustomFooter(
+            builder: (BuildContext context, LoadStatus mode) {
+              Widget body;
+              if (mode == LoadStatus.idle) {
+                body = Text("pull up load");
+              } else if (mode == LoadStatus.loading) {
+                body = CupertinoActivityIndicator();
+              } else if (mode == LoadStatus.failed) {
+                body = Text("Falha ao carregar. Tente novamente!");
+              } else if (mode == LoadStatus.canLoading) {
+                body = Text("Solte para carregar mais");
+              } else {
+                body = Text("Não há mais dados");
+              }
+              return Container(
+                height: 55.0,
+                child: Center(child: body),
+              );
+            },
+          ),
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          child: _buildListItem(),
+          //child: ListView.builder(
+          //  itemCount: widget.personagens.length,
+          //  itemBuilder: (context, index) {
+          //    Pessoa p = widget.personagens[index];
+          //    PessoaHelper().savePeople(p);
+          //   return Card(
+          //       child: Center(
+          //            child: ListTile(
+          //      title: Text(p.name),
+          //      subtitle: Text(p.birthYear),
+          //    )));
+          //  },
+          // ),
+        ));
   }
 
   Widget _buildListItem() {
@@ -115,8 +115,7 @@ class _Personagem extends State<Personagem> {
                         tag: "avatar_" + p.name,
                         child: CircleAvatar(
                           radius: 32,
-                          backgroundImage:
-                              NetworkImage('assets/images/dia-star-wars.jpg'),
+                          // backgroundImage: NetworkImage(record.photo),
                         ))),
                 title: Text(
                   p.name,

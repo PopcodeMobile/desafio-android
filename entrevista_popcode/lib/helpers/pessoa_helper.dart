@@ -41,8 +41,8 @@ class PessoaHelper extends DataBaseHelper<Pessoa> {
           nomeEspecie = await RequisicaoApi().getEspecie(people.species.first);
       } catch (e) {
         throw new Exception("Não foi possível realizar a requisição!");
+        //  }
       }
-      // }
 
       people.homeWorld = nomePlaneta;
       people.specie = nomeEspecie;
@@ -56,7 +56,7 @@ class PessoaHelper extends DataBaseHelper<Pessoa> {
   Future<Pessoa> getFirst(String nome) async {
     Database db = await database;
     List<Map> personagem = await db
-        .rawQuery("SELECT * FROM $tableName WHERE $nameColumn LIKE $nome");
+        .rawQuery("SELECT * FROM $tableName WHERE $nameColumn LIKE '$nome'");
     if (personagem != null && personagem.length > 0) {
       return Pessoa.fromJson(personagem.first);
     } else {
