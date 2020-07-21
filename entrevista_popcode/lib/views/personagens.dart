@@ -35,7 +35,9 @@ class _Personagem extends State<Personagem> {
       List<Pessoa> listPessoa =
           await RequisicaoApi().getPessoas(http.Client(), this.page);
       widget.personagens.addAll(listPessoa);
-      listPessoa.forEach((personagem) => helperP.savePeople(personagem));
+      for (var item in listPessoa) {
+        await helperP.savePeople(item);
+      }
       this.page++;
     }
     if (mounted) setState(() {});
@@ -95,7 +97,6 @@ class _Personagem extends State<Personagem> {
         itemCount: widget.personagens.length,
         itemBuilder: (context, index) {
           Pessoa p = widget.personagens[index];
-          PessoaHelper().savePeople(p);
           return Card(
             key: ValueKey(p.name),
             elevation: 8.0,

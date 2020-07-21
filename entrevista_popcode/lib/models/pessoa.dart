@@ -35,7 +35,9 @@ class Pessoa {
     birthYear = json['birth_year'];
     gender = json['gender'];
     homeWorld = json['homeworld'];
-    species = json['species'].cast<String>();
+    if (json['species'] != null) {
+      species = json['species'].cast<String>();
+    }
   }
 
   Map<String, dynamic> toJson() {
