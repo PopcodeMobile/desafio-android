@@ -38,7 +38,7 @@ class Pessoa {
         species: json['species'].cast<String>(),
       );
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'name': this.name,
       'height': this.name,

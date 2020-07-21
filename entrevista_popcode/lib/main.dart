@@ -1,5 +1,6 @@
+import 'package:entrevista_popcode/views/homepage.dart';
+//import 'package:entrevista_popcode/views/personagens.dart';
 import 'package:flutter/material.dart';
-import 'MyHomePage.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,12 +11,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Star Wars'),
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => HomePage(
+              title: 'Wiki Star Wars',
+            ),
+      },
+      //  title: 'Flutter Demo',
+      // theme: ThemeData(
+      //    primarySwatch: Colors.blue,
+      //     visualDensity: VisualDensity.adaptivePlatformDensity,
+      //   ),
+      //  home: MyHomePage(),
     );
   }
 }

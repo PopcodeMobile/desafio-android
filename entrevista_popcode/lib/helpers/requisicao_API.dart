@@ -7,7 +7,8 @@ import 'package:http/http.dart' as http;
 
 class RequisicaoApi {
   Future<List<Pessoa>> getPessoas(http.Client client, int page) async {
-    http.Response response = await client.get('http://swapi.dev/api/people/');
+    http.Response response =
+        await client.get('http://swapi.dev/api/people/?page=$page&format=json');
 
     if (response.statusCode == 200) {
       return compute(parsePessoa, response.body);

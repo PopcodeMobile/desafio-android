@@ -1,5 +1,4 @@
-import 'package:entrevista_popcode/helpers/pessoahelper.dart';
-import 'package:entrevista_popcode/models/pessoa.dart';
+import 'package:entrevista_popcode/helpers/pessoa_helper.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -12,7 +11,7 @@ abstract class DataBaseHelper<T> {
   Future<T> savePeople(T people);
   Future<T> getFirst(String nome);
   Future<List> getAll();
-  Future<int> getNumber();
+  Future<int> getRowCount();
 
   Future<Database> get database async {
     if (_dataBase != null) return _dataBase;
@@ -27,10 +26,10 @@ abstract class DataBaseHelper<T> {
     return await openDatabase(
       path,
       version: _databaseVersion,
-      onCreate: (Database db, int version) async {
+      onCreate: (Database db, int newVersion) async {
         await db.execute(
-            "CREATE TABLE IF NOT EXISTS ${PessoaHelper.tableName} ( ${PessoaHelper.idColumn} INTEGER PRIMARY KEY AUTOINCREMENT, "
-            "${PessoaHelper.heightColumn} TEXT,${PessoaHelper.masColumn} TEXT, "
+            "CREATE TABLE IF NOT EXISTS ${PessoaHelper.tableName}(${PessoaHelper.idColumn} INTEGER PRIMARY KEY AUTOINCREMENT, "
+            "${PessoaHelper.nameColumn} TEXT, ${PessoaHelper.heightColumn} TEXT,${PessoaHelper.masColumn} TEXT, "
             "${PessoaHelper.hairColorColumn} TEXT, ${PessoaHelper.skinColorColumn} TEXT, "
             "${PessoaHelper.eyeColorColumn} TEXT, ${PessoaHelper.birthYearColumn} TEXT, "
             "${PessoaHelper.genderColumn} TEXT, ${PessoaHelper.homeWorldColumn} TEXTE, "
