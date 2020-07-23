@@ -36,26 +36,25 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  void _getAllPersonagens() {
-    pessoa.getAll().then((lista) {
-      setState(() {
-        personagens = lista;
-      });
-    });
-  }
-
   _HomePageState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
           _searchText = "";
-          //_resetRecords();
         });
       } else {
         setState(() {
           _searchText = _filter.text;
         });
       }
+    });
+  }
+
+  void _getAllPersonagens() {
+    pessoa.getAll().then((lista) {
+      setState(() {
+        personagens = lista;
+      });
     });
   }
 
@@ -110,11 +109,38 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // _buildBar(BuildContext context) {
+  //   return new AppBar(
+  //     elevation: 0.1,
+  //     backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+  //     centerTitle: true,
+  //     title: _appBarTitle,
+  //     actions: <Widget>[
+  //       IconButton(
+  //         onPressed: () => _searchPressed(),
+  //         icon: _searchIcon,
+  //       )
+  //     ],
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-      appBar: _buildBar(context),
+      //appBar: _buildBar(context),
+      appBar: new AppBar(
+        elevation: 0.1,
+        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+        centerTitle: true,
+        title: _appBarTitle,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () => _searchPressed(),
+            icon: _searchIcon,
+          )
+        ],
+      ),
       drawer: Drawer(child: MenuDrawer()),
       body: FutureBuilder<List<Pessoa>>(
         future: RequisicaoApi().getPessoas(http.Client(), 1),
@@ -133,43 +159,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  Widget _buildBar(BuildContext context) {
-    return new AppBar(
-      elevation: 0.1,
-      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-      centerTitle: true,
-      title: _appBarTitle,
-      actions: <Widget>[
-        IconButton(
-          onPressed: () => _searchPressed(),
-          icon: _searchIcon,
-        )
-      ],
-    );
-    // leading: new IconButton(
-    //   icon: _searchIcon,
-    //   onPressed: _searchPressed,
-    // ));
-  }
 }
-
-//class PessoasList extends StatelessWidget {
-//  final List<Pessoa> pessoas;
-
-// PessoasList({Key key, this.pessoas}) : super(key: key);
-
-//  @override
-//  Widget build(BuildContext context) {
-//    return ListView.builder(
-//     itemCount: pessoas.length,
-//     itemBuilder: (context, index) {
-//       Pessoa p = pessoas[index];
-//       return ListTile(
-//         title: Text(p.name),
-//         subtitle: Text(p.birthYear),
-//       );
-//     },
-//   );
-// }
-//}

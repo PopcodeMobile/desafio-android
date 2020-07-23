@@ -6,7 +6,7 @@ abstract class DataBaseHelper<T> {
   static final _databaseName = 'starwars.db';
   static final _databaseVersion = 1;
 
-  static Database _dataBase;
+  Database _dataBase;
 
   Future<T> savePeople(T people);
   Future<T> getFirst(String nome);
