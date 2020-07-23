@@ -2,6 +2,7 @@ import 'package:entrevista_popcode/helpers/pessoa_helper.dart';
 import 'package:entrevista_popcode/helpers/requisicao_API.dart';
 import 'package:entrevista_popcode/models/pessoa.dart';
 import 'package:entrevista_popcode/views/personagens.dart';
+import 'package:entrevista_popcode/widgets/menu_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,10 +18,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _filter = new TextEditingController();
+
   PessoaHelper pessoa = PessoaHelper();
 
-  List<Pessoa> _personagens = new List();
-  List<Pessoa> _personagensFiltrados = new List();
+  List<Pessoa> personagens = new List();
+  List<Pessoa> personagensFiltrados = new List();
 
   String _searchText = "";
 
@@ -30,15 +32,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
-
     _getAllPersonagens();
+    super.initState();
   }
 
   void _getAllPersonagens() {
     pessoa.getAll().then((lista) {
       setState(() {
-        _personagens = lista;
+        personagens = lista;
       });
     });
   }
@@ -58,6 +59,33 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  List<Pessoa> _filtrar() {
+    if (_searchText.isNotEmpty) {
+      List<Pessoa> auxList = new List();
+      // personagensFiltrados = new List();
+      for (int i = 0; i < personagens.length; i++) {
+        if (personagens[i]
+            .name
+            .toLowerCase()
+            .contains(_searchText.toLowerCase())) {
+          // personagensFiltrados.add(personagens[i]);
+          auxList.add(personagens[i]);
+        }
+      }
+      personagensFiltrados = auxList;
+      return personagensFiltrados;
+    }
+    return null;
+  }
+
+  void _armazenarPersonagens() {
+    // ignore: unnecessary_statements
+    _getAllPersonagens;
+    setState(() {
+      this.personagensFiltrados = personagens;
+    });
+  }
+
   void _searchPressed() {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
@@ -72,9 +100,11 @@ class _HomePageState extends State<HomePage> {
             hintStyle: TextStyle(color: Colors.white),
           ),
         );
+        _armazenarPersonagens();
       } else {
         this._searchIcon = new Icon(Icons.search);
         this._appBarTitle = new Text('Wiki Star Wars');
+        this.personagensFiltrados = personagens;
         _filter.clear();
       }
     });
@@ -85,18 +115,19 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: _buildBar(context),
+      drawer: Drawer(child: MenuDrawer()),
       body: FutureBuilder<List<Pessoa>>(
         future: RequisicaoApi().getPessoas(http.Client(), 1),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
-          return (snapshot.hasData || _personagens.length > 0)
+          return (snapshot.hasData || personagens.length > 0)
               ? Personagem(
-                  personagens: (_filtrar() != null)
+                  personagens: ((_filtrar() != null)
                       ? _filtrar()
-                      : ((_personagens != null && _personagens.length > 0)
-                          ? _personagens
+                      : (personagens != null && personagens.length > 0)
+                          ? personagens
                           : snapshot.data),
-                  isSearching: (_searchText.isEmpty != null) ? false : true)
+                  isSearching: (_searchText.isEmpty ? false : true))
               : Center(child: CircularProgressIndicator());
         },
       ),
@@ -105,30 +136,21 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBar(BuildContext context) {
     return new AppBar(
-        elevation: 0.1,
-        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-        centerTitle: true,
-        title: _appBarTitle,
-        leading: new IconButton(
+      elevation: 0.1,
+      backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+      centerTitle: true,
+      title: _appBarTitle,
+      actions: <Widget>[
+        IconButton(
+          onPressed: () => _searchPressed(),
           icon: _searchIcon,
-          onPressed: _searchPressed,
-        ));
-  }
-
-  List<Pessoa> _filtrar() {
-    if (_searchText.isNotEmpty) {
-      _personagensFiltrados = new List();
-      for (int i = 0; i < _personagens.length; i++) {
-        if (_personagens[i]
-            .name
-            .toLowerCase()
-            .contains(_searchText.toLowerCase())) {
-          _personagensFiltrados.add(_personagens[i]);
-        }
-      }
-      return _personagensFiltrados;
-    }
-    return null;
+        )
+      ],
+    );
+    // leading: new IconButton(
+    //   icon: _searchIcon,
+    //   onPressed: _searchPressed,
+    // ));
   }
 }
 

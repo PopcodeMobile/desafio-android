@@ -25,18 +25,31 @@ class Pessoa {
       this.specie,
       this.species});
 
-  Pessoa.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    height = json['height'];
-    mass = json['mass'];
-    hairColor = json['hair_color'];
-    skinColor = json['skin_color'];
-    eyeColor = json['eye_color'];
-    birthYear = json['birth_year'];
-    gender = json['gender'];
-    homeWorld = json['homeworld'];
-    if (json['species'] != null) {
-      species = json['species'].cast<String>();
+  Pessoa.fromJson(Map<String, dynamic> json, bool bancoLocal) {
+    if (bancoLocal) {
+      name = json['nameColumn'];
+      height = json['heightColumn'];
+      mass = json['massColumn'];
+      hairColor = json['hairColorColumn'];
+      skinColor = json['skinColorColumn'];
+      eyeColor = json['eyeColorColumn'];
+      birthYear = json['birthYearColumn'];
+      gender = json['genderColumn'];
+      homeWorld = json['homeWorldColumn'];
+      specie = json['specieColumn'];
+    } else {
+      name = json['name'];
+      height = json['height'];
+      mass = json['mass'];
+      hairColor = json['hair_color'];
+      skinColor = json['skin_color'];
+      eyeColor = json['eye_color'];
+      birthYear = json['birth_year'];
+      gender = json['gender'];
+      homeWorld = json['homeworld'];
+      if (json['species'] != null) {
+        species = json['species'].cast<String>();
+      }
     }
   }
 
@@ -45,13 +58,13 @@ class Pessoa {
       'name': this.name,
       'height': this.name,
       'mass': this.name,
-      'hairColor': this.hairColor,
-      'skinColor': this.skinColor,
-      'eyeColor': this.eyeColor,
-      'birthYear': this.birthYear,
+      'hair_color': this.hairColor,
+      'skin_color': this.skinColor,
+      'eye_color': this.eyeColor,
+      'birth_year': this.birthYear,
       'gender': this.gender,
-      'homeWorld': this.homeWorld,
-      'specie': this.specie
+      'homeworld': this.homeWorld,
+      'species': this.specie
     };
   }
 }

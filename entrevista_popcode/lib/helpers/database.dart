@@ -29,7 +29,7 @@ abstract class DataBaseHelper<T> {
       onCreate: (Database db, int newVersion) async {
         await db.execute(
             "CREATE TABLE IF NOT EXISTS ${PessoaHelper.tableName}(${PessoaHelper.idColumn} INTEGER PRIMARY KEY AUTOINCREMENT, "
-            "${PessoaHelper.nameColumn} TEXT, ${PessoaHelper.heightColumn} TEXT,${PessoaHelper.masColumn} TEXT, "
+            "${PessoaHelper.nameColumn} TEXT, ${PessoaHelper.heightColumn} TEXT,${PessoaHelper.massColumn} TEXT, "
             "${PessoaHelper.hairColorColumn} TEXT, ${PessoaHelper.skinColorColumn} TEXT, "
             "${PessoaHelper.eyeColorColumn} TEXT, ${PessoaHelper.birthYearColumn} TEXT, "
             "${PessoaHelper.genderColumn} TEXT, ${PessoaHelper.homeWorldColumn} TEXTE, "

@@ -1,6 +1,7 @@
 import 'package:entrevista_popcode/helpers/pessoa_helper.dart';
 import 'package:entrevista_popcode/helpers/requisicao_API.dart';
 import 'package:entrevista_popcode/models/pessoa.dart';
+import 'package:entrevista_popcode/views/detalhes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -30,73 +31,23 @@ class _Personagem extends State<Personagem> {
 
   void _onLoading() async {
     await Future.delayed(Duration(milliseconds: 1000));
-
-    if (this.page < 9 && widget.isSearching) {
-      List<Pessoa> listPessoa =
+    if (this.page < 9 && !widget.isSearching) {
+      List<Pessoa> pessoas =
           await RequisicaoApi().getPessoas(http.Client(), this.page);
-      widget.personagens.addAll(listPessoa);
-      for (var item in listPessoa) {
-        await helperP.savePeople(item);
-      }
+      widget.personagens.addAll(pessoas);
+      pessoas.forEach((personagem) => helperP.savePeople(personagem));
       this.page++;
     }
     if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-        body: SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: true,
-          header: WaterDropHeader(),
-          footer: CustomFooter(
-            builder: (BuildContext context, LoadStatus mode) {
-              Widget body;
-              if (mode == LoadStatus.idle) {
-                body = Text("pull up load");
-              } else if (mode == LoadStatus.loading) {
-                body = CupertinoActivityIndicator();
-              } else if (mode == LoadStatus.failed) {
-                body = Text("Falha ao carregar. Tente novamente!");
-              } else if (mode == LoadStatus.canLoading) {
-                body = Text("Solte para carregar mais");
-              } else {
-                body = Text("Não há mais dados");
-              }
-              return Container(
-                height: 55.0,
-                child: Center(child: body),
-              );
-            },
-          ),
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          onLoading: _onLoading,
-          child: _buildListItem(),
-          //child: ListView.builder(
-          //  itemCount: widget.personagens.length,
-          //  itemBuilder: (context, index) {
-          //    Pessoa p = widget.personagens[index];
-          //    PessoaHelper().savePeople(p);
-          //   return Card(
-          //       child: Center(
-          //            child: ListTile(
-          //      title: Text(p.name),
-          //      subtitle: Text(p.birthYear),
-          //    )));
-          //  },
-          // ),
-        ));
-  }
-
-  Widget _buildListItem() {
+  _buildListItem() {
     return ListView.builder(
         itemCount: widget.personagens.length,
         itemBuilder: (context, index) {
           Pessoa p = widget.personagens[index];
+          PessoaHelper().savePeople(p);
           return Card(
             key: ValueKey(p.name),
             elevation: 8.0,
@@ -116,7 +67,8 @@ class _Personagem extends State<Personagem> {
                         tag: "avatar_" + p.name,
                         child: CircleAvatar(
                           radius: 32,
-                          // backgroundImage: NetworkImage(record.photo),
+                          backgroundImage:
+                              AssetImage('assets/dia-star-wars.jpg'),
                         ))),
                 title: Text(
                   p.name,
@@ -131,7 +83,23 @@ class _Personagem extends State<Personagem> {
                             children: <Widget>[
                           RichText(
                             text: TextSpan(
-                              text: p.birthYear,
+                              text: 'Altura: ' + p.height,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            maxLines: 3,
+                            softWrap: true,
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: 'Genero: ' + p.gender,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            maxLines: 3,
+                            softWrap: true,
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: 'Peso: ' + p.mass,
                               style: TextStyle(color: Colors.white),
                             ),
                             maxLines: 3,
@@ -142,10 +110,50 @@ class _Personagem extends State<Personagem> {
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right,
                     color: Colors.white, size: 30.0),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => new Detalhes(pessoa: p)));
+                },
               ),
             ),
           );
         });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+        body: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
+          header: WaterDropHeader(),
+          footer: CustomFooter(
+            builder: (BuildContext context, LoadStatus mode) {
+              Widget body;
+              if (mode == LoadStatus.idle) {
+                body = Text("");
+              } else if (mode == LoadStatus.loading) {
+                body = CircularProgressIndicator();
+              } else if (mode == LoadStatus.failed) {
+                body = Text("Falha ao carregar. Tente novamente!");
+              } else if (mode == LoadStatus.canLoading) {
+                body = Text("Solte para carregar mais");
+              } else {
+                body = Text("Não há mais dados");
+              }
+              return Container(
+                height: 55.0,
+                child: Center(child: body),
+              );
+            },
+          ),
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          child: _buildListItem(),
+        ));
   }
 }

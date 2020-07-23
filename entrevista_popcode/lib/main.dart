@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // title: appTitle,
       theme: new ThemeData(
         primaryColor: Color.fromRGBO(58, 66, 86, 1.0),
       ),
@@ -21,12 +20,6 @@ class MyApp extends StatelessWidget {
               title: 'Wiki Star Wars',
             ),
       },
-      //  title: 'Flutter Demo',
-      // theme: ThemeData(
-      //    primarySwatch: Colors.blue,
-      //     visualDensity: VisualDensity.adaptivePlatformDensity,
-      //   ),
-      //  home: MyHomePage(),
     );
   }
 }
