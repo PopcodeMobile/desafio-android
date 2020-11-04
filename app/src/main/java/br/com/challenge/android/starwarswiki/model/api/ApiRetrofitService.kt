@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiRetrofitService {
     companion object {
-        const val SWAPI_BASE_URL = ""
+        private const val SWAPI_BASE_URL = "https://swapi.dev/api/"
         @Volatile
         private var INSTANCE: Retrofit? = null
 
@@ -38,9 +38,8 @@ class ApiRetrofitService {
             okHttpBuilder.addInterceptor {chain ->
                 val request = chain.request().newBuilder()
                 val originalHttpUrl = chain.request().url()
-                val url = originalHttpUrl.newBuilder().addQueryParameter("api_key", "" /*BuildConfig.TMDB_API_KEY*/).build()
 
-                request.url(url)
+                request.url(originalHttpUrl)
 
                 return@addInterceptor chain.proceed(request.build())
             }

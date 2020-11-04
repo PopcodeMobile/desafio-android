@@ -1,10 +1,10 @@
 package br.com.challenge.android.starwarswiki.model.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import io.reactivex.Observable
 
 @Dao
 interface PersonDatabaseDao {
@@ -22,7 +22,7 @@ interface PersonDatabaseDao {
     fun update(person: PersonEntity)
 
     @Query("SELECT * from person WHERE name = :keyName")
-    fun get(keyName: String): PersonEntity?
+    fun get(keyName: String): Observable<List<PersonEntity>>
 
     /**
      * Deletes all values from the table.
@@ -38,6 +38,6 @@ interface PersonDatabaseDao {
      * Sorted by name in descending order.
      */
     @Query("SELECT * FROM person ORDER BY name DESC")
-    fun getAllNights(): LiveData<List<PersonEntity>>
+    fun getPeople(): Observable<List<PersonEntity>>
 
 }
