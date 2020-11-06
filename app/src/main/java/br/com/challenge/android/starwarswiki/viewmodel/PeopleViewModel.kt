@@ -25,7 +25,7 @@ class PeopleViewModel(private val appContext: Context): ViewModel() {
     private val repositoryImpl: PersonRepositoryImpl
 
     private val _peopleMutableLiveData = MutableLiveData<ArrayList<Person>>()
-    val moviesByTitleLiveData: LiveData<ArrayList<Person>> = _peopleMutableLiveData
+    val peopleLiveData: LiveData<ArrayList<Person>> = _peopleMutableLiveData
 
     private val compositeDisposable = CompositeDisposable()
 

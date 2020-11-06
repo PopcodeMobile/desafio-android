@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="yellow_star_wars">#FFE81F</color>
+    <color name="blue_star_wars">#0c2c43</color>
+    <color name="orange_star_wars">#fb7a24</color>
 </resources>
