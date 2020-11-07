@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">StarWarsWiki</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="grid_empty_text">The list of people is empty!</string>
+</resources>
