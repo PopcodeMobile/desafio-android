@@ -20,7 +20,7 @@ data class ApiPerson(
         @SerializedName("skin_color")
         val skinColor: String,
         @SerializedName("homeworld")
-        val homeWorld: String,
+        val homeWorld: String/*,
         @SerializedName("species")
-        val species: ArrayList<String>
+        val species: ArrayList<String>*/
 )

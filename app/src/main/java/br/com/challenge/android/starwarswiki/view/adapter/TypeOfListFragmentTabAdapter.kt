@@ -19,7 +19,7 @@ class TypeOfListFragmentTabAdapter(
                 return PersonFragment(callback)
             }
             else -> {
-                return TODO() // favorites
+                return PersonFragment(callback) // TODO favorites
             }
         }
     }

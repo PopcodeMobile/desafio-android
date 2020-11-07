@@ -1,5 +1,6 @@
 package br.com.challenge.android.starwarswiki.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +46,12 @@ class PeopleGridViewAdapter(
 
         val item = getItem(p0)
 
-        // to define the items in viewHolderItem
+        viewHolderItem.personNameInItem.text = item.name
+        viewHolderItem.personHeightInItem.text = item.height
+        viewHolderItem.personGenderInItem.text = item.gender
+        viewHolderItem.personMassInItem.text = item.mass
+
+        Log.d("DebugPerson","Inside PeopleGridViewAdapter, viewHolderItem name text: ${viewHolderItem.personNameInItem.text}")
 
         view!!.setOnClickListener{
             callback.onClick(item)

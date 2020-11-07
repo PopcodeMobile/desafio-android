@@ -9,6 +9,6 @@ data class Person(
         val height: String,
         val mass: String,
         val skinColor: String,
-        val homeWorld: String,
-        val species: ArrayList<String>
+        val homeWorld: String/*,
+        val species: ArrayList<String>*/
 )

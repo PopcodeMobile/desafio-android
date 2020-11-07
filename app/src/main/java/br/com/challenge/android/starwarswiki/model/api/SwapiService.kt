@@ -6,10 +6,12 @@ import retrofit2.http.Query
 
 interface SwapiService {
 
-    @GET("/people/")
-    fun getAllPeople(): Observable<PeopleReturned>
+    @GET("people/")
+    fun getAllPeople(
+        @Query("page")
+        pageNumber: Int): Observable<PeopleReturned>
 
-    @GET("/people/")
+    @GET("people/")
     fun getPersonByName(
         @Query("search")
         name: String): Observable<PeopleReturned>

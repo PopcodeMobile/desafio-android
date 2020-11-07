@@ -24,8 +24,8 @@ class PeopleViewModel(private val appContext: Context): ViewModel() {
     private val listDaoMapperImpl: ListMapper<PersonEntity, Person>
     private val repositoryImpl: PersonRepositoryImpl
 
-    private val _peopleMutableLiveData = MutableLiveData<ArrayList<Person>>()
-    val peopleLiveData: LiveData<ArrayList<Person>> = _peopleMutableLiveData
+    private val _peopleMutableLiveData = MutableLiveData<Resource<ArrayList<Person>>>()
+    val peopleLiveData: LiveData<Resource<ArrayList<Person>>> = _peopleMutableLiveData
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -34,7 +34,7 @@ class PeopleViewModel(private val appContext: Context): ViewModel() {
     init {
         listApiMapperImpl = ListMapperImpl(ApiPersonDataMapper())
         listDaoMapperImpl = ListMapperImpl(DaoPersonDataMapper())
-        repositoryImpl = PersonRepositoryImpl(listApiMapperImpl, listDaoMapperImpl, appContext)
+        repositoryImpl = PersonRepositoryImpl(listApiMapperImpl, appContext)
 
         synchronized(this) {
             fetchPeople()
@@ -43,15 +43,24 @@ class PeopleViewModel(private val appContext: Context): ViewModel() {
 
     private fun fetchPeople() {
         val disposablePeople = repositoryImpl
-            .getPeople()
+            .getPeople(1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _peopleMutableLiveData.postValue(it as ArrayList<Person>)
+                    _peopleMutableLiveData.postValue(Resource.success(it as ArrayList<Person>))
                 },
                 {
                     CheckNetwork().checkIfDeviceIsReadyToConnectInternet(appContext)
+
+                    if (CheckNetwork.isNetworkConnected) {
+                        _peopleMutableLiveData.postValue(Resource.error(it.message?: "", null))
+                    } else {
+                        _peopleMutableLiveData.postValue(
+                            Resource.error(
+                                CheckNetwork.ERROR_INTERNET_NOT_AVAILABLE,
+                                null))
+                    }
                 }
             )
 

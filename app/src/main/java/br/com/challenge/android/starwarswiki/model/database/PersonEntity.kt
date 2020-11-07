@@ -33,8 +33,8 @@ data class PersonEntity(
     var skinColor: String,
 
     @ColumnInfo(name = "home_world")
-    var homeWorld: String,
+    var homeWorld: String/*,
 
     @ColumnInfo(name = "species")
-    var species: ArrayList<String>
+    var species: Species*/
 )

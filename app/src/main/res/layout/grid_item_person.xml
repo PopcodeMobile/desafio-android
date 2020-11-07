@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
@@ -11,22 +11,25 @@
     android:gravity="center">
 
     <TextView
-        android:id="@+id/personName"
+        android:id="@+id/personNameTextView"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/personHeight"
+        android:id="@+id/personHeightTextView"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/personGender"
+        android:id="@+id/personGenderTextView"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/personMass"
+        android:id="@+id/personMassTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

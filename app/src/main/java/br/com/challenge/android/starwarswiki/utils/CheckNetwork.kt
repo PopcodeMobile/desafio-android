@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
-import android.widget.Toast
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -27,13 +26,13 @@ class CheckNetwork {
             registerNetworkCallback(context)
         }
 
-        if(!isNetworkConnected) {
-            Toast
-                .makeText(
-                    context,
-                    "Please make sure the device has an internet connection.", Toast.LENGTH_LONG)
-                .show()
-        }
+//        if(!isNetworkConnected) {
+//            Toast
+//                .makeText(
+//                    context,
+//                    "Please make sure the device has an internet connection.", Toast.LENGTH_LONG)
+//                .show()
+//        }
     }
 
     private fun verifyInternetEnabledAndConnecting(context: Context) {

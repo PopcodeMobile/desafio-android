@@ -15,8 +15,8 @@ class ApiPersonDataMapper: Mapper<ApiPerson, Person> {
                 height = input.height,
                 mass = input.mass,
                 skinColor = input.skinColor,
-                homeWorld = input.homeWorld,
-                species = input.species
+                homeWorld = input.homeWorld/*,
+                species = input.species*/
         )
     }
 

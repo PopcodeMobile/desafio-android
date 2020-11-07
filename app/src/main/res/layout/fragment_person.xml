@@ -12,9 +12,8 @@
         android:layout_height="match_parent"
         android:layout_margin="1dp"
         android:padding="5dp"
-        android:numColumns="2"
-        android:columnWidth="@dimen/grid_col_width"
-        android:stretchMode="columnWidth"
+        android:numColumns="1"
+        android:stretchMode="spacingWidthUniform"
         android:horizontalSpacing="7dp"
         android:verticalSpacing="7dp"
         android:gravity="center"/>

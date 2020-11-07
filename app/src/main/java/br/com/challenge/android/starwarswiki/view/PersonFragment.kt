@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.challenge.android.starwarswiki.R
 import br.com.challenge.android.starwarswiki.view.adapter.PeopleGridViewAdapter
 import br.com.challenge.android.starwarswiki.viewmodel.PeopleViewModel
+import br.com.challenge.android.starwarswiki.viewmodel.Status
 import br.com.challenge.android.starwarswiki.viewmodel.ViewModelFactory
 
 class PersonFragment(private val callback: PersonItemClickListener) : Fragment() {
@@ -21,7 +22,7 @@ class PersonFragment(private val callback: PersonItemClickListener) : Fragment()
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.person_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_person, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,17 +46,13 @@ class PersonFragment(private val callback: PersonItemClickListener) : Fragment()
 
     private fun setupObserver(){
         personViewModel.peopleLiveData.observe(this, {
-//            when(it.status) {
-//                Status.LOADING -> {}
-//                Status.SUCCESS -> {
-//                    gridViewAdapter.refreshData(it.data!!)
-//                }
-//                Status.ERROR -> {
-//                    if(it.message.equals(CheckNetwork.ERROR_INTERNET_NOT_AVAILABLE)) {
-//                        // TODO() start listening a callback to network connection or using another approach, acquire
-//                    }
-//                }
-//            }
+            when(it.status) {
+                Status.LOADING -> {}
+                Status.SUCCESS -> {
+                    gridViewAdapter.refreshData(it.data!!)
+                }
+                Status.ERROR -> {}
+            }
         })
     }
 

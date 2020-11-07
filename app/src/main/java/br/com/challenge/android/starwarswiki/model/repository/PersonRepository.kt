@@ -7,6 +7,6 @@ interface PersonRepository {
 
     fun getPersonByName(name: String): Observable<List<Person>>
 
-    fun getPeople(): Observable<List<Person>>
+    fun getPeople(page: Int): Observable<List<Person>>
 
 }

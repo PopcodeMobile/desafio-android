@@ -7,14 +7,12 @@ import br.com.challenge.android.starwarswiki.model.data.dto.ApiPerson
 import br.com.challenge.android.starwarswiki.model.data.mapper.ListMapper
 import br.com.challenge.android.starwarswiki.model.database.PersonDatabase
 import br.com.challenge.android.starwarswiki.model.database.PersonDatabaseDao
-import br.com.challenge.android.starwarswiki.model.database.PersonEntity
 import br.com.challenge.android.starwarswiki.model.domain.Person
 import br.com.challenge.android.starwarswiki.utils.CheckNetwork
 import io.reactivex.Observable
 
 class PersonRepositoryImpl(
     private val listApiMapper: ListMapper<ApiPerson, Person>,
-    private val listDaoMapper: ListMapper<PersonEntity, Person>,
     context: Context
 ): PersonRepository {
     private var personDatabaseDao: PersonDatabaseDao
@@ -25,14 +23,6 @@ class PersonRepositoryImpl(
     }
 
     override fun getPersonByName(name: String): Observable<List<Person>> {
-        if(!CheckNetwork.isNetworkConnected){
-            val personEntity = personDatabaseDao.get(name)
-
-            return personEntity.map {
-                listDaoMapper.map(it)
-            }
-        }
-
         val personByName = getRetrofitService().getPersonByName(name)
 
         return personByName.map{
@@ -41,16 +31,8 @@ class PersonRepositoryImpl(
 
     }
 
-    override fun getPeople(): Observable<List<Person>> {
-        if(!CheckNetwork.isNetworkConnected){
-            val people = personDatabaseDao.getPeople()
-
-            return people.map {
-                listDaoMapper.map(it)
-            }
-        }
-
-        val allPeople = getRetrofitService().getAllPeople()
+    override fun getPeople(page: Int): Observable<List<Person>> {
+        val allPeople = getRetrofitService().getAllPeople(page)
 
         return allPeople.map{
             listApiMapper.map(it.results)
