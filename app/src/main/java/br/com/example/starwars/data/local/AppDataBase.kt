@@ -4,9 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import br.com.example.starwars.data.entities.ApiPeople
+import br.com.example.starwars.data.entities.RemoteKeys
 
-@Database(entities = [], version = 1, exportSchema = false)
+@Database(entities = [ApiPeople::class, RemoteKeys::class], version = 1, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
+
+    abstract fun peopleDao(): PeopleDao
+    abstract fun remoteKeysDao(): RemoteKeysDao
 
     companion object {
         private const val DATABASE_NAME = "star-wars-db"

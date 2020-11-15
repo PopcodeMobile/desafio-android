@@ -6,7 +6,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
@@ -26,12 +25,10 @@ object ApiProviderModule {
     @Singleton
     @Provides
     fun providesRetrofit(
-        @Named(API_ENDPOINT) apiEndPoint: String,
-        okHttpClient: OkHttpClient
+        @Named(API_ENDPOINT) apiEndPoint: String
     ): Retrofit {
         return Retrofit
             .Builder()
-            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(apiEndPoint)
             .build()
