@@ -24,17 +24,14 @@ buildscript {
         logginInterceptorVersion = '4.3.1'
 
         // Room
-        roomVersion = '2.2.5'
+        roomVersion = '2.3.0-alpha03'
 
         // Paging
-        pagingVersion = '2.1.2'
+        pagingVersion = '3.0.0-alpha09'
 
         // Navigation
         navVersion = '2.3.1'
         navSafeArgs = '2.1.0'
-
-        // Glide
-        glideVersion = '4.11.0'
 
         // Hilt
         hiltVersion = '2.28-alpha'

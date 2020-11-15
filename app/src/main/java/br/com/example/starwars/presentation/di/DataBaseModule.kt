@@ -16,4 +16,12 @@ class DataBaseModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context) = AppDataBase.build(context)
+
+    @Provides
+    @Singleton
+    fun providePeopleDao(appDataBase: AppDataBase) = appDataBase.peopleDao()
+
+    @Provides
+    @Singleton
+    fun provideRemoteKeysDao(appDataBase: AppDataBase) = appDataBase.remoteKeysDao()
 }
