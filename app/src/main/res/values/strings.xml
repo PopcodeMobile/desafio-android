@@ -3,4 +3,12 @@
     <string name="height">Altura</string>
     <string name="mass">Massa</string>
     <string name="gender">Gênero</string>
+    <string name="hair_color">Cor do cabelo</string>
+    <string name="skin_color">Cor da pele</string>
+    <string name="eye_color">Cor dos olhos</string>
+    <string name="birth_year">Ano nascimento</string>
+    <string name="home_world">Planeta</string>
+    <string name="specie">Espécie</string>
+    <string name="n_a">n/a</string>
+    <string name="loading">Carregando</string>
 </resources>

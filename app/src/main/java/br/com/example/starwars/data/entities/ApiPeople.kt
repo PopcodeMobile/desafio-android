@@ -19,7 +19,19 @@ data class ApiPeople(
     @SerializedName("name")
     val name: String? = null,
     @SerializedName("url")
-    val url: String
+    val url: String? = null,
+    @SerializedName("hair_color")
+    val hairColor: String? = null,
+    @SerializedName("skin_color")
+    val skinColor: String? = null,
+    @SerializedName("eye_color")
+    val eyeColor: String? = null,
+    @SerializedName("birth_year")
+    val birthYear: String? = null,
+    @SerializedName("homeworld")
+    val homeWorld: String? = null,
+    @SerializedName("species")
+    val species: List<String>? = null
 ) {
 
     fun apiPeopleToPeople(apiPeople: ApiPeople): People {
@@ -29,7 +41,13 @@ data class ApiPeople(
             height = apiPeople.height,
             gender = apiPeople.gender,
             mass = apiPeople.mass,
-            url = apiPeople.url
+            url = apiPeople.url,
+            hairColor = apiPeople.hairColor,
+            skinColor = apiPeople.skinColor,
+            eyeColor = apiPeople.eyeColor,
+            birthYear = apiPeople.birthYear,
+            homeWorld = apiPeople.homeWorld,
+            species = apiPeople.species
         )
     }
 }
