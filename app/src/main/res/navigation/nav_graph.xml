@@ -9,5 +9,18 @@
         android:id="@+id/listPeopleFragment"
         android:name="br.com.example.starwars.presentation.ui.listpeople.ListPeopleFragment"
         android:label="ListPeopleFragment"
-        tools:layout="@layout/fragment_list_people" />
+        tools:layout="@layout/fragment_list_people">
+        <action
+            android:id="@+id/action_listPeopleFragment_to_peopleDetailFragment"
+            app:destination="@id/peopleDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/peopleDetailFragment"
+        android:name="br.com.example.starwars.presentation.ui.peopledetail.PeopleDetailFragment"
+        android:label="PeopleDetailFragment"
+        tools:layout="@layout/fragment_detail_people">
+        <argument
+            android:name="people"
+            app:argType="br.com.example.starwars.domain.entities.People" />
+    </fragment>
 </navigation>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="people"
+            type="br.com.example.starwars.domain.entities.People" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:text="@{people.name}"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="R2-D2" />
+
+        <TextView
+            android:id="@+id/label_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/height"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name" />
+
+        <TextView
+            android:id="@+id/height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@{people.height}"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/label_height"
+            app:layout_constraintStart_toEndOf="@id/label_height"
+            app:layout_constraintTop_toTopOf="@id/label_height"
+            tools:text="1.56" />
+
+        <TextView
+            android:id="@+id/label_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gender"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_height" />
+
+        <TextView
+            android:id="@+id/gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@{people.gender}"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/label_gender"
+            app:layout_constraintStart_toEndOf="@id/label_gender"
+            app:layout_constraintTop_toTopOf="@id/label_gender"
+            tools:text="n/a" />
+
+        <TextView
+            android:id="@+id/label_mass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mass"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_gender" />
+
+        <TextView
+            android:id="@+id/mass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@{people.mass}"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/label_mass"
+            app:layout_constraintStart_toEndOf="@id/label_mass"
+            app:layout_constraintTop_toTopOf="@id/label_mass"
+            tools:text="48" />
+
+        <TextView
+            android:id="@+id/label_hair_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hair_color"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_mass" />
+
+        <TextView
+            android:id="@+id/hair_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@{people.hairColor}"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/label_hair_color"
+            app:layout_constraintStart_toEndOf="@id/label_hair_color"
+            app:layout_constraintTop_toTopOf="@id/label_hair_color"
+            tools:text="n/a" />
+
+        <TextView
+            android:id="@+id/label_skin_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skin_color"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_hair_color" />
+
+        <TextView
+            android:id="@+id/skin_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@{people.skinColor}"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/label_skin_color"
+            app:layout_constraintStart_toEndOf="@id/label_skin_color"
+            app:layout_constraintTop_toTopOf="@id/label_skin_color"
+            tools:text="n/a" />
+
+        <TextView
+            android:id="@+id/label_eye_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/eye_color"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_skin_color" />
+
+        <TextView
+            android:id="@+id/eye_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@{people.eyeColor}"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/label_eye_color"
+            app:layout_constraintStart_toEndOf="@id/label_eye_color"
+            app:layout_constraintTop_toTopOf="@id/label_eye_color"
+            tools:text="n/a" />
+
+        <TextView
+            android:id="@+id/label_birth_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/birth_year"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_eye_color" />
+
+        <TextView
+            android:id="@+id/birth_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@{people.birthYear}"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/label_birth_year"
+            app:layout_constraintStart_toEndOf="@id/label_birth_year"
+            app:layout_constraintTop_toTopOf="@id/label_birth_year"
+            tools:text="n/a" />
+
+        <TextView
+            android:id="@+id/label_home_world"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home_world"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_birth_year" />
+
+        <TextView
+            android:id="@+id/home_world"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/label_home_world"
+            app:layout_constraintStart_toEndOf="@id/label_home_world"
+            app:layout_constraintTop_toTopOf="@id/label_home_world"
+            tools:text="n/a" />
+
+        <TextView
+            android:id="@+id/label_specie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/specie"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_home_world" />
+
+        <TextView
+            android:id="@+id/specie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@string/n_a"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/label_specie"
+            app:layout_constraintStart_toEndOf="@id/label_specie"
+            app:layout_constraintTop_toTopOf="@id/label_specie"
+            tools:text="n/a" />
+
+        <include
+            android:id="@+id/include_loading"
+            layout="@layout/loading"
+            android:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

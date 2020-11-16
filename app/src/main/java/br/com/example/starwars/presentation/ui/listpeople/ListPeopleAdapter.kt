@@ -5,10 +5,12 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import br.com.example.starwars.domain.entities.People
 
-class ListPeopleAdapter : PagingDataAdapter<People, ListPeopleViewHolder>(DIFF_CALLBACK) {
+class ListPeopleAdapter(
+    private val callbackClick: (People) -> Unit
+) : PagingDataAdapter<People, ListPeopleViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListPeopleViewHolder {
-        return ListPeopleViewHolder.inflate(parent)
+        return ListPeopleViewHolder.inflate(parent, callbackClick)
     }
 
     override fun onBindViewHolder(holder: ListPeopleViewHolder, position: Int) {
