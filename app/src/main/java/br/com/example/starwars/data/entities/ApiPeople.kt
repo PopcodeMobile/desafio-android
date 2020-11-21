@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "people")
 data class ApiPeople(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int?,
     @SerializedName("gender")
     val gender: String? = null,
     @SerializedName("height")
@@ -31,7 +31,8 @@ data class ApiPeople(
     @SerializedName("homeworld")
     val homeWorld: String? = null,
     @SerializedName("species")
-    val species: List<String>? = null
+    val species: List<String>? = null,
+    val favorite: Boolean = false
 ) {
 
     fun apiPeopleToPeople(apiPeople: ApiPeople): People {
@@ -47,7 +48,8 @@ data class ApiPeople(
             eyeColor = apiPeople.eyeColor,
             birthYear = apiPeople.birthYear,
             homeWorld = apiPeople.homeWorld,
-            species = apiPeople.species
+            species = apiPeople.species,
+            favorite = apiPeople.favorite
         )
     }
 }
