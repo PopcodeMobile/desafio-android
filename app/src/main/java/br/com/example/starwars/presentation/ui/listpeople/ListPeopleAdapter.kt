@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import br.com.example.starwars.domain.entities.People
 
 class ListPeopleAdapter(
-    private val callbackClick: (People) -> Unit
+    private val callbackClick: (People) -> Unit,
+    private val callbackFavorite: (People) -> Unit
 ) : PagingDataAdapter<People, ListPeopleViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListPeopleViewHolder {
-        return ListPeopleViewHolder.inflate(parent, callbackClick)
+        return ListPeopleViewHolder.inflate(parent, callbackClick, callbackFavorite)
     }
 
     override fun onBindViewHolder(holder: ListPeopleViewHolder, position: Int) {

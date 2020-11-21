@@ -14,5 +14,6 @@ data class People(
     val eyeColor: String? = null,
     val birthYear: String? = null,
     val homeWorld: String? = null,
-    val species: List<String>? = null
+    val species: List<String>? = null,
+    var favorite: Boolean = false
 ) : Serializable
