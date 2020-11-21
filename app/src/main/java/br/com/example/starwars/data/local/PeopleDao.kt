@@ -15,4 +15,7 @@ interface PeopleDao {
 
     @Query("SELECT * FROM people")
     fun getListPeople(): PagingSource<Int, ApiPeople>
+
+    @Query("UPDATE people SET favorite = :favorite WHERE id = :id")
+    suspend fun updatePerson(favorite: Boolean, id: Int)
 }

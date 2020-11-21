@@ -11,4 +11,6 @@
     <string name="specie">Espécie</string>
     <string name="n_a">n/a</string>
     <string name="loading">Carregando</string>
+    <string name="all">Todos</string>
+    <string name="favorites">Favoritos</string>
 </resources>

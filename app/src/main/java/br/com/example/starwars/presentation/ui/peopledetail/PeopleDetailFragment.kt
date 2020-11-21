@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import br.com.example.starwars.R
 import br.com.example.starwars.databinding.FragmentDetailPeopleBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +29,20 @@ class PeopleDetailFragment : Fragment() {
 
         binding.people = people
         subscribeUi()
+        setClickListeners()
+        alteredIcon()
         return binding.root
+    }
+
+    private fun setClickListeners() {
+        with(binding) {
+            addFavorite.setOnClickListener {
+                this@PeopleDetailFragment.people.favorite =
+                    this@PeopleDetailFragment.people.favorite.not()
+                viewModel.favoritePerson(this@PeopleDetailFragment.people)
+                alteredIcon()
+            }
+        }
     }
 
     private fun subscribeUi() {
@@ -52,6 +66,14 @@ class PeopleDetailFragment : Fragment() {
                     binding.includeLoading.visibility = View.GONE
                 }
             }
+        }
+    }
+
+    private fun alteredIcon() {
+        if (people.favorite) {
+            binding.addFavorite.setImageResource(R.drawable.ic_favorite)
+        } else {
+            binding.addFavorite.setImageResource(R.drawable.ic_favorite_border)
         }
     }
 }
