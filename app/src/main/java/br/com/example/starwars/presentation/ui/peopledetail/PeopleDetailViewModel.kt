@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.example.starwars.domain.entities.People
 import br.com.example.starwars.domain.entities.Planet
 import br.com.example.starwars.domain.entities.Specie
+import br.com.example.starwars.domain.usecase.FavoritePerson
 import br.com.example.starwars.domain.usecase.GetPlanet
 import br.com.example.starwars.domain.usecase.GetSpecie
 import kotlinx.coroutines.async
@@ -15,7 +17,8 @@ import kotlinx.coroutines.launch
 
 class PeopleDetailViewModel @ViewModelInject constructor(
     private val getPlanet: GetPlanet,
-    private val getSpecie: GetSpecie
+    private val getSpecie: GetSpecie,
+    private val favoritePerson: FavoritePerson
 ) : ViewModel() {
 
     val planet: LiveData<Planet> get() = _planet
@@ -37,6 +40,12 @@ class PeopleDetailViewModel @ViewModelInject constructor(
                 }
             )
             _loading.value = false
+        }
+    }
+
+    internal fun favoritePerson(people: People) {
+        viewModelScope.launch {
+            people.id?.let { favoritePerson.execute(people.favorite, it) }
         }
     }
 }
