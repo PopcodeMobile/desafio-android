@@ -2,6 +2,7 @@ package com.example.desafiopopcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,23 +26,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView textView = findViewById(R.id.textView);
+        final TextView text = findViewById(R.id.text);
+
         SWApi.init();
 
         SWApi.getApi().getAllPeople(id, new Callback<ListaPerson<Personagem>>() {
             @Override
             public void success(ListaPerson<Personagem> lista, Response response) {
-                textView.setText(lista.toString());
+                String s = "";
+                for (Personagem p : lista.results) {
+                    p.id++;
+                    s += "Name: " + p.name + "\n";
+                    text.append(s);
+                    text.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent nextActivity = new Intent(MainActivity.this, Detalhes.class);
+                            nextActivity.putExtra("id", id);
+                            startActivity(nextActivity);
+                        }
+                    });
+                    s += "Height: " + p.height + "\n";
+                    text.append(s);
+                    s += "Gender: " + p.gender + "\n";
+                    text.append(s);
+                    s += "Mass: " + p.mass + "\n";
+                    text.append(s);
+                }
+                text.setText(s);
+               /* nome.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SWApi.getApi().getPeople();
+                    }
+                });*/
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                textView.setText("Error kkkkk");
+            public void failure(RetrofitError error) { text.setText("Error kkkkk");
             }
         });
 
-        Button btn = findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
+        /*Button next = findViewById(R.id.button);
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 id++;
@@ -58,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
             }
-        });
+        });*/
 
     }
 }

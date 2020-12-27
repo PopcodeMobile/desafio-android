@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Personagem implements Serializable {
+
+    public int id;
+
     public String name;
 
     @SerializedName("birth_year")
@@ -22,6 +25,9 @@ public class Personagem implements Serializable {
     public String homeWorldUrl;
 
     public String mass;
+
+    @SerializedName("eye_color")
+    public String eyeColor;
 
     @SerializedName("skin_color")
     public String skinColor;
@@ -49,4 +55,18 @@ public class Personagem implements Serializable {
                 + "\nGender: " + gender
                 + "\nMass: " + mass + "\n";
     }
+
+    public String detalhar() {
+        return "\nName: " + name
+                + "\nHeight: " + height
+                + "\nMass: " + mass
+                + "\nHair color: " + hairColor
+                + "\nSkin color: " + skinColor
+                + "\nEye color: " + eyeColor
+                + "\nBirth year: " + birthYear
+                + "\nGender: " + gender
+                + "\nHomeworld: " + homeWorldUrl
+                + "\nSpecies: " + speciesUrls + "\n";
+    }
+
 }
