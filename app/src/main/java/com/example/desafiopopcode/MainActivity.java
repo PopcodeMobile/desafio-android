@@ -2,11 +2,8 @@ package com.example.desafiopopcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -14,17 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.example.desafiopopcode.Controllers.BuscaPerson;
 import com.example.desafiopopcode.Controllers.SWApi;
 import com.example.desafiopopcode.Models.ListaPerson;
 import com.example.desafiopopcode.Models.Personagem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.desafiopopcode.Controllers.FavApi;
 import com.example.desafiopopcode.Controllers.SWApi;
 import com.example.desafiopopcode.Models.ListaPerson;
 import com.example.desafiopopcode.Models.Personagem;
@@ -17,6 +18,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class Detalhes extends AppCompatActivity {
+
+    String listaFav = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,28 @@ public class Detalhes extends AppCompatActivity {
             @Override
             public void success(Personagem personagem, Response response) {
                 text.setText(personagem.detalhar());
+
+                Button favoritar = findViewById(R.id.button3);
+                favoritar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FavApi.getApi().favPerson(personagem.getId(), new Callback<Personagem>() {
+                            @Override
+                            public void success(Personagem personagem, Response response) {
+                                listaFav.concat(personagem.toString() + "\n");
+                                Intent it = new Intent(Detalhes.this, Favs.class);
+                                it.putExtra("lista", listaFav);
+                                startActivity(it);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                error.getBody();
+                            }
+                        });
+                    }
+                });
+
             }
 
             @Override
@@ -40,12 +65,13 @@ public class Detalhes extends AppCompatActivity {
             }
         });
 
-        Button voltar = (Button) findViewById(R.id.button);
+        Button voltar = findViewById(R.id.button);
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
     }
 }

@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Desafiopopcode">
-        <activity android:name=".Detalhes"></activity>
+        <activity android:name=".Favs"></activity>
+        <activity android:name=".Detalhes" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

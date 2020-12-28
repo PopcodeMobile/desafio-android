@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit.Callback;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
@@ -17,4 +18,6 @@ public interface SWWiki {
     @GET("/people/{id}/")
     public void getPeople(@Path("id") int peopleId, Callback<Personagem> callback);
 
+    @POST("/favorite/{id}")
+    public void favPerson(@Path("id") int id, Callback<Personagem> callback);
 }
