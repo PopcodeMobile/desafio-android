@@ -24,9 +24,9 @@ public class Detalhes extends AppCompatActivity {
         final TextView text = findViewById(R.id.text);
 
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id", 0);
+        int peopleId = intent.getIntExtra("peopleId", 0);
 
-        SWApi.getApi().getPeople(id, new Callback<Personagem>() {
+        SWApi.getApi().getPeople(peopleId, new Callback<Personagem>() {
             @Override
             public void success(Personagem personagem, Response response) {
                 text.setText(personagem.detalhar());

@@ -48,12 +48,31 @@ public class Personagem implements Serializable {
     @SerializedName("vehicles")
     public ArrayList<String> vehiclesUrls;
 
+    public int getId() {
+        if (url.length() == 30) {
+            char aux = url.charAt(url.length() - 2);
+            id = Character.getNumericValue(aux);
+        }
+        else {
+            String str;
+            char aux1 = url.charAt(url.length() - 3);
+            char aux2 = url.charAt(url.length() - 2);
+            StringBuilder sb = new StringBuilder();
+            sb.append(aux1);
+            sb.append(aux2);
+            str = sb.toString();
+            id = Integer.parseInt(str);
+        }
+        return id;
+    }
+
     @Override
     public String toString() {
         return "\nName: " + name
                 + "\nHeight: " + height
                 + "\nGender: " + gender
-                + "\nMass: " + mass + "\n";
+                + "\nMass: " + mass
+                + "\nId: " + getId() + "\n";
     }
 
     public String detalhar() {
