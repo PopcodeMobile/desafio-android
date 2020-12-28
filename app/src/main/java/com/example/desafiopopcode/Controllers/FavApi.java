@@ -4,27 +4,27 @@ import retrofit.RestAdapter;
 
 public class FavApi {
 
-    private SWWiki fav;
+    private FavController fav;
     private static FavApi Instance;
 
     private FavApi() {
         final RestAdapter restAdapter = new RestAdapter.Builder()
                 .setClient(new SWClient())
-                .setEndpoint("http://private-782d3-starwarsfavorites.apiary-mock.com/")
+                .setEndpoint("https://private-782d3-starwarsfavorites.apiary-mock.com/")
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        fav = restAdapter.create(SWWiki.class);
+        fav = restAdapter.create(FavController.class);
     }
 
     public static void init() {
         Instance = new FavApi();
     }
 
-    public static SWWiki getApi() {
+    public static FavController getApi() {
         return Instance.fav;
     }
 
-    public void setApi(SWWiki favApi) {
+    public void setApi(FavController favApi) {
         Instance.fav = favApi;
     }
 }

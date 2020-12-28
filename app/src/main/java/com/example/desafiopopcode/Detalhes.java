@@ -26,6 +26,8 @@ public class Detalhes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes);
 
+        FavApi.init();
+
         final TextView text = findViewById(R.id.text);
 
         Intent intent = getIntent();
@@ -35,28 +37,6 @@ public class Detalhes extends AppCompatActivity {
             @Override
             public void success(Personagem personagem, Response response) {
                 text.setText(personagem.detalhar());
-
-                Button favoritar = findViewById(R.id.button3);
-                favoritar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FavApi.getApi().favPerson(personagem.getId(), new Callback<Personagem>() {
-                            @Override
-                            public void success(Personagem personagem, Response response) {
-                                listaFav.concat(personagem.toString() + "\n");
-                                Intent it = new Intent(Detalhes.this, Favs.class);
-                                it.putExtra("lista", listaFav);
-                                startActivity(it);
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                error.getBody();
-                            }
-                        });
-                    }
-                });
-
             }
 
             @Override
@@ -70,6 +50,27 @@ public class Detalhes extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        Button favoritar = findViewById(R.id.button3);
+        favoritar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FavApi.getApi().favPerson(peopleId, new Callback<Personagem>() {
+                    @Override
+                    public void success(Personagem personagem, Response response) {
+                        listaFav.concat(personagem.toString() + "\n");
+                        Intent it = new Intent(Detalhes.this, Favs.class);
+                        it.putExtra("lista", listaFav);
+                        startActivity(it);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        error.getBody();
+                    }
+                });
             }
         });
 
