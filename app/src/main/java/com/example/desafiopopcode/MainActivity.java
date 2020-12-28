@@ -2,25 +2,29 @@ package com.example.desafiopopcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.desafiopopcode.Controllers.BuscaPerson;
 import com.example.desafiopopcode.Controllers.SWApi;
 import com.example.desafiopopcode.Models.ListaPerson;
 import com.example.desafiopopcode.Models.Personagem;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -52,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
                 adpt = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, people);
                 list.setAdapter(adpt);
-                adpt.notifyDataSetChanged();
                 list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -74,11 +77,50 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void failure(RetrofitError error) {
-                people.add("kkkkkkkkkkkkkk");
+                error.getBody();
             }
         });
 
+        final EditText busca = findViewById(R.id.busca);
+        final TextView resposta = findViewById(R.id.resposta);
+        Button botaovoltar = findViewById(R.id.button2);
+        Button botaobuscar = findViewById(R.id.botaobuscar);
+        botaobuscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newid = busca.getText().toString();
+                int newId = Integer.parseInt(newid);
+                SWApi.getApi().getPeople(newId, new Callback<Personagem>() {
+                    @Override
+                    public void success(Personagem personagem, Response response) {
+                        resposta.setVisibility(View.VISIBLE);
+                        list.setVisibility(View.INVISIBLE);
+                        busca.setVisibility(View.INVISIBLE);
+                        botaobuscar.setVisibility(View.INVISIBLE);
+                        resposta.setText(personagem.toString());
+                        botaovoltar.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        error.getBody();
+                    }
+                });
+            }
+        });
+
+        botaovoltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resposta.setVisibility(View.INVISIBLE);
+                botaovoltar.setVisibility(View.INVISIBLE);
+                list.setVisibility(View.VISIBLE);
+                busca.setVisibility(View.VISIBLE);
+                botaobuscar.setVisibility(View.VISIBLE);
+            }
+        });
     }
+
 
     public class EndlessScrollListener implements AbsListView.OnScrollListener {
 
@@ -107,9 +149,6 @@ public class MainActivity extends AppCompatActivity {
                                 for (Personagem p : lista.results) {
                                     people.add(p.toString());
                                 }
-                                //adpt = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, people);
-                                list.setAdapter(adpt);
-                                adpt.notifyDataSetChanged();
                                 list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -124,13 +163,12 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(it);
                                     }
                                 });
-                                //list.setOnScrollListener(new EndlessScrollListener());
                                 adpt.notifyDataSetChanged();
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
-                                people.add("kkkkkkkkkkkkkk");
+                                error.getBody();
                             }
                         });
                         adpt.notifyDataSetChanged();
@@ -147,39 +185,4 @@ public class MainActivity extends AppCompatActivity {
         public void onScrollStateChanged(AbsListView view, int scrollState) {
         }
     }
-
-        /*Button btn = findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                id++;
-                SWApi.getApi().getAllPeople(id, new Callback<ListaPerson<Personagem>>() {
-                    @Override
-                    public void success(ListaPerson<Personagem> lista, Response response) {
-                        for (Personagem p : lista.results) {
-                            people.add(p.toString());
-                        }
-                        adpt = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, people);
-                        list.setAdapter(adpt);
-                        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                int peopleId = (int)id+1;
-                                if (peopleId >= 17) {
-                                    peopleId++;
-                                }
-                                Intent it = new Intent(MainActivity.this, Detalhes.class);
-                                it.putExtra("peopleId", peopleId);
-                                startActivity(it);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        people.add("kkkkkkkkkkkkkk");
-                    }
-                });
-            }
-        });*/
 }

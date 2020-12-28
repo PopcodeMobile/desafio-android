@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.desafiopopcode.Controllers.SWApi;
@@ -35,6 +37,14 @@ public class Detalhes extends AppCompatActivity {
             @Override
             public void failure(RetrofitError error) {
                 text.setText("error kkkkkk");
+            }
+        });
+
+        Button voltar = (Button) findViewById(R.id.button);
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

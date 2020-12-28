@@ -71,8 +71,7 @@ public class Personagem implements Serializable {
         return "\nName: " + name
                 + "\nHeight: " + height
                 + "\nGender: " + gender
-                + "\nMass: " + mass
-                + "\nId: " + getId() + "\n";
+                + "\nMass: " + mass + "\n";
     }
 
     public String detalhar() {
