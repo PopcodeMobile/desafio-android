@@ -12,9 +12,9 @@ http://docs.starwarsfavorites.apiary.io/#
 
 ### Lista de Personagens
 
-Para obter os personagens, sua aplicação deverá utilizar o recurso `people` da Swapi (documentação disponível no topo do documento). A aplicação deve exibir todos os 87 personagens e permitir pesquisar o personagem pelo nome. Sugerimos exibir as primeiras páginas enquanto carrega as outras, em um formato de scroll infinito.
+Para obter os personagens, sua aplicação deverá utilizar o recurso `people` da Swapi (documentação disponível no topo do documento). A aplicação deve exibir todos os 87 personagens ✅ e permitir pesquisar o personagem pelo nome ✅. Sugerimos exibir as primeiras páginas enquanto carrega as outras, em um formato de scroll infinito ✅.
 
-A lista de itens deve exibir as seguintes informações:
+A lista de itens deve exibir as seguintes informações: ✅
 + Nome [name]
 + Altura [height]
 + Genero [gender]
@@ -24,7 +24,7 @@ Os dados devem ser salvos em banco de dados local para acesso offline e atualiza
 
 ### Detalhes do Personagem
 
-Ao clicar em um item da lista o seu app deve mostrar as informações abaixo:
+Ao clicar em um item da lista o seu app deve mostrar as informações abaixo: ✅
 
 + name
 + height
@@ -41,7 +41,7 @@ A busca pelo nome do planeta e da espécie deve ser feita em paralelo.
 
 ### Favoritos
 
-Na lista e nos detalhes deve ser possível adicionar e remover um personagem a sua lista de favoritos. Tambem deve ser possível filtrar quais personagens foram favoritados na lista principal.
+Na lista e nos detalhes ✅ deve ser possível adicionar e remover um personagem a sua lista de favoritos. Tambem deve ser possível filtrar quais personagens foram favoritados na lista principal.
 
 ##### Adição e Remoção de Favoritos
 
@@ -56,7 +56,7 @@ A aplicação deve:
 
 Em metade das requisições enviadas para a api starwarsfavorites a aplicação deve adicionar o header `Prefer` com o valor `status=400`.
 
-P.S.: O candidato deve escolher o ID.
+P.S.: O candidato deve escolher o ID. ✅
 
 ---
 #### LICENSE
