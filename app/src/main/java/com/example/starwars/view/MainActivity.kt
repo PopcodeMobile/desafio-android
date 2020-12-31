@@ -1,4 +1,4 @@
-package com.example.starwars.presentation
+package com.example.starwars.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

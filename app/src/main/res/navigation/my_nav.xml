@@ -12,25 +12,14 @@
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_viewPagerFragment"
-            app:destination="@id/viewPagerFragment" />
-        <action
-            android:id="@+id/action_splashFragment_to_inicioFragment"
-            app:destination="@id/inicioFragment"
+            app:destination="@id/viewPagerFragment"
             app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
         android:name="com.example.starwars.fragment.onboarding.ViewPagerFragment"
         android:label="fragment_view_pager"
-        tools:layout="@layout/fragment_view_pager" >
-        <action
-            android:id="@+id/action_viewPagerFragment_to_inicioFragment"
-            app:destination="@id/inicioFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/inicioFragment"
-        android:name="com.example.starwars.fragment.InicioFragment"
-        android:label="fragment_inicio"
-        tools:layout="@layout/fragment_inicio" />
+        tools:layout="@layout/fragment_view_pager" />
 </navigation>
