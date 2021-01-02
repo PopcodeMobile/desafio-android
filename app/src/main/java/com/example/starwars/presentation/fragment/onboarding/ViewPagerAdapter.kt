@@ -1,4 +1,4 @@
-package com.example.starwars.fragment.onboarding
+package com.example.starwars.presentation.fragment.onboarding
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

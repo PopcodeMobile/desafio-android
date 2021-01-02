@@ -1,4 +1,4 @@
-package com.example.starwars.fragment.onboarding.screens
+package com.example.starwars.presentation.fragment.onboarding.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.example.starwars.R
 import kotlinx.android.synthetic.main.fragment_first_screen.view.*
-import kotlinx.android.synthetic.main.fragment_view_pager.*
 
 class FirstScreen : Fragment() {
 

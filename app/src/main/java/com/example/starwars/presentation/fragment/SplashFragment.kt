@@ -1,4 +1,4 @@
-package com.example.starwars.fragment
+package com.example.starwars.presentation.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.starwars.R
-import com.example.starwars.view.Inicio
+import com.example.starwars.presentation.view.Inicio
 
 class SplashFragment : Fragment() {
 

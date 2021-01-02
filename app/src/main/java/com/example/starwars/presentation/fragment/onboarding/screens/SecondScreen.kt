@@ -1,4 +1,4 @@
-package com.example.starwars.fragment.onboarding.screens
+package com.example.starwars.presentation.fragment.onboarding.screens
 
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.starwars.R
-import com.example.starwars.view.Inicio
+import com.example.starwars.presentation.view.Inicio
 import kotlinx.android.synthetic.main.fragment_second_screen.view.*
 
 class SecondScreen : Fragment() {

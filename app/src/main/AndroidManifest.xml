@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StarWars">
-        <activity android:name=".view.Inicio"></activity>
-        <activity android:name=".view.MainActivity">
+        <activity android:name="com.example.starwars.presentation.view.Inicio"></activity>
+        <activity android:name="com.example.starwars.presentation.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

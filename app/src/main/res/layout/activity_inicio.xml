@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context=".view.Inicio">
+    tools:context=".presentation.view.Inicio">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -41,7 +41,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0sp"
         android:layout_height="0sp"
-        tools:listitem="@layout/support_simple_spinner_dropdown_item"
+        tools:listitem="@layout/custom_row_people"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
