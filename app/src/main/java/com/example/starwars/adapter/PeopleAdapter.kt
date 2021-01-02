@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwars.R
 import com.example.starwars.model.People
+import com.example.starwars.model.Results
 import kotlinx.android.synthetic.main.custom_row_people.view.*
 
 class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>() {
 
     // Declara uma Lista vazia
-    private var myListPeople = emptyList<People>()
+    private var myListResults = emptyList<People>()
 
     inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
@@ -20,20 +21,19 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return myListPeople.size
+        return myListResults.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = myListPeople[position]
-        holder.itemView.textName.text = currentItem.name.toString()
-        holder.itemView.textHeigth.text = currentItem.heigth.toString()
-        holder.itemView.textGender.text = currentItem.gender.toString()
-        holder.itemView.textMass.text = currentItem.mass.toString()
+        val currentItem = myListResults[position]
+        holder.itemView.textName.text = currentItem.results[position].name
+        holder.itemView.textHeigth.text = currentItem.results[position].heigth
+        holder.itemView.textGender.text = currentItem.results[position].gender
+        holder.itemView.textMass.text = currentItem.results[position].mass
     }
 
-    // Captura tudo da Lista e joga para o myList
     fun setData(newList: List<People>){
-        myListPeople = newList
+        this.myListResults = newList
         notifyDataSetChanged()
     }
 

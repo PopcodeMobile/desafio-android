@@ -39,6 +39,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="0sp"
         android:layout_height="0sp"
         tools:listitem="@layout/custom_row_people"
