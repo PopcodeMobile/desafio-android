@@ -46,10 +46,14 @@ dependencies {
 
     //Legacy
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     //Navigation Fragment
-    
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     //ViewPager2
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
