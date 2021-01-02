@@ -4,13 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.starwars.model.People
+import com.example.starwars.model.Results
 import com.example.starwars.repository.RepositoryApi
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class PeopleViewModel ( private val repository: RepositoryApi): ViewModel() {
 
-    val myResponse: MutableLiveData<Response<People>> = MutableLiveData()
+    val myResponse: MutableLiveData<Response<List<People>>> = MutableLiveData()
 
     // Metoto Get
     fun getPeople(){
@@ -19,5 +20,4 @@ class PeopleViewModel ( private val repository: RepositoryApi): ViewModel() {
             myResponse.value = response
         }
     }
-
 }

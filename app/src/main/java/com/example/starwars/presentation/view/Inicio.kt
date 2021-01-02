@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -41,13 +40,10 @@ class Inicio : AppCompatActivity() {
 
         viewModel.getPeople()
         viewModel.myResponse.observe(this, Observer {response->
-            if(response.isSuccessful){
-                Log.d("Main", response.body().toString())
-               // Log.d("Main", response.code().toString())
-              // Log.d("Main", response.headers().toString())
-            }else{
-               Log.d("Main", response.code().toString())
+            if (response.isSuccessful){
+                //response.body().let { peopleAdapter.setData(it) }
             }
+            Log.d("MAIN: ", response.body().toString())
         })
 
     }
