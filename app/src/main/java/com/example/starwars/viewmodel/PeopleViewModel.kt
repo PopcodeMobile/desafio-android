@@ -11,13 +11,17 @@ import retrofit2.Response
 
 class PeopleViewModel ( private val repository: RepositoryApi): ViewModel() {
 
-    val myResponse: MutableLiveData<Response<List<People>>> = MutableLiveData()
+    val myResponse: MutableLiveData<List<Results>> = MutableLiveData()
 
     // Metoto Get
     fun getPeople(){
         viewModelScope.launch {
             val response = repository.getPeople()
-            myResponse.value = response
+            if (response.isSuccessful) {
+                myResponse.value = response.body()?.results
+            }else{
+                myResponse.value = null
+            }
         }
     }
 }

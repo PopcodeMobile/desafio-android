@@ -9,6 +9,6 @@ interface SimpleApi {
 
     //Endpoint Listar Personagens
     @GET(ENDPOINT_PEOPLE)
-    suspend fun getPeople(): Response<List<People>>
+    suspend fun getPeople(): Response<People>
 
 }

@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwars.R
 import com.example.starwars.model.People
+import com.example.starwars.model.Results
 import kotlinx.android.synthetic.main.custom_row_people.view.*
 
 class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>() {
 
     // Declara uma Lista vazia
-    private var myListResults = emptyList<People>()
+    private var myListResults = emptyList<Results>()
 
     inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
@@ -24,15 +25,14 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = myListResults
-        holder.itemView.textName.text = currentItem[position].next.toString()
-       /* holder.itemView.textName.text = currentItem.name
-        holder.itemView.textHeigth.text = currentItem.heigth
+        val currentItem = myListResults[position]
+        holder.itemView.textName.text = currentItem.name
+        holder.itemView.textHeight.text = currentItem.height
         holder.itemView.textGender.text = currentItem.gender
-        holder.itemView.textMass.text = currentItem.mass*/
+        holder.itemView.textMass.text = currentItem.mass
     }
 
-    fun setData(newList: List<People>){
+    fun setData(newList: List<Results>){
         this.myListResults = newList
         notifyDataSetChanged()
     }
