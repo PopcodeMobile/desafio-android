@@ -1,6 +1,7 @@
 package com.example.starwars.model
 
 data class Results (
+        //Atributos
         val name: String,
         val height: String,
         val gender: String,
