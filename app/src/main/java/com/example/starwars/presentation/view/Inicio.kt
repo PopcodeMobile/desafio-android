@@ -52,11 +52,24 @@ class Inicio : AppCompatActivity() {
         // obter id do icon search
         val search = menu?.findItem(R.id.id_search)
         val searchView = search?.actionView as SearchView
-        searchView.queryHint = "Digite Aqui"
+        searchView.queryHint = "Nome do personagem"
 
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                peopleAdapter.filter.filter(newText)
+                return true
+            }
+
+        }
+
+        )
         return super.onCreateOptionsMenu(menu)
-
     }
+
     // Pega o conteudo do Adapter e joga para o RecyclerView
     private fun setupRecyclerView(){
         recyclerView.adapter = peopleAdapter

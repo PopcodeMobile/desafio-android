@@ -11,4 +11,5 @@ interface SimpleApi {
     @GET(ENDPOINT_PEOPLE)
     suspend fun getPeople(): Response<People>
 
+
 }

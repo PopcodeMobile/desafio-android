@@ -2,6 +2,7 @@
     <string name="app_name">Star Wars</string>
     <string name="seguir">SEGUIR</string>
     <string name="comecar">COMEÇAR</string>
+    <string name="detalhes">DETALHES</string>
     <!-- Screen 1 -->
     <string name="titleScreen1">LISTA DE PERSONAGENS</string>
     <string name="text_screen1">Acompanhe a lista de personagens de Star Wars</string>

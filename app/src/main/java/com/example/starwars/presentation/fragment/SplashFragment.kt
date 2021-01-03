@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.starwars.R
 import com.example.starwars.presentation.view.Inicio
+import kotlinx.android.synthetic.main.activity_main.*
 
 class SplashFragment : Fragment() {
 
