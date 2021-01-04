@@ -2,9 +2,7 @@ package com.example.starwars.presentation.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_inicio.*
 
 class Inicio : AppCompatActivity() {
 
+    //Api
     private lateinit var viewModel: PeopleViewModel
 
     private val peopleAdapter by lazy { PeopleAdapter() }

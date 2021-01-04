@@ -1,22 +1,15 @@
 package com.example.starwars.adapter
 
-import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwars.R
-import com.example.starwars.model.People
 import com.example.starwars.model.Results
 import com.example.starwars.presentation.view.Detalhes
-import com.example.starwars.presentation.view.Inicio
 import kotlinx.android.synthetic.main.custom_row_people.view.*
 import java.util.*
 
