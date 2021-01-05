@@ -9,7 +9,6 @@ import androidx.room.RoomDatabase
 abstract class ResultDatabase: RoomDatabase() {
 
     //Cria o Database
-
     abstract fun resultDao(): ResultDao
 
     companion object{

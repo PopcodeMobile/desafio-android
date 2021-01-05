@@ -1,5 +1,8 @@
 package com.example.starwars.presentation.view
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -10,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.starwars.R
 import com.example.starwars.adapter.PeopleAdapter
-import com.example.starwars.adapter.PeopleAdapterRoom
 import com.example.starwars.data.room.ResultEntity
 import com.example.starwars.repository.RepositoryApi
 import com.example.starwars.viewmodel.PeopleViewModel
@@ -20,57 +22,35 @@ import kotlinx.android.synthetic.main.activity_inicio.*
 
 class Inicio : AppCompatActivity() {
 
+    // Declarando ViewModel Room
+    lateinit var peopleViewModelRoom: PeopleViewModelRoom
 
-        lateinit var peopleViewModelRoom: PeopleViewModelRoom
-
-
-    //Api
+    // Declarando ViewModel Api
     private lateinit var viewModel: PeopleViewModel
 
-    // Adapter Api
+    // Adapter
     private val peopleAdapter by lazy { PeopleAdapter() }
-
-    // Adapter Room
-    private val peopleAdapterRoom by lazy { PeopleAdapterRoom() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio)
 
         peopleViewModelRoom = ViewModelProvider(this).get(PeopleViewModelRoom::class.java)
-        //peopleViewModelRoom.deleteAllResults()
 
         //Adiciona Suporte Toolbar
         setSupportActionBar(toolbar)
 
-        //Declara e Inicializa o Repositorio
-        val repositoryApi = RepositoryApi()
-
         //Executa metodo que inicia e carrega o recyclerview
         setupRecyclerView()
 
-
-
-        //Informa o repositorio ao Factory
-       /* val viewModelFactory = PeopleViewModelFactory(repositoryApi)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(PeopleViewModel::class.java)
-
-       viewModel.getPeople()
-        viewModel.myResponse.observe(this, Observer {response->
-            peopleAdapter.setData(response)
-          for(result in response){
-                val resultEntity = ResultEntity(0, result.name, result.height, result.gender, result.mass, result.hair_color,
-                    result.skin_color, result.eye_color, result.birth_year, result.homeworld)
-                peopleViewModelRoom.addResult(resultEntity)
-          }
-        })*/
-
-
-        //ROOM
-        peopleViewModelRoom.readAllData.observe(this, Observer {
-                result -> peopleAdapterRoom.setData(result)
-        })
-
+        /*
+      Verifica conectividade e procede com uma ação
+       */
+      if (isNeworkAvailable()){
+         acaoComInternet()
+      }else{
+         acaoSemInternet()
+      }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -95,9 +75,55 @@ class Inicio : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    //METODOS UTEIS
+
+    //Caso esteja com Internet
+    fun acaoComInternet(){
+        //Declara e Inicializa o Repositorio da Api
+        val repositoryApi = RepositoryApi()
+        //Informa o repositorio ao Factory
+        val viewModelFactory = PeopleViewModelFactory(repositoryApi)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(PeopleViewModel::class.java)
+        //Realiza e retorna o resultado da api
+        viewModel.getPeople()
+        peopleViewModelRoom.deleteAllResults()
+        viewModel.myResponse.observe(this, Observer {response->
+            peopleAdapter.setData(response)
+                    for(result in response){
+                         val resultEntity = ResultEntity(0, result.name, result.height, result.gender, result.mass, result.hair_color,
+                                 result.skin_color, result.eye_color, result.birth_year, result.homeworld)
+                           peopleViewModelRoom.addResult(resultEntity)
+                    }
+        })
+    }
+
+    //Caso esteja sem internet
+    fun acaoSemInternet(){
+        Toast.makeText(this,"Sem internet, verifique sua conexão", Toast.LENGTH_SHORT).show()
+        //ROOM
+        peopleViewModelRoom.readAllData.observe(this, Observer { result ->
+            peopleAdapter.setData(result)
+        })
+    }
+
     // Pega o conteudo do Adapter e joga para o RecyclerView
     private fun setupRecyclerView(){
         recyclerView.adapter = peopleAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
+
+    //VERIFICA A CONEXAO COM A INTERNET(Wifi e Movel)
+    private fun isNeworkAvailable(): Boolean{
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val wifi: NetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+        val mobi: NetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+        if (wifi.isConnectedOrConnecting || mobi.isConnectedOrConnecting){
+            return true
+        }else return false
+    }
+
+    override fun onBackPressed() {
+        finish()
+    }
+
 }
