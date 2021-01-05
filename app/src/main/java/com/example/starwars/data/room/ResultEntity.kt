@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 //Criação da tabela
 @Entity(tableName = "result_table")
 //Atributos da tabela
-data class ResultEntity (
+data class ResultEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
@@ -22,5 +22,4 @@ data class ResultEntity (
     val eye_color: String,
     val birth_year: String,
     val homeworld: String
-
 ): Parcelable

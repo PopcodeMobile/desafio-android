@@ -10,7 +10,7 @@ abstract class ResultDatabase: RoomDatabase() {
 
     //Cria o Database
 
-    abstract fun userDao(): ResultDao
+    abstract fun resultDao(): ResultDao
 
     companion object{
         @Volatile
@@ -25,7 +25,7 @@ abstract class ResultDatabase: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     ResultDatabase::class.java,
-                    "result_database"
+                    "result_base"
                 ).build()
                 INSTANCE = instance
                 return instance

@@ -9,12 +9,11 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwars.R
 import com.example.starwars.data.room.ResultEntity
-import com.example.starwars.model.Results
 import com.example.starwars.presentation.view.Detalhes
 import kotlinx.android.synthetic.main.custom_row_people.view.*
 import java.util.*
 
-class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filterable {
+class PeopleAdapterRoom: RecyclerView.Adapter<PeopleAdapterRoom.MyViewHolder>(), Filterable {
 
     companion object{
         var nameCompanion: String = ""
@@ -29,10 +28,10 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
     }
 
     // Declara uma Lista vazia
-    private var myListResults = emptyList<Results>()
+    private var myListResults = emptyList<ResultEntity>()
 
     //Lista Auxiliar
-    private var listFilter = emptyList<Results>()
+    private var listFilter = emptyList<ResultEntity>()
 
     inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
@@ -40,9 +39,6 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
         return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_row_people, parent, false))
     }
 
-    override fun getItemCount(): Int {
-        return listFilter.size
-    }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val context = holder.itemView.context
@@ -67,8 +63,13 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
         }
     }
 
-    //setData Api
-    fun setData(newList: List<Results>){
+    override fun getItemCount(): Int {
+        return listFilter.size
+    }
+
+
+    //setData Room
+    fun setData(newList: List<ResultEntity>){
         this.myListResults = newList
         listFilter = myListResults
         notifyDataSetChanged()
@@ -81,10 +82,10 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
                 if (charSearch.isEmpty()) {
                     listFilter = myListResults
                 } else {
-                    val resultList = mutableListOf<Results>()
+                    val resultList = mutableListOf<ResultEntity>()
                     for (row in myListResults) {
                         if (row.name.toLowerCase(Locale.ROOT)
-                                .contains(charSearch.toLowerCase(Locale.ROOT))
+                                        .contains(charSearch.toLowerCase(Locale.ROOT))
                         ) {
                             resultList.add(row)
                         }
@@ -97,10 +98,9 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
             }
 
             override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
-                listFilter = p1?.values as MutableList<Results>
+                listFilter = p1?.values as MutableList<ResultEntity>
                 notifyDataSetChanged()
             }
         }
     }
-
 }
