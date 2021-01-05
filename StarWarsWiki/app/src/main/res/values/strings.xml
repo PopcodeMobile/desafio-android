@@ -13,4 +13,5 @@
     <string name="icone_de_genero">Icone de gênero</string>
     <string name="icone_de_peso">Icone de peso</string>
     <string name="peoples_not_found">Não foi possível carregar mais personagens!</string>
+    <string name="favorito_botao">Botão de favorito</string>
 </resources>
