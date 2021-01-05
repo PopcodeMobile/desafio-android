@@ -16,7 +16,7 @@ O projeto consiste em listar os personagens da franquia de Star Wars e verificar
 - Kotlin
 
 ## Recursos
-- Fragment
+- Fragment 
 - ViewPager
 - SharedPreferences
 - Retrofit
