@@ -6,7 +6,7 @@ import androidx.room.*
 @Dao
 interface ResultDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addResult(result:ResultEntity)
+    suspend fun addResult(result: ResultEntity)
 
     @Query("DELETE FROM result_table")
     suspend fun deleteAllResults()

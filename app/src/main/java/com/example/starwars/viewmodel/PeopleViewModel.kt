@@ -7,17 +7,17 @@ import com.example.starwars.data.room.ResultEntity
 import com.example.starwars.repository.RepositoryApi
 import kotlinx.coroutines.launch
 
-class PeopleViewModel ( private val repository: RepositoryApi): ViewModel() {
+class PeopleViewModel(private val repository: RepositoryApi) : ViewModel() {
 
     val myResponse: MutableLiveData<List<ResultEntity>> = MutableLiveData()
 
     // Metoto Get
-    fun getPeople(){
+    fun getPeople() {
         viewModelScope.launch {
             val response = repository.getPeople()
             if (response.isSuccessful) {
                 myResponse.value = response.body()?.results
-            }else{
+            } else {
                 myResponse.value = null
             }
         }

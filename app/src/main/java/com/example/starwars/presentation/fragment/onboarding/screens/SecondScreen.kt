@@ -26,10 +26,9 @@ class SecondScreen : Fragment() {
             startActivity(intent)
             onBoardingFinished()
         }
-
         return view
-
     }
+
     // Realiza o Set Bollean no Finished do Shared
     private fun onBoardingFinished(){
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)

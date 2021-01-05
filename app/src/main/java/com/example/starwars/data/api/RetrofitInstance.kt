@@ -14,15 +14,14 @@ object RetrofitInstance {
     // Captura o link da Api
     private val retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
     }
 
     // Inicializa a Api
     val api: SimpleApi by lazy {
         retrofit.create(SimpleApi::class.java)
     }
-
 }

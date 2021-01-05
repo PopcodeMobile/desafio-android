@@ -13,10 +13,10 @@ import com.example.starwars.presentation.view.Detalhes
 import kotlinx.android.synthetic.main.custom_row_people.view.*
 import java.util.*
 
-class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filterable {
+class PeopleAdapter : RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filterable {
 
     //Atribudos a serem utilizados no detalhe do personagem
-    companion object{
+    companion object {
         var nameCompanion: String = ""
         var heightCompanion: String = ""
         var genderCompanion: String = ""
@@ -34,7 +34,7 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
     //Lista Auxiliar
     private var listFilter = emptyList<ResultEntity>()
 
-    inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_row_people, parent, false))
@@ -48,10 +48,10 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val context = holder.itemView.context
         val currentItem = listFilter[position]
-        holder.itemView.textName.text = "Name: "+currentItem.name
-        holder.itemView.textHeight.text = "Height: "+currentItem.height
-        holder.itemView.textGender.text = "Gender: "+currentItem.gender
-        holder.itemView.textMass.text = "Mass: "+currentItem.mass
+        holder.itemView.textName.text = "Name: " + currentItem.name
+        holder.itemView.textHeight.text = "Height: " + currentItem.height
+        holder.itemView.textGender.text = "Gender: " + currentItem.gender
+        holder.itemView.textMass.text = "Mass: " + currentItem.mass
 
         holder.itemView.custom_row.setOnClickListener {
             nameCompanion = currentItem.name
@@ -68,7 +68,7 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
         }
     }
 
-    fun setData(newList: List<ResultEntity>){
+    fun setData(newList: List<ResultEntity>) {
         this.myListResults = newList
         listFilter = myListResults
         notifyDataSetChanged()
@@ -85,7 +85,7 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
                     val resultList = mutableListOf<ResultEntity>()
                     for (row in myListResults) {
                         if (row.name.toLowerCase(Locale.ROOT)
-                                .contains(charSearch.toLowerCase(Locale.ROOT))
+                                        .contains(charSearch.toLowerCase(Locale.ROOT))
                         ) {
                             resultList.add(row)
                         }
@@ -103,5 +103,4 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filtera
             }
         }
     }
-
 }

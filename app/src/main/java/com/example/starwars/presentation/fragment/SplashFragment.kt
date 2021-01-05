@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class SplashFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_splash, container, false)
@@ -25,21 +25,20 @@ class SplashFragment : Fragment() {
         // Temporizador
         Handler().postDelayed({
             // Verifica a condição do Shared
-            if(onBoardindFinished()){
+            if (onBoardindFinished()) {
                 val intent = Intent(requireContext(), Inicio::class.java)
                 startActivity(intent)
-            }else {
+            } else {
                 findNavController().navigate(R.id.action_splashFragment_to_viewPagerFragment)
             }
-        },3000)
+        }, 3000)
 
-       return view
+        return view
     }
 
     // Captura valor inicial do Shared
-    private fun onBoardindFinished(): Boolean{
+    private fun onBoardindFinished(): Boolean {
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        return sharedPref.getBoolean("Finished",false)
+        return sharedPref.getBoolean("Finished", false)
     }
-
 }

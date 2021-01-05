@@ -10,7 +10,7 @@ import com.example.starwars.repository.RepositoryRoom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PeopleViewModelRoom (application: Application): AndroidViewModel(application) {
+class PeopleViewModelRoom(application: Application) : AndroidViewModel(application) {
 
     // Captura todos os dados da Entidade que esta no db
     val readAllData: LiveData<List<ResultEntity>> // LiveData
@@ -25,15 +25,15 @@ class PeopleViewModelRoom (application: Application): AndroidViewModel(applicati
     }
 
     // Adiciona Result
-    fun addResult(resultEntity: ResultEntity){
+    fun addResult(resultEntity: ResultEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryRoom.addResult(resultEntity)
         }
     }
 
     // Deleta todos Results
-    fun deleteAllResults(){
-        viewModelScope.launch(Dispatchers.IO){
+    fun deleteAllResults() {
+        viewModelScope.launch(Dispatchers.IO) {
             repositoryRoom.deleteAllResults()
         }
     }

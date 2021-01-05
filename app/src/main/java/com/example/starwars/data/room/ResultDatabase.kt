@@ -6,30 +6,29 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [ResultEntity::class], version = 1, exportSchema = false)
-abstract class ResultDatabase: RoomDatabase() {
+abstract class ResultDatabase : RoomDatabase() {
 
     //Cria o Database
     abstract fun resultDao(): ResultDao
 
-    companion object{
+    companion object {
         @Volatile
         private var INSTANCE: ResultDatabase? = null
 
-        fun getDatabase(context: Context): ResultDatabase{
+        fun getDatabase(context: Context): ResultDatabase {
             val tempInstance = INSTANCE
-            if(tempInstance != null){
+            if (tempInstance != null) {
                 return tempInstance
             }
-            synchronized(this){
+            synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    ResultDatabase::class.java,
-                    "result_base"
+                        context.applicationContext,
+                        ResultDatabase::class.java,
+                        "result_base"
                 ).build()
                 INSTANCE = instance
                 return instance
             }
         }
     }
-
 }

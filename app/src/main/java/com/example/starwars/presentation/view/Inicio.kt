@@ -46,25 +46,26 @@ class Inicio : AppCompatActivity() {
         /*
       Verifica conectividade e procede com uma ação
        */
-      if (isNeworkAvailable()){
-         acaoComInternet()
-      }else{
-         acaoSemInternet()
-      }
+        if (isNeworkAvailable()) {
+            acaoComInternet()
+        } else {
+            acaoSemInternet()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu,menu)
+        menuInflater.inflate(R.menu.menu, menu)
 
         // obter id do icon search
         val search = menu?.findItem(R.id.id_search)
         val searchView = search?.actionView as SearchView
         searchView.queryHint = "Nome do personagem"
 
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 peopleAdapter.filter.filter(newText)
                 return true
@@ -78,7 +79,7 @@ class Inicio : AppCompatActivity() {
     //METODOS UTEIS
 
     //Caso esteja com Internet
-    fun acaoComInternet(){
+    fun acaoComInternet() {
         //Declara e Inicializa o Repositorio da Api
         val repositoryApi = RepositoryApi()
         //Informa o repositorio ao Factory
@@ -87,19 +88,19 @@ class Inicio : AppCompatActivity() {
         //Realiza e retorna o resultado da api
         viewModel.getPeople()
         peopleViewModelRoom.deleteAllResults()
-        viewModel.myResponse.observe(this, Observer {response->
+        viewModel.myResponse.observe(this, Observer { response ->
             peopleAdapter.setData(response)
-                    for(result in response){
-                         val resultEntity = ResultEntity(0, result.name, result.height, result.gender, result.mass, result.hair_color,
-                                 result.skin_color, result.eye_color, result.birth_year, result.homeworld)
-                           peopleViewModelRoom.addResult(resultEntity)
-                    }
+            for (result in response) {
+                val resultEntity = ResultEntity(0, result.name, result.height, result.gender, result.mass, result.hair_color,
+                        result.skin_color, result.eye_color, result.birth_year, result.homeworld)
+                peopleViewModelRoom.addResult(resultEntity)
+            }
         })
     }
 
     //Caso esteja sem internet
-    fun acaoSemInternet(){
-        Toast.makeText(this,"Sem internet, verifique sua conexão", Toast.LENGTH_SHORT).show()
+    fun acaoSemInternet() {
+        Toast.makeText(this, "Sem internet, verifique sua conexão", Toast.LENGTH_SHORT).show()
         //ROOM
         peopleViewModelRoom.readAllData.observe(this, Observer { result ->
             peopleAdapter.setData(result)
@@ -107,19 +108,19 @@ class Inicio : AppCompatActivity() {
     }
 
     // Pega o conteudo do Adapter e joga para o RecyclerView
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
         recyclerView.adapter = peopleAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     //VERIFICA A CONEXAO COM A INTERNET(Wifi e Movel)
-    private fun isNeworkAvailable(): Boolean{
+    private fun isNeworkAvailable(): Boolean {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val wifi: NetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
         val mobi: NetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-        if (wifi.isConnectedOrConnecting || mobi.isConnectedOrConnecting){
+        if (wifi.isConnectedOrConnecting || mobi.isConnectedOrConnecting) {
             return true
-        }else return false
+        } else return false
     }
 
     override fun onBackPressed() {
