@@ -6,13 +6,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.weslleystos.databinding.PeoplesRowBinding
 import com.github.weslleystos.shared.entities.People
 
-class PeoplesAdapter : RecyclerView.Adapter<PeoplesAdapter.PeopleVH>() {
+class PeoplesAdapter(private val fragment: PeoplesList) :
+    RecyclerView.Adapter<PeoplesAdapter.PeopleVH>() {
+    private val dataset = mutableListOf<People>()
     private val peoples = mutableListOf<People>()
 
     fun setPeoples(peoples: List<People>) {
-        val oldSize = this.peoples.size
+        val oldSize = this.dataset.size
+        this.dataset.addAll(peoples)
         this.peoples.addAll(peoples)
-        notifyItemRangeInserted(oldSize, this.peoples.size)
+        notifyItemRangeInserted(oldSize, this.dataset.size)
+    }
+
+    fun setFilter(word: String) {
+        this.dataset.clear()
+        if (word.isBlank()) {
+            fragment.isSearching = false
+            this.dataset.addAll(peoples)
+        } else {
+            fragment.isSearching = true
+            val filteredPeoples = peoples.filter { people -> people.name.contains(word, true) }
+            this.dataset.addAll(filteredPeoples)
+        }
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleVH {
@@ -26,10 +42,10 @@ class PeoplesAdapter : RecyclerView.Adapter<PeoplesAdapter.PeopleVH>() {
     }
 
     override fun onBindViewHolder(holder: PeopleVH, position: Int) {
-        holder.bind(peoples[position])
+        holder.bind(dataset[position])
     }
 
-    override fun getItemCount() = peoples.size
+    override fun getItemCount() = dataset.size
 
     inner class PeopleVH(private val binding: PeoplesRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
