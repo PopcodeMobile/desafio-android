@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -95,6 +96,7 @@ class Inicio : AppCompatActivity() {
             viewModel.getPeople(pagina)
             page++
         }
+
         peopleViewModelRoom.deleteAllResults()
         viewModel.myResponse.observe(this, Observer { response ->
             peopleAdapter.setData(response)
@@ -137,5 +139,4 @@ class Inicio : AppCompatActivity() {
     override fun onBackPressed() {
         finish()
     }
-
 }

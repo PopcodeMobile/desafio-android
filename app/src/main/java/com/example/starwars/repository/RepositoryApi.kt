@@ -7,6 +7,7 @@ import retrofit2.Response
 class RepositoryApi {
 
     // Metodo que chama o metodo da Api
+    // Captura todos os personagens da pagina
     suspend fun getPeople(page: String): Response<People> {
         return RetrofitInstance.api.getPeople(page)
     }

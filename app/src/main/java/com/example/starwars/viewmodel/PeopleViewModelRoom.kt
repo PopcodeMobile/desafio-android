@@ -37,5 +37,4 @@ class PeopleViewModelRoom(application: Application) : AndroidViewModel(applicati
             repositoryRoom.deleteAllResults()
         }
     }
-
 }
