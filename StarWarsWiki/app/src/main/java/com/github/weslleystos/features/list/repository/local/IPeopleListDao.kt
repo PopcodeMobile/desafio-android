@@ -8,7 +8,7 @@ import com.github.weslleystos.shared.entities.People
 
 @Dao
 interface IPeopleListDao {
-    @Query("SELECT * FROM peoples LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM peoples ORDER BY id LIMIT :limit OFFSET :offset")
     fun getAll(offset: Int, limit: Int = 10): List<People>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
