@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="people_list">People List</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="detail_fragment_label">Detail Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -13,7 +13,19 @@
     <string name="icone_de_genero">Icone de gênero</string>
     <string name="icone_de_peso">Icone de peso</string>
     <string name="peoples_not_found">Não foi possível carregar mais personagens!</string>
+    <string name="species_not_found">Não foi possível carregar a especie!</string>
+    <string name="planets_not_found">Não foi possível carregar o planeta!</string>
     <string name="favorito_botao">Botão de favorito</string>
     <string name="search">Digite aqui para pesquisar!</string>
     <string name="fragmet_list_people_title">Star Wars Wiki</string>
+    <string name="mass">Peso</string>
+    <string name="name">Nome</string>
+    <string name="height">Altura</string>
+    <string name="hair_color">Cor do cabelo</string>
+    <string name="skin_color">Cor da pele</string>
+    <string name="eye_color">Cor do olho</string>
+    <string name="birth_year">Ano de aniversário</string>
+    <string name="gender">Gênero</string>
+    <string name="planet">Planeta Natal</string>
+    <string name="specie">Especie</string>
 </resources>
