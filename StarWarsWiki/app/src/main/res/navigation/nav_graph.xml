@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/PeopleList">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.github.weslleystos.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/PeopleList"
+        android:name="com.github.weslleystos.features.list.ui.PeoplesList"
+        android:label="@string/people_list"
+        tools:layout="@layout/fragment_people_list">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_PeopleListFragment_to_DetailFragment"
+            app:destination="@id/DetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.github.weslleystos.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/DetailFragment"
+        android:name="com.github.weslleystos.features.details.ui.DetailsFragment"
+        android:label="@string/detail_fragment_label"
+        tools:layout="@layout/fragment_detail">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_DetailFragment_to_PeopleListFragment"
+            app:destination="@id/PeopleList" />
     </fragment>
 </navigation>

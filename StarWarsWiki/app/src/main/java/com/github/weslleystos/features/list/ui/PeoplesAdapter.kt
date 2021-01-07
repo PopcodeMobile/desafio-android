@@ -2,7 +2,10 @@ package com.github.weslleystos.features.list.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.github.weslleystos.R
 import com.github.weslleystos.databinding.PeoplesRowBinding
 import com.github.weslleystos.shared.entities.People
 
@@ -52,6 +55,13 @@ class PeoplesAdapter(private val fragment: PeoplesList) :
 
         fun bind(people: People) {
             binding.people = people
+            binding.container.setOnClickListener {
+                fragment.peoplesViewModel.clearLiveData()
+                fragment.findNavController().navigate(
+                    R.id.action_PeopleListFragment_to_DetailFragment,
+                    bundleOf("people" to people)
+                )
+            }
         }
     }
 }
