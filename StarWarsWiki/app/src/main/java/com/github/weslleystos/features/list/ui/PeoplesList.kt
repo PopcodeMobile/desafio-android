@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,16 +18,18 @@ import com.github.weslleystos.MainActivity
 import com.github.weslleystos.R
 import com.github.weslleystos.databinding.FragmentPeopleListBinding
 import com.github.weslleystos.features.list.viewmodel.PeopleListViewModel
+import com.github.weslleystos.shared.entities.People
+import com.github.weslleystos.shared.utils.LiveDateState
 import com.github.weslleystos.shared.utils.hide
 import com.github.weslleystos.shared.utils.show
 
 class PeoplesList : Fragment() {
-    private var currentPage = 0
-    private lateinit var peoplesAdapter: PeoplesAdapter
-    private var isLoading = false
-    private var _binding: FragmentPeopleListBinding? = null
-    private val peoplesViewModel: PeopleListViewModel by viewModels()
     var isSearching = false
+    private var currentPage = 0
+    private var isLoading = false
+    private lateinit var peoplesAdapter: PeoplesAdapter
+    private var _binding: FragmentPeopleListBinding? = null
+    val peoplesViewModel: PeopleListViewModel by viewModels()
 
     private val binding get() = _binding!!
 
@@ -40,6 +43,7 @@ class PeoplesList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        currentPage = 0
         (activity as MainActivity).supportActionBar?.title =
             getString(R.string.fragmet_list_people_title)
 
@@ -58,25 +62,27 @@ class PeoplesList : Fragment() {
 
         binding.searchBar.addTextChangedListener(searchTextWatch)
 
-        peoplesViewModel.peoplesLiveData.observe(viewLifecycleOwner, { response ->
-            isLoading = false
-            binding.progressCircular.hide()
-            when {
-                response.first -> {
-                    currentPage++
-                    peoplesAdapter.setPeoples(response.second!!)
-                }
-                else -> {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.peoples_not_found),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        })
+        peoplesViewModel.peoplesLiveData.observe(viewLifecycleOwner, observer)
 
         peoplesViewModel.getAll(currentPage)
+    }
+
+    private val observer = Observer<Pair<LiveDateState, List<People>?>> { response ->
+        isLoading = false
+        binding.progressCircular.hide()
+        when (response.first) {
+            LiveDateState.FETCHED -> {
+                currentPage++
+                peoplesAdapter.setPeoples(response.second!!)
+            }
+            LiveDateState.FAILED -> {
+                Toast.makeText(
+                    context,
+                    getString(R.string.peoples_not_found),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun fetchPeoples() {

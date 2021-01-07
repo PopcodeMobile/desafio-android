@@ -6,6 +6,7 @@ import com.github.weslleystos.features.list.repository.remote.IPeopleListReposit
 import com.github.weslleystos.features.list.repository.remote.Response
 import com.github.weslleystos.shared.entities.People
 import com.github.weslleystos.shared.services.RetrofitService
+import com.github.weslleystos.shared.utils.LiveDateState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ class PeopleListService {
     private val peoplesDao = App.database.peoplesDao()
     private val peoplesService = RetrofitService().create<IPeopleListRepository>()
 
-    fun getAll(page: Int, peoplesLiveData: MutableLiveData<Pair<Boolean, List<People>?>>) {
+    fun getAll(page: Int, peoplesLiveData: MutableLiveData<Pair<LiveDateState, List<People>?>>) {
         val peoples = peoplesDao.getAll(page * 10)
         if (peoples.isEmpty()) {
             val service = peoplesService.getAll(page + 1)
@@ -29,21 +30,20 @@ class PeopleListService {
                     when {
                         response.isSuccessful -> {
                             val results = response.body()!!.results
-                            peoplesLiveData.postValue(Pair(true, results))
+                            peoplesLiveData.postValue(Pair(LiveDateState.FETCHED, results))
                             persistInDatabase(parseData(results))
                         }
-                        else -> peoplesLiveData.postValue(Pair(false, null))
+                        else -> peoplesLiveData.postValue(Pair(LiveDateState.FAILED, null))
                     }
                 }
 
                 override fun onFailure(call: Call<Response>, t: Throwable) {
-                    peoplesLiveData.postValue(Pair(false, null))
+                    peoplesLiveData.postValue(Pair(LiveDateState.FAILED, null))
                 }
             })
         } else {
-            peoplesLiveData.postValue(Pair(true, peoples))
+            peoplesLiveData.postValue(Pair(LiveDateState.FETCHED, peoples))
         }
-
     }
 
     private fun parseData(results: List<People>): List<People> {
