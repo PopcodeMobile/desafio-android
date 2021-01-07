@@ -4,9 +4,6 @@ class Constants {
 
     companion object {
         //Link api Base - Personagens
-        const val BASE_URL = "http://swapi.dev/"
-
-        //Endpoint people
-        const val ENDPOINT_PEOPLE = "api/people/"
+        const val BASE_URL = "http://swapi.dev/api/"
     }
 }

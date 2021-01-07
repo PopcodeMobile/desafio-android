@@ -22,13 +22,13 @@ class Detalhes : AppCompatActivity() {
         setContentView(R.layout.activity_detalhes)
 
         textNameCompanion.text = nameCompanion
-        textHeightCompanion.text = "Height: $heightCompanion"
-        textGenderCompanion.text = "Gender: $genderCompanion"
-        textHair_colorCompanion.text = "Hair Color: $hair_colorCompanion"
-        textSkin_colorCompanion.text = "Skin Color: $skin_colorCompanion"
-        textEye_colorCompanion.text = "Eve Color: $eye_colorCompanion"
-        textBirth_yearCompanion.text = "Birth Year: $birth_yearCompanion"
-        textMassCompanion.text = massCompanion
+        textHeightCompanion.text = "Altura: $heightCompanion"
+        textGenderCompanion.text = "Genero: $genderCompanion"
+        textHair_colorCompanion.text = "Cor do Cabelo: $hair_colorCompanion"
+        textSkin_colorCompanion.text = "Cor da Pele: $skin_colorCompanion"
+        textEye_colorCompanion.text = "Cor dos Olhos: $eye_colorCompanion"
+        textBirth_yearCompanion.text = "Ano de Nascimento: $birth_yearCompanion"
+        textMassCompanion.text = "Peso: $massCompanion"
 
     }
 }

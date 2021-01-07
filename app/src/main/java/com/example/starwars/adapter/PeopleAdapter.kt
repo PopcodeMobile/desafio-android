@@ -37,7 +37,9 @@ class PeopleAdapter : RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filter
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_row_people, parent, false))
+        return MyViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.custom_row_people, parent, false)
+        )
     }
 
     //Retorna quantidade da lista
@@ -48,10 +50,10 @@ class PeopleAdapter : RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filter
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val context = holder.itemView.context
         val currentItem = listFilter[position]
-        holder.itemView.textName.text = "Name: " + currentItem.name
-        holder.itemView.textHeight.text = "Height: " + currentItem.height
-        holder.itemView.textGender.text = "Gender: " + currentItem.gender
-        holder.itemView.textMass.text = "Mass: " + currentItem.mass
+        holder.itemView.textName.text = "Nome: " + currentItem.name
+        holder.itemView.textHeight.text = "Altura: " + currentItem.height
+        holder.itemView.textGender.text = "Genero: " + currentItem.gender
+        holder.itemView.textMass.text = "Peso: " + currentItem.mass
 
         holder.itemView.custom_row.setOnClickListener {
             nameCompanion = currentItem.name
@@ -69,7 +71,7 @@ class PeopleAdapter : RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filter
     }
 
     fun setData(newList: List<ResultEntity>) {
-        this.myListResults = newList
+        this.myListResults = myListResults + newList
         listFilter = myListResults
         notifyDataSetChanged()
     }
@@ -85,7 +87,7 @@ class PeopleAdapter : RecyclerView.Adapter<PeopleAdapter.MyViewHolder>(), Filter
                     val resultList = mutableListOf<ResultEntity>()
                     for (row in myListResults) {
                         if (row.name.toLowerCase(Locale.ROOT)
-                                        .contains(charSearch.toLowerCase(Locale.ROOT))
+                                .contains(charSearch.toLowerCase(Locale.ROOT))
                         ) {
                             resultList.add(row)
                         }

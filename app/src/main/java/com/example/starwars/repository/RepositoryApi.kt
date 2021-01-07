@@ -7,8 +7,8 @@ import retrofit2.Response
 class RepositoryApi {
 
     // Metodo que chama o metodo da Api
-    suspend fun getPeople(): Response<People> {
-        return RetrofitInstance.api.getPeople()
+    suspend fun getPeople(page: String): Response<People> {
+        return RetrofitInstance.api.getPeople(page)
     }
 
 }

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import com.example.starwars.repository.RepositoryApi
 import com.example.starwars.viewmodel.PeopleViewModel
 import com.example.starwars.viewmodel.PeopleViewModelFactory
 import com.example.starwars.viewmodel.PeopleViewModelRoom
+import kotlinx.android.synthetic.main.activity_detalhes.*
 import kotlinx.android.synthetic.main.activity_inicio.*
 
 class Inicio : AppCompatActivity() {
@@ -30,6 +32,9 @@ class Inicio : AppCompatActivity() {
 
     // Adapter
     private val peopleAdapter by lazy { PeopleAdapter() }
+
+    //Pagina
+    var page: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,14 +90,19 @@ class Inicio : AppCompatActivity() {
         //Informa o repositorio ao Factory
         val viewModelFactory = PeopleViewModelFactory(repositoryApi)
         viewModel = ViewModelProvider(this, viewModelFactory).get(PeopleViewModel::class.java)
-        //Realiza e retorna o resultado da api
-        viewModel.getPeople()
+        while (page <= 9) {
+            var pagina = "" + page
+            viewModel.getPeople(pagina)
+            page++
+        }
         peopleViewModelRoom.deleteAllResults()
         viewModel.myResponse.observe(this, Observer { response ->
             peopleAdapter.setData(response)
             for (result in response) {
-                val resultEntity = ResultEntity(0, result.name, result.height, result.gender, result.mass, result.hair_color,
-                        result.skin_color, result.eye_color, result.birth_year, result.homeworld)
+                val resultEntity = ResultEntity(
+                    0, result.name, result.height, result.gender, result.mass, result.hair_color,
+                    result.skin_color, result.eye_color, result.birth_year, result.homeworld
+                )
                 peopleViewModelRoom.addResult(resultEntity)
             }
         })
@@ -115,7 +125,8 @@ class Inicio : AppCompatActivity() {
 
     //VERIFICA A CONEXAO COM A INTERNET(Wifi e Movel)
     private fun isNeworkAvailable(): Boolean {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val wifi: NetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
         val mobi: NetworkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
         if (wifi.isConnectedOrConnecting || mobi.isConnectedOrConnecting) {

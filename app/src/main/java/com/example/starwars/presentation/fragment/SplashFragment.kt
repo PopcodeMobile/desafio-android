@@ -28,6 +28,7 @@ class SplashFragment : Fragment() {
             if (onBoardindFinished()) {
                 val intent = Intent(requireContext(), Inicio::class.java)
                 startActivity(intent)
+                activity?.finish()
             } else {
                 findNavController().navigate(R.id.action_splashFragment_to_viewPagerFragment)
             }
