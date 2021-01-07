@@ -5,42 +5,44 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 @Entity(tableName = "peoples")
-data class People(
+class People(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    var id: Int
+) : Serializable {
 
-    val name: String,
+    lateinit var name: String
 
-    val height: String,
+    lateinit var height: String
 
-    val mass: String,
+    lateinit var mass: String
 
     @ColumnInfo(name = "hair_color")
     @SerializedName("hair_color")
-    val hairColor: String,
+    lateinit var hairColor: String
 
     @ColumnInfo(name = "skin_color")
     @SerializedName("skin_color")
-    val skinColor: String,
+    lateinit var skinColor: String
 
     @ColumnInfo(name = "eye_color")
     @SerializedName("eye_color")
-    val eyeColor: String,
+    lateinit var eyeColor: String
 
     @ColumnInfo(name = "birth_year")
     @SerializedName("birth_year")
-    val birthYear: String,
+    lateinit var birthYear: String
 
-    val gender: String,
+    lateinit var gender: String
 
     @ColumnInfo(name = "homeworld")
     @SerializedName("homeworld")
-    val homeWorld: String,
+    lateinit var homeWorld: String
 
-    var specie: String?,
-) {
+    var specie: String? = null
+
     @Ignore
     val species: List<String>? = null
 }
