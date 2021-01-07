@@ -13,9 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="15sp">
+        android:padding="10sp">
 
         <LinearLayout
+            android:id="@+id/container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,6 +32,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="1"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -45,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="20sp"
+                    android:layout_weight="0.2"
                     android:text="@{people.height}" />
 
                 <ImageView
@@ -59,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="20sp"
+                    android:layout_weight="0.2"
                     android:text="@{people.gender}" />
 
                 <ImageView
@@ -72,13 +76,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_weight="0.2"
                     android:text="@{people.mass}" />
             </LinearLayout>
         </LinearLayout>
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="10sp"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/favorito_botao"
             android:src="@drawable/ic_star_border" />
