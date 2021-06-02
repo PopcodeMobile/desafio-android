@@ -3,12 +3,18 @@ package com.knowledge.wikisw_luan.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.knowledge.wikisw_luan.R
 import com.knowledge.wikisw_luan.models.Character
 
-class Adapter(private val characters: List<Character>): RecyclerView.Adapter<Adapter.CharViewHolder>() {
+class Adapter(
+    private val characters: List<Character>,
+    private val listener: ClickWikiListener
+) :
+    RecyclerView.Adapter<Adapter.CharViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.char_item, parent, false)
@@ -23,14 +29,25 @@ class Adapter(private val characters: List<Character>): RecyclerView.Adapter<Ada
         return characters.size
     }
 
-    class CharViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CharViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView){
+
+        private val swName = itemView.findViewById<TextView>(R.id.sw_name)
+        private val swHeight = itemView.findViewById<TextView>(R.id.sw_height)
+        private val swGender = itemView.findViewById<TextView>(R.id.sw_gender)
+        private val swMass = itemView.findViewById<TextView>(R.id.sw_mass)
+        private val swConstraint = itemView.findViewById<ConstraintLayout>(R.id.sw_container)
+        private val swFav = itemView.findViewById<ImageView>(R.id.sw_fav)
 
         fun bind(data: Character) {
             with(itemView) {
-                val swName = findViewById<TextView>(R.id.sw_name)
-                val swHeight = findViewById<TextView>(R.id.sw_height)
-                val swGender = findViewById<TextView>(R.id.sw_gender)
-                val swMass = findViewById<TextView>(R.id.sw_mass)
+                swConstraint.setOnClickListener {
+                    listener.onListClick(data)
+                }
+
+                swFav.setOnClickListener {
+                    listener.onFavClick(data)
+                }
 
                 swName.text = data.name
                 swHeight.text = data.height
