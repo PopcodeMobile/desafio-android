@@ -110,6 +110,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:alpha="0.8"
         app:srcCompat="@drawable/ic__47674" />
 
     <ImageView
@@ -120,7 +121,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sw_specie"
         android:alpha="0.35"
-        android:tint="#FF0000"
+        app:tint="#FF0000"
         app:srcCompat="@drawable/ic__64516" />
 
 
