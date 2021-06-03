@@ -50,9 +50,9 @@ class Adapter(
                 }
 
                 swName.text = data.name
-                swHeight.text = data.height
-                swGender.text = data.gender
-                swMass.text = data.mass
+                swHeight.text = "Altura: ${data.height}"
+                swGender.text = "Gênero: ${data.gender}"
+                swMass.text = "Peso: ${data.mass}"
             }
         }
     }
