@@ -11,10 +11,11 @@ import com.knowledge.wikisw_luan.R
 import com.knowledge.wikisw_luan.models.Character
 
 class Adapter(
-    private val characters: List<Character>,
     private val listener: ClickWikiListener
-) :
-    RecyclerView.Adapter<Adapter.CharViewHolder>() {
+) : RecyclerView.Adapter<Adapter.CharViewHolder>() {
+
+    private var characters: List<Character> = listOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.char_item, parent, false)
@@ -29,8 +30,13 @@ class Adapter(
         return characters.size
     }
 
+    fun updateList(list: List<Character>) {
+        characters = list
+        notifyDataSetChanged()
+    }
+
     inner class CharViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView){
+        RecyclerView.ViewHolder(itemView) {
 
         private val swName = itemView.findViewById<TextView>(R.id.sw_name)
         private val swHeight = itemView.findViewById<TextView>(R.id.sw_height)

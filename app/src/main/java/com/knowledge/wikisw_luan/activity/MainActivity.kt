@@ -2,6 +2,7 @@ package com.knowledge.wikisw_luan.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +16,27 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val search = findViewById<SearchView>(R.id.search_view)
+        val characterList = getChar()
         val recyclerView = findViewById<RecyclerView>(R.id.rv_sw)
-        val adapter = Adapter(getList(), listener = this)
+        val adapter = Adapter(listener = this)
+        adapter.updateList(characterList)
         recyclerView.adapter = adapter
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(text: String?): Boolean {
+                return true
+            }
 
-
+            override fun onQueryTextChange(text: String?): Boolean {
+                if (text != null) {
+                    adapter.updateList(characterList.filter { it.name.contains(text, true) })
+                } else {
+                    adapter.updateList(characterList)
+                }
+                return true
+            }
+        })
+        search.setOnClickListener { search.onActionViewExpanded() }
     }
 
     private fun getChar(): List<Character> {
