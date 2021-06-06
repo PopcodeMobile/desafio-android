@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Character(
+data class CharacterModel(
     val name: String,
     val mass: String,
     val height: String,
@@ -13,7 +13,7 @@ data class Character(
     val eyeColor: String,
     val birthYear: String,
     val gender: String,
-    val homeworld: String,
+    val homeWorld: String,
     val species: String,
     var isFavorite: Boolean = false
 ) : Parcelable

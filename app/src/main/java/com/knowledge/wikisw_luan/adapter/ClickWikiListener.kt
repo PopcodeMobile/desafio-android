@@ -1,11 +1,11 @@
 package com.knowledge.wikisw_luan.adapter
 
-import com.knowledge.wikisw_luan.models.Character
+import com.knowledge.wikisw_luan.models.CharacterModel
 
 interface ClickWikiListener {
 
-    fun onListClick(character: Character)
+    fun onListClick(character: CharacterModel)
 
-    fun onFavClick(character: Character)
+    fun onFavClick(character: CharacterModel)
 
 }

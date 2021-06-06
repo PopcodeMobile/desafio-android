@@ -1,7 +1,6 @@
 package com.knowledge.wikisw_luan.adapter
 
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,13 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.knowledge.wikisw_luan.R
-import com.knowledge.wikisw_luan.models.Character
+import com.knowledge.wikisw_luan.models.CharacterModel
 
 class Adapter(
     private val listener: ClickWikiListener
 ) : RecyclerView.Adapter<Adapter.CharViewHolder>() {
 
-    private var characters: List<Character> = listOf()
+    private var characters: List<CharacterModel> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -32,7 +31,7 @@ class Adapter(
         return characters.size
     }
 
-    fun updateList(list: List<Character>) {
+    fun updateList(list: List<CharacterModel>) {
         characters = list
         notifyDataSetChanged()
     }
@@ -47,7 +46,7 @@ class Adapter(
         private val swConstraint = itemView.findViewById<ConstraintLayout>(R.id.sw_container)
         private val swFav = itemView.findViewById<ImageView>(R.id.sw_fav)
 
-        fun bind(data: Character) {
+        fun bind(data: CharacterModel) {
             with(itemView) {
                 swConstraint.setOnClickListener {
                     listener.onListClick(data)

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.knowledge.wikisw_luan.R
 import com.knowledge.wikisw_luan.adapter.Adapter
 import com.knowledge.wikisw_luan.adapter.ClickWikiListener
-import com.knowledge.wikisw_luan.models.Character
+import com.knowledge.wikisw_luan.models.CharacterModel
 
 class MainActivity : AppCompatActivity(), ClickWikiListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,9 +50,9 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
         }
     }
 
-    private fun getChar(): List<Character> {
+    private fun getChar(): List<CharacterModel> {
         return arrayListOf(
-            Character(
+            CharacterModel(
                 "Yoda",
                 "77",
                 "Bald",
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
                 "Unknow",
                 "human"
             ),
-            Character(
+            CharacterModel(
                 "Luke",
                 "85",
                 "Brown",
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
                 "Human",
                 "Dalek"
             ),
-            Character(
+            CharacterModel(
                 "Anakin",
                 "82",
                 "Brown",
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
                 "Human",
                 "Gallifreyan"
             ),
-            Character(
+            CharacterModel(
                 "Palpatine",
                 "65",
                 "White",
@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
                 "Human",
                 "Imp"
             ),
-            Character(
+            CharacterModel(
                 "Obi-Wan",
                 "71",
                 "Grey",
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
                 "Human",
                 "Marcian"
             ),
-            Character(
+            CharacterModel(
                 "Leia",
                 "58",
                 "Black",
@@ -128,13 +128,13 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
             )
     }
 
-    override fun onListClick(character: Character) {
+    override fun onListClick(character: CharacterModel) {
         val charInfo = Intent(this, CharActivity::class.java)
         charInfo.putExtra("CharInfo", character)
         startActivity(charInfo)
     }
 
-    override fun onFavClick(character: Character) {
+    override fun onFavClick(character: CharacterModel) {
         Toast.makeText(this, "${character.name} foi favoritado!", Toast.LENGTH_SHORT).show()
     }
 

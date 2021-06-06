@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.knowledge.wikisw_luan.R
-import com.knowledge.wikisw_luan.models.Character
+import com.knowledge.wikisw_luan.models.CharacterModel
 
 class CharActivity : AppCompatActivity() {
 
@@ -38,7 +38,7 @@ class CharActivity : AppCompatActivity() {
         swSpecie = findViewById(R.id.sw_specie)
         swFav = findViewById(R.id.sw_favorite)
 
-        val charInfo = intent.getParcelableExtra("CharInfo") as? Character
+        val charInfo = intent.getParcelableExtra("CharInfo") as? CharacterModel
         charInfo?.let {
             swName.text = it.name
             swHeight.text = "Altura: ${it.height}"
@@ -48,7 +48,7 @@ class CharActivity : AppCompatActivity() {
             swSkin.text = "Cor da pele: ${it.skinColor}"
             swEye.text = "Cor dos olhos: ${it.eyeColor}"
             swBirth.text = "Ano de nascimento: ${it.birthYear}"
-            swHome.text = "Planeta de origem: ${it.homeworld}"
+            swHome.text = "Planeta de origem: ${it.homeWorld}"
             swSpecie.text = "Espécie: ${it.species}"
 
             swFav.setOnClickListener { _ ->
