@@ -8,11 +8,12 @@ data class Character(
     val name: String,
     val mass: String,
     val height: String,
-    val hair_color: String,
-    val skin_color: String,
-    val eye_color: String,
-    val birth_year: String,
+    val hairColor: String,
+    val skinColor: String,
+    val eyeColor: String,
+    val birthYear: String,
     val gender: String,
     val homeworld: String,
-    val species: String
+    val species: String,
+    var isFavorite: Boolean = false
 ) : Parcelable

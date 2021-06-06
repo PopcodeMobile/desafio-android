@@ -1,6 +1,8 @@
 package com.knowledge.wikisw_luan.activity
 
+import android.graphics.Color
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.knowledge.wikisw_luan.R
@@ -18,6 +20,7 @@ class CharActivity : AppCompatActivity() {
     lateinit var swBirth: TextView
     lateinit var swHome: TextView
     lateinit var swSpecie: TextView
+    lateinit var swFav: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +36,7 @@ class CharActivity : AppCompatActivity() {
         swBirth = findViewById(R.id.sw_bday)
         swHome = findViewById(R.id.sw_home)
         swSpecie = findViewById(R.id.sw_specie)
+        swFav = findViewById(R.id.sw_favorite)
 
         val charInfo = intent.getParcelableExtra("CharInfo") as? Character
         charInfo?.let {
@@ -40,12 +44,27 @@ class CharActivity : AppCompatActivity() {
             swHeight.text = "Altura: ${it.height}"
             swGender.text = "Gênero: ${it.gender}"
             swWeight.text = "Massa corpórea: ${it.mass}"
-            swHair.text = "Cor do cabelo: ${it.hair_color}"
-            swSkin.text = "Cor da pele: ${it.skin_color}"
-            swEye.text = "Cor dos olhos: ${it.eye_color}"
-            swBirth.text = "Ano de nascimento: ${it.birth_year}"
+            swHair.text = "Cor do cabelo: ${it.hairColor}"
+            swSkin.text = "Cor da pele: ${it.skinColor}"
+            swEye.text = "Cor dos olhos: ${it.eyeColor}"
+            swBirth.text = "Ano de nascimento: ${it.birthYear}"
             swHome.text = "Planeta de origem: ${it.homeworld}"
             swSpecie.text = "Espécie: ${it.species}"
+
+            swFav.setOnClickListener { _ ->
+                it.isFavorite = !it.isFavorite
+                if (it.isFavorite){
+                    swFav.setColorFilter(Color.RED)
+                } else {
+                    swFav.setColorFilter(Color.GRAY)
+                }
+            }
+
+            if (it.isFavorite){
+                swFav.setColorFilter(Color.RED)
+            } else {
+                swFav.setColorFilter(Color.GRAY)
+            }
 
         }
     }

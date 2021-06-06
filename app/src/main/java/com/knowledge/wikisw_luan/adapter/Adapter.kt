@@ -1,5 +1,7 @@
 package com.knowledge.wikisw_luan.adapter
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,13 +54,24 @@ class Adapter(
                 }
 
                 swFav.setOnClickListener {
+                    data.isFavorite = !data.isFavorite
                     listener.onFavClick(data)
+                    if (data.isFavorite){
+                        swFav.setColorFilter(Color.RED)
+                    } else {
+                        swFav.setColorFilter(Color.GRAY)
+                    }
                 }
 
                 swName.text = data.name
                 swHeight.text = "Altura: ${data.height}"
                 swGender.text = "Gênero: ${data.gender}"
                 swMass.text = "Peso: ${data.mass}"
+                if (data.isFavorite){
+                    swFav.setColorFilter(Color.RED)
+                } else {
+                    swFav.setColorFilter(Color.GRAY)
+                }
             }
         }
     }

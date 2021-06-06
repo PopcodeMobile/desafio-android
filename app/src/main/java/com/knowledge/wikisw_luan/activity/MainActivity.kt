@@ -2,6 +2,7 @@ package com.knowledge.wikisw_luan.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
 
         val search = findViewById<SearchView>(R.id.search_view)
         val characterList = getChar()
+        var showFavorite = false
+        val filter = findViewById<ImageView>(R.id.filter_button)
         val recyclerView = findViewById<RecyclerView>(R.id.rv_sw)
         val adapter = Adapter(listener = this)
         adapter.updateList(characterList)
@@ -37,6 +40,14 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
             }
         })
         search.setOnClickListener { search.onActionViewExpanded() }
+        filter.setOnClickListener {
+            showFavorite = !showFavorite
+            if (showFavorite) {
+                adapter.updateList(characterList.filter { it.isFavorite })
+            } else {
+                adapter.updateList(characterList)
+            }
+        }
     }
 
     private fun getChar(): List<Character> {
@@ -115,27 +126,6 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
             ),
 
             )
-    }
-
-    private fun getList(): List<Character> {
-        val list = arrayListOf<Character>()
-        for (i in 0..87) {
-            list.add(
-                Character(
-                    "Yoda$i",
-                    "47kg",
-                    "76cm",
-                    "Bald",
-                    "002 BBY",
-                    "Male",
-                    "Masculino",
-                    "Unknow",
-                    "Unknow",
-                    "Yoda"
-                )
-            )
-        }
-        return list
     }
 
     override fun onListClick(character: Character) {
