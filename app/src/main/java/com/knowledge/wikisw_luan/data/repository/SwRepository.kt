@@ -8,8 +8,9 @@ class SwRepository(
 ) {
     suspend fun getCharacters() : List<CharacterModel> {
         val response = cloud.getCharacters()
-        val planets = response.map { it.homeworld }
-        val species = response.map { it.species.first() }
+        println(response)
+      //  val planets = response.results.map { it.homeworld }
+      //  val species = response.results.map { it.species.first() }
         return arrayListOf()
     }
 }

@@ -1,20 +1,20 @@
 package com.knowledge.wikisw_luan.data
 
 import com.knowledge.wikisw_luan.data.models.BasicResponse
-import com.knowledge.wikisw_luan.data.models.CharacterResponse
+import com.knowledge.wikisw_luan.data.models.SwResponse
 
 class SwCloud(
     private val api: SwAPI
 ) {
-    suspend fun getCharacters() : List<CharacterResponse> {
+    suspend fun getCharacters(): SwResponse {
         return api.getCharacters()
     }
 
-    suspend fun getSpecies(id: Int) : BasicResponse {
+    suspend fun getSpecies(id: Int): BasicResponse {
         return api.getSpecies(id)
     }
 
-    suspend fun getPlanet(id: Int) : BasicResponse {
+    suspend fun getPlanet(id: Int): BasicResponse {
         return api.getPlanet(id)
     }
 }

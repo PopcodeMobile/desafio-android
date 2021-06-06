@@ -11,12 +11,14 @@ import com.knowledge.wikisw_luan.R
 import com.knowledge.wikisw_luan.adapter.Adapter
 import com.knowledge.wikisw_luan.adapter.ClickWikiListener
 import com.knowledge.wikisw_luan.models.CharacterModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), ClickWikiListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val mainViewModel: MainViewModel by viewModel()
         val search = findViewById<SearchView>(R.id.search_view)
         val characterList = getChar()
         var showFavorite = false
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
                 adapter.updateList(characterList)
             }
         }
+        mainViewModel.getCharacters()
     }
 
     private fun getChar(): List<CharacterModel> {
