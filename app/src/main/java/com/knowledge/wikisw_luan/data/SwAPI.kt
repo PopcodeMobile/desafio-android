@@ -13,6 +13,6 @@ interface SwAPI {
     @GET("species/{id}/")
     suspend fun getSpecies(@Path("id") id: Int): BasicResponse
 
-    @GET("homeworld/{id}/")
+    @GET("planets/{id}/")
     suspend fun getPlanet(@Path("id") id: Int): BasicResponse
 }

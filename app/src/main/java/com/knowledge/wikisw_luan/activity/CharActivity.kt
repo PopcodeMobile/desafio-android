@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.knowledge.wikisw_luan.R
 import com.knowledge.wikisw_luan.models.CharacterModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CharActivity : AppCompatActivity() {
 
@@ -21,11 +22,13 @@ class CharActivity : AppCompatActivity() {
     lateinit var swHome: TextView
     lateinit var swSpecie: TextView
     lateinit var swFav: ImageView
+    private val charViewModel: CharViewModel by viewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.char_info)
+        charViewModel.state.observe(this@CharActivity, {handleState(it)})
         swName = findViewById(R.id.sw_name)
         swHeight = findViewById(R.id.sw_height)
         swGender = findViewById(R.id.sw_gender)
@@ -50,6 +53,17 @@ class CharActivity : AppCompatActivity() {
             swBirth.text = "Ano de nascimento: ${it.birthYear}"
             swHome.text = "Planeta de origem: ${it.homeWorld}"
             swSpecie.text = "Espécie: ${it.species}"
+            if (it.speciesId.isNotEmpty()) {
+                charViewModel.getSpecies(getInt(it.speciesId))
+            } else {
+                swSpecie.text = "Espécie não localizada."
+            }
+            if (it.homeWorldId.isNotEmpty()) {
+                charViewModel.getPlanets(getInt(it.homeWorldId))
+            } else {
+                swHome.text = "Planeta não localizado."
+            }
+
 
             swFav.setOnClickListener { _ ->
                 it.isFavorite = !it.isFavorite
@@ -65,7 +79,22 @@ class CharActivity : AppCompatActivity() {
             } else {
                 swFav.setColorFilter(Color.GRAY)
             }
-
         }
+    }
+        fun getInt(id: String) : Int {
+            return id.filter { it.isDigit() }.toInt()
+        }
+
+    private fun handleState(state: Any) {
+        when (state) {
+            is SwState.ShowSpecieName -> {
+                swSpecie.text = "Raça: ${state.specieName}"
+
+            }
+            is SwState.ShowPlanetName -> {
+                swHome.text = "Planeta natal: ${state.planetName}"
+            }
+        }
+
     }
 }

@@ -14,6 +14,8 @@ data class CharacterModel(
     val birthYear: String,
     val gender: String,
     val homeWorld: String,
+    val homeWorldId: String,
     val species: String,
+    val speciesId: String,
     var isFavorite: Boolean = false
 ) : Parcelable

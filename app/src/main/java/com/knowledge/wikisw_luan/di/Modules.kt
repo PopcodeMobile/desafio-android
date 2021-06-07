@@ -2,6 +2,7 @@ package com.knowledge.wikisw_luan.di
 
 import androidx.room.Room
 import com.google.gson.GsonBuilder
+import com.knowledge.wikisw_luan.activity.CharViewModel
 import com.knowledge.wikisw_luan.activity.MainViewModel
 import com.knowledge.wikisw_luan.data.SwAPI
 import com.knowledge.wikisw_luan.data.SwCloud
@@ -28,5 +29,6 @@ object Modules {
         single { SwCloud(get()) }
         single { SwRepository(get(), CharacterData.db.charDao()) }
         viewModel { MainViewModel(get()) }
+        viewModel { CharViewModel(get()) }
     }
 }

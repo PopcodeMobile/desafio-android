@@ -30,6 +30,8 @@ object SwMapper {
             gender = response.gender,
             homeworldId = response.homeworld,
             specieId = specieId,
+            homeworld = "",
+            specie = "",
             cid = response.name,
             isFavorite = isFavorite
 
@@ -52,6 +54,8 @@ object SwMapper {
             birthYear = entity.eyeColor,
             gender = entity.gender,
             homeWorld = entity.homeworld ?: "Planeta não informado",
+            homeWorldId = entity.homeworldId.orEmpty(),
+            speciesId = entity.specieId.orEmpty(),
             species = entity.specie ?: "Raça não informada",
             isFavorite = entity.isFavorite
 
