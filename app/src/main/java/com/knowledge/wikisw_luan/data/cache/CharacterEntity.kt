@@ -16,7 +16,9 @@ data class CharacterEntity(
     @ColumnInfo(name = "eye_color") val eyeColor: String,
     @ColumnInfo(name = "birth_year") val birthYear: String,
     @ColumnInfo(name = "gender") val gender: String,
-    @ColumnInfo(name = "specie") var specie: String?,
-    @ColumnInfo(name = "planet") var homeworld: String?,
+    @ColumnInfo(name = "specie") var specie: String? = null,
+    @ColumnInfo(name = "specie_id") var specieId: String?,
+    @ColumnInfo(name = "planet") var homeworld: String? = null,
+    @ColumnInfo(name = "planet_id") var homeworldId: String?,
     @ColumnInfo(name = "favorite") var isFavorite: Boolean
 )

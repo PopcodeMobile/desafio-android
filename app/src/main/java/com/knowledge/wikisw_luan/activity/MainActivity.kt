@@ -8,23 +8,29 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.knowledge.wikisw_luan.R
+import com.knowledge.wikisw_luan.activity.SwState.ShowCharacters
 import com.knowledge.wikisw_luan.adapter.Adapter
 import com.knowledge.wikisw_luan.adapter.ClickWikiListener
 import com.knowledge.wikisw_luan.models.CharacterModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), ClickWikiListener {
+
+    val adapter = Adapter(listener = this)
+    val listchar = arrayListOf<CharacterModel>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val mainViewModel: MainViewModel by viewModel()
+        mainViewModel.state.observe(this@MainActivity, {handleState(it)})
         val search = findViewById<SearchView>(R.id.search_view)
-        val characterList = getChar()
+        val characterList = listchar
         var showFavorite = false
         val filter = findViewById<ImageView>(R.id.filter_button)
         val recyclerView = findViewById<RecyclerView>(R.id.rv_sw)
-        val adapter = Adapter(listener = this)
         adapter.updateList(characterList)
         recyclerView.adapter = adapter
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -53,82 +59,14 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
         mainViewModel.getCharacters()
     }
 
-    private fun getChar(): List<CharacterModel> {
-        return arrayListOf(
-            CharacterModel(
-                "Yoda",
-                "77",
-                "Bald",
-                "Green",
-                "002 BBY",
-                "Male",
-                "Tatooine",
-                "Unknow",
-                "Unknow",
-                "human"
-            ),
-            CharacterModel(
-                "Luke",
-                "85",
-                "Brown",
-                "White",
-                "250 BBY",
-                "Male",
-                "Tatooine",
-                "Unknow",
-                "Human",
-                "Dalek"
-            ),
-            CharacterModel(
-                "Anakin",
-                "82",
-                "Brown",
-                "White",
-                "220 BBY",
-                "Male",
-                "Tatooine",
-                "Unknow",
-                "Human",
-                "Gallifreyan"
-            ),
-            CharacterModel(
-                "Palpatine",
-                "65",
-                "White",
-                "Pale",
-                "198 BBY",
-                "Male",
-                "Tatooine",
-                "Unknow",
-                "Human",
-                "Imp"
-            ),
-            CharacterModel(
-                "Obi-Wan",
-                "71",
-                "Grey",
-                "White",
-                "198 BBY",
-                "Male",
-                "Tatooine",
-                "Unknow",
-                "Human",
-                "Marcian"
-            ),
-            CharacterModel(
-                "Leia",
-                "58",
-                "Black",
-                "White",
-                "198 BBY",
-                "Female",
-                "Tatooine",
-                "Unknow",
-                "Human",
-                "Human"
-            ),
+    private fun handleState(state: Any) {
+        when (state) {
+            is ShowCharacters -> {
+                adapter.updateList(state.list)
+                listchar.addAll(state.list)
+            }
+        }
 
-            )
     }
 
     override fun onListClick(character: CharacterModel) {
