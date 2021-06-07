@@ -12,6 +12,13 @@ object SwMapper {
     }
 
     fun characterResponseToEntity(response: CharacterResponse, planet: String, specie: String, isFavorite: Boolean): CharacterEntity {
+
+        val specieId = if (response.species.isEmpty()) {
+            ""
+        } else {
+            response.species[0]
+        }
+
         return CharacterEntity(
             name = response.name,
             mass = response.mass,
@@ -21,8 +28,8 @@ object SwMapper {
             eyeColor = response.eyeColor,
             birthYear = response.eyeColor,
             gender = response.gender,
-            homeworldId = planet,
-            specieId = specie,
+            homeworldId = response.homeworld,
+            specieId = specieId,
             cid = response.name,
             isFavorite = isFavorite
 
@@ -30,22 +37,27 @@ object SwMapper {
 
     }
 
-    fun characterResponseToModel(response: List<CharacterResponse>, planet: String, specie: String) : List<CharacterModel> {
-       return response.map { characterResponseToModel(it, "", "") }
+    fun characterEntityToModel(entity: List<CharacterEntity>) : List<CharacterModel> {
+       return entity.map { characterEntityToModel(it) }
     }
 
-    fun characterResponseToModel(response: CharacterResponse, planet: String, specie: String) : CharacterModel {
+    fun characterEntityToModel(entity: CharacterEntity) : CharacterModel {
         return CharacterModel(
-            name = response.name,
-            mass = response.mass,
-            height = response.height,
-            hairColor = response.hairColor,
-            skinColor = response.skinColor,
-            eyeColor = response.eyeColor,
-            birthYear = response.eyeColor,
-            gender = response.gender,
-            homeWorld = planet,
-            species = specie
+            name = entity.name,
+            mass = entity.mass,
+            height = entity.height,
+            hairColor = entity.hairColor,
+            skinColor = entity.skinColor,
+            eyeColor = entity.eyeColor,
+            birthYear = entity.eyeColor,
+            gender = entity.gender,
+            homeWorld = entity.homeworld ?: "Planeta não informado",
+            species = entity.specie ?: "Raça não informada",
+            isFavorite = entity.isFavorite
+
         )
     }
+
+
+
 }

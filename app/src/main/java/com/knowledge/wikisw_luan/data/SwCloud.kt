@@ -6,8 +6,8 @@ import com.knowledge.wikisw_luan.data.models.SwResponse
 class SwCloud(
     private val api: SwAPI
 ) {
-    suspend fun getCharacters(): SwResponse {
-        return api.getCharacters()
+    suspend fun getCharacters(page: Int): SwResponse {
+        return api.getCharacters(page)
     }
 
     suspend fun getSpecies(id: Int): BasicResponse {

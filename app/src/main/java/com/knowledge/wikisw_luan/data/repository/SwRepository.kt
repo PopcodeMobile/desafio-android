@@ -8,11 +8,16 @@ import com.knowledge.wikisw_luan.models.CharacterModel
 class SwRepository(
     private val cloud: SwCloud, private val cache: CharacterDAO
 ) {
+
+    var page: Int = 1
+
     suspend fun getCharacters() : List<CharacterModel> {
-        val response = cloud.getCharacters()
+        val response = cloud.getCharacters(page)
         cache.insertAll(SwMapper.characterResponseToEntity(response.results, "", "", false))
-      //  val planets = response.results.map { it.homeworld }
-      //  val species = response.results.map { it.species.first() }
-        return SwMapper.characterResponseToModel(response.results, "", "")
+        page++
+        if (!response.next.isNullOrEmpty()) {
+            getCharacters()
+        }
+        return SwMapper.characterEntityToModel(cache.getAll())
     }
 }
