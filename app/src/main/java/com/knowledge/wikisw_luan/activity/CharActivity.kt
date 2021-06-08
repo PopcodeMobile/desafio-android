@@ -54,12 +54,12 @@ class CharActivity : AppCompatActivity() {
             swHome.text = "Planeta de origem: ${it.homeWorld}"
             swSpecie.text = "Espécie: ${it.species}"
             if (it.speciesId.isNotEmpty()) {
-                charViewModel.getSpecies(getInt(it.speciesId))
+                charViewModel.getSpecies(it.speciesId)
             } else {
                 swSpecie.text = "Espécie não localizada."
             }
             if (it.homeWorldId.isNotEmpty()) {
-                charViewModel.getPlanets(getInt(it.homeWorldId))
+                charViewModel.getPlanets(it.homeWorldId)
             } else {
                 swHome.text = "Planeta não localizado."
             }
@@ -81,10 +81,6 @@ class CharActivity : AppCompatActivity() {
             }
         }
     }
-        fun getInt(id: String) : Int {
-            return id.filter { it.isDigit() }.toInt()
-        }
-
     private fun handleState(state: Any) {
         when (state) {
             is SwState.ShowSpecieName -> {

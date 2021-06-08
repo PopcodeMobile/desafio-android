@@ -22,13 +22,19 @@ class SwRepository(
         return SwMapper.characterEntityToModel(cache.getAll())
     }
 
-    suspend fun getPlanets(planetsId: Int) : String {
-        val response = cloud.getPlanet(planetsId)
+    suspend fun getPlanets(planetsId: String) : String {
+        val response = cloud.getPlanet(getInt(planetsId))
+        cache.updatePlanet(response.name, planetsId)
         return response.name
     }
 
-    suspend fun getSpecies(speciesId: Int) : String {
-        val response = cloud.getSpecies(speciesId)
+    suspend fun getSpecies(speciesId: String) : String {
+        val response = cloud.getSpecies(getInt(speciesId))
+        cache.update(response.name, speciesId)
         return response.name
+    }
+
+    fun getInt(id: String) : Int {
+        return id.filter { it.isDigit() }.toInt()
     }
 }

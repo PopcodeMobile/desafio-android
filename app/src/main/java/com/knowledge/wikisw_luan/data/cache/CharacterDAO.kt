@@ -10,6 +10,12 @@ interface CharacterDAO {
     @Query("SELECT * FROM sw_chars where cid == (:id)")
     fun loadCharacterById(id: String): CharacterEntity
 
+    @Query("UPDATE sw_chars SET specie = :specie WHERE specie_id == (:id)")
+    fun update(specie: String, id: String)
+
+    @Query("UPDATE sw_chars SET planet = :planet WHERE planet_id == (:id)")
+    fun updatePlanet(planet: String, id: String)
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(a: List<CharacterEntity>)
 

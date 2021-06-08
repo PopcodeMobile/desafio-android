@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 class CharViewModel(private val repository: SwRepository) : ViewModel() {
     private val _state: MutableLiveData<Any> = MutableLiveData()
     val state: MutableLiveData<Any> get() = _state
-    fun getPlanets(planetId: Int) {
+    fun getPlanets(planetId: String) {
         viewModelScope.launch {
             try {
                 val planet = repository.getPlanets(planetId)
@@ -20,7 +20,7 @@ class CharViewModel(private val repository: SwRepository) : ViewModel() {
         }
     }
 
-    fun getSpecies(speciesId: Int) {
+    fun getSpecies(speciesId: String) {
         viewModelScope.launch {
             try {
                 val specieName = repository.getSpecies(speciesId)
