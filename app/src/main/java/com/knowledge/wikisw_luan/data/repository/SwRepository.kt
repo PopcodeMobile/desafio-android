@@ -3,7 +3,6 @@ package com.knowledge.wikisw_luan.data.repository
 import com.knowledge.wikisw_luan.data.SwCloud
 import com.knowledge.wikisw_luan.data.cache.CharacterDAO
 import com.knowledge.wikisw_luan.data.mapper.SwMapper
-import com.knowledge.wikisw_luan.data.models.BasicResponse
 import com.knowledge.wikisw_luan.models.CharacterModel
 
 class SwRepository(
@@ -12,7 +11,7 @@ class SwRepository(
 
     var page: Int = 1
 
-    suspend fun getCharacters() : List<CharacterModel> {
+    suspend fun getCharacters(): List<CharacterModel> {
         val response = cloud.getCharacters(page)
         cache.insertAll(SwMapper.characterResponseToEntity(response.results, "", "", false))
         page++
@@ -22,19 +21,32 @@ class SwRepository(
         return SwMapper.characterEntityToModel(cache.getAll())
     }
 
-    suspend fun getPlanets(planetsId: String) : String {
+    suspend fun getLocal(): List<CharacterModel> {
+        val local = cache.getAll()
+        return if (local.isNotEmpty()) {
+            SwMapper.characterEntityToModel(local)
+        } else {
+            arrayListOf()
+        }
+    }
+
+    suspend fun getPlanets(planetsId: String): String {
         val response = cloud.getPlanet(getInt(planetsId))
         cache.updatePlanet(response.name, planetsId)
         return response.name
     }
 
-    suspend fun getSpecies(speciesId: String) : String {
+    suspend fun getSpecies(speciesId: String): String {
         val response = cloud.getSpecies(getInt(speciesId))
         cache.update(response.name, speciesId)
         return response.name
     }
 
-    fun getInt(id: String) : Int {
+    private fun getInt(id: String): Int {
         return id.filter { it.isDigit() }.toInt()
+    }
+
+    fun getFav(id: String, favorite: Boolean) {
+        cache.updateFavorite(favorite, id)
     }
 }

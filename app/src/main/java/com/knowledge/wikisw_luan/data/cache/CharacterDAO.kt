@@ -16,6 +16,9 @@ interface CharacterDAO {
     @Query("UPDATE sw_chars SET planet = :planet WHERE planet_id == (:id)")
     fun updatePlanet(planet: String, id: String)
 
+    @Query("UPDATE sw_chars SET favorite = :favorite WHERE cid == (:id)")
+    fun updateFavorite(favorite: Boolean, id: String)
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(a: List<CharacterEntity>)
 

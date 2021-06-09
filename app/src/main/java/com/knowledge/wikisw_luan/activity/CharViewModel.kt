@@ -30,4 +30,10 @@ class CharViewModel(private val repository: SwRepository) : ViewModel() {
             }
         }
     }
+
+    fun getFav(charId: String, isFavorite: Boolean) {
+        viewModelScope.launch {
+            repository.getFav(charId, isFavorite)
+        }
+    }
 }

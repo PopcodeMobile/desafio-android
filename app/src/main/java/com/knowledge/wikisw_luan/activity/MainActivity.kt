@@ -18,13 +18,13 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
 
     val adapter = Adapter(listener = this)
     val listchar = arrayListOf<CharacterModel>()
+    val mainViewModel: MainViewModel by viewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val mainViewModel: MainViewModel by viewModel()
         mainViewModel.state.observe(this@MainActivity, {handleState(it)})
         val search = findViewById<SearchView>(R.id.search_view)
         val characterList = listchar
@@ -56,14 +56,19 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
                 adapter.updateList(characterList)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
         mainViewModel.getCharacters()
     }
 
     private fun handleState(state: Any) {
         when (state) {
             is ShowCharacters -> {
-                adapter.updateList(state.list)
+                listchar.clear()
                 listchar.addAll(state.list)
+                adapter.updateList(state.list)
             }
         }
 
@@ -76,7 +81,7 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
     }
 
     override fun onFavClick(character: CharacterModel) {
-        Toast.makeText(this, "${character.name} foi favoritado!", Toast.LENGTH_SHORT).show()
+        mainViewModel.getFav(character.name, character.isFavorite)
     }
 
 }

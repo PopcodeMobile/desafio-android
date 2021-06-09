@@ -17,4 +17,5 @@ class SwCloud(
     suspend fun getPlanet(id: Int): BasicResponse {
         return api.getPlanet(id)
     }
+
 }

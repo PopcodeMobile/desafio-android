@@ -67,6 +67,7 @@ class CharActivity : AppCompatActivity() {
 
             swFav.setOnClickListener { _ ->
                 it.isFavorite = !it.isFavorite
+                charViewModel.getFav(it.name, it.isFavorite)
                 if (it.isFavorite){
                     swFav.setColorFilter(Color.RED)
                 } else {
