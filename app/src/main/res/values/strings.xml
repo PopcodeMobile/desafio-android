@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">StarWars</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="name">Name:</string>
+    <string name="height">Height:</string>
+    <string name="species">Species:</string>
+    <string name="films">Films</string>
+    <string name="year_of_birth">Year:</string>
+    <string name="no_characters_found">Sorry, not information!</string>
+    <string name="show_all_characters">Do you like to see more characters?</string>
+    <string name="search">Search</string>
+    <string name="cannot_connect_to_internet">Ih, failed the conexion</string>
+    <string name="enter_character_name">Insert the character name</string>
+    <string name="something_went_wrong">Ops, its a error</string>
+    <string name="cms">cms</string>
+    <string name="feet_inches">%s pés or %s polegadas</string>
+    <string name="population">Populacion</string>
+    <string name="live_in">Habitants em %s</string>
+    <string name="speak">Líanguage</string>
+    <string name="action_setting">Configuracion</string>
+    <string name="title_characters">Characters</string>
+    <string name="title_activity_characters">Casr</string>
+    <string name="txt_title">A New Hope</string>
+    <string name="texto_description">It is a period of civil war.\n\nRebel spaceships, striking\n\nfrom a hidden base, have won\n\ntheir first victory against\n\nthe evil Galactic Empire.\n\n\n\nDuring the battle, Rebel\n\nspies managed to steal secretr\nplans to the Empire\'s\n\nultimate weapon, the DEATH\n\nSTAR, an armored space\n\nstation with enough power\n\nto destroy an entire planet.\n\n\n\nPursued by the Empire\'s\n\nsinister agents, Princess\n\nLeia races home aboard her\n\nstarship, custodian of the\n\nstolen plans that can save her\n\npeople and restore\n\nfreedom to the galaxy....</string>
+    <string name="connect_servidor">May the force be with you !</string>
+    <string name="film_vehicles">A New Hope\'s Vehicles</string>
+    <string name="filme_starship">A New Hope\'s Starships</string>
+    <string name="name_director">Directed by Marcelo Augusto</string>
+    <string name="release">Released in 1977</string>
+    <string name="button_sinopse">Sinopse</string>
+    <string name="height_mass_character">172 height, 77 kilos</string>
+    <string name="texto_character_info3">Fair Skin, blond hair and blue eyes</string>
+    <string name="texto_charcater_info1">Born in 19 BBY</string>
+    <string name="name_character">Luke Skywalker</string>
+    <string name="texto_planet_info2">23 hours day, 304 days year</string>
+    <string name="texto_planet_info3">Has water: true. Gravity: 1G</string>
+    <string name="texto_planet_info1">Arid climate, dessert terrain</string>
+    <string name="name_planet">Tatooine - 1200000 habitants</string>
+    <string name="name_specie">Wookie - Sentient Mammal</string>
+    <string name="texto_specie_info1">average 2.1 height\naverage 400 years lifespan</string>
+    <string name="texto_specie_info3">blue, green, yellow, brown, golden, red eyes\nblack, brown hair</string>
+    <string name="texto_specie_info2">Speaks Shyriiwook</string>
+    <string name="name_vehicle">Death Star - DS-1 Orbital Battle Station</string>
+    <string name="texto_vehicle_info1">Deep Space Mobile Battlestation\n\nMade by Imperial Department of Military Research, Sienar Fleet Systems</string>
+    <string name="texto_vehicle_info3">120000 meters in length\nCosts 1000000000000 credits</string>
+    <string name="texto_vehicle_info2">Transports 342953 to 843342 people\nWith 3 years worth of supply\nAnd 3000 kilos of cargo</string>
+    <string name="name_starship">Death Star - DS-1 Orbital Battle Station</string>
+    <string name="texto_starship_info1">Deep Space Mobile Battlestation\n\nMade by Imperial Department of Military Research, Sienar Fleet Systems</string>
+    <string name="texto_starship_info3">120000 meters in length\nCosts 1000000000000 credits</string>
+    <string name="texto_starship_info4">Speed: 10 MGLT per hour\nHyperdrive Rating: 4.0\nMax Atmosphering Speed: n/a</string>
+    <string name="texto_starship_info5">Transports 342953 to 843342 people\nWith 3 years worth of supply</string>
+    <string name="title_film">A New Hope\'s Characters</string>
+    <string name="name_filme">The Empire Strikes Back</string>
+    <string name="description_resume">It is a dark time for the Rebellion. Although the Death Star has been destroyed, Imperial troops have driven the Rebel forces from their hidden base and pursued them across the galaxy. Evading the dreaded Imperial Starfleet, a group of freedom fighters led by Luke Skywalker has established a new secret base on the remote ice world of Hoth. The evil lord Darth Vader, obsessed with finding young Skywalker, has dispatched thousands of remote probes into the far reaches of space...</string>
+    <string name="director">Director</string>
+    <string name="producer">Producer</string>
+    <string name="species_movie">Species</string>
+    <string name="starship_movie">Starships</string>
+    <string name="vehicle_movie">Vehicles</string>
+    <string name="character_movie">Characters</string>
+    <string name="planet_movie">Planets</string>
+    <string name="resume_opening">opening crawl</string>
+    <string name="name_planets">A New Hope\'s Planets</string>
+    <string name="nome_species">A New Hope\'s Species</string>
+
+
+</resources>
