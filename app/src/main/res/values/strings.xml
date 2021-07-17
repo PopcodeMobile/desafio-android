@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">star-wars-wiki</string>
+    <string name="personagens">Personagens</string>
+    <string name="favoritos">Favoritos</string>
+</resources>
