@@ -2,6 +2,7 @@ package br.com.star_wars_wiki;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import br.com.star_wars_wiki.adapter.PeopleAdapter;
 import br.com.star_wars_wiki.entity.People;
 import br.com.star_wars_wiki.entity.SWModelList;
 import br.com.star_wars_wiki.network.StarWarsApi;
+import br.com.star_wars_wiki.view_model.PeopleViewModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -26,10 +28,12 @@ public class ActPersonagem extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private RecyclerView recyclerPeopleList;
+    private PeopleViewModel peopleViewModel;
     private int page = 0;
+    private boolean next = true;
     private ArrayList<People> peopleList = new ArrayList<>();
     private PeopleAdapter peopleAdapter = new PeopleAdapter(peopleList);
-    private boolean next = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +45,18 @@ public class ActPersonagem extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         recyclerPeopleList = findViewById(R.id.lista_people);
 
+        //Inicialização do ViewModel
+        peopleViewModel = new ViewModelProvider(this).get(PeopleViewModel.class);
+
+        //Configuração do RecyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerPeopleList.setLayoutManager(layoutManager);
 
+        //Listener do RecyclerView para detectar o fim da rolagem
         recyclerPeopleList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
                 if(!recyclerPeopleList.canScrollVertically(1)){
                     getAllPeople();
                 }
@@ -69,6 +77,7 @@ public class ActPersonagem extends AppCompatActivity {
                     peopleList.addAll(peopleSWModelList.results);
                     peopleAdapter.setPeopleList(peopleList);
                     recyclerPeopleList.setAdapter(peopleAdapter);
+                    peopleViewModel.insert(peopleList);
                     progressBar.setVisibility(View.GONE);
                 }
 

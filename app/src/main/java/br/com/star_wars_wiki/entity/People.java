@@ -1,44 +1,69 @@
 package br.com.star_wars_wiki.entity;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+@Entity
 public class People implements Serializable {
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
+    @ColumnInfo(name = "name")
     public String name;
 
+    @ColumnInfo(name = "birth_year")
     @SerializedName("birth_year")
     public String birthYear;
 
+    @ColumnInfo(name = "gender")
     public String gender;
 
+    @ColumnInfo(name = "hair_color")
     @SerializedName("hair_color")
     public String hairColor;
 
+    @ColumnInfo(name = "height")
     public String height;
 
+    @ColumnInfo(name = "homeworld")
     @SerializedName("homeworld")
     public String homeWorldUrl;
 
+    @ColumnInfo(name = "mass")
     public String mass;
 
+    @ColumnInfo(name = "skin_color")
     @SerializedName("skin_color")
     public String skinColor;
 
+    @ColumnInfo(name = "created")
     public String created;
+
+    @ColumnInfo(name = "edited")
     public String edited;
+
+    @ColumnInfo(name = "url")
     public String url;
 
+    @ColumnInfo(name = "films")
     @SerializedName("films")
     public ArrayList<String> filmsUrls;
 
+    @ColumnInfo(name = "species")
     @SerializedName("species")
     public ArrayList<String> speciesUrls;
 
+    @ColumnInfo(name = "starships")
     @SerializedName("starships")
     public ArrayList<String> starshipsUrls;
 
+    @ColumnInfo(name = "vehicles")
     @SerializedName("vehicles")
     public ArrayList<String> vehiclesUrls;
 
