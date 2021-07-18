@@ -1,5 +1,6 @@
 package br.com.star_wars_wiki;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,9 +26,10 @@ public class ActPersonagem extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private RecyclerView recyclerPeopleList;
-    private int page = 1;
+    private int page = 0;
     private ArrayList<People> peopleList = new ArrayList<>();
     private PeopleAdapter peopleAdapter = new PeopleAdapter(peopleList);
+    private boolean next = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,27 +43,41 @@ public class ActPersonagem extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerPeopleList.setLayoutManager(layoutManager);
-        //recyclerPeopleList.setHasFixedSize(true);
-        //recyclerPeopleList.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayout.VERTICAL));
 
-        progressBar.setVisibility(View.VISIBLE);
+        recyclerPeopleList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if(!recyclerPeopleList.canScrollVertically(1)){
+                    getAllPeople();
+                }
+            }
+        });
+
         getAllPeople();
     }
 
     public void getAllPeople(){
-        StarWarsApi.getApi().getAllPeople(page, new Callback<SWModelList<People>>() {
-            @Override
-            public void success(SWModelList<People> peopleSWModelList, Response response) {
-                peopleList.addAll(peopleSWModelList.results);
-                peopleAdapter.setPeopleList(peopleList);
-                recyclerPeopleList.setAdapter(peopleAdapter);
-                progressBar.setVisibility(View.GONE);
-            }
+        if(next && (progressBar.getVisibility() == View.GONE)){
+            progressBar.setVisibility(View.VISIBLE);
+            page++;
+            StarWarsApi.getApi().getAllPeople(page, new Callback<SWModelList<People>>() {
+                @Override
+                public void success(SWModelList<People> peopleSWModelList, Response response) {
+                    next = peopleSWModelList.hasMore();
+                    peopleList.addAll(peopleSWModelList.results);
+                    peopleAdapter.setPeopleList(peopleList);
+                    recyclerPeopleList.setAdapter(peopleAdapter);
+                    progressBar.setVisibility(View.GONE);
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
+                @Override
+                public void failure(RetrofitError error) {
 
-            }
-        });
+                }
+            });
+        }
+
     }
 }
