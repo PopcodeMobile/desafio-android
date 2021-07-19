@@ -7,4 +7,5 @@
     <string name="altura_dois_pontos">Altura:</string>
     <string name="genero_dois_pontos">Gênero:</string>
     <string name="peso_dois_pontos">Peso:</string>
+    <string name="buscar_personagem">Buscar Personagem</string>
 </resources>

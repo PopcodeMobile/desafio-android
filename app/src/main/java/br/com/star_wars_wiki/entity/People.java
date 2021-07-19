@@ -1,5 +1,6 @@
 package br.com.star_wars_wiki.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -11,10 +12,10 @@ import java.util.ArrayList;
 
 @Entity
 public class People implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-
+    //Não é uma boa prática colocar name como chave primária, mas para esse desafio acho aceitável
+    @PrimaryKey
     @ColumnInfo(name = "name")
+    @NonNull
     public String name;
 
     @ColumnInfo(name = "birth_year")
@@ -66,6 +67,9 @@ public class People implements Serializable {
     @ColumnInfo(name = "vehicles")
     @SerializedName("vehicles")
     public ArrayList<String> vehiclesUrls;
+
+    @ColumnInfo(name = "next_page")
+    int nextPage;
 
     public String getName() {
         return name;
@@ -185,5 +189,13 @@ public class People implements Serializable {
 
     public void setVehiclesUrls(ArrayList<String> vehiclesUrls) {
         this.vehiclesUrls = vehiclesUrls;
+    }
+
+    public int getNextPage() {
+        return nextPage;
+    }
+
+    public void setNextPage(int nextPage) {
+        this.nextPage = nextPage;
     }
 }

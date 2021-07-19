@@ -64,6 +64,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.Personagem
     }
 
     public void setPeopleList(List<People> peopleList) {
-        this.peopleList.addAll(peopleList);
+        this.peopleList = peopleList;
     }
 }
