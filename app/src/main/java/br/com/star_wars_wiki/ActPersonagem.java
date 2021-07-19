@@ -1,182 +1,144 @@
 package br.com.star_wars_wiki;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.star_wars_wiki.adapter.PeopleAdapter;
 import br.com.star_wars_wiki.entity.People;
-import br.com.star_wars_wiki.entity.SWModelList;
+import br.com.star_wars_wiki.entity.Planet;
+import br.com.star_wars_wiki.entity.Specie;
+import br.com.star_wars_wiki.network.StarWars;
 import br.com.star_wars_wiki.network.StarWarsApi;
-import br.com.star_wars_wiki.view_model.PeopleViewModel;
+import br.com.star_wars_wiki.view_model.PlanetViewModel;
+import br.com.star_wars_wiki.view_model.SpecieViewModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class ActPersonagem extends AppCompatActivity {
 
-    private MaterialSearchView searchView;
-    private ProgressBar progressBar;
-    private RecyclerView recyclerPeopleList;
-    private PeopleViewModel peopleViewModel;
-    private int page = 0;
-    private boolean next = true;
-    private int nextPage = 1;
-    private List<People> peopleList = new ArrayList<>();
-    private PeopleAdapter peopleAdapter = new PeopleAdapter(peopleList);
+    private ProgressBar progressBarActPersonagem;
+    private TextView txtName, txtHeight, txtMass, txtHairColor, txtSkinColor, txtEyeColor, txtBirthYear, txtGender, txtPlanet, txtSpecie;
+    private People people;
+    private Planet planetPeople;
+    private ArrayList<Specie> species = new ArrayList<>();
+    private PlanetViewModel planetViewModel;
+    private SpecieViewModel specieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_act_personagens);
+        setContentView(R.layout.act_personagem);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_people);
-        toolbar.setTitle("");
+        Toolbar toolbar = findViewById(R.id.toolbar_info_personagem);
+        toolbar.setTitle("Informações Personagem");
         setSupportActionBar(toolbar);
 
-        StarWarsApi.init();
-
-        progressBar = findViewById(R.id.progress_bar);
-        recyclerPeopleList = findViewById(R.id.lista_people);
-
-        //Inicialização do ViewModel
-        peopleViewModel = new ViewModelProvider(this).get(PeopleViewModel.class);
-        peopleViewModel.getAllPeople().observe(this, new Observer<List<People>>() {
-            @Override
-            public void onChanged(List<People> peopleListRecebido) {
-                peopleList = peopleListRecebido;
-                peopleAdapter.setPeopleList(peopleList);
-                recyclerPeopleList.setAdapter(peopleAdapter);
-                if(peopleList.size() > 0){
-                    nextPage = peopleList.get(peopleList.size() - 1).getNextPage();
-                }
-                if(peopleList.size() == 0){
-                    getAllPeople();
-                }
-            }
-        });
-
-        //Configuração do RecyclerView
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerPeopleList.setLayoutManager(layoutManager);
-
-        //Listener do RecyclerView para detectar o fim da rolagem
-        recyclerPeopleList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(!recyclerPeopleList.canScrollVertically(1)){
-                    getAllPeople();
-                }
-            }
-        });
-
-
-        searchView = findViewById(R.id.svApontamento);
-        //Listener para o search view
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                peopleAdapter.setPeopleList(peopleList);
-                recyclerPeopleList.setAdapter(peopleAdapter);
-            }
-        });
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if( newText != null && !newText.isEmpty() ){
-                    pesquisarPeople(newText.toLowerCase());
-                }
-                return true;
-            }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-
-        //Configura botão de pesquisa
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    public void getAllPeople(){
-        if(next && (progressBar.getVisibility() == View.GONE)){
-            progressBar.setVisibility(View.VISIBLE);
-            StarWarsApi.getApi().getAllPeople(nextPage, new Callback<SWModelList<People>>() {
-                @Override
-                public void success(SWModelList<People> peopleSWModelList, Response response) {
-                    peopleList = new ArrayList<>();
-                    peopleList.addAll(peopleSWModelList.results);
-                    for(int i = 0; i < peopleList.size(); i++){//Fiz um mecanismo para capturar a página dos resultados, isso se fez necessário, pois quando a busca não é realizada completamente atrvés do scroll listener, existe um problema quando o usuário volta a tela inicial e começa a requisitar novos resultados
-                        if(peopleSWModelList.next != null){
-                            String aux = peopleSWModelList.next;
-                            peopleList.get(i).setNextPage(Integer.parseInt(String.valueOf(peopleSWModelList.next.charAt(aux.length() - 1))));
-                        }
-                    }
-                    peopleViewModel.insert(peopleList);
-                    next = peopleSWModelList.hasMore();
-
-                    progressBar.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-
-                }
-            });
+        if(StarWarsApi.getApi() == null){
+            StarWarsApi.init();
         }
 
+        people = (People) getIntent().getSerializableExtra("people");
+
+        progressBarActPersonagem = findViewById(R.id.progress_bar_act_personagem);
+        txtName = findViewById(R.id.txt_name);
+        txtHeight = findViewById(R.id.txt_height);
+        txtMass = findViewById(R.id.txt_mass);
+        txtHairColor = findViewById(R.id.txt_hair_color);
+        txtSkinColor = findViewById(R.id.txt_skin_color);
+        txtEyeColor = findViewById(R.id.txt_eye_color);
+        txtBirthYear = findViewById(R.id.txt_birth_year);
+        txtGender = findViewById(R.id.txt_gender);
+        txtPlanet = findViewById(R.id.txt_planet);
+        //txtSpecie = findViewById(R.id.txt_specie);
+
+        getPlanetAndSpecie();
     }
 
-    public void pesquisarPeople(String texto){
-        List<People> listaPeoplePesquisados = new ArrayList<>();
+    public void getPlanetAndSpecie(){
+        progressBarActPersonagem.setVisibility(View.VISIBLE);
 
-        for ( int i=0; i< peopleList.size(); i++){
+        String routePlanet = people.getHomeWorldUrl().replaceAll(APIConstants.BASE_URL, "");//Tira a parte da URL base
+//        ArrayList<String> routeSpecieAux = people.getSpeciesUrls();
+//        ArrayList<String> routeSpecie = new ArrayList<>();
+//        for(int i = 0; i < routeSpecieAux.size(); i++){
+//            routeSpecie.add(i, routeSpecieAux.get(i).replaceAll(APIConstants.BASE_URL, ""));
+//        }
 
-            People people = peopleList.get(i);
-
-            String nome = people.getName().toLowerCase();
-
-            if( nome.contains( texto )){
-                listaPeoplePesquisados.add(people);
+        StarWarsApi.getApi().getPlanet(routePlanet, new Callback<Planet>() {
+            @Override
+            public void success(Planet planet, Response response) {
+                planetPeople = planet;
+                planetViewModel = new PlanetViewModel(getApplication());
+                planetViewModel.insert(planet);
+                preencheCampos();
+                //Não consegui implementar a listagem das espécies de um personagem
+//                if(routeSpecie.size() > 0){
+//                    for(int i = 0; i < routeSpecie.size(); i++){
+//                        int finalI = i;
+//                        StarWarsApi.getApi().getSpecies(routeSpecie.get(i), new Callback<Specie>() {
+//                            @Override
+//                            public void success(Specie specie, Response response) {
+//                                specieViewModel = new SpecieViewModel(getApplication());
+//                                specieViewModel.insert(specie);
+//                                species.add(specie);
+//                                if(finalI == routeSpecie.size() - 1){//Desabilita a progress bar apenas na última requisição
+//                                    preencheCampos();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void failure(RetrofitError error) {
+//
+//                            }
+//                        });
+//                    }
+//                }
             }
-        }
 
-        peopleAdapter = new PeopleAdapter(listaPeoplePesquisados);
-        recyclerPeopleList.setAdapter(peopleAdapter);
-        peopleAdapter.notifyDataSetChanged();
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void preencheCampos(){
+        planetViewModel.getAllPlanets().observe(this, new Observer<List<Planet>>() {
+            @Override
+            public void onChanged(List<Planet> planets) {
+                Planet planet = planetViewModel.getPlanet(planetPeople.getName());
+
+                txtName.setText(people.getName());
+                txtHeight.setText(people.getHeight());
+                txtMass.setText(people.getMass());
+                txtHairColor.setText(people.getHairColor());
+                txtSkinColor.setText(people.getSkinColor());
+                txtEyeColor.setText(people.getEyeColor());
+                txtBirthYear.setText(people.getBirthYear());
+                txtGender.setText(people.getGender());
+                txtPlanet.setText(planet.getName());
+
+//                if(species.size() > 0){
+//                    String specieAux = "";
+//                    for(Specie specie : species){
+//                        specieAux = specieAux + specie.getName() + "; ";
+//                    }
+//                    txtSpecie.setText(specieAux);
+//                }else{
+//                    txtSpecie.setText("Não informada");
+//                }
+
+                progressBarActPersonagem.setVisibility(View.GONE);
+            }
+        });
     }
 }

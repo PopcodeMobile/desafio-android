@@ -8,4 +8,15 @@
     <string name="genero_dois_pontos">Gênero:</string>
     <string name="peso_dois_pontos">Peso:</string>
     <string name="buscar_personagem">Buscar Personagem</string>
+
+    <string name="name_dois_pontos">Nome:</string>
+    <string name="height_dois_pontos">Altura:</string>
+    <string name="mass_dois_pontos">Massa:</string>
+    <string name="hair_color_dois_pontos">Cor do Cabelo:</string>
+    <string name="skin_color_dois_pontos">Cor da Pele:</string>
+    <string name="eye_color_dois_pontos">Cor do Olho:</string>
+    <string name="birth_year_dois_pontos">Ano de Nascimento:</string>
+    <string name="gender_dois_pontos">Gênero:</string>
+    <string name="planet_dois_pontos">Nome do Planeta Natal:</string>
+    <string name="specie_dois_pontos">Nome da Espécie:</string>
 </resources>

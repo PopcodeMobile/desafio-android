@@ -9,6 +9,6 @@ public class ActFavorito extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_act_favoritos);
+        setContentView(R.layout.act_favoritos);
     }
 }

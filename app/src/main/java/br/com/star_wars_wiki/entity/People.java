@@ -39,6 +39,10 @@ public class People implements Serializable {
     @ColumnInfo(name = "mass")
     public String mass;
 
+    @ColumnInfo(name = "eye_color")
+    @SerializedName("eye_color")
+    public String eyeColor;
+
     @ColumnInfo(name = "skin_color")
     @SerializedName("skin_color")
     public String skinColor;
@@ -197,5 +201,13 @@ public class People implements Serializable {
 
     public void setNextPage(int nextPage) {
         this.nextPage = nextPage;
+    }
+
+    public String getEyeColor() {
+        return eyeColor;
+    }
+
+    public void setEyeColor(String eyeColor) {
+        this.eyeColor = eyeColor;
     }
 }
