@@ -73,6 +73,7 @@ public class ActPersonagem extends AppCompatActivity {
             StarWarsApi.getApi().getAllPeople(page, new Callback<SWModelList<People>>() {
                 @Override
                 public void success(SWModelList<People> peopleSWModelList, Response response) {
+                    peopleList = new ArrayList<>();
                     next = peopleSWModelList.hasMore();
                     peopleList.addAll(peopleSWModelList.results);
                     peopleAdapter.setPeopleList(peopleList);
