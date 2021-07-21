@@ -21,6 +21,7 @@ import br.com.star_wars_wiki.entity.ResponseFavorite;
 import br.com.star_wars_wiki.entity.Specie;
 import br.com.star_wars_wiki.network.StarWarsApi;
 import br.com.star_wars_wiki.network.StarWarsFavoriteApi;
+import br.com.star_wars_wiki.utils.APIConstants;
 import br.com.star_wars_wiki.view_model.FavoriteViewModel;
 import br.com.star_wars_wiki.view_model.PlanetViewModel;
 import br.com.star_wars_wiki.view_model.SpecieViewModel;

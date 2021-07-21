@@ -1,6 +1,6 @@
 package br.com.star_wars_wiki.network;
 
-import br.com.star_wars_wiki.APIConstants;
+import br.com.star_wars_wiki.utils.APIConstants;
 import retrofit.RestAdapter;
 
 public class StarWarsApi {

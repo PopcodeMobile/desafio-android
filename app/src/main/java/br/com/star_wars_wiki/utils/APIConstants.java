@@ -1,4 +1,4 @@
-package br.com.star_wars_wiki;
+package br.com.star_wars_wiki.utils;
 
 public class APIConstants {
     public static final String BASE_URL = "https://swapi.dev/api/";
