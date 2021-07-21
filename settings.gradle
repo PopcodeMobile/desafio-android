@@ -1,0 +1,2 @@
+rootProject.name = "Starwars api"
+include ':app'
