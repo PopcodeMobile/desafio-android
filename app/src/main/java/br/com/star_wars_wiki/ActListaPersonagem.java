@@ -3,6 +3,7 @@ package br.com.star_wars_wiki;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,10 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.star_wars_wiki.adapter.PeopleAdapter;
+import br.com.star_wars_wiki.database.converters.Converters;
+import br.com.star_wars_wiki.entity.Favorite;
 import br.com.star_wars_wiki.entity.People;
 import br.com.star_wars_wiki.entity.SWModelList;
 import br.com.star_wars_wiki.network.StarWarsApi;
 import br.com.star_wars_wiki.utils.RecyclerItemClickListener;
+import br.com.star_wars_wiki.view_model.FavoriteViewModel;
 import br.com.star_wars_wiki.view_model.PeopleViewModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -51,8 +55,10 @@ public class ActListaPersonagem extends AppCompatActivity {
         peopleAdapter = new PeopleAdapter(peopleList, getBaseContext(), getApplication());
 
         Toolbar toolbar = findViewById(R.id.toolbar_people);
-        toolbar.setTitle("Personagens");
+        toolbar.setTitle(R.string.act_personagens);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         
         StarWarsApi.init();
 
@@ -141,6 +147,12 @@ public class ActListaPersonagem extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override

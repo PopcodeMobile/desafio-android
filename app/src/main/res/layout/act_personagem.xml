@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/include2"
-        layout="@layout/toolbar_info_personagem">
+        layout="@layout/toolbar_simples">
     </include>
 
     <LinearLayout
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
@@ -36,17 +36,23 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/name_dois_pontos" />
+                android:text="@string/name_dois_pontos"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="TextView"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -58,17 +64,23 @@
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/height_dois_pontos" />
+                android:text="@string/height_dois_pontos"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_height"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="TextView"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -80,17 +92,23 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/mass_dois_pontos" />
+                android:text="@string/mass_dois_pontos"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_mass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="TextView"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,17 +120,23 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/hair_color_dois_pontos" />
+                android:text="@string/hair_color_dois_pontos"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_hair_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="TextView"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -124,17 +148,23 @@
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/skin_color_dois_pontos" />
+                android:text="@string/skin_color_dois_pontos"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_skin_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="TextView"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -146,17 +176,23 @@
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/eye_color_dois_pontos" />
+                android:text="@string/eye_color_dois_pontos"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_eye_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="TextView"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -168,17 +204,23 @@
                 android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/birth_year_dois_pontos" />
+                android:text="@string/birth_year_dois_pontos"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_birth_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="TextView"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -190,17 +232,23 @@
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/gender_dois_pontos" />
+                android:text="@string/gender_dois_pontos"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="TextView"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -212,17 +260,55 @@
                 android:id="@+id/textView24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/planet_dois_pontos" />
+                android:text="@string/planet_dois_pontos"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_planet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="TextView"
-                android:textAlignment="textEnd" />
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="16dp">
+
+            <Button
+                android:id="@+id/btn_add_favorito_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:onClick="adicionarFavorito"
+                android:text="@string/add_favoritos"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_remove_favorito_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:onClick="removeFavorito"
+                android:text="@string/remove_favorito"
+                android:visibility="gone" />
         </LinearLayout>
 
         <!--        <LinearLayout-->

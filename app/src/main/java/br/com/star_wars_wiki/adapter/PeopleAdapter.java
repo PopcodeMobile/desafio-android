@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
 import br.com.star_wars_wiki.ActListaPersonagem;
 import br.com.star_wars_wiki.ActPersonagem;
 import br.com.star_wars_wiki.R;
+import br.com.star_wars_wiki.database.converters.Converters;
 import br.com.star_wars_wiki.entity.Favorite;
 import br.com.star_wars_wiki.entity.People;
 import br.com.star_wars_wiki.entity.ResponseFavorite;
@@ -30,6 +33,7 @@ import retrofit.client.Response;
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PersonagemHolder>{
 
     private List<People> peopleList;
+    private List<Favorite> favoriteList;
     private Context context;
     private Application application;
     private FavoriteViewModel favoriteViewModel;
@@ -61,14 +65,18 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.Personagem
         holder.btnAddFavorito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                favoriteViewModel = new FavoriteViewModel(application);
-                favoriteViewModel.insert(convertePeopleToFavorite(people));
                 StarWarsFavoriteApi.init();
                 StarWarsFavoriteApi.getApi().setFavorite(people.getName(), new Callback<ResponseFavorite>() {
                     @Override
                     public void success(ResponseFavorite responseFavorite, Response response) {
+                        favoriteViewModel = new FavoriteViewModel(application);
+                        favoriteViewModel.insert(Converters.convertePeopleToFavorite(people));
                         if(responseFavorite.getStatus() != null){
                             Toast.makeText(context, responseFavorite.getStatus() + ". " + responseFavorite.getMessage(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(responseFavorite.getError() != null){
+                                Toast.makeText(context, responseFavorite.getError() + ". " + responseFavorite.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
 
@@ -89,6 +97,14 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.Personagem
                 context.startActivity(it);
             }
         });
+
+        holder.btnRemoveFavorito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                favoriteViewModel = new FavoriteViewModel(application);
+                favoriteViewModel.remove(Converters.convertePeopleToFavorite(people), context);
+            }
+        });
     }
 
     @Override
@@ -99,7 +115,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.Personagem
     public class PersonagemHolder extends RecyclerView.ViewHolder{
 
         TextView txtNome, txtAltura, txtGenero, txtPeso;
-        Button btnAddFavorito, btnVisualizar;
+        Button btnAddFavorito, btnVisualizar, btnRemoveFavorito;
 
         public PersonagemHolder(@NonNull View itemView) {
             super(itemView);
@@ -109,34 +125,11 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.Personagem
             txtPeso = itemView.findViewById(R.id.txt_peso);
             btnAddFavorito = itemView.findViewById(R.id.btn_add_favoritos);
             btnVisualizar = itemView.findViewById(R.id.btn_visualizar);
+            btnRemoveFavorito = itemView.findViewById(R.id.btn_remove_favorito);
         }
     }
 
     public void setPeopleList(List<People> peopleList) {
         this.peopleList = peopleList;
-    }
-
-    public Favorite convertePeopleToFavorite(People people){
-        Favorite favorite = new Favorite();
-
-        favorite.setName(people.getName());
-        favorite.setBirthYear(people.getBirthYear());
-        favorite.setGender(people.getGender());
-        favorite.setHairColor(people.getHairColor());
-        favorite.setHeight(people.getHeight());
-        favorite.setHomeWorldUrl(people.getHomeWorldUrl());
-        favorite.setMass(people.getMass());
-        favorite.setEyeColor(people.getEyeColor());
-        favorite.setSkinColor(people.getSkinColor());
-        favorite.setCreated(people.getCreated());
-        favorite.setEdited(people.getEdited());
-        favorite.setUrl(people.getUrl());
-        favorite.setFilmsUrls(people.getFilmsUrls());
-        favorite.setSpeciesUrls(people.getSpeciesUrls());
-        favorite.setStarshipsUrls(people.getStarshipsUrls());
-        favorite.setVehiclesUrls(people.getVehiclesUrls());
-        favorite.setNextPage(people.getNextPage());
-
-        return favorite;
     }
 }

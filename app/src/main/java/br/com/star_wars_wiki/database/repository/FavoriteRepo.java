@@ -1,7 +1,9 @@
 package br.com.star_wars_wiki.database.repository;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 
@@ -28,8 +30,8 @@ public class FavoriteRepo {
         return this.getAllFavorites;
     }
 
-    public void remove(Favorite favorite){
-        new RemoveAsyncTask(database).execute(favorite);
+    public void remove(Favorite favorite, Context context){
+        new RemoveAsyncTask(database, context).execute(favorite);
     }
 
     static class InsertAsyncTask extends AsyncTask<Favorite, Void, Void>{
@@ -48,15 +50,32 @@ public class FavoriteRepo {
 
     static class RemoveAsyncTask extends AsyncTask<Favorite, Void, Void>{
         private FavoriteDAO favoriteDAO;
+        private Context context;
+        private Favorite favorite;
 
-        RemoveAsyncTask(RoomDatabase roomDatabase){
+        RemoveAsyncTask(RoomDatabase roomDatabase, Context context){
             favoriteDAO = roomDatabase.favoritesDAO();
+            this.context = context;
         }
 
         @Override
         protected Void doInBackground(Favorite... favorites) {
-            favoriteDAO.removeFavorite(favorites[0]);
+            favorite = favoriteDAO.getFavorite(favorites[0].getName());
+            if(favorite != null){
+                favoriteDAO.removeFavorite(favorites[0]);
+            }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            if(favorite != null){
+                Toast.makeText(context, "Favorito removido com sucesso", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(context, "Desculpe, esse personagem não está na lista de favoritos", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 }

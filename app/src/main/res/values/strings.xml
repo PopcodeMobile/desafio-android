@@ -2,7 +2,8 @@
     <string name="app_name">star-wars-wiki</string>
     <string name="personagens">Personagens</string>
     <string name="favoritos">Favoritos</string>
-    <string name="add_favoritos">Adicionar a Favoritos</string>
+    <string name="add_favoritos">Adicionar Favorito</string>
+    <string name="remove_favorito">Remover Favorito</string>
     <string name="visualizar">Visualizar</string>
     <string name="nome_dois_pontos">Nome:</string>
     <string name="altura_dois_pontos">Altura:</string>
@@ -20,4 +21,8 @@
     <string name="gender_dois_pontos">Gênero:</string>
     <string name="planet_dois_pontos">Nome do Planeta Natal:</string>
     <string name="specie_dois_pontos">Nome da Espécie:</string>
+
+    <string name="act_home">Home</string>
+    <string name="act_personagens">Personagens</string>
+    <string name="act_info_personagens">Informações do Personagem</string>
 </resources>

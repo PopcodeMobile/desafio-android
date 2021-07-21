@@ -1,6 +1,7 @@
 package br.com.star_wars_wiki;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,11 @@ public class ActHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
+
+        //Configuração da Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar_simples);
+        toolbar.setTitle(R.string.act_home);
+        setSupportActionBar(toolbar);
 
         StarWarsApi.init();
 

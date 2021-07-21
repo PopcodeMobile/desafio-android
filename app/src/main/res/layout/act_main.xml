@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ActHome">
 
+    <include
+        android:id="@+id/include3"
+        layout="@layout/toolbar_simples">
+
+    </include>
     <ImageButton
         android:id="@+id/btnPersonagens"
         android:layout_width="wrap_content"
@@ -35,6 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/personagens"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/btnPersonagens"
         app:layout_constraintStart_toStartOf="@+id/btnPersonagens"
         app:layout_constraintTop_toBottomOf="@+id/btnPersonagens" />
@@ -44,6 +51,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/favoritos"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/btnFavoritos"
         app:layout_constraintStart_toStartOf="@+id/btnFavoritos"
         app:layout_constraintTop_toBottomOf="@+id/btnFavoritos" />

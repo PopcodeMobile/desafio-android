@@ -6,17 +6,22 @@ import androidx.lifecycle.Observer;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.star_wars_wiki.database.converters.Converters;
 import br.com.star_wars_wiki.entity.People;
 import br.com.star_wars_wiki.entity.Planet;
+import br.com.star_wars_wiki.entity.ResponseFavorite;
 import br.com.star_wars_wiki.entity.Specie;
-import br.com.star_wars_wiki.network.StarWars;
 import br.com.star_wars_wiki.network.StarWarsApi;
+import br.com.star_wars_wiki.network.StarWarsFavoriteApi;
+import br.com.star_wars_wiki.view_model.FavoriteViewModel;
 import br.com.star_wars_wiki.view_model.PlanetViewModel;
 import br.com.star_wars_wiki.view_model.SpecieViewModel;
 import retrofit.Callback;
@@ -26,6 +31,7 @@ import retrofit.client.Response;
 public class ActPersonagem extends AppCompatActivity {
 
     private ProgressBar progressBarActPersonagem;
+    private Button btnAdicionaFavorito, btnRemoveFavorito;
     private TextView txtName, txtHeight, txtMass, txtHairColor, txtSkinColor, txtEyeColor, txtBirthYear, txtGender, txtPlanet, txtSpecie;
     private People people;
     private Planet planetPeople;
@@ -38,9 +44,11 @@ public class ActPersonagem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_personagem);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_info_personagem);
-        toolbar.setTitle("Informações Personagem");
+        Toolbar toolbar = findViewById(R.id.toolbar_simples);
+        toolbar.setTitle(R.string.act_info_personagens);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if(StarWarsApi.getApi() == null){
             StarWarsApi.init();
@@ -49,6 +57,8 @@ public class ActPersonagem extends AppCompatActivity {
         people = (People) getIntent().getSerializableExtra("people");
 
         progressBarActPersonagem = findViewById(R.id.progress_bar_act_personagem);
+        btnAdicionaFavorito = findViewById(R.id.btn_add_favorito_info);
+        btnRemoveFavorito = findViewById(R.id.btn_remove_favorito_info);
         txtName = findViewById(R.id.txt_name);
         txtHeight = findViewById(R.id.txt_height);
         txtMass = findViewById(R.id.txt_mass);
@@ -61,6 +71,12 @@ public class ActPersonagem extends AppCompatActivity {
         //txtSpecie = findViewById(R.id.txt_specie);
 
         getPlanetAndSpecie();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     public void getPlanetAndSpecie(){
@@ -80,7 +96,9 @@ public class ActPersonagem extends AppCompatActivity {
                 planetViewModel = new PlanetViewModel(getApplication());
                 planetViewModel.insert(planet);
                 preencheCampos();
-                //Não consegui implementar a listagem das espécies de um personagem
+                //Não consegui implementar a listagem das espécies de um personagem, mas deixei aqui o código
+                //para mostrar que tentei fazer, mas não obtive sucesso.
+                //As linhas comentadas são referentes a requisição de listagem de espécies
 //                if(routeSpecie.size() > 0){
 //                    for(int i = 0; i < routeSpecie.size(); i++){
 //                        int finalI = i;
@@ -138,7 +156,37 @@ public class ActPersonagem extends AppCompatActivity {
 //                }
 
                 progressBarActPersonagem.setVisibility(View.GONE);
+                btnAdicionaFavorito.setVisibility(View.VISIBLE);
+                btnRemoveFavorito.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    public void adicionarFavorito(View view){
+        FavoriteViewModel favoriteViewModel = new FavoriteViewModel(getApplication());
+        favoriteViewModel.insert(Converters.convertePeopleToFavorite(people));
+        StarWarsFavoriteApi.init();
+        StarWarsFavoriteApi.getApi().setFavorite(people.getName(), new Callback<ResponseFavorite>() {
+            @Override
+            public void success(ResponseFavorite responseFavorite, Response response) {
+                if(responseFavorite.getStatus() != null){
+                    Toast.makeText(getBaseContext(), responseFavorite.getStatus() + ". " + responseFavorite.getMessage(), Toast.LENGTH_SHORT).show();
+                }else{
+                    if(responseFavorite.getError() != null){
+                        Toast.makeText(getBaseContext(), responseFavorite.getError() + ". " + responseFavorite.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getBaseContext(), "internal error. Only at the end do you realize the power of the Dark Side.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void removeFavorito(View view){
+        FavoriteViewModel favoriteViewModel = new FavoriteViewModel(getApplication());
+        favoriteViewModel.remove(Converters.convertePeopleToFavorite(people), getBaseContext());
     }
 }

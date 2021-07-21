@@ -19,6 +19,9 @@ public interface FavoriteDAO {
     @Delete
     void removeFavorite(Favorite favorite);
 
+    @Query("SELECT * FROM Favorite WHERE name = :favoriteName")
+    Favorite getFavorite(String favoriteName);
+
     @Query("SELECT * FROM Favorite")
     LiveData<List<Favorite>> getAllFavorites();
 }

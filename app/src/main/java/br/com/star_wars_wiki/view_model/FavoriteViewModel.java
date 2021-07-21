@@ -1,6 +1,7 @@
 package br.com.star_wars_wiki.view_model;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -25,8 +26,8 @@ public class FavoriteViewModel extends AndroidViewModel {
         favoriteRepo.insert(favorite);
     }
 
-    public void remove(Favorite favorite){
-        favoriteRepo.remove(favorite);
+    public void remove(Favorite favorite, Context context){
+        favoriteRepo.remove(favorite, context);
     }
 
     public LiveData<List<Favorite>> getAllFavorites(){

@@ -32,17 +32,23 @@
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_weight="1"
-                    android:text="@string/nome_dois_pontos" />
+                    android:text="@string/nome_dois_pontos"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_nome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="TextView"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -56,17 +62,23 @@
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_weight="1"
-                    android:text="@string/altura_dois_pontos" />
+                    android:text="@string/altura_dois_pontos"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_altura"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="TextView"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -78,17 +90,23 @@
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_weight="1"
-                    android:text="@string/genero_dois_pontos" />
+                    android:text="@string/genero_dois_pontos"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_genero"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="TextView"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -100,17 +118,23 @@
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_weight="1"
-                    android:text="@string/peso_dois_pontos" />
+                    android:text="@string/peso_dois_pontos"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_peso"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="TextView"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <Space
@@ -126,15 +150,36 @@
                     android:id="@+id/btn_add_favoritos"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    android:text="@string/add_favoritos" />
+                    android:text="@string/add_favoritos"
+                    android:textSize="12sp"
+                    app:backgroundTint="#0000FF" />
 
                 <Button
                     android:id="@+id/btn_visualizar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    android:text="@string/visualizar" />
+                    android:text="@string/visualizar"
+                    android:textSize="12sp"
+                    app:backgroundTint="#0000FF" />
+
+                <Button
+                    android:id="@+id/btn_remove_favorito"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/remove_favorito"
+                    android:textSize="12sp"
+                    app:backgroundTint="#0000FF" />
 
             </LinearLayout>
 
