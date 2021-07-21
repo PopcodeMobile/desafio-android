@@ -98,27 +98,6 @@ public class ActListaPersonagem extends AppCompatActivity {
             }
         });
 
-        //Listener do RecyclerView para detectar o toque em um item
-//        recyclerPeopleList.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerPeopleList,
-//                        new RecyclerItemClickListener.OnItemClickListener() {
-//                            @Override
-//                            public void onItemClick(View view, int position) {
-//                               Intent it = new Intent(ActListaPersonagem.this, ActPersonagem.class);
-//                               it.putExtra("people", peopleList.get(position));
-//                               startActivity(it);
-//                            }
-//                            @Override
-//                            public void onLongItemClick(View view, int position) {
-//                            }
-//                            @Override
-//                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                            }
-//                        }
-//                )
-//        );
-
-
-
         //Listener para o search view
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override

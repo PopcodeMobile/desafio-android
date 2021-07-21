@@ -25,4 +25,5 @@
     <string name="act_home">Home</string>
     <string name="act_personagens">Personagens</string>
     <string name="act_info_personagens">Informações do Personagem</string>
+    <string name="act_favoritos">Favoritos</string>
 </resources>

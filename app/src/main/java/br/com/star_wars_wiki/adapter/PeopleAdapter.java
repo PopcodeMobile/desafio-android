@@ -33,7 +33,6 @@ import retrofit.client.Response;
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PersonagemHolder>{
 
     private List<People> peopleList;
-    private List<Favorite> favoriteList;
     private Context context;
     private Application application;
     private FavoriteViewModel favoriteViewModel;
