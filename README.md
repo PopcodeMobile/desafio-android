@@ -12,51 +12,51 @@ http://docs.starwarsfavorites.apiary.io/#
 
 ### Lista de Personagens
 
-Para obter os personagens, sua aplicação deverá utilizar o recurso `people` da Swapi (documentação disponível no topo do documento). A aplicação deve exibir todos os 87 personagens e permitir pesquisar o personagem pelo nome. Sugerimos exibir as primeiras páginas enquanto carrega as outras, em um formato de scroll infinito.
+Para obter os personagens, sua aplicação deverá utilizar o recurso `people` da Swapi (documentação disponível no topo do documento). A aplicação deve exibir todos os 87 personagens✔️ e permitir pesquisar o personagem pelo nome✔️. Sugerimos exibir as primeiras páginas enquanto carrega as outras, em um formato de scroll infinito✔️.
 
-A lista de itens deve exibir as seguintes informações:
+A lista de itens deve exibir as seguintes informações:✔️
 + Nome [name]
 + Altura [height]
 + Genero [gender]
 + Peso [mass]
 
-Os dados devem ser salvos em banco de dados local para acesso offline e atualizados sempre que a tela for aberta.
+Os dados devem ser salvos em banco de dados local para acesso offline e atualizados sempre que a tela for aberta.✔️
 
 ### Detalhes do Personagem
 
 Ao clicar em um item da lista o seu app deve mostrar as informações abaixo:
 
-+ name
-+ height
-+ mass 
-+ hair_color
-+ skin_color
-+ eye_color
-+ birth_year
-+ gender
-+ Nome do Planeta Natal 
++ name✔️
++ height✔️
++ mass ✔️
++ hair_color✔️
++ skin_color✔️
++ eye_color✔️
++ birth_year✔️
++ gender✔️
++ Nome do Planeta Natal ✔️
 + Nome da Espécie
 
-A busca pelo nome do planeta e da espécie deve ser feita em paralelo.
+A busca pelo nome do planeta✔️ e da espécie deve ser feita em paralelo.
 
 ### Favoritos
 
-Na lista e nos detalhes deve ser possível adicionar e remover um personagem a sua lista de favoritos. Tambem deve ser possível filtrar quais personagens foram favoritados na lista principal.
+Na lista e nos detalhes deve ser possível adicionar e remover um personagem a sua lista de favoritos✔️. Tambem deve ser possível filtrar quais personagens foram favoritados na lista principal✔️.
 
 ##### Adição e Remoção de Favoritos
 
 URL BASE: http://private-782d3-starwarsfavorites.apiary-mock.com/
 
-Ao adicionar um favorito a aplicação deve fazer um request para a api starwarsfavorites (documentação disponível no topo do documento). 
+Ao adicionar um favorito a aplicação deve fazer um request para a starWars starwarsfavorites✔️ (documentação disponível no topo do documento).
 A aplicação deve:
-+ Exibir a mensagem de retorno da API em caso de sucesso ou erro.
++ Exibir a mensagem de retorno da API em caso de sucesso ou erro.✔️
 + Reenviar a requisição da próxima vez que o app for aberto em caso de erro.
-+ Salvar no banco de dados local quais personagens foram favoritados.
-+ Tratar a remoção de favoritos apenas no banco de dados local.
++ Salvar no banco de dados local quais personagens foram favoritados.✔️
++ Tratar a remoção de favoritos apenas no banco de dados local.✔️
 
-Em metade das requisições enviadas para a api starwarsfavorites a aplicação deve adicionar o header `Prefer` com o valor `status=400`.
+Em metade das requisições enviadas para a starWars starwarsfavorites a aplicação deve adicionar o header `Prefer` com o valor `status=400`.
 
-P.S.: O candidato deve escolher o ID.
+P.S.: O candidato deve escolher o ID.✔️
 
 ---
 #### LICENSE
