@@ -41,21 +41,24 @@ public class ActListaPersonagem extends AppCompatActivity {
     private boolean next = true;
     private int nextPage = 1;
     private List<People> peopleList = new ArrayList<>();
-    private PeopleAdapter peopleAdapter = new PeopleAdapter(peopleList);
+    private PeopleAdapter peopleAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_lista_personagens);
 
+        peopleAdapter = new PeopleAdapter(peopleList, getBaseContext(), getApplication());
+
         Toolbar toolbar = findViewById(R.id.toolbar_people);
         toolbar.setTitle("Personagens");
         setSupportActionBar(toolbar);
-
+        
         StarWarsApi.init();
 
         progressBar = findViewById(R.id.progress_bar);
         recyclerPeopleList = findViewById(R.id.lista_people);
+        searchView = findViewById(R.id.svApontamento);
 
         //Inicialização do ViewModel
         peopleViewModel = new ViewModelProvider(this).get(PeopleViewModel.class);
@@ -90,26 +93,26 @@ public class ActListaPersonagem extends AppCompatActivity {
         });
 
         //Listener do RecyclerView para detectar o toque em um item
-        recyclerPeopleList.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerPeopleList,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                               Intent it = new Intent(ActListaPersonagem.this, ActPersonagem.class);
-                               it.putExtra("people", peopleList.get(position));
-                               startActivity(it);
-                            }
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-                            }
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            }
-                        }
-                )
-        );
+//        recyclerPeopleList.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerPeopleList,
+//                        new RecyclerItemClickListener.OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(View view, int position) {
+//                               Intent it = new Intent(ActListaPersonagem.this, ActPersonagem.class);
+//                               it.putExtra("people", peopleList.get(position));
+//                               startActivity(it);
+//                            }
+//                            @Override
+//                            public void onLongItemClick(View view, int position) {
+//                            }
+//                            @Override
+//                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                            }
+//                        }
+//                )
+//        );
 
 
-        searchView = findViewById(R.id.svApontamento);
+
         //Listener para o search view
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
@@ -184,17 +187,14 @@ public class ActListaPersonagem extends AppCompatActivity {
         List<People> listaPeoplePesquisados = new ArrayList<>();
 
         for ( int i=0; i< peopleList.size(); i++){
-
             People people = peopleList.get(i);
-
             String nome = people.getName().toLowerCase();
-
             if( nome.contains( texto )){
                 listaPeoplePesquisados.add(people);
             }
         }
 
-        peopleAdapter = new PeopleAdapter(listaPeoplePesquisados);
+        peopleAdapter = new PeopleAdapter(listaPeoplePesquisados, getBaseContext(), getApplication());
         recyclerPeopleList.setAdapter(peopleAdapter);
         peopleAdapter.notifyDataSetChanged();
     }

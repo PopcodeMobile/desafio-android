@@ -3,6 +3,7 @@ package br.com.star_wars_wiki.network;
 import br.com.star_wars_wiki.entity.*;
 import retrofit.Callback;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
@@ -57,5 +58,9 @@ public interface StarWars {
     @GET("/{route}")
     public void getPlanet(@Path("route") String route,
                           Callback<Planet> callback);
+
+    @POST("/favorite/{id}")
+    public void setFavorite(@Path("id") String id,
+                            Callback<ResponseFavorite> callBack);
 
 }
