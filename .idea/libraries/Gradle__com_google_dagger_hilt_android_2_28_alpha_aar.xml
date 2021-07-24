@@ -1,9 +1,7 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.dagger:hilt-android:2.28-alpha@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6d0d67cbba1b5fc9c22d58ce2ac2b736/transformed/jetified-hilt-android-2.28-alpha/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e290792a157884b4ae2b3bb8275c9b78/transformed/jetified-hilt-android-2.28-alpha/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cf199875140cae9af52ab0dd3c8e8f26/transformed/jetified-hilt-android-2.28-alpha/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8822e142ba80154d211297001f819ed3/transformed/jetified-hilt-android-2.28-alpha/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/968b3aad0b86aa88dae004c1d3aabb46/transformed/jetified-hilt-android-2.28-alpha/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/968b3aad0b86aa88dae004c1d3aabb46/transformed/jetified-hilt-android-2.28-alpha/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/968b3aad0b86aa88dae004c1d3aabb46/transformed/jetified-hilt-android-2.28-alpha/AndroidManifest.xml" />
