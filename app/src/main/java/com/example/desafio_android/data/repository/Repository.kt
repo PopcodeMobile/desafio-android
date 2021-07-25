@@ -9,7 +9,6 @@ import com.example.desafio_android.data.paging.PeoplePagingSource
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @ActivityRetainedScoped
 class Repository @Inject constructor(
@@ -18,11 +17,22 @@ class Repository @Inject constructor(
     fun getPeople(): Flow<PagingData<People>> {
         return Pager(
             config = PagingConfig(
-                pageSize =25,
-                //maxSize = 10,
+                pageSize = 5,
+                maxSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { PeoplePagingSource(requestApi) }
+            pagingSourceFactory = { PeoplePagingSource(requestApi, null) }
+        ).flow
+    }
+
+    fun searchPeople(search: String): Flow<PagingData<People>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5,
+                maxSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { PeoplePagingSource(requestApi, search)}
         ).flow
     }
 

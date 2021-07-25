@@ -1,8 +1,9 @@
 package com.example.desafio_android.ui.main.view
 
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -55,6 +56,27 @@ class PeopleFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_toolbar, menu)
 
+        val search = menu.findItem(R.id.searchPeople)
+        val searchView = search.actionView as androidx.appcompat.widget.SearchView
+        searchView.setBackgroundColor(Color.WHITE)
+
+        searchView.queryHint = getString(R.string.pesquise_um_personagem)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    adapter.refresh()
+                    peopleViewModel.searchPeople(newText)
+                }
+                return true
+            }
+
+        })
         super.onCreateOptionsMenu(menu, inflater)
     }
 

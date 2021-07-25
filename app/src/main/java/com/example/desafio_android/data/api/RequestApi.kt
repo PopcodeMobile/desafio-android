@@ -12,4 +12,9 @@ interface RequestApi {
         @Query("page") page: Int
     ): Response<PeopleResponse?>
 
+    @GET("people")
+    suspend fun searchPeople(
+        @Query("search") search: String
+    ): Response<PeopleResponse?>
+
 }

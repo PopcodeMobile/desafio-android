@@ -10,13 +10,17 @@ import java.io.IOException
 private const val PAGE_INDEX = 1
 
 class PeoplePagingSource(
-    private val requestApi: RequestApi
+    private val requestApi: RequestApi,
+    private val search: String?
 ): PagingSource<Int, People>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, People> {
 
         return try {
             val pagePosition = params.key ?: PAGE_INDEX
-            val response = requestApi.getPeople(pagePosition)
+
+            val response = if(search != null) requestApi.searchPeople(search) else
+                requestApi.getPeople(pagePosition)
+
             var nextPagerNumber : Int? = null
 
             if(response.body()?.next != null){
