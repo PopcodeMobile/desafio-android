@@ -1,5 +1,6 @@
 package com.example.desafio_android.data.paging
 
+import android.net.Uri
 import androidx.paging.PagingSource
 import com.example.desafio_android.data.api.RequestApi
 import com.example.desafio_android.data.model.People
@@ -16,12 +17,18 @@ class PeoplePagingSource(
         return try {
             val pagePosition = params.key ?: PAGE_INDEX
             val response = requestApi.getPeople(pagePosition)
-            val people = response.body()?.people
+            var nextPagerNumber : Int? = null
+
+            if(response.body()?.next != null){
+                val uri = Uri.parse(response!!.body()!!.next)
+                val nextPageQuery = uri.getQueryParameter("page")
+                nextPagerNumber = nextPageQuery?.toInt()
+            }
 
             LoadResult.Page(
-                data = people!!,
+                data = response.body()!!.people,
                 prevKey = if (pagePosition == PAGE_INDEX) null else pagePosition - 1,
-                nextKey = if (people.isEmpty()) null else pagePosition + 1
+                nextKey = nextPagerNumber
             )
 
         } catch (e: IOException){

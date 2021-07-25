@@ -8,8 +8,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.view.PeopleFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerPeople"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageFilter"
         android:layout_width="48sp"
         android:layout_height="48sp"
         android:layout_marginEnd="24dp"

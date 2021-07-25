@@ -10,4 +10,8 @@
     <!-- Menu Toolbar -->
     <string name="item_pesquisar">Pesquisar</string>
 
+
+    <string name="cm">cm</string>
+    <string name="kg">kg</string>
+
 </resources>
