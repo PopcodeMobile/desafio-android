@@ -1,13 +1,18 @@
 package com.example.desafio_android.data.repository
 
+import androidx.lifecycle.liveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.desafio_android.data.api.RequestApi
 import com.example.desafio_android.data.model.People
+import com.example.desafio_android.data.model.Planet
 import com.example.desafio_android.data.paging.PeoplePagingSource
+import com.example.desafio_android.util.Resultado
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.Flow
+import java.lang.Exception
+import java.net.ConnectException
 import javax.inject.Inject
 
 @ActivityRetainedScoped
@@ -34,6 +39,21 @@ class Repository @Inject constructor(
             ),
             pagingSourceFactory = { PeoplePagingSource(requestApi, search)}
         ).flow
+    }
+
+    suspend fun getNamePlanet(url: String) = liveData{
+        try {
+            val resposta = requestApi.getNamePlanet(url)
+            if (resposta.isSuccessful) {
+                emit(Resultado.Sucesso(dado = resposta.body()))
+            } else {
+                emit(Resultado.Erro(exception = Exception("Falha ao carregar nome")))
+            }
+        }catch (e: ConnectException) {
+            emit(Resultado.Erro(exception = Exception("Falha com a comunicação API")))
+        }catch (e: Exception) {
+            emit(Resultado.Erro(exception = e))
+        }
     }
 
 }

@@ -39,4 +39,5 @@ data class People(
     val url: String,
     @SerializedName("vehicles")
     val vehicles: List<String>
-) : Parcelable
+) : Parcelable{
+}

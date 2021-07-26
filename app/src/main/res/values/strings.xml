@@ -13,6 +13,8 @@
 
     <string name="pesquise_um_personagem">Pesquise um personagem</string>
 
+    <string name="Planeta">Planeta: </string>
+
 
     <string name="cm">cm</string>
     <string name="kg">kg</string>
@@ -23,5 +25,7 @@
     <string name="CorDosOlhos">Cor dos Olhos:</string>
     <string name="AnoDeNascimento">Ano de Nascimento:</string>
     <string name="Genero">Gênero:</string>
+
+    <string name="Carregando">Carregando . . .</string>
 
 </resources>

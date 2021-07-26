@@ -111,7 +111,8 @@
             app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
             app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
             app:layout_constraintTop_toBottomOf="@+id/gender_personagem_details"
-            tools:text="Nome do Planeta" />
+            tools:text="Nome do Planeta"
+            android:text="@string/Carregando" />
 
         <TextView
             android:id="@+id/nome_da_especie_details"
