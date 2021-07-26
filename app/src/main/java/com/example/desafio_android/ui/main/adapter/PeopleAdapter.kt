@@ -2,12 +2,14 @@ package com.example.desafio_android.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.desafio_android.R
 import com.example.desafio_android.data.model.People
 import com.example.desafio_android.databinding.RowPeopleBinding
+import com.example.desafio_android.ui.main.view.PeopleFragmentDirections
 
 class PeopleAdapter : PagingDataAdapter<People, PeopleAdapter.MyViewHolder>(COMPARATOR) {
 
@@ -25,22 +27,32 @@ class PeopleAdapter : PagingDataAdapter<People, PeopleAdapter.MyViewHolder>(COMP
     }
 
     inner class MyViewHolder(private val binding: RowPeopleBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(people: People) {
             binding.apply {
                 nomePersonagem.text = people.name
-                alturaPersonagem.text = people.height +" " +
+                alturaPersonagem.text = people.height + " " +
                         alturaPersonagem.context.getString(R.string.cm)
                 generoPersonagem.text = people.gender
                 pesoPersonagem.text = people.mass + " " +
                         pesoPersonagem.context.getString(R.string.kg)
+
+                rowPeople.setOnClickListener {
+                    val action =
+                        PeopleFragmentDirections.actionPeopleFragmentToDetailsFragment(people)
+
+                    rowPeople.findNavController().navigate(action)
+                }
+
             }
+
+
         }
 
     }
 
-    companion object{
+    companion object {
         private val COMPARATOR = object : DiffUtil.ItemCallback<People>() {
             override fun areItemsTheSame(oldItem: People, newItem: People): Boolean =
                 oldItem.name == newItem.created

@@ -9,5 +9,18 @@
         android:id="@+id/peopleFragment"
         android:name="com.example.desafio_android.ui.main.view.PeopleFragment"
         android:label="fragment_people"
-        tools:layout="@layout/fragment_people" />
+        tools:layout="@layout/fragment_people" >
+        <action
+            android:id="@+id/action_peopleFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.desafio_android.ui.main.view.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="people"
+            app:argType="com.example.desafio_android.data.model.People" />
+    </fragment>
 </navigation>

@@ -2,11 +2,13 @@ package com.example.desafio_android.ui.main.view
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.example.desafio_android.R
 import com.example.desafio_android.databinding.FragmentPeopleBinding
 import com.example.desafio_android.ui.main.adapter.PeopleAdapter
@@ -70,10 +72,9 @@ class PeopleFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    adapter.refresh()
                     peopleViewModel.searchPeople(newText)
                 }
-                return true
+                return false
             }
 
         })

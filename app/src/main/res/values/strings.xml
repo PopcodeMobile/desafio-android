@@ -11,8 +11,17 @@
     <string name="item_pesquisar">Pesquisar</string>
 
 
+    <string name="pesquise_um_personagem">Pesquise um personagem</string>
+
+
     <string name="cm">cm</string>
     <string name="kg">kg</string>
-    <string name="pesquise_um_personagem">Pesquise um personagem</string>
+    <string name="Altura">Altura:</string>
+    <string name="Peso">Peso:</string>
+    <string name="CorDoCabelo">Cor do Cabelo:</string>
+    <string name="CorDaPele">Cor da Pele:</string>
+    <string name="CorDosOlhos">Cor dos Olhos:</string>
+    <string name="AnoDeNascimento">Ano de Nascimento:</string>
+    <string name="Genero">Gênero:</string>
 
 </resources>

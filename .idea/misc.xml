@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_search.xml" value="0.1315" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_details.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_people.xml" value="0.25" />
         <entry key="app/src/main/res/layout/row_people.xml" value="0.45504840940525587" />
         <entry key="app/src/main/res/menu/menu_toolbar.xml" value="0.15185185185185185" />

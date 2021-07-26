@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.view.DetailsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="48sp"
+            android:layout_height="48sp"
+            android:layout_marginEnd="48dp"
+            android:src="@drawable/ic_filter"
+            app:layout_constraintBottom_toTopOf="@+id/nome_personagem_details"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/nome_personagem_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Nome Personagem" />
+
+        <TextView
+            android:id="@+id/altura_personagem_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
+            app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
+            app:layout_constraintTop_toBottomOf="@+id/nome_personagem_details"
+            tools:text="Altura" />
+
+        <TextView
+            android:id="@+id/peso_personagem_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
+            app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
+            app:layout_constraintTop_toBottomOf="@+id/altura_personagem_details"
+            tools:text="Peso" />
+
+        <TextView
+            android:id="@+id/hair_color_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
+            app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
+            app:layout_constraintTop_toBottomOf="@+id/peso_personagem_details"
+            tools:text="Cor do Cabelo" />
+
+        <TextView
+            android:id="@+id/skin_color_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
+            app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
+            app:layout_constraintTop_toBottomOf="@+id/hair_color_details"
+            tools:text="Cor da Pele" />
+
+        <TextView
+            android:id="@+id/eye_color_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
+            app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
+            app:layout_constraintTop_toBottomOf="@+id/skin_color_details"
+            tools:text="Cor Dos Olhos" />
+
+        <TextView
+            android:id="@+id/birth_year_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
+            app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
+            app:layout_constraintTop_toBottomOf="@+id/eye_color_details"
+            tools:text="Ano de Nascimento" />
+
+        <TextView
+            android:id="@+id/gender_personagem_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
+            app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
+            app:layout_constraintTop_toBottomOf="@+id/birth_year_details"
+            tools:text="Genero" />
+
+        <TextView
+            android:id="@+id/nome_do_planeta_natal_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
+            app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
+            app:layout_constraintTop_toBottomOf="@+id/gender_personagem_details"
+            tools:text="Nome do Planeta" />
+
+        <TextView
+            android:id="@+id/nome_da_especie_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
+            app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
+            app:layout_constraintTop_toBottomOf="@+id/nome_do_planeta_natal_details"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Nome da Especie" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
