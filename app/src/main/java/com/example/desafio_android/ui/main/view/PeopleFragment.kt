@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -29,7 +30,7 @@ class PeopleFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _bindingPeople = FragmentPeopleBinding.inflate(inflater, container, false)
 
@@ -37,10 +38,16 @@ class PeopleFragment : Fragment() {
 
         requestGetPeople()
 
+        loadState()
+
         setHasOptionsMenu(true)
 
         return bindingMovie.root
 
+    }
+
+    private fun setupRecyclerView() {
+        bindingMovie.recyclerPeople.adapter = adapter
     }
 
     private fun requestGetPeople() {
@@ -51,8 +58,16 @@ class PeopleFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
-        bindingMovie.recyclerPeople.adapter = adapter
+    private fun loadState() {
+        adapter.addLoadStateListener { loadState ->
+            bindingMovie.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+
+            if (loadState.source.refresh is LoadState.Error) {
+                if (!peopleViewModel.hasInternetConnection()) {
+                    // SEM NET
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
