@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -27,10 +28,6 @@ class DetailsFragment : Fragment() {
     lateinit var _bindingDetails: FragmentDetailsBinding
     val bindingDetails: FragmentDetailsBinding get() = _bindingDetails
 
-    companion object{
-        var nomePlaneta = ""
-    }
-
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,26 +46,50 @@ class DetailsFragment : Fragment() {
 
     }
 
-    private fun getNomeEspecie(people: People) {
-
-    }
-
+    @SuppressLint("SetTextI18n")
     fun getNomePlaneta(people: People) {
-        bindingDetails.apply {         lifecycleScope.launch {
-            detailsViewModel.getNamePlanet(people.homeworld)
-                .observe(viewLifecycleOwner) { resposta ->
-                    when (resposta) {
-                        is Resultado.Sucesso -> {
-                            nomeDoPlanetaNatalDetails.text = nomeDoPlanetaNatalDetails.context
-                                .getString(R.string.Planeta) + " " + resposta.dado!!.name
-                        }
-                        is Resultado.Erro -> {
-                            bindingDetails.nomeDoPlanetaNatalDetails.text =
-                                resposta.exception.message.toString()
+        bindingDetails.apply {
+            lifecycleScope.launch {
+                detailsViewModel.getNamePlanet(people.homeworld)
+                    .observe(viewLifecycleOwner) { resposta ->
+                        when (resposta) {
+                            is Resultado.Sucesso -> {
+                                nomeDoPlanetaNatalDetails.text = nomeDoPlanetaNatalDetails.context
+                                    .getString(R.string.PlanetaNatal) + " " + resposta.dado!!.name
+                            }
+                            is Resultado.Erro -> {
+                                nomeDoPlanetaNatalDetails.text =
+                                    resposta.exception.message.toString()
+                            }
                         }
                     }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun getNomeEspecie(people: People) {
+        bindingDetails.apply {
+            lifecycleScope.launch {
+                if (!people.species.isEmpty()) {
+                    detailsViewModel.getNameSpecie(people.species.get(0))
+                        .observe(viewLifecycleOwner) { resposta ->
+                            when (resposta) {
+                                is Resultado.Sucesso -> {
+                                    nomeDaEspecieDetails.text = nomeDaEspecieDetails.context
+                                        .getString(R.string.NomeSpecie) + " " + resposta.dado!!.name
+                                }
+                                is Resultado.Erro -> {
+                                    nomeDaEspecieDetails.text =
+                                        resposta.exception.message.toString()
+                                }
+                            }
+                        }
+                } else {
+                    bindingDetails.nomeDaEspecieDetails.text = nomeDaEspecieDetails.context
+                        .getString(R.string.NomeSpecie) + " " + getString(R.string.SemInformacao)
                 }
-                }
+            }
         }
     }
 
@@ -78,13 +99,13 @@ class DetailsFragment : Fragment() {
             nomePersonagemDetails.text = people.name
             alturaPersonagemDetails.text =
                 alturaPersonagemDetails.context.getString(R.string.Altura) + " " +
-                        people.height + " " + alturaPersonagemDetails.context.
-                getString(R.string.cm)
+                        people.height + " " + alturaPersonagemDetails.context.getString(R.string.cm)
 
             pesoPersonagemDetails.text =
                 pesoPersonagemDetails.context.getString(R.string.Peso) + " " + people.mass + " " +
                         pesoPersonagemDetails.context.getString(
-                            R.string.kg)
+                            R.string.kg
+                        )
 
             hairColorDetails.text =
                 hairColorDetails.context.getString(R.string.CorDoCabelo) + " " + people.hairColor
@@ -100,11 +121,9 @@ class DetailsFragment : Fragment() {
 
             genderPersonagemDetails.text =
                 genderPersonagemDetails.context.getString(R.string.Genero) + " " + people.gender
-            //nomeDoPlanetaNatalDetails.text = people.homeworld
-            //nomeDaEspecieDetails.text = people.species
 
         }
 
     }
 
-    }
+}

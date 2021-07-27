@@ -6,18 +6,17 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.desafio_android.data.api.RequestApi
 import com.example.desafio_android.data.model.People
-import com.example.desafio_android.data.model.Planet
 import com.example.desafio_android.data.paging.PeoplePagingSource
 import com.example.desafio_android.util.Resultado
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.Flow
-import java.lang.Exception
 import java.net.ConnectException
 import javax.inject.Inject
 
 @ActivityRetainedScoped
 class Repository @Inject constructor(
-    private val requestApi: RequestApi){
+    private val requestApi: RequestApi
+) {
 
     fun getPeople(): Flow<PagingData<People>> {
         return Pager(
@@ -37,11 +36,11 @@ class Repository @Inject constructor(
                 maxSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { PeoplePagingSource(requestApi, search)}
+            pagingSourceFactory = { PeoplePagingSource(requestApi, search) }
         ).flow
     }
 
-    suspend fun getNamePlanet(url: String) = liveData{
+    suspend fun getNamePlanet(url: String) = liveData {
         try {
             val resposta = requestApi.getNamePlanet(url)
             if (resposta.isSuccessful) {
@@ -49,11 +48,25 @@ class Repository @Inject constructor(
             } else {
                 emit(Resultado.Erro(exception = Exception("Falha ao carregar nome")))
             }
-        }catch (e: ConnectException) {
-            emit(Resultado.Erro(exception = Exception("Falha com a comunicação API")))
-        }catch (e: Exception) {
+        } catch (e: ConnectException) {
+            emit(Resultado.Erro(exception = Exception("Falha na comunicação com a API")))
+        } catch (e: Exception) {
             emit(Resultado.Erro(exception = e))
         }
     }
 
+    suspend fun getNameSpecie(url: String) = liveData {
+        try {
+            val resposta = requestApi.getNameSpecies(url)
+            if (resposta.isSuccessful) {
+                emit(Resultado.Sucesso(dado = resposta.body()))
+            } else {
+                emit(Resultado.Erro(exception = Exception("Falha ao carregar nome")))
+            }
+        } catch (e: ConnectException) {
+            emit(Resultado.Erro(exception = Exception("Falha na comunicação com a API")))
+        } catch (e: Exception) {
+            emit(Resultado.Erro(exception = e))
+        }
+    }
 }

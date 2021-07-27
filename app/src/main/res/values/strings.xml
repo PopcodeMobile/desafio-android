@@ -13,8 +13,9 @@
 
     <string name="pesquise_um_personagem">Pesquise um personagem</string>
 
-    <string name="Planeta">Planeta: </string>
+    <string name="PlanetaNatal">Planeta Natal: </string>
 
+    <string name="NomeSpecie">Espécie: </string>
 
     <string name="cm">cm</string>
     <string name="kg">kg</string>
@@ -27,5 +28,7 @@
     <string name="Genero">Gênero:</string>
 
     <string name="Carregando">Carregando . . .</string>
+
+    <string name="SemInformacao">n/a</string>
 
 </resources>

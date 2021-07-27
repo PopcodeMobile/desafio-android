@@ -111,6 +111,8 @@
             app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
             app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
             app:layout_constraintTop_toBottomOf="@+id/gender_personagem_details"
+            android:textSize="14sp"
+            android:textColor="@color/blue"
             tools:text="Nome do Planeta"
             android:text="@string/Carregando" />
 
@@ -124,7 +126,10 @@
             app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
             app:layout_constraintTop_toBottomOf="@+id/nome_do_planeta_natal_details"
             app:layout_constraintVertical_bias="0.0"
-            tools:text="Nome da Especie" />
+            android:textSize="14sp"
+            android:textColor="@color/blue"
+            tools:text="Nome da Especie"
+            android:text="@string/Carregando"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
