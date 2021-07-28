@@ -73,7 +73,10 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun addToFavorite(people: People, name: String) =
-        favoriteDao.addToFavorite(FavoritePeople(people, name))
+    suspend fun addToFavorite(name: String, people: People) =
+        favoriteDao.addToFavorite(FavoritePeople(name, people))
+    fun getFavorites() = favoriteDao.getFavorites()
+    suspend fun checkPeople(people: People) = favoriteDao.checkPeople(people.name)
+    suspend fun removeFromFavorite(people: People) = favoriteDao.removeFromFavorite(people)
 
 }

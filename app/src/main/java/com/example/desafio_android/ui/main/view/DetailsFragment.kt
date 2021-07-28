@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -28,6 +27,8 @@ class DetailsFragment : Fragment() {
     lateinit var _bindingDetails: FragmentDetailsBinding
     val bindingDetails: FragmentDetailsBinding get() = _bindingDetails
 
+    var isToggleChecked = false
+
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,12 +39,40 @@ class DetailsFragment : Fragment() {
 
         val people = args.people
 
+        actionToggleButton(people)
+        verifyPeople(people)
+
         getNomePlaneta(people)
         getNomeEspecie(people)
         setupTextView(people)
 
         return bindingDetails.root
 
+    }
+
+    private fun verifyPeople(people: People) {
+        lifecycleScope.launch {
+            val countFavorite = detailsViewModel.checkPeople(people)
+            if (countFavorite > 0) {
+                bindingDetails.toggleFavorite.isChecked = true
+                isToggleChecked = true
+            } else {
+                bindingDetails.toggleFavorite.isChecked = false
+                isToggleChecked = false
+            }
+        }
+    }
+
+    private fun actionToggleButton(people: People) {
+        bindingDetails.toggleFavorite.setOnClickListener {
+            isToggleChecked = !isToggleChecked
+            if (isToggleChecked) {
+                detailsViewModel.addFavorite(people)
+            } else {
+                detailsViewModel.removeFromFavorite(people)
+            }
+            bindingDetails.toggleFavorite.isChecked = isToggleChecked
+        }
     }
 
     @SuppressLint("SetTextI18n")

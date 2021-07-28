@@ -10,8 +10,8 @@ import java.io.Serializable
 @Entity(tableName = "favorite_people")
 @Parcelize
 data class FavoritePeople(
-    var people: People,
     var nome: String,
+    var people: People,
     ): Serializable, Parcelable {
     @PrimaryKey(autoGenerate = true)
     var id : Int = 0

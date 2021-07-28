@@ -10,12 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <ImageView
-            android:id="@+id/imageView"
+        <ToggleButton
+            android:id="@+id/toggleFavorite"
             android:layout_width="48sp"
             android:layout_height="48sp"
             android:layout_marginEnd="48dp"
-            android:src="@drawable/ic_filter"
+            android:background="@drawable/favorite_toggle"
+            android:textOff=""
+            android:textOn=""
             app:layout_constraintBottom_toTopOf="@+id/nome_personagem_details"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
