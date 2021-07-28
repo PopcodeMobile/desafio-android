@@ -9,4 +9,10 @@
         app:showAsAction="ifRoom|collapseActionView"
         android:icon="@drawable/ic_search"/>
 
+    <item
+        android:id="@+id/filter"
+        android:title="@string/Filtar"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:icon="@drawable/filter"/>
+
 </menu>

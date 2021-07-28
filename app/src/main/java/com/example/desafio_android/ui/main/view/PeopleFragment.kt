@@ -2,9 +2,9 @@ package com.example.desafio_android.ui.main.view
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,6 +16,7 @@ import com.example.desafio_android.ui.main.adapter.PeopleAdapter
 import com.example.desafio_android.ui.main.viewmodel.PeopleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class PeopleFragment : Fragment() {
@@ -94,6 +95,13 @@ class PeopleFragment : Fragment() {
 
         })
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId === R.id.filter) {
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

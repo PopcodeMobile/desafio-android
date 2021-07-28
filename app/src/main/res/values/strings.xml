@@ -30,5 +30,6 @@
     <string name="Carregando">Carregando . . .</string>
 
     <string name="SemInformacao">n/a</string>
+    <string name="Filtar">Filtrar</string>
 
 </resources>

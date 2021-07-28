@@ -7,7 +7,9 @@ import android.net.NetworkCapabilities
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.desafio_android.data.model.People
 import com.example.desafio_android.data.repository.Repository
 
 class PeopleViewModel @ViewModelInject constructor(
@@ -20,6 +22,8 @@ class PeopleViewModel @ViewModelInject constructor(
         private const val CURRENT_QUERY = "current_query"
         private const val EMPTY_QUERY = ""
     }
+
+    var peopleFavorite: LiveData<PagingData<People>> = MutableLiveData()
 
     private val currentQuery = state.getLiveData(CURRENT_QUERY, EMPTY_QUERY)
     val people = currentQuery.switchMap { query ->
