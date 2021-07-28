@@ -5,6 +5,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.desafio_android.data.api.RequestApi
+import com.example.desafio_android.data.db.FavoriteDao
+import com.example.desafio_android.data.db.FavoritePeople
 import com.example.desafio_android.data.model.People
 import com.example.desafio_android.data.paging.PeoplePagingSource
 import com.example.desafio_android.util.Resultado
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @ActivityRetainedScoped
 class Repository @Inject constructor(
-    private val requestApi: RequestApi
+    private val requestApi: RequestApi,
+    private val favoriteDao: FavoriteDao
 ) {
 
     fun getPeople(): Flow<PagingData<People>> {
@@ -69,4 +72,8 @@ class Repository @Inject constructor(
             emit(Resultado.Erro(exception = e))
         }
     }
+
+    suspend fun addToFavorite(people: People, name: String) =
+        favoriteDao.addToFavorite(FavoritePeople(people, name))
+
 }
