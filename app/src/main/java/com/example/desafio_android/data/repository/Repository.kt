@@ -73,8 +73,20 @@ class Repository @Inject constructor(
         }
     }
 
+    suspend fun addFavoriteApi(id: Int) = liveData {
+        val resposta = requestApi.addFavoriteApi(id)
+        if (resposta.code() == 201) {
+            emit(Resultado.Sucesso(dado = resposta.body()!!.message))
+        } else if (resposta.code() == 400)  {
+            emit(Resultado.Sucesso(dado = resposta.body()!!.errorMessage))
+        } else {
+            emit(Resultado.Erro(exception = Exception("Falha na comunicação com a API")))
+        }
+    }
+
     suspend fun addToFavorite(name: String, people: People) =
         favoriteDao.addToFavorite(FavoritePeople(name, people))
+
     fun getFavorites() = favoriteDao.getFavorites()
     suspend fun checkPeople(people: People) = favoriteDao.checkPeople(people.name)
     suspend fun removeFromFavorite(people: People) = favoriteDao.removeFromFavorite(people)
