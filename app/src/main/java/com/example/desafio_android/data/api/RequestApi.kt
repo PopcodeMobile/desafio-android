@@ -30,7 +30,7 @@ interface RequestApi {
 
     @POST(BASE_URL_FAVORITE+"favorite/{id}")
     suspend fun addFavoriteApi(
-        @Path("id") id: Int
+        @Path("id") id: String
     ): Response<ApiFavoriteResponse?>
 
 }

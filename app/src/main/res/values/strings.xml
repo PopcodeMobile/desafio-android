@@ -31,5 +31,6 @@
 
     <string name="SemInformacao">n/a</string>
     <string name="Filtar">Filtrar</string>
+    <string name="RemovidoComSucesso">Removido com Sucesso</string>
 
 </resources>

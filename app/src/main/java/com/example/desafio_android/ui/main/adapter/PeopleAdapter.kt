@@ -44,8 +44,9 @@ class PeopleAdapter : PagingDataAdapter<People, PeopleAdapter.MyViewHolder>(COMP
 
                     rowPeople.findNavController().navigate(action)
                 }
-
             }
+
+
 
 
         }

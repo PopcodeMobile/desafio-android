@@ -69,15 +69,16 @@ class DetailsFragment : Fragment() {
             isToggleChecked = !isToggleChecked
             if (isToggleChecked) {
                 detailsViewModel.addFavorite(people)
-                addFavoriteApi(1)
+                addFavoriteApi(people.name)
             } else {
                 detailsViewModel.removeFromFavorite(people)
+                Toast.makeText(context, getString(R.string.RemovidoComSucesso), Toast.LENGTH_LONG).show()
             }
             bindingDetails.toggleFavorite.isChecked = isToggleChecked
         }
     }
 
-    private fun addFavoriteApi(id: Int) {
+    private fun addFavoriteApi(id: String) {
         bindingDetails.apply {
             lifecycleScope.launch {
                 detailsViewModel.addFavoriteApi(id)

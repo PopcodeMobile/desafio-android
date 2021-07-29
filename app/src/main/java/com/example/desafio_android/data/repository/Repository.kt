@@ -73,7 +73,7 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun addFavoriteApi(id: Int) = liveData {
+    suspend fun addFavoriteApi(id: String) = liveData {
         val resposta = requestApi.addFavoriteApi(id)
         if (resposta.code() == 201) {
             emit(Resultado.Sucesso(dado = resposta.body()!!.message))
