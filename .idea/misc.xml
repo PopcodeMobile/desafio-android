@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.1545" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_list_favorite.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_people.xml" value="0.25" />
         <entry key="app/src/main/res/layout/row_people.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_toolbar.xml" value="0.15185185185185185" />

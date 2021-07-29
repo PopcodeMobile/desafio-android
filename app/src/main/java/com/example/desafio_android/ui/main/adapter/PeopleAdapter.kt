@@ -41,7 +41,6 @@ class PeopleAdapter : PagingDataAdapter<People, PeopleAdapter.MyViewHolder>(COMP
                 rowPeople.setOnClickListener {
                     val action =
                         PeopleFragmentDirections.actionPeopleFragmentToDetailsFragment(people)
-
                     rowPeople.findNavController().navigate(action)
                 }
             }
