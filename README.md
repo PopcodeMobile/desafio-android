@@ -13,6 +13,7 @@
 - Navigation
 - RecyclerView
 - Retrofit
+- LiveData
 - Room Components
 - Dagger - Hilt
 - Coroutines

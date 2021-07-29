@@ -40,6 +40,4 @@ class DetailsViewModel @ViewModelInject constructor(
 
     suspend fun addFavoriteApi(id: String): LiveData<Resultado<String?>> =
         repository.addFavoriteApi(id)
-
-
 }

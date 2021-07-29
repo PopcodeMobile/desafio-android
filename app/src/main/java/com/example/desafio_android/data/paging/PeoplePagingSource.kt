@@ -40,6 +40,5 @@ class PeoplePagingSource(
         } catch (e: HttpException) {
             LoadResult.Error(e)
         }
-
     }
 }
