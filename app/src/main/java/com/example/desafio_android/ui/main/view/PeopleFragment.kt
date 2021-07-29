@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.example.desafio_android.R
 import com.example.desafio_android.databinding.FragmentPeopleBinding
@@ -99,7 +100,7 @@ class PeopleFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId === R.id.filter) {
-        ////
+            findNavController().navigate(R.id.action_peopleFragment_to_listFavorite)
         }
         return super.onOptionsItemSelected(item)
     }
