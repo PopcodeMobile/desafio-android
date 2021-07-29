@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_navigation"
+    app:startDestination="@id/peopleFragment">
+
+    <fragment
+        android:id="@+id/peopleFragment"
+        android:name="com.example.desafio_android.ui.main.view.PeopleFragment"
+        android:label="fragment_people"
+        tools:layout="@layout/fragment_people">
+        <action
+            android:id="@+id/action_peopleFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_peopleFragment_to_listFavorite"
+            app:destination="@id/listFavorite" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.desafio_android.ui.main.view.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="people"
+            app:argType="com.example.desafio_android.data.model.People" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFavorite"
+        android:name="com.example.desafio_android.ui.main.view.ListFavorite"
+        android:label="fragment_list_favorite"
+        tools:layout="@layout/fragment_list_favorite">
+        <action
+            android:id="@+id/action_listFavorite_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+</navigation>

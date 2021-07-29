@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">StarWars</string>
+
+    <!-- Toolbar -->
+    <string name="title_toolbar">STARWARS</string>
+
+    <!-- Menu Toolbar -->
+    <string name="item_pesquisar">Pesquisar</string>
+    <string name="Filtar">Filtrar</string>
+
+    <!-- People Fragment -->
+    <string name="pesquise_um_personagem">Pesquise um personagem</string>
+
+    <!-- Details Fragment -->
+    <string name="PlanetaNatal">Planeta Natal: </string>
+    <string name="NomeSpecie">Espécie: </string>
+    <string name="cm">cm</string>
+    <string name="kg">kg</string>
+    <string name="Altura">Altura:</string>
+    <string name="Peso">Peso:</string>
+    <string name="CorDoCabelo">Cor do Cabelo:</string>
+    <string name="CorDaPele">Cor da Pele:</string>
+    <string name="CorDosOlhos">Cor dos Olhos:</string>
+    <string name="AnoDeNascimento">Ano de Nascimento:</string>
+    <string name="Genero">Gênero:</string>
+    <string name="SemInformacao">n/a</string>
+    <string name="RemovidoComSucesso">Removido com Sucesso</string>
+    <string name="Carregando">Carregando . . .</string>
+
+</resources>
