@@ -11,7 +11,7 @@ import androidx.room.TypeConverters
 )
 
 @TypeConverters(TypeConverts::class)
-abstract class AppDBFavorite: RoomDatabase() {
+abstract class AppDBFavorite : RoomDatabase() {
 
     abstract fun getFavoriteDao(): FavoriteDao
 

@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -63,12 +62,6 @@ class PeopleFragment : Fragment() {
     private fun loadState() {
         adapter.addLoadStateListener { loadState ->
             bindingMovie.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
-
-            if (loadState.source.refresh is LoadState.Error) {
-                if (!peopleViewModel.hasInternetConnection()) {
-                    // SEM NET
-                }
-            }
         }
     }
 

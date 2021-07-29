@@ -23,7 +23,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFavMovieDatabase(
-        @ApplicationContext app:Context
+        @ApplicationContext app: Context
     ) = Room.databaseBuilder(
         app,
         AppDBFavorite::class.java,
@@ -33,8 +33,6 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFavPeopleDao(db: AppDBFavorite) = db.getFavoriteDao()
-
-    //
 
     @Singleton
     @Provides

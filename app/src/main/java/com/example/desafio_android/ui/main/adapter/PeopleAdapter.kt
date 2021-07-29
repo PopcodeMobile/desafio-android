@@ -1,5 +1,6 @@
 package com.example.desafio_android.ui.main.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -29,6 +30,7 @@ class PeopleAdapter : PagingDataAdapter<People, PeopleAdapter.MyViewHolder>(COMP
     inner class MyViewHolder(private val binding: RowPeopleBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("SetTextI18n")
         fun bind(people: People) {
             binding.apply {
                 nomePersonagem.text = people.name
@@ -44,12 +46,7 @@ class PeopleAdapter : PagingDataAdapter<People, PeopleAdapter.MyViewHolder>(COMP
                     rowPeople.findNavController().navigate(action)
                 }
             }
-
-
-
-
         }
-
     }
 
     companion object {

@@ -12,7 +12,7 @@ import java.io.Serializable
 data class FavoritePeople(
     var nome: String,
     var people: People,
-    ): Serializable, Parcelable {
+) : Serializable, Parcelable {
     @PrimaryKey(autoGenerate = true)
-    var id : Int = 0
+    var id: Int = 0
 }

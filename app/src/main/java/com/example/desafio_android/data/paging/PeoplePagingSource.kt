@@ -12,19 +12,19 @@ private const val PAGE_INDEX = 1
 class PeoplePagingSource(
     private val requestApi: RequestApi,
     private val search: String?
-): PagingSource<Int, People>() {
+) : PagingSource<Int, People>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, People> {
 
         return try {
             val pagePosition = params.key ?: PAGE_INDEX
 
-            val response = if(search != null) requestApi.searchPeople(search) else
+            val response = if (search != null) requestApi.searchPeople(search) else
                 requestApi.getPeople(pagePosition)
 
-            var nextPagerNumber : Int? = null
+            var nextPagerNumber: Int? = null
 
-            if(response.body()?.next != null){
-                val uri = Uri.parse(response!!.body()!!.next)
+            if (response.body()?.next != null) {
+                val uri = Uri.parse(response.body()!!.next)
                 val nextPageQuery = uri.getQueryParameter("page")
                 nextPagerNumber = nextPageQuery?.toInt()
             }
@@ -35,9 +35,9 @@ class PeoplePagingSource(
                 nextKey = nextPagerNumber
             )
 
-        } catch (e: IOException){
+        } catch (e: IOException) {
             LoadResult.Error(e)
-        }catch (e: HttpException){
+        } catch (e: HttpException) {
             LoadResult.Error(e)
         }
 

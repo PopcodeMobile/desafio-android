@@ -10,7 +10,6 @@ import com.example.desafio_android.R
 import com.example.desafio_android.data.model.People
 import com.example.desafio_android.databinding.RowPeopleBinding
 import com.example.desafio_android.ui.main.view.ListFavoriteDirections
-import com.example.desafio_android.ui.main.view.PeopleFragmentDirections
 
 class ListFavoriteAdapter :
     ListAdapter<People, ListFavoriteAdapter.ListViewHolder>(DiffUtilCallback) {

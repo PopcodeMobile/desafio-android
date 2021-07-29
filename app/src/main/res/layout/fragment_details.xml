@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <ToggleButton
             android:id="@+id/toggleFavorite"
@@ -110,28 +110,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:text="@string/Carregando"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
             app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
             app:layout_constraintTop_toBottomOf="@+id/gender_personagem_details"
-            android:textSize="14sp"
-            android:textColor="@color/blue"
-            tools:text="Nome do Planeta"
-            android:text="@string/Carregando" />
+            tools:text="Nome do Planeta" />
 
         <TextView
             android:id="@+id/nome_da_especie_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:text="@string/Carregando"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/nome_personagem_details"
             app:layout_constraintStart_toStartOf="@+id/nome_personagem_details"
             app:layout_constraintTop_toBottomOf="@+id/nome_do_planeta_natal_details"
             app:layout_constraintVertical_bias="0.0"
-            android:textSize="14sp"
-            android:textColor="@color/blue"
-            tools:text="Nome da Especie"
-            android:text="@string/Carregando"/>
+            tools:text="Nome da Especie" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

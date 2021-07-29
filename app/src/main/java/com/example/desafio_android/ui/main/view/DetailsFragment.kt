@@ -72,7 +72,8 @@ class DetailsFragment : Fragment() {
                 addFavoriteApi(people.name)
             } else {
                 detailsViewModel.removeFromFavorite(people)
-                Toast.makeText(context, getString(R.string.RemovidoComSucesso), Toast.LENGTH_LONG).show()
+                Toast.makeText(context, getString(R.string.RemovidoComSucesso), Toast.LENGTH_LONG)
+                    .show()
             }
             bindingDetails.toggleFavorite.isChecked = isToggleChecked
         }

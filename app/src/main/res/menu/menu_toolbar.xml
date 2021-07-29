@@ -4,15 +4,15 @@
 
     <item
         android:id="@+id/searchPeople"
+        android:icon="@drawable/ic_search"
         android:title="@string/item_pesquisar"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView"
-        android:icon="@drawable/ic_search"/>
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/filter"
+        android:icon="@drawable/filter"
         android:title="@string/Filtar"
-        app:showAsAction="ifRoom|collapseActionView"
-        android:icon="@drawable/filter"/>
+        app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

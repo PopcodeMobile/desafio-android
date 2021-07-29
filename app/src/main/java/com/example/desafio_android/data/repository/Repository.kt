@@ -77,7 +77,7 @@ class Repository @Inject constructor(
         val resposta = requestApi.addFavoriteApi(id)
         if (resposta.code() == 201) {
             emit(Resultado.Sucesso(dado = resposta.body()!!.message))
-        } else if (resposta.code() == 400)  {
+        } else if (resposta.code() == 400) {
             emit(Resultado.Sucesso(dado = resposta.body()!!.errorMessage))
         } else {
             emit(Resultado.Erro(exception = Exception("Falha na comunicação com a API")))

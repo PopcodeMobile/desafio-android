@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -40,7 +39,7 @@ class ListFavorite : Fragment() {
     private fun getFavorites() {
         listFavoriteViewModel.getFavorites.observe(viewLifecycleOwner) { people ->
             adapterListFavorite.submitList(people)
-            if (people.isEmpty()){
+            if (people.isEmpty()) {
                 bindingFavorite.imageViewClear.isVisible = true
             }
         }

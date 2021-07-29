@@ -5,7 +5,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.desafio_android.data.model.ApiFavoriteResponse
 import com.example.desafio_android.data.model.People
 import com.example.desafio_android.data.model.Planet
 import com.example.desafio_android.data.model.Specie
@@ -25,10 +24,10 @@ class DetailsViewModel @ViewModelInject constructor(
         repository.getNameSpecie(url)
 
 
-    fun addFavorite(people: People){
-    viewModelScope.launch {
-        repository.addToFavorite(people.name, people)
-    }
+    fun addFavorite(people: People) {
+        viewModelScope.launch {
+            repository.addToFavorite(people.name, people)
+        }
     }
 
     suspend fun checkPeople(people: People) = repository.checkPeople(people)
@@ -40,8 +39,7 @@ class DetailsViewModel @ViewModelInject constructor(
     }
 
     suspend fun addFavoriteApi(id: String): LiveData<Resultado<String?>> =
-            repository.addFavoriteApi(id)
-
+        repository.addFavoriteApi(id)
 
 
 }

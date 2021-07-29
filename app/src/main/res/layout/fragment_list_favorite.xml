@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/blue"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/blue">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerFavorite"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,10 +22,10 @@
         android:layout_height="48sp"
         android:src="@drawable/ic_clear"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerFavorite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/recyclerFavorite"
-        app:layout_constraintTop_toTopOf="@+id/recyclerFavorite" />
+        app:layout_constraintTop_toTopOf="@+id/recyclerFavorite"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
