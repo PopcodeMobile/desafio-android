@@ -6,7 +6,9 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        UseCaseModule::class
+        UseCaseModule::class,
+        RepositoryModule::class,
+        RemoteDataModule::class
     ]
 )
 
