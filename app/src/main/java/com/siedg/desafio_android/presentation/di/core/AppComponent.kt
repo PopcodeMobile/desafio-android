@@ -1,5 +1,7 @@
 package com.siedg.desafio_android.presentation.di.core
 
+import android.accounts.NetworkErrorException
+import com.siedg.desafio_android.presentation.di.home.HomeSubComponent
 import dagger.Component
 import javax.inject.Singleton
 
@@ -8,9 +10,13 @@ import javax.inject.Singleton
     modules = [
         UseCaseModule::class,
         RepositoryModule::class,
-        RemoteDataModule::class
+        RemoteDataModule::class,
+        AppModule::class,
+        CacheDataModule::class,
+        NetworkModule::class
     ]
 )
 
 interface AppComponent {
+    fun homeSubComponent(): HomeSubComponent.Factory
 }
