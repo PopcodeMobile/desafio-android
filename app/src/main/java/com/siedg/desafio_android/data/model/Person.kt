@@ -36,3 +36,25 @@ data class Person(
     @SerializedName("url")
     val url: String
 )
+
+fun Person.toModel() : PersonModel {
+    return PersonModel(
+        name,
+        height.toDouble(),
+        mass.toDouble(),
+        hairColor,
+        skinColor,
+        eyeColor,
+        birthYear,
+        gender,
+        homeworld,
+        films,
+        species,
+        vehicles,
+        starships,
+        created,
+        edited,
+        url,
+        false
+    )
+}
