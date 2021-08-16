@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:padding="8dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHomeItemName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="36sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Luke Skywalker" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHomeItemHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="@id/tvHomeItemHeightLabel"
+                app:layout_constraintStart_toStartOf="@id/tvHomeItemHeightLabel"
+                app:layout_constraintTop_toBottomOf="@id/tvHomeItemName"
+                tools:text="1.75" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHomeItemHeightLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Altura"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHomeItemHeight" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHomeItemGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvHomeItemName"
+                app:layout_constraintStart_toStartOf="@id/tvHomeItemGenderLabel"
+                app:layout_constraintEnd_toEndOf="@id/tvHomeItemGenderLabel"
+                android:layout_marginTop="4dp"
+                tools:text="Masculino"
+                android:textSize="26sp"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHomeItemGenderLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gênero"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toStartOf="@id/tvHomeItemMassLabel"
+                app:layout_constraintStart_toEndOf="@id/tvHomeItemHeightLabel"
+                app:layout_constraintTop_toBottomOf="@id/tvHomeItemHeight" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHomeItemMass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvHomeItemName"
+                app:layout_constraintStart_toStartOf="@id/tvHomeItemMassLabel"
+                app:layout_constraintEnd_toEndOf="@id/tvHomeItemMassLabel"
+                tools:text="80"
+                android:layout_marginTop="4dp"
+                android:textSize="26sp"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHomeItemMassLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Peso"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHomeItemHeight" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
