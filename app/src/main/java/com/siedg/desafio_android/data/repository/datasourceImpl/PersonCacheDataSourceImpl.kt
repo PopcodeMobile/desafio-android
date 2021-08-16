@@ -14,5 +14,4 @@ class PersonCacheDataSourceImpl : PersonCacheDataSource {
     override suspend fun getPersonListFromCache(): List<PersonModel> {
         return list
     }
-
 }

@@ -1,7 +1,5 @@
 package com.siedg.desafio_android.data.model
 
-import com.google.gson.annotations.SerializedName
-
 class SpecieModel(
     val averageHeight: String,
     val averageLifespan: String,

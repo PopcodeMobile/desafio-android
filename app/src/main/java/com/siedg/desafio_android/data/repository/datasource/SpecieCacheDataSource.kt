@@ -5,5 +5,5 @@ import com.siedg.desafio_android.data.model.SpecieModel
 interface SpecieCacheDataSource {
     suspend fun saveSpecieListToCache(personList: List<SpecieModel>)
 
-    suspend fun getSpecieFromCache(): List<SpecieModel>
+    suspend fun getSpecieListFromCache(): List<SpecieModel>
 }
