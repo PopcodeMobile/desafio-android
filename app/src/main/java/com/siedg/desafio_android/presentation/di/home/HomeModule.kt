@@ -1,6 +1,8 @@
 package com.siedg.desafio_android.presentation.di.home
 
 import com.siedg.desafio_android.domain.GetPersonListUseCase
+import com.siedg.desafio_android.domain.GetPlanetListUseCase
+import com.siedg.desafio_android.domain.GetSpecieListUseCase
 import com.siedg.desafio_android.presentation.viewmodel.HomeViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -9,10 +11,14 @@ import dagger.Provides
 class HomeModule {
     @Provides
     fun provideHomeViewModelFactory(
-        getPersonListUseCase: GetPersonListUseCase
+        getPersonListUseCase: GetPersonListUseCase,
+        getPlanetListUseCase: GetPlanetListUseCase,
+        getSpecieListUseCase: GetSpecieListUseCase
     ): HomeViewModelFactory {
         return HomeViewModelFactory(
-            getPersonListUseCase
+            getPersonListUseCase,
+            getPlanetListUseCase,
+            getSpecieListUseCase
         )
     }
 }

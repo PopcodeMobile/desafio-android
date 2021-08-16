@@ -1,6 +1,5 @@
 package com.siedg.desafio_android.domain
 
-import com.siedg.desafio_android.data.model.Person
 import com.siedg.desafio_android.data.model.PersonModel
 
 class GetPersonListUseCase(private val personRepository: PersonRepository) {
