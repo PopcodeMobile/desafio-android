@@ -11,6 +11,8 @@ import com.knowledge.wikisw_luan.R
 import com.knowledge.wikisw_luan.activity.SwState.ShowCharacters
 import com.knowledge.wikisw_luan.adapter.Adapter
 import com.knowledge.wikisw_luan.adapter.ClickWikiListener
+import com.knowledge.wikisw_luan.databinding.ActivityMainBinding
+import com.knowledge.wikisw_luan.databinding.CharInfoBinding
 import com.knowledge.wikisw_luan.models.CharacterModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,21 +21,21 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
     val adapter = Adapter(listener = this)
     val listchar = arrayListOf<CharacterModel>()
     val mainViewModel: MainViewModel by viewModel()
+    private lateinit var binding: ActivityMainBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         mainViewModel.state.observe(this@MainActivity, {handleState(it)})
-        val search = findViewById<SearchView>(R.id.search_view)
         val characterList = listchar
         var showFavorite = false
-        val filter = findViewById<ImageView>(R.id.filter_button)
-        val recyclerView = findViewById<RecyclerView>(R.id.rv_sw)
         adapter.updateList(characterList)
-        recyclerView.adapter = adapter
-        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.rvSw.adapter = adapter
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
                 return true
             }
@@ -47,8 +49,8 @@ class MainActivity : AppCompatActivity(), ClickWikiListener {
                 return true
             }
         })
-        search.setOnClickListener { search.onActionViewExpanded() }
-        filter.setOnClickListener {
+        binding.searchView.setOnClickListener { binding.searchView.onActionViewExpanded() }
+        binding.filterButton.setOnClickListener {
             showFavorite = !showFavorite
             if (showFavorite) {
                 adapter.updateList(characterList.filter { it.isFavorite })

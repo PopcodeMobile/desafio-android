@@ -8,6 +8,10 @@ plugins {
 android {
     compileSdkVersion 30
 
+    viewBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.knowledge.wikisw_luan"
         minSdkVersion 21
