@@ -43,20 +43,10 @@ A busca pelo nome do planeta e da espécie deve ser feita em paralelo. OK
 
 Na lista e nos detalhes deve ser possível adicionar e remover um personagem a sua lista de favoritos. Tambem deve ser possível filtrar quais personagens foram favoritados na lista principal. OK
 
-##### Adição e Remoção de Favoritos
 
-URL BASE: http://private-782d3-starwarsfavorites.apiary-mock.com/
-
-Ao adicionar um favorito a aplicação deve fazer um request para a api starwarsfavorites (documentação disponível no topo do documento). 
 A aplicação deve:
-+ Exibir a mensagem de retorno da API em caso de sucesso ou erro. X
-+ Reenviar a requisição da próxima vez que o app for aberto em caso de erro. X
 + Salvar no banco de dados local quais personagens foram favoritados. OK
 + Tratar a remoção de favoritos apenas no banco de dados local. OK
-
-Em metade das requisições enviadas para a api starwarsfavorites a aplicação deve adicionar o header `Prefer` com o valor `status=400`.
-
-P.S.: O candidato deve escolher o ID.
 
 ---
 #### LICENSE
