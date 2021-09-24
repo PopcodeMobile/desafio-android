@@ -13,10 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/montserrat_semi_bold"
-        android:textSize="@dimen/title"
+        android:textAppearance="@style/TitleTextAppearance"
         android:textColor="?attr/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Luke Skywalker" />
 
     <TextView
