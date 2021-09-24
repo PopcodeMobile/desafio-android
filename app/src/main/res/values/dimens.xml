@@ -10,7 +10,6 @@
 
 
     <dimen name="column_spacing">116dp</dimen>
-    <dimen name="column_spacing_land">60dp</dimen>
 
 
     <dimen name="title">16sp</dimen>

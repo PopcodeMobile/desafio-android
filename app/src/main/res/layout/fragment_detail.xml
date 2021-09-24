@@ -34,7 +34,7 @@
         android:id="@+id/grid_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnCount="2"
+        android:columnCount="@integer/grid_column_count"
         android:orientation="horizontal"
         android:useDefaultMargins="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -96,8 +96,6 @@
             android:visibility="gone"
             app:title="@string/specie"
             tools:subtitle="Human" />
-
-
 
 
     </GridLayout>
