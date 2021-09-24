@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="@dimen/xlarge"
+    tools:context=".ui.fragments.DetailFragment">
+
+    <TextView
+        android:id="@+id/heading_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xxlarge"
+        android:textAppearance="@style/HeadingTextAppearance"
+        app:layout_constraintEnd_toStartOf="@+id/favorite_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Luke Skywalker" />
+
+
+    <ImageButton
+        android:id="@+id/favorite_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_favorite_border"
+        android:contentDescription="@string/content_description_favorite_button"
+        app:layout_constraintBottom_toBottomOf="@+id/heading_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/heading_text_view" />
+
+    <GridLayout
+        android:id="@+id/grid_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:useDefaultMargins="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heading_text_view"
+        app:layout_constraintVertical_bias="0.4">
+
+        <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+            android:layout_marginEnd="@dimen/column_spacing"
+            android:layout_marginBottom="@dimen/large"
+            tools:title="@string/height"
+            tools:subtitle="172 cm" />
+
+        <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+            android:layout_marginEnd="@dimen/column_spacing"
+            tools:title="@string/hair_color"
+            tools:subtitle="Blond" />
+
+        <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+            android:layout_marginEnd="@dimen/column_spacing"
+            tools:title="@string/weight"
+            tools:subtitle="77 kg" />
+
+        <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+            android:layout_marginEnd="@dimen/column_spacing"
+            android:layout_marginBottom="@dimen/large"
+            tools:title="@string/eye_color"
+            tools:subtitle="Blue" />
+
+        <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+            android:layout_marginEnd="@dimen/column_spacing"
+            android:layout_marginBottom="@dimen/large"
+            tools:title="@string/birth_year"
+            tools:subtitle="19BBY" />
+
+
+        <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+            android:layout_marginEnd="@dimen/column_spacing"
+            android:layout_marginBottom="@dimen/large"
+            tools:title="@string/skin_color"
+            tools:subtitle="Fair" />
+
+        <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+            android:layout_marginEnd="@dimen/column_spacing"
+            android:layout_marginBottom="@dimen/large"
+            tools:title="@string/gender"
+            tools:subtitle="Male" />
+
+        <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+            android:layout_marginEnd="@dimen/column_spacing"
+            android:layout_marginBottom="@dimen/large"
+            android:visibility="gone"
+            tools:title="@string/homeworld"
+            tools:subtitle="Tatooine" />
+
+        <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+            android:layout_marginEnd="@dimen/column_spacing"
+            android:layout_marginBottom="@dimen/large"
+            android:visibility="gone"
+            tools:title="@string/specie"
+            tools:subtitle="Human" />
+
+
+
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

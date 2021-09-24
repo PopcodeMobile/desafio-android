@@ -1,8 +1,11 @@
 package com.arthurgonzaga.wikistarwars.ui.components
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -21,9 +24,12 @@ class CharacterInfo @JvmOverloads constructor(
 
     lateinit var binding: CharacterInfoLayoutBinding
 
+    private var shortAnimationDuration: Int = 0
 
 
     init {
+        shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
+
         context?.let {
             // Get the attribute values
             it.theme.obtainStyledAttributes(
@@ -46,12 +52,48 @@ class CharacterInfo @JvmOverloads constructor(
         }
     }
 
-    fun setTitle(text: String){
+    fun setTitle(text: String) {
         binding.title.text = text
     }
 
-    fun setSubtitle(text: String){
+    fun setSubtitle(text: String) {
         binding.subtitle.text = text
     }
 
+    /**
+     *  Show the view with a fading in animation
+     */
+    fun show() {
+        binding.root.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                .alpha(1f)
+                .setDuration(shortAnimationDuration.toLong())
+                .setListener(null)
+        }
+    }
+
+    /**
+     *  Hide the view with a fading out animation
+     */
+    fun hide() {
+        binding.root.apply {
+            animate()
+                .alpha(0f)
+                .setDuration(shortAnimationDuration.toLong())
+                .setListener(
+                    object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            visibility = View.GONE
+                        }
+                    }
+                )
+        }
+    }
 }

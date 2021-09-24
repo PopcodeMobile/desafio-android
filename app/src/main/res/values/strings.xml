@@ -5,4 +5,14 @@
     <string name="starwars" translatable="false">Star\nWars</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="content_description_favorite_button">Favorite</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="hair_color">Hair color</string>
+    <string name="birth_year">Birth year</string>
+    <string name="eye_color">Eye color</string>
+    <string name="skin_color">Skin color</string>
+    <string name="gender">Gender</string>
+    <string name="homeworld">Homeworld</string>
+    <string name="specie">Specie</string>
 </resources>

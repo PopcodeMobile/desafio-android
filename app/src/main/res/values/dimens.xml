@@ -6,8 +6,17 @@
     <dimen name="medium">24dp</dimen>
     <dimen name="large">32dp</dimen>
     <dimen name="xlarge">40dp</dimen>
+    <dimen name="xxlarge">52dp</dimen>
+
+
+    <dimen name="column_spacing">116dp</dimen>
+    <dimen name="column_spacing_land">60dp</dimen>
+
 
     <dimen name="title">16sp</dimen>
     <dimen name="subtitle">14sp</dimen>
+    <dimen name="heading">32sp</dimen>
     <dimen name="logo">44sp</dimen>
+
+
 </resources>

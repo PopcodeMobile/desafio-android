@@ -13,4 +13,10 @@
         <item name="android:textSize">@dimen/title</item>
     </style>
 
+    <style name="HeadingTextAppearance">
+        <item name="android:fontFamily">@font/montserrat_extra_bold</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">@dimen/heading</item>
+    </style>
+
 </resources>
