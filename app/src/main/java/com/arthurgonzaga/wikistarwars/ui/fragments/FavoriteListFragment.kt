@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.arthurgonzaga.wikistarwars.R
 import com.arthurgonzaga.wikistarwars.databinding.FragmentDetailBinding
+import com.arthurgonzaga.wikistarwars.databinding.FragmentFavoriteListBinding
 import com.arthurgonzaga.wikistarwars.databinding.FragmentHomeBinding
 
 
@@ -17,14 +18,14 @@ import com.arthurgonzaga.wikistarwars.databinding.FragmentHomeBinding
  */
 class FavoriteListFragment : Fragment() {
 
-    private lateinit var binding: FragmentDetailBinding
+    private lateinit var binding: FragmentFavoriteListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        binding = FragmentDetailBinding.inflate(inflater)
+        binding = FragmentFavoriteListBinding.inflate(inflater)
 
 
         return binding.root
