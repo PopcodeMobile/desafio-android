@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small"
         android:fontFamily="@font/ubunto_mono"
-        android:textColor="@color/gray"
+        android:textColor="?attr/colorOnBackground"
         android:textSize="@dimen/title"
         app:layout_constraintBottom_toBottomOf="@+id/title"
         app:layout_constraintStart_toEndOf="@+id/dot"
