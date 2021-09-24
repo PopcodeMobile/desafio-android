@@ -44,56 +44,56 @@
         <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
             android:layout_marginEnd="@dimen/column_spacing_land"
             android:layout_marginBottom="@dimen/large"
-            tools:title="@string/height"
+            app:title="@string/height"
             tools:subtitle="172 cm" />
 
         <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
             android:layout_marginEnd="@dimen/column_spacing_land"
-            tools:title="@string/hair_color"
+            app:title="@string/hair_color"
             tools:subtitle="Blond" />
 
         <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
             android:layout_marginEnd="@dimen/column_spacing_land"
-            tools:title="@string/weight"
+            app:title="@string/weight"
             tools:subtitle="77 kg" />
 
         <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
             android:layout_marginEnd="@dimen/column_spacing_land"
             android:layout_marginBottom="@dimen/large"
-            tools:title="@string/eye_color"
+            app:title="@string/eye_color"
             tools:subtitle="Blue" />
 
         <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
             android:layout_marginEnd="@dimen/column_spacing_land"
             android:layout_marginBottom="@dimen/large"
-            tools:title="@string/birth_year"
+            app:title="@string/birth_year"
             tools:subtitle="19BBY" />
 
 
         <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
             android:layout_marginEnd="@dimen/column_spacing_land"
             android:layout_marginBottom="@dimen/large"
-            tools:title="@string/skin_color"
+            app:title="@string/skin_color"
             tools:subtitle="Fair" />
 
         <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
             android:layout_marginEnd="@dimen/column_spacing_land"
             android:layout_marginBottom="@dimen/large"
-            tools:title="@string/gender"
+            app:title="@string/gender"
             tools:subtitle="Male" />
 
         <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
             android:layout_marginEnd="@dimen/column_spacing_land"
             android:layout_marginBottom="@dimen/large"
             android:visibility="gone"
-            tools:title="@string/homeworld"
+            app:title="@string/homeworld"
             tools:subtitle="Tatooine" />
 
         <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
             android:layout_marginEnd="@dimen/column_spacing_land"
             android:layout_marginBottom="@dimen/large"
             android:visibility="gone"
-            tools:title="@string/specie"
+            app:title="@string/specie"
             tools:subtitle="Human" />
 
 
