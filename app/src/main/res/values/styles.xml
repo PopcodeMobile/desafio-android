@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LogoTextAppearance">
+        <item name="android:fontFamily">@font/starwars_jedi</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">@dimen/logo</item>
+    </style>
+
+</resources>
