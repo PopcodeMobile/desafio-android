@@ -15,4 +15,6 @@
     <string name="gender">Gender</string>
     <string name="homeworld">Homeworld</string>
     <string name="specie">Specie</string>
+    <string name="favorites">Favorites</string>
+    <string name="no_favorites">You have not favorite\nany character yet</string>
 </resources>

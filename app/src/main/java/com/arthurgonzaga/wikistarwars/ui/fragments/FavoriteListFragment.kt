@@ -12,10 +12,10 @@ import com.arthurgonzaga.wikistarwars.databinding.FragmentHomeBinding
 
 /**
  *
- *  This fragment will display full information about a character
+ *  This fragment will display the list of favorites characters
  *
  */
-class DetailFragment : Fragment() {
+class FavoriteListFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
 
