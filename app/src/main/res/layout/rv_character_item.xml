@@ -7,7 +7,7 @@
     android:paddingHorizontal="@dimen/medium"
     android:layout_marginBottom="@dimen/normal"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/rv_item_background">
+    android:background="@drawable/border_background">
 
     <TextView
         android:id="@+id/title"
