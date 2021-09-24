@@ -56,7 +56,7 @@ dependencies {
     def paging_version = "3.0.1"
     def room_version = "2.3.0"
     def mockito_version = "2.8.47"
-    def lifecycle_version = "2.3.1"
+    def lifecycle_version = "2.2.0"
     def arch_version = "2.1.0"
 
     // Retrofit

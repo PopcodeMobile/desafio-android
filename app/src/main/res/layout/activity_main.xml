@@ -28,4 +28,7 @@
 
     </com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo>
 
+    <include
+        layout="@layout/home_row_layout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

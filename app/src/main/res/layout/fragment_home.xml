@@ -14,9 +14,8 @@
 
         <include layout="@layout/home_header_layout"/>
 
-        <!-- TODO: add the search box -->
-
-        <!-- TODO: add favorite list button -->
+        <include
+            layout="@layout/home_row_layout" />
 
         <include layout="@layout/divider_layout" />
 
