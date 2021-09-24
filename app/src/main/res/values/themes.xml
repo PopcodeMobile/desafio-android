@@ -12,6 +12,7 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <item name="colorOnBackground">@color/gray</item>
+        <item name="backgroundColor">@color/black</item>
     </style>
 
 
