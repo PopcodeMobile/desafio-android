@@ -13,10 +13,14 @@ class CharacterResponseTest {
     fun `should return null when the list is empty`() {
 
         // Given
-        val characterResponse = CharacterResponse(speciesUrls = listOf())
+        val characterResponse = CharacterResponse(
+            speciesUrls = listOf(),
+            homeWorldUrl = "planets/1/",
+            url = "people/1/"
+        )
 
         // When
-        val specieId = characterResponse.getSpecieId()
+        val specieId = characterResponse.specieId
 
         // Then
         assertThat(specieId).isEqualTo(null)
@@ -29,10 +33,14 @@ class CharacterResponseTest {
         val url2 = "https://swapi.dev/api/species/33/"
 
         // Given
-        val characterResponse = CharacterResponse(speciesUrls = listOf(url1, url2))
+        val characterResponse = CharacterResponse(
+            speciesUrls = listOf(url1, url2),
+            homeWorldUrl = "planets/1/",
+            url = "people/1/"
+        )
 
         // When
-        val specieId = characterResponse.getSpecieId()
+        val specieId = characterResponse.specieId
 
         // Then
         assertThat(specieId).isEqualTo(1)
@@ -43,12 +51,31 @@ class CharacterResponseTest {
     fun `should return the id of the planet`() {
         // Given
         val characterResponse =
-            CharacterResponse(homeWorldUrl = "https://swapi.dev/api/planets/10/")
+            CharacterResponse(
+                homeWorldUrl = "https://swapi.dev/api/planets/10/",
+                url = "people/1/"
+            )
 
         // When
-        val planetId = characterResponse.getHomeWorldId()
+        val planetId = characterResponse.homeWorldId
 
         // Then
         assertThat(planetId).isEqualTo(10)
+    }
+
+    @Test
+    fun `should return the id of the character`() {
+        // Given
+        val characterResponse =
+            CharacterResponse(
+                homeWorldUrl = "planets/1/",
+                url = "https://swapi.dev/api/people/45/"
+            )
+
+        // When
+        val planetId = characterResponse.id
+
+        // Then
+        assertThat(planetId).isEqualTo(45)
     }
 }

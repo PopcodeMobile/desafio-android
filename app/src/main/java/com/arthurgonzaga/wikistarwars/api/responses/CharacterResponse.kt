@@ -20,16 +20,16 @@ data class CharacterResponse(
     @SerializedName("homeworld")
     private val homeWorldUrl: String = "",
     private val speciesUrls: List<String> = listOf(),
-    val url: String = ""
+    private val url: String = ""
 ) {
 
+    var id: Int = url.split("people/")[1].replace("/","").toInt()
+        private set
 
-    fun getHomeWorldId(): Int? {
-        return homeWorldUrl.split("planets/")[1].replace("/","").toIntOrNull()
-    }
+    var homeWorldId: Int? = homeWorldUrl.split("planets/")[1].replace("/","").toIntOrNull()
+        private set
 
+    var specieId: Int? = speciesUrls.firstOrNull()?.split("species/")?.get(1)?.replace("/","")?.toIntOrNull()
+        private set
 
-    fun getSpecieId(): Int? {
-        return speciesUrls.firstOrNull()?.split("species/")?.get(1)?.replace("/","")?.toIntOrNull()
-    }
 }
