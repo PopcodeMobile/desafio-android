@@ -4,9 +4,9 @@ import com.arthurgonzaga.wikistarwars.data.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-inline fun <reified T> getRetrofitInstance(): T{
+inline fun <reified T> getRetrofitInstance(baseUrl: String = Constants.BASE_URL): T{
     val retrofit = Retrofit.Builder()
-        .baseUrl(Constants.BASE_URL)
+        .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
