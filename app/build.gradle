@@ -100,6 +100,7 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "androidx.arch.core:core-testing:$arch_version"
+    testImplementation "com.google.truth:truth:$truth_version"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
