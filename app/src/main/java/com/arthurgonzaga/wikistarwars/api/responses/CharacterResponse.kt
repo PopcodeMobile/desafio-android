@@ -1,6 +1,7 @@
 package com.arthurgonzaga.wikistarwars.api.responses
 
 
+import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.google.gson.annotations.SerializedName
 
 data class CharacterResponse(

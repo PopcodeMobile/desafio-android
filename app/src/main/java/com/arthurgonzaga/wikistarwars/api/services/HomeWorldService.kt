@@ -1,4 +1,4 @@
-package com.arthurgonzaga.wikistarwars.api
+package com.arthurgonzaga.wikistarwars.api.services
 
 import com.arthurgonzaga.wikistarwars.api.responses.HomeWorldResponse
 import com.arthurgonzaga.wikistarwars.api.responses.SpecieResponse
