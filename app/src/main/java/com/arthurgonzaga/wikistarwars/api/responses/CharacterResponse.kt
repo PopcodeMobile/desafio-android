@@ -4,21 +4,27 @@ package com.arthurgonzaga.wikistarwars.api.responses
 import com.google.gson.annotations.SerializedName
 
 data class CharacterResponse(
-    val name: String,
-    val height: String,
+    val name: String = "",
+    val height: String = "",
     @SerializedName("mass")
-    val weight: String,
+    val weight: String = "",
     @SerializedName("hair_color")
-    val hairColor: String,
+    val hairColor: String = "",
     @SerializedName("skin_color")
-    val skinColor: String,
+    val skinColor: String = "",
     @SerializedName("eye_color")
-    val eyeColor: String,
+    val eyeColor: String = "",
     @SerializedName("birth_year")
-    val birthYear: String,
-    val gender: String,
+    val birthYear: String = "",
+    val gender: String = "",
     @SerializedName("homeworld")
-    val homeWorldUrl: String,
-    val species: List<SpecieResponse>,
-    val url: String
-)
+    val homeWorldUrl: String = "",
+    private val speciesUrls: List<String>,
+    val url: String = ""
+) {
+
+
+    fun getSpecieUrl(): String? {
+        return speciesUrls.firstOrNull()
+    }
+}
