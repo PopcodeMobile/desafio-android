@@ -10,31 +10,45 @@ import org.junit.runners.JUnit4
 class CharacterResponseTest {
 
     @Test
-    fun `shoud return null when the list is empty`() {
+    fun `should return null when the list is empty`() {
 
         // Given
         val characterResponse = CharacterResponse(speciesUrls = listOf())
 
         // When
-        val specie =  characterResponse.getSpecieUrl()
+        val specieId = characterResponse.getSpecieId()
 
         // Then
-        assertThat(specie).isEqualTo(null)
+        assertThat(specieId).isEqualTo(null)
     }
 
     @Test
-    fun `should return the first index when the list is not empty`() {
+    fun `should return the id of the first index when the species list is not empty`() {
 
-        val url1 = "https://swapi.dev/api/species/32/"
+        val url1 = "https://swapi.dev/api/species/1/"
         val url2 = "https://swapi.dev/api/species/33/"
 
         // Given
         val characterResponse = CharacterResponse(speciesUrls = listOf(url1, url2))
 
         // When
-        val specie =  characterResponse.getSpecieUrl()
+        val specieId = characterResponse.getSpecieId()
 
         // Then
-        assertThat(specie).isEqualTo(url1)
+        assertThat(specieId).isEqualTo(1)
+    }
+
+
+    @Test
+    fun `should return the id of the planet`() {
+        // Given
+        val characterResponse =
+            CharacterResponse(homeWorldUrl = "https://swapi.dev/api/planets/10/")
+
+        // When
+        val planetId = characterResponse.getHomeWorldId()
+
+        // Then
+        assertThat(planetId).isEqualTo(10)
     }
 }

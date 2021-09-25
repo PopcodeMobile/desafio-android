@@ -18,13 +18,18 @@ data class CharacterResponse(
     val birthYear: String = "",
     val gender: String = "",
     @SerializedName("homeworld")
-    val homeWorldUrl: String = "",
-    private val speciesUrls: List<String>,
+    private val homeWorldUrl: String = "",
+    private val speciesUrls: List<String> = listOf(),
     val url: String = ""
 ) {
 
 
-    fun getSpecieUrl(): String? {
-        return speciesUrls.firstOrNull()
+    fun getHomeWorldId(): Int? {
+        return homeWorldUrl.split("planets/")[1].replace("/","").toIntOrNull()
+    }
+
+
+    fun getSpecieId(): Int? {
+        return speciesUrls.firstOrNull()?.split("species/")?.get(1)?.replace("/","")?.toIntOrNull()
     }
 }
