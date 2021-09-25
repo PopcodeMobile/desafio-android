@@ -21,9 +21,9 @@ data class CharacterEntity(
     val birthYear: String = "",
     val gender: String = "",
     @ColumnInfo(name = "specie_name")
-    val specieName: String = "",
+    val specieName: String? = null,
     @ColumnInfo(name = "home_world_name")
-    val homeWoldName: String = "",
+    val homeWoldName: String? = null,
     @ColumnInfo(name = "is_favorite")
     val isFavorite: Boolean = false,
     @ColumnInfo(name = "is_synchronized_with_backend")
