@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/small"
-    android:layout_marginBottom="@dimen/medium"
+    android:layout_marginBottom="12dp"
     android:orientation="horizontal">
 
     <ImageButton
@@ -14,9 +14,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/border_background"
-        android:backgroundTint="?attr/colorPrimary"
-        android:foreground="?attr/selectableItemBackground"
+        android:background="@drawable/background_favorite_list_button"
         android:src="@drawable/ic_list"
         android:layout_marginEnd="@dimen/tiny"/>
 

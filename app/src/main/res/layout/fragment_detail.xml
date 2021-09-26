@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="@dimen/xlarge"
+    android:background="?attr/backgroundColor"
     tools:context=".ui.fragments.DetailFragment">
 
     <TextView

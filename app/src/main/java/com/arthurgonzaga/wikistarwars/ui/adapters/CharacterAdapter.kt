@@ -3,6 +3,7 @@ package com.arthurgonzaga.wikistarwars.ui.adapters
 import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.core.content.res.ResourcesCompat
@@ -36,12 +37,33 @@ class CharacterAdapter(
             holder.gender.text = character.gender
             holder.subtitle.text =
                 context.getString(R.string.rv_subtitle, character.height, character.weight)
-            holder.favoriteButton.setImage(character.isFavorite)
             holder.root.setOnClickListener { _ ->
                 navigateToDetail(character)
             }
-            holder.favoriteButton.setOnClickListener { _ ->
-                favoriteCharacter(character.id, !character.isFavorite)
+
+            holder.favoriteButton.apply {
+                setImage(character.isFavorite)
+                setOnClickListener { _ ->
+                    favoriteCharacter(character.id, !character.isFavorite)
+                }
+
+                setOnTouchListener { view, motionEvent ->
+                    when(motionEvent.action){
+                        // User touched
+                        MotionEvent.ACTION_DOWN -> {
+                            setImage(!character.isFavorite)
+                        }
+                        // User has canceled the touch
+                        MotionEvent.ACTION_CANCEL -> {
+                            setImage(character.isFavorite)
+                        }
+                        // User has canceled release the touch
+                        MotionEvent.ACTION_UP -> {
+                            performClick() // this calls setOnClickListener
+                        }
+                    }
+                    true
+                }
             }
         }
     }

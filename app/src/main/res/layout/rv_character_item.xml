@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="@dimen/normal"
-    android:paddingHorizontal="@dimen/medium"
     android:layout_marginBottom="@dimen/normal"
     xmlns:tools="http://schemas.android.com/tools"
-    android:foreground="?attr/selectableItemBackground"
-    android:background="@drawable/border_background">
+    android:background="@drawable/background_item_rv"
+    tools:ignore="RtlSymmetry">
 
     <TextView
         android:id="@+id/title"
+        android:layout_marginTop="@dimen/normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
         app:layout_constraintStart_toStartOf="parent"
         android:textAppearance="@style/TitleTextAppearance"
         android:textColor="?attr/colorPrimary"
@@ -24,11 +24,14 @@
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tiny"
+        android:layout_marginBottom="@dimen/normal"
         android:fontFamily="@font/montserrat_regular"
         android:textColor="?attr/colorSecondary"
         android:textSize="@dimen/title"
-        android:layout_marginTop="@dimen/tiny"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintStart_toStartOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/title"
         tools:text="177 cm  -  77 kg" />
 
@@ -57,8 +60,8 @@
 
     <ImageButton
         android:id="@+id/favorite_button"
-        android:layout_width="@dimen/large"
-        android:layout_height="@dimen/large"
+        android:layout_width="88dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
