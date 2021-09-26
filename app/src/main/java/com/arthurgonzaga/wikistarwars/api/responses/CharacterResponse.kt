@@ -1,6 +1,7 @@
 package com.arthurgonzaga.wikistarwars.api.responses
 
 
+import android.util.Log
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.google.gson.annotations.SerializedName
 
@@ -20,12 +21,14 @@ data class CharacterResponse(
     val gender: String = "",
     @SerializedName("homeworld")
     private val homeWorldUrl: String = "",
+    @SerializedName("species")
     private val speciesUrls: List<String> = listOf(),
-    private val url: String = ""
+    private val url: String
 ) {
 
-    var id: Int = url.split("people/")[1].replace("/","").toInt()
-        private set
+    fun getId(): Int{
+        return url.split("people/")[1].replace("/","").toInt()
+    }
 
     var homeWorldId: Int? = homeWorldUrl.split("planets/")[1].replace("/","").toIntOrNull()
         private set

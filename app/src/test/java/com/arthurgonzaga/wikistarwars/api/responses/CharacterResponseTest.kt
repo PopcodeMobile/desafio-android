@@ -69,11 +69,11 @@ class CharacterResponseTest {
         val characterResponse =
             CharacterResponse(
                 homeWorldUrl = "planets/1/",
-                url = "https://swapi.dev/api/people/45/"
+                url = "https://swapi.dev/api/people/9/"
             )
 
         // When
-        val planetId = characterResponse.id
+        val planetId = characterResponse.getId()
 
         // Then
         assertThat(planetId).isEqualTo(45)

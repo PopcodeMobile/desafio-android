@@ -16,7 +16,7 @@ class PageResponseTest {
             count = 87,
             next = null,
             previous = "https://swapi.dev/api/people/?page=8",
-            result = listOf()
+            results = listOf()
         )
 
         // When
@@ -33,7 +33,7 @@ class PageResponseTest {
             count = 87,
             next = "https://swapi.dev/api/people/?page=9",
             previous = "https://swapi.dev/api/people/?page=7",
-            result = listOf()
+            results = listOf()
         )
 
         // When
@@ -50,7 +50,7 @@ class PageResponseTest {
             count = 87,
             next = "https://swapi.dev/api/people/?page=2",
             previous = null,
-            result = listOf()
+            results = listOf()
         )
 
         // When
@@ -67,7 +67,7 @@ class PageResponseTest {
             count = 87,
             next = "https://swapi.dev/api/people/?page=3",
             previous = "https://swapi.dev/api/people/?page=1",
-            result = listOf()
+            results = listOf()
         )
 
         // When

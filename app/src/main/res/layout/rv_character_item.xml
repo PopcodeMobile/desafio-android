@@ -7,6 +7,7 @@
     android:paddingHorizontal="@dimen/medium"
     android:layout_marginBottom="@dimen/normal"
     xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?attr/selectableItemBackground"
     android:background="@drawable/border_background">
 
     <TextView

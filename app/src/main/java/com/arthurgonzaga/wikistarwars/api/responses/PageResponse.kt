@@ -4,7 +4,7 @@ data class PageResponse(
     val count: Int,
     private val next: String?,
     private val previous: String?,
-    val result: List<CharacterResponse>
+    val results: List<CharacterResponse> = listOf()
 ){
 
     fun getNextPageIndex(): Int? {
@@ -15,4 +15,7 @@ data class PageResponse(
         return previous?.split("page=")?.get(1)?.toIntOrNull()
     }
 
+    override fun toString(): String {
+        return "PageResponse(count=$count, next=${getNextPageIndex()}, previous=${getPreviousIndex()}, result=$results)"
+    }
 }

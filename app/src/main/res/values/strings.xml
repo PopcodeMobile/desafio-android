@@ -19,4 +19,5 @@
     <string name="no_favorites">You have not favorite\nany character yet</string>
     <string name="search">Search</string>
     <string name="content_description_favorite_list_button">Favorite list</string>
+    <string name="rv_subtitle">%1$s cm  -  %2$s kg</string>
 </resources>

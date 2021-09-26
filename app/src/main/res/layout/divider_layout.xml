@@ -3,6 +3,5 @@
     android:layout_width="64dp"
     android:layout_height="2dp"
     android:layout_gravity="center_horizontal"
-    android:layout_marginVertical="@dimen/medium"
     android:alpha="0.5"
     android:background="@drawable/divider_background" />

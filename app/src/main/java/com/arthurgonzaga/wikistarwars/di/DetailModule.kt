@@ -1,7 +1,7 @@
 package com.arthurgonzaga.wikistarwars.di
 
-import com.arthurgonzaga.wikistarwars.api.HomeWorldService
-import com.arthurgonzaga.wikistarwars.api.SpeciesService
+import com.arthurgonzaga.wikistarwars.api.services.HomeWorldService
+import com.arthurgonzaga.wikistarwars.api.services.SpeciesService
 import com.arthurgonzaga.wikistarwars.repository.interfaces.DetailRepository
 import com.arthurgonzaga.wikistarwars.util.getRetrofitInstance
 import dagger.Module

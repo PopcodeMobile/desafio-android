@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface PeopleService {
 
-    @GET("/people/")
+    @GET("people")
     fun getPeoplePage(
         @Query("page") page: Int
     ): Call<PageResponse>

@@ -1,17 +1,15 @@
 package com.arthurgonzaga.wikistarwars.di
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
-import com.arthurgonzaga.wikistarwars.api.FavoriteService
-import com.arthurgonzaga.wikistarwars.api.PeopleService
+import com.arthurgonzaga.wikistarwars.api.services.FavoriteService
+import com.arthurgonzaga.wikistarwars.api.services.PeopleService
 import com.arthurgonzaga.wikistarwars.data.Constants
 import com.arthurgonzaga.wikistarwars.data.WikiStarWarsDB
 import com.arthurgonzaga.wikistarwars.util.getRetrofitInstance
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
