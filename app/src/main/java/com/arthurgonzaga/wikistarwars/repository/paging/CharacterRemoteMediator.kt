@@ -52,11 +52,8 @@ class CharacterRemoteMediator(
             val isEndOfList = response.results.isEmpty()
             database.withTransaction {
 
-                // clear all tables in the database
-                if (loadType == LoadType.REFRESH) {
-                    database.remoteKeysDAO().clearRemoteKeys()
-                    database.charactersDAO().clearCharacters()
-                }
+
+
 
                 val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
                 val nextKey = if (isEndOfList) null else page + 1
@@ -67,6 +64,15 @@ class CharacterRemoteMediator(
 
                 val characters = response.results.map {
                     it.toEntity()
+                }
+
+                if (loadType == LoadType.REFRESH) {
+                    // clear all the rows in the database
+                    database.remoteKeysDAO().clearRemoteKeys()
+
+                    // clear all the rows with isFavorite = false
+                    // update all the rows with isFavorite = true
+                    database.charactersDAO().upsert(characters)
                 }
 
                 database.remoteKeysDAO().insertAll(keys)
@@ -96,7 +102,7 @@ class CharacterRemoteMediator(
                 remoteKeys?.nextKey?.minus(1) ?: STARTING_PAGE_INDEX
             }
             LoadType.APPEND -> {
-                Log.i(TAG, "LoadType.REFRESH")
+                Log.i(TAG, "LoadType.APPEND")
                 val remoteKeys = getLastRemoteKey(state)
                     ?: throw InvalidObjectException("Remote key should not be null for $loadType")
                 remoteKeys.nextKey

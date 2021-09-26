@@ -1,19 +1,18 @@
 package com.arthurgonzaga.wikistarwars.data.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
+import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.data.model.RemoteKeys
 
 @Dao
 interface RemoteKeysDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(remoteKey: List<RemoteKeys>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertAll(remoteKey: List<RemoteKeys>): List<Long>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(remoteKey: RemoteKeys)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    fun updateAll(remoteKey: List<RemoteKeys>)
+
 
     @Query("SELECT * FROM remote_keys WHERE characterId = :id")
     suspend fun remoteKeysById(id: Int): RemoteKeys?
@@ -21,6 +20,14 @@ interface RemoteKeysDAO {
     @Query("DELETE FROM remote_keys")
     suspend fun clearRemoteKeys()
 
-    @Query("SELECT * FROM remote_keys")
-    suspend fun getRemoteKeys(): List<RemoteKeys>
+
+
+    @Transaction
+    fun upsert(remoteKey: List<RemoteKeys>) {
+        val longs: List<Long> = insertAll(remoteKey)
+
+        if (longs.contains(-1)) {
+            updateAll(remoteKey)
+        }
+    }
 }
