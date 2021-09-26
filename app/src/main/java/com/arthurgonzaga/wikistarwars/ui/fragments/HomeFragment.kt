@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.arthurgonzaga.wikistarwars.R
 import com.arthurgonzaga.wikistarwars.databinding.FragmentHomeBinding
 import com.arthurgonzaga.wikistarwars.ui.adapters.CharacterAdapter
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
+import com.arthurgonzaga.wikistarwars.ui.components.SpacingItemDecoration
 
 
 /**
@@ -50,6 +52,11 @@ class HomeFragment : Fragment() {
             )
         binding.recyclerView.apply {
             adapter = characterAdapter
+
+            val space = requireContext().resources.getDimensionPixelSize(R.dimen.normal)
+            val spanCount = requireContext().resources.getInteger(R.integer.rv_column_count)
+
+            addItemDecoration(SpacingItemDecoration(spanCount = spanCount, spacing = space))
         }
         return binding.root
     }
@@ -62,7 +69,6 @@ class HomeFragment : Fragment() {
         findNavController().navigate(R.id.goToDetailFragment)
         // TODO: Add the args
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

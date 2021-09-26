@@ -56,7 +56,8 @@
             android:paddingTop="@dimen/medium"
             android:clipToPadding="false"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="@integer/rv_column_count"
             tools:itemCount="8"
             tools:listitem="@layout/rv_character_item"/>
 
