@@ -18,9 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.recyclerview.widget.LinearLayoutManager
-
-
-
+import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 
 
 /**
@@ -37,32 +35,48 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val vm: HomeViewModel by viewModels()
 
-    @Inject lateinit var characterAdapter: CharacterAdapter
+    lateinit var characterAdapter: CharacterAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
+        characterAdapter =
+            CharacterAdapter(
+                context = requireContext(),
+                navigateToDetail = ::navigateToDetailFragment,
+                favoriteCharacter = vm::favoriteCharacter
+            )
         binding.recyclerView.apply {
             adapter = characterAdapter
         }
         return binding.root
     }
 
+    private fun navigateToFavoriteFragment() {
+        findNavController().navigate(R.id.goToFavoritesListFragment)
+    }
+
+    private fun navigateToDetailFragment(characterEntity: CharacterEntity) {
+        findNavController().navigate(R.id.goToDetailFragment)
+        // TODO: Add the args
+    }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        vm.characters.observe(viewLifecycleOwner){ pagingData ->
+        vm.characters.observe(viewLifecycleOwner) { pagingData ->
             viewLifecycleOwner.lifecycleScope.launch {
                 characterAdapter.submitData(pagingData)
             }
         }
 
-        binding.row.favoriteListButton.setOnClickListener {
-            findNavController().navigate(R.id.goToFavoritesListFragment)
+        binding.row.favoriteListButton.setOnClickListener { _ ->
+            navigateToFavoriteFragment()
         }
     }
 }

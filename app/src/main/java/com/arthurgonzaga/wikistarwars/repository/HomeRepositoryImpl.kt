@@ -26,4 +26,9 @@ class HomeRepositoryImpl @Inject constructor(
             remoteMediator = CharacterRemoteMediator(service, database)
         ).liveData
     }
+
+
+    override suspend fun favoriteCharacter(characterId: Int, isFavorite: Boolean) {
+        database.charactersDAO().favoriteCharacter(characterId, isFavorite)
+    }
 }

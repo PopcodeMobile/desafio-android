@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.core.content.res.ResourcesCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -14,40 +15,52 @@ import com.arthurgonzaga.wikistarwars.databinding.RvCharacterItemBinding
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class CharacterAdapter @Inject constructor(
-    @ApplicationContext private val context: Context
+class CharacterAdapter(
+    private val context: Context,
+    private val navigateToDetail: (character: CharacterEntity) -> Unit,
+    private val favoriteCharacter: (characterId: Int, isFavorite: Boolean) -> Unit
 ) : PagingDataAdapter<CharacterEntity, CharacterAdapter.VH>(DiffUtilCallback) {
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val binding = RvCharacterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            RvCharacterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VH(binding)
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        val characterEntity = getItem(position)
+        val currentItem = getItem(position)
 
-        holder.title.text = characterEntity?.name
-        holder.gender.text = characterEntity?.gender
-        holder.subtitle.text =
-            context.getString(R.string.rv_subtitle, characterEntity?.height, characterEntity?.weight)
-
-        if (characterEntity?.isFavorite == true) {
-            val drawable = ResourcesCompat.getDrawable(
-                context.resources,
-                R.drawable.ic_favorite,
-                context.theme
-            )
-            holder.favoriteButton.setImageDrawable(drawable)
+        currentItem?.let { character ->
+            holder.title.text = character.name
+            holder.gender.text = character.gender
+            holder.subtitle.text =
+                context.getString(R.string.rv_subtitle, character.height, character.weight)
+            holder.favoriteButton.setImage(character.isFavorite)
+            holder.root.setOnClickListener { _ ->
+                navigateToDetail(character)
+            }
+            holder.favoriteButton.setOnClickListener { _ ->
+                favoriteCharacter(character.id, !character.isFavorite)
+            }
         }
     }
 
-    class VH(binding: RvCharacterItemBinding) : RecyclerView.ViewHolder(binding.root){
+    private fun ImageButton.setImage(isFavorite: Boolean) {
+        val drawable = ResourcesCompat.getDrawable(
+            context.resources,
+            if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border,
+            context.theme
+        )
+        this.setImageDrawable(drawable)
+    }
+
+    class VH(binding: RvCharacterItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val title = binding.title
         val gender = binding.gender
         val subtitle = binding.subtitle
         val favoriteButton = binding.favoriteButton
+        val root = binding.root
     }
 
 

@@ -8,4 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface HomeRepository {
 
     fun getCharacters(): LiveData<PagingData<CharacterEntity>>
+
+    suspend fun favoriteCharacter(characterId: Int, isFavorite: Boolean)
 }

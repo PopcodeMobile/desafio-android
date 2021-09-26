@@ -12,6 +12,7 @@ interface CharacterDAO{
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(characterEntity: List<CharacterEntity>): List<Long>
 
+
     @Query("SELECT id FROM characters WHERE is_favorite = 1")
     fun getAllFavoritesIds(): List<Int>
 
@@ -46,6 +47,10 @@ interface CharacterDAO{
         birthYear: String = "",
         gender: String = "",
     )
+
+
+    @Query("UPDATE characters SET is_favorite=:isFavorite WHERE id= :characterId")
+    suspend fun favoriteCharacter(characterId: Int, isFavorite: Boolean)
 
     @Transaction
     suspend fun upsert(obj: List<CharacterEntity>) {

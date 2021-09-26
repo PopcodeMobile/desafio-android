@@ -7,6 +7,7 @@ import androidx.paging.cachedIn
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.repository.interfaces.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +23,12 @@ class HomeViewModel @Inject constructor(
         return repository.getCharacters().cachedIn(viewModelScope)
     }
 
+
+    fun favoriteCharacter(characterId: Int, isFavorite: Boolean){
+        viewModelScope.launch {
+            repository.favoriteCharacter(characterId, isFavorite)
+        }
+    }
 
     companion object {
         const val TAG = "HomeViewModel"
