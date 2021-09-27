@@ -6,16 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.forEach
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.arthurgonzaga.wikistarwars.R
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.databinding.FragmentDetailBinding
 import com.arthurgonzaga.wikistarwars.databinding.FragmentHomeBinding
+import com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
 import com.arthurgonzaga.wikistarwars.viewmodel.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 /**
@@ -44,8 +49,24 @@ class DetailFragment : Fragment() {
         )
         sharedElementEnterTransition = animation
         sharedElementReturnTransition = animation
-        
+
+        lifecycleScope.launch {
+            showInfosWithAnimation()
+        }
+
         return binding.root
     }
 
+    private suspend fun showInfosWithAnimation(){
+        delay(150)
+        binding.gridLayout.forEach { info ->
+            // Only show the invisible ones because we are going
+            // to load the homeWorldName and the specieName
+            if(info.visibility == View.INVISIBLE){
+                (info as CharacterInfo)
+                info.show()
+                delay(25)
+            }
+        }
+    }
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -7,13 +9,13 @@
             type="com.arthurgonzaga.wikistarwars.data.model.CharacterEntity" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:paddingHorizontal="@dimen/xlarge"
         android:background="?attr/backgroundColor"
+        android:animateLayoutChanges="true"
+        android:transitionName="background"
         tools:context=".ui.fragments.DetailFragment">
 
         <TextView
@@ -32,6 +34,7 @@
 
         <ImageButton
             android:id="@+id/favorite_button"
+            android:transitionName="favorite_btn_big"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
@@ -43,88 +46,107 @@
 
         <GridLayout
             android:id="@+id/grid_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:columnCount="@integer/grid_column_count"
             android:orientation="horizontal"
             android:useDefaultMargins="true"
+            android:clipToPadding="false"
+            android:paddingTop="160dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/heading_text_view"
             app:layout_constraintVertical_bias="0.4">
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
-                android:layout_marginEnd="@dimen/column_spacing"
-                android:layout_marginBottom="@dimen/large"
                 android:id="@+id/height_info"
-                app:title="@string/height"
+                android:layout_marginEnd="@dimen/column_spacing"
+                android:layout_marginBottom="@dimen/large"
                 app:subtitle="@{character.height}"
-                tools:subtitle="172 cm" />
+                android:visibility="invisible"
+                app:title="@string/height"
+                tools:subtitle="172 cm"
+                tools:visibility="visible"/>
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
-                android:layout_marginEnd="@dimen/column_spacing"
                 android:id="@+id/hair_info"
-                app:title="@string/hair_color"
+                android:layout_marginEnd="@dimen/column_spacing"
+                android:visibility="invisible"
                 app:subtitle="@{character.hairColor}"
-                tools:subtitle="Blond" />
+                app:title="@string/hair_color"
+                tools:subtitle="Blond"
+                tools:visibility="visible"/>
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
-                android:layout_marginEnd="@dimen/column_spacing"
                 android:id="@+id/weight_info"
-                app:title="@string/weight"
+                android:layout_marginEnd="@dimen/column_spacing"
+                android:visibility="invisible"
                 app:subtitle="@{character.weight}"
-                tools:subtitle="77 kg" />
+                app:title="@string/weight"
+                tools:subtitle="77 kg"
+                tools:visibility="visible"/>
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
-                android:layout_marginEnd="@dimen/column_spacing"
-                android:layout_marginBottom="@dimen/large"
                 android:id="@+id/eye_info"
-                app:title="@string/eye_color"
+                android:layout_marginEnd="@dimen/column_spacing"
+                android:layout_marginBottom="@dimen/large"
+                android:visibility="invisible"
                 app:subtitle="@{character.eyeColor}"
-                tools:subtitle="Blue" />
+                app:title="@string/eye_color"
+                tools:subtitle="Blue"
+                tools:visibility="visible"/>
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
-                android:layout_marginEnd="@dimen/column_spacing"
-                android:layout_marginBottom="@dimen/large"
                 android:id="@+id/bith_year_info"
-                app:title="@string/birth_year"
+                android:layout_marginEnd="@dimen/column_spacing"
+                android:layout_marginBottom="@dimen/large"
+                android:visibility="invisible"
                 app:subtitle="@{character.birthYear}"
-                tools:subtitle="19BBY" />
+                app:title="@string/birth_year"
+                tools:subtitle="19BBY"
+                tools:visibility="visible"/>
 
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
-                android:layout_marginEnd="@dimen/column_spacing"
-                android:layout_marginBottom="@dimen/large"
                 android:id="@+id/skin_info"
-                app:title="@string/skin_color"
+                android:layout_marginEnd="@dimen/column_spacing"
+                android:layout_marginBottom="@dimen/large"
+                android:visibility="invisible"
                 app:subtitle="@{character.skinColor}"
-                tools:subtitle="Fair" />
+                app:title="@string/skin_color"
+                tools:subtitle="Fair"
+                tools:visibility="visible"/>
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
-                android:layout_marginEnd="@dimen/column_spacing"
-                android:layout_marginBottom="@dimen/large"
                 android:id="@+id/gender_info"
-                app:title="@string/gender"
+                android:layout_marginEnd="@dimen/column_spacing"
+                android:layout_marginBottom="@dimen/large"
+                android:visibility="invisible"
                 app:subtitle="@{character.gender}"
-                tools:subtitle="Male" />
+                app:title="@string/gender"
+                tools:subtitle="Male"
+                tools:visibility="visible"/>
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
-                android:layout_marginEnd="@dimen/column_spacing"
-                android:layout_marginBottom="@dimen/large"
-                android:visibility="gone"
                 android:id="@+id/home_world_info"
-                app:title="@string/homeworld"
-                app:subtitle='@{character.homeWoldName ?? ""}'
-                tools:subtitle="Tatooine" />
-
-            <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:layout_marginEnd="@dimen/column_spacing"
                 android:layout_marginBottom="@dimen/large"
                 android:visibility="gone"
+                app:subtitle='@{character.homeWoldName ?? ""}'
+                app:title="@string/homeworld"
+                tools:subtitle="Tatooine"
+                tools:visibility="visible"/>
+
+            <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:id="@+id/specie_info"
-                app:title="@string/specie"
+                android:layout_marginEnd="@dimen/column_spacing"
+                android:layout_marginBottom="@dimen/large"
+                android:visibility="gone"
                 app:subtitle='@{character.specieName ?? ""}'
-                tools:subtitle="Human" />
+                app:title="@string/specie"
+                tools:subtitle="Human"
+                tools:visibility="visible"/>
 
 
         </GridLayout>

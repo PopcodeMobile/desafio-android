@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -53,8 +54,14 @@ class HomeFragment : Fragment() {
                 navigateToDetail = ::navigateToDetailFragment,
                 favoriteCharacter = vm::favoriteCharacter
             )
+
         binding.recyclerView.apply {
             adapter = characterAdapter
+            postponeEnterTransition()
+            viewTreeObserver.addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
 
             val space = requireContext().resources.getDimensionPixelSize(R.dimen.normal)
             val spanCount = requireContext().resources.getInteger(R.integer.rv_column_count)
@@ -68,9 +75,18 @@ class HomeFragment : Fragment() {
         findNavController().navigate(R.id.goToFavoritesListFragment)
     }
 
-    private fun navigateToDetailFragment(characterEntity: CharacterEntity, textView: TextView) {
+    private fun navigateToDetailFragment(
+        characterEntity: CharacterEntity,
+        textView: TextView,
+        imageButton: ImageButton,
+        viewGroup: ViewGroup
+    ) {
 
-        val extras = FragmentNavigatorExtras(textView to "heading_big")
+        val extras = FragmentNavigatorExtras(
+            textView to "heading_big",
+            imageButton to "favorite_btn_big",
+            viewGroup to "background"
+        )
 
         val args = bundleOf("character" to characterEntity)
         findNavController().navigate(

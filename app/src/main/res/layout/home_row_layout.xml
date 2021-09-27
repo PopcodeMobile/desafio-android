@@ -14,7 +14,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/background_favorite_list_button"
+        android:background="@drawable/border_background"
+        android:backgroundTint="?attr/colorPrimary"
         android:src="@drawable/ic_list"
         android:layout_marginEnd="@dimen/tiny"/>
 

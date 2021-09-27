@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
@@ -12,6 +13,8 @@ import androidx.core.content.res.ResourcesCompat
 import com.arthurgonzaga.wikistarwars.R
 import com.arthurgonzaga.wikistarwars.databinding.CharacterInfoLayoutBinding
 
+
+private const val TAG = "CharacterInfo"
 
 class CharacterInfo @JvmOverloads constructor(
     context: Context?,
@@ -64,7 +67,8 @@ class CharacterInfo @JvmOverloads constructor(
      *  Show the view with a fading in animation
      */
     fun show() {
-        binding.root.apply {
+        Log.i(TAG, "showing $TAG")
+        this.apply {
             // Set the content view to 0% opacity but visible, so that it is visible
             // (but fully transparent) during the animation.
             alpha = 0f
@@ -75,7 +79,21 @@ class CharacterInfo @JvmOverloads constructor(
             animate()
                 .alpha(1f)
                 .setDuration(shortAnimationDuration.toLong())
-                .setListener(null)
+                .setListener(object : Animator.AnimatorListener{
+                    override fun onAnimationStart(p0: Animator?) {
+                    }
+
+                    override fun onAnimationEnd(p0: Animator?) {
+                        Log.d(TAG, "animation ended: ")
+                    }
+
+                    override fun onAnimationCancel(p0: Animator?) {
+                    }
+
+                    override fun onAnimationRepeat(p0: Animator?) {
+                    }
+
+                })
         }
     }
 

@@ -2,6 +2,7 @@ package com.arthurgonzaga.wikistarwars.ui.adapters
 
 import android.app.Application
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 class CharacterAdapter(
     private val context: Context,
-    private val navigateToDetail: (character: CharacterEntity, textView: TextView) -> Unit,
+    private val navigateToDetail: (CharacterEntity, TextView, ImageButton, ViewGroup) -> Unit,
     private val favoriteCharacter: (characterId: Int, isFavorite: Boolean) -> Unit
 ) : PagingDataAdapter<CharacterEntity, CharacterAdapter.VH>(DiffUtilCallback) {
 
@@ -34,23 +35,34 @@ class CharacterAdapter(
         val currentItem = getItem(position)
 
         currentItem?.let { character ->
-            holder.title.text = character.name
-            holder.title.transitionName = "heading_small$position";
-            holder.gender.text = character.gender
-            holder.subtitle.text =
-                context.getString(R.string.rv_subtitle, character.height, character.weight)
-            holder.root.setOnClickListener { _ ->
-                navigateToDetail(character, holder.title)
+            holder.binding.gender.text = character.gender
+            holder.binding.subtitle.text = context.getString(R.string.rv_subtitle, character.height, character.weight)
+            holder.binding.title.apply {
+                text = character.name
+                transitionName = "heading_small$position";
+            }
+            holder.binding.item.transitionName = "rv_background$position"
+            holder.binding.root.apply {
+                transitionName = "rv_background$position"
+                setOnClickListener { _ ->
+                    navigateToDetail(
+                        character,
+                        holder.binding.title,
+                        holder.binding.favoriteButton,
+                        holder.binding.item
+                    )
+                }
             }
 
-            holder.favoriteButton.apply {
+            holder.binding.favoriteButton.apply {
                 setImage(character.isFavorite)
+                transitionName = "rv_favorite_btn$position"
                 setOnClickListener { _ ->
                     favoriteCharacter(character.id, !character.isFavorite)
                 }
 
                 setOnTouchListener { view, motionEvent ->
-                    when(motionEvent.action){
+                    when (motionEvent.action) {
                         // User touched
                         MotionEvent.ACTION_DOWN -> {
                             setImage(!character.isFavorite)
@@ -79,13 +91,7 @@ class CharacterAdapter(
         this.setImageDrawable(drawable)
     }
 
-    class VH(binding: RvCharacterItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val title = binding.title
-        val gender = binding.gender
-        val subtitle = binding.subtitle
-        val favoriteButton = binding.favoriteButton
-        val root = binding.root
-    }
+    class VH(val binding: RvCharacterItemBinding) : RecyclerView.ViewHolder(binding.root)
 
 
     object DiffUtilCallback : DiffUtil.ItemCallback<CharacterEntity>() {
