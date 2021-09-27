@@ -47,27 +47,25 @@
         <GridLayout
             android:id="@+id/grid_layout"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:columnCount="@integer/grid_column_count"
             android:orientation="horizontal"
             android:useDefaultMargins="true"
-            android:clipToPadding="false"
-            android:paddingTop="160dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/heading_text_view"
-            app:layout_constraintVertical_bias="0.4">
+            app:layout_constraintTop_toTopOf="@+id/heading_text_view"
+            app:layout_constraintVertical_bias="0.58000004">
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:id="@+id/height_info"
                 android:layout_marginEnd="@dimen/column_spacing"
                 android:layout_marginBottom="@dimen/large"
-                app:subtitle="@{character.height}"
                 android:visibility="invisible"
+                app:subtitle="@{character.height}"
                 app:title="@string/height"
                 tools:subtitle="172 cm"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:id="@+id/hair_info"
@@ -76,7 +74,7 @@
                 app:subtitle="@{character.hairColor}"
                 app:title="@string/hair_color"
                 tools:subtitle="Blond"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:id="@+id/weight_info"
@@ -85,7 +83,7 @@
                 app:subtitle="@{character.weight}"
                 app:title="@string/weight"
                 tools:subtitle="77 kg"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:id="@+id/eye_info"
@@ -95,7 +93,7 @@
                 app:subtitle="@{character.eyeColor}"
                 app:title="@string/eye_color"
                 tools:subtitle="Blue"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:id="@+id/bith_year_info"
@@ -105,7 +103,7 @@
                 app:subtitle="@{character.birthYear}"
                 app:title="@string/birth_year"
                 tools:subtitle="19BBY"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
@@ -116,7 +114,7 @@
                 app:subtitle="@{character.skinColor}"
                 app:title="@string/skin_color"
                 tools:subtitle="Fair"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:id="@+id/gender_info"
@@ -126,7 +124,7 @@
                 app:subtitle="@{character.gender}"
                 app:title="@string/gender"
                 tools:subtitle="Male"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:id="@+id/home_world_info"
@@ -136,7 +134,7 @@
                 app:subtitle='@{character.homeWoldName ?? ""}'
                 app:title="@string/homeworld"
                 tools:subtitle="Tatooine"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
                 android:id="@+id/specie_info"
@@ -146,7 +144,7 @@
                 app:subtitle='@{character.specieName ?? ""}'
                 app:title="@string/specie"
                 tools:subtitle="Human"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
 
         </GridLayout>
