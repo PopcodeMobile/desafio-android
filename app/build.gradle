@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -35,6 +36,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 
     compileOptions {
@@ -57,7 +59,6 @@ dependencies {
 
     def retrofit_verion = "2.9.0"
     def gson_version = "2.9.0"
-    def nav_version = "2.3.5"
     def paging_version = "3.0.1"
     def room_version = "2.3.0"
     def lifecycle_version = "2.2.0"

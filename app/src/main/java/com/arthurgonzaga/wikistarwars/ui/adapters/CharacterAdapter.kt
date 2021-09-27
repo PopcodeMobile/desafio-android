@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 class CharacterAdapter(
     private val context: Context,
-    private val navigateToDetail: (character: CharacterEntity) -> Unit,
+    private val navigateToDetail: (character: CharacterEntity, textView: TextView) -> Unit,
     private val favoriteCharacter: (characterId: Int, isFavorite: Boolean) -> Unit
 ) : PagingDataAdapter<CharacterEntity, CharacterAdapter.VH>(DiffUtilCallback) {
 
@@ -34,11 +35,12 @@ class CharacterAdapter(
 
         currentItem?.let { character ->
             holder.title.text = character.name
+            holder.title.transitionName = "heading_small$position";
             holder.gender.text = character.gender
             holder.subtitle.text =
                 context.getString(R.string.rv_subtitle, character.height, character.weight)
             holder.root.setOnClickListener { _ ->
-                navigateToDetail(character)
+                navigateToDetail(character, holder.title)
             }
 
             holder.favoriteButton.apply {

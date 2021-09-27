@@ -21,7 +21,11 @@
         android:id="@+id/detailFragment"
         android:name="com.arthurgonzaga.wikistarwars.ui.fragments.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="character"
+            app:argType="com.arthurgonzaga.wikistarwars.data.model.CharacterEntity" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteListFragment"
         android:name="com.arthurgonzaga.wikistarwars.ui.fragments.FavoriteListFragment"

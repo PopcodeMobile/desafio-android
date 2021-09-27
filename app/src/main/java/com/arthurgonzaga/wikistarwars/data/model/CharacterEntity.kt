@@ -3,6 +3,7 @@ package com.arthurgonzaga.wikistarwars.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "characters")
 data class CharacterEntity(
@@ -28,4 +29,4 @@ data class CharacterEntity(
     val isFavorite: Boolean = false,
     @ColumnInfo(name = "is_synchronized_with_backend")
     val isSynchronizedWithBackend: Boolean = false,
-)
+): Serializable
