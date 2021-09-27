@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/goToFavoritesListFragment"
-            app:destination="@id/favoriteListFragment" />
+            app:destination="@id/favoriteListFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/goToDetailFragment"
             app:destination="@id/detailFragment" />
