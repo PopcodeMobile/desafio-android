@@ -58,7 +58,7 @@ class DetailFragment : Fragment() {
     }
 
     private suspend fun showInfosWithAnimation(){
-        delay(150)
+        delay(260)
         binding.gridLayout.forEach { info ->
             // Only show the invisible ones because we are going
             // to load the homeWorldName and the specieName

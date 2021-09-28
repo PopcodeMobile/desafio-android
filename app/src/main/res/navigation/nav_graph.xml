@@ -18,7 +18,7 @@
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
         <action
-            android:id="@+id/goToDetailFragment"
+            android:id="@+id/goToDetailFragmentFromHome"
             app:destination="@id/detailFragment" />
     </fragment>
     <fragment
@@ -34,5 +34,9 @@
         android:id="@+id/favoriteListFragment"
         android:name="com.arthurgonzaga.wikistarwars.ui.fragments.FavoriteListFragment"
         android:label="fragment_favorite_list"
-        tools:layout="@layout/fragment_favorite_list" />
+        tools:layout="@layout/fragment_favorite_list" >
+        <action
+            android:id="@+id/goToDetailFragmentFromFavorites"
+            app:destination="@id/detailFragment" />
+    </fragment>
 </navigation>

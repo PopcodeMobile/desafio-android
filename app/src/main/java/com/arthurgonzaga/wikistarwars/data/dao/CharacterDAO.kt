@@ -1,5 +1,6 @@
 package com.arthurgonzaga.wikistarwars.data.dao
 
+import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 
@@ -15,6 +16,15 @@ interface CharacterDAO{
 
     @Query("SELECT id FROM characters WHERE is_favorite = 1")
     suspend fun getAllFavoritesIds(): List<Int>
+
+    @Query("SELECT * FROM CHARACTERS WHERE is_favorite = 1")
+    fun getAllFavoriteCharacters(): PagingSource<Int, CharacterEntity>
+
+    @Query("UPDATE characters SET is_favorite = 1 WHERE id= :id")
+    suspend fun favorite(id: Int)
+
+    @Query("UPDATE characters SET is_favorite = 0 WHERE id = :id")
+    suspend fun unFavorite(id: Int)
 
     @Query("SELECT * FROM characters")
     fun getAllCharacters(): PagingSource<Int, CharacterEntity>
@@ -48,9 +58,6 @@ interface CharacterDAO{
         gender: String = "",
     )
 
-
-    @Query("UPDATE characters SET is_favorite=:isFavorite WHERE id= :characterId")
-    suspend fun favoriteCharacter(characterId: Int, isFavorite: Boolean)
 
     @Transaction
     suspend fun upsert(obj: List<CharacterEntity>) {
