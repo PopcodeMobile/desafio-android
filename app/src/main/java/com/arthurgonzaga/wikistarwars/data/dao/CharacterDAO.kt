@@ -29,60 +29,22 @@ interface CharacterDAO{
     @Query("SELECT * FROM characters")
     fun getAllCharacters(): PagingSource<Int, CharacterEntity>
 
-    @Query("DELETE FROM characters WHERE is_favorite = 0")
+    @Query("DELETE FROM characters")
     fun clearCharacters()
 
-    @Query(
- """
-        UPDATE characters
-            SET name=:name,
-                height=:height, 
-                weight=:weight, 
-                hair_color=:hairColor, 
-                skin_color=:skinColor, 
-                eye_color=:eyeColor, 
-                birth_year=:birthYear, 
-                gender=:gender
-            WHERE id = :id
-        """
-    )
+    @Query("UPDATE characters SET is_favorite = 1 WHERE id IN (:ids)")
     fun update(
-        id: Int,
-        name: String = "",
-        height: String = "",
-        weight: String = "",
-        hairColor: String = "",
-        skinColor: String = "",
-        eyeColor: String = "",
-        birthYear: String = "",
-        gender: String = "",
+        ids: List<Int>
     )
 
 
     @Transaction
     suspend fun upsert(obj: List<CharacterEntity>) {
-        val favorites = getAllFavoritesIds()
+        val favoriteIds = getAllFavoritesIds()
         clearCharacters()
 
         insertAll(obj);
 
-        favorites.forEach { id ->
-
-            val character = obj.find { it.id == id }
-
-            character?.let {
-                update(
-                    id = id,
-                    name = character.name,
-                    height = character.height,
-                    weight = character.weight,
-                    hairColor = character.hairColor,
-                    skinColor = character.skinColor,
-                    eyeColor = character.eyeColor,
-                    birthYear = character.birthYear,
-                    gender = character.gender,
-                )
-            }
-        }
+        update(favoriteIds)
     }
 }

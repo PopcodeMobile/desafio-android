@@ -7,6 +7,8 @@ import com.arthurgonzaga.wikistarwars.data.WikiStarWarsDB
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.repository.interfaces.HomeRepository
 import com.arthurgonzaga.wikistarwars.repository.paging.CharacterRemoteMediator
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 

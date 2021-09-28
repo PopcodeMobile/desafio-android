@@ -54,18 +54,15 @@ class CharacterRemoteMediator(
             val isEndOfList = response.results.isEmpty()
             database.withTransaction {
 
-
-
-
                 val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
                 val nextKey = if (isEndOfList) null else page + 1
 
-                val keys = response.results.map {
-                    RemoteKeys(characterId = it.getId(), prevKey = prevKey, nextKey = nextKey)
-                }
+                val characters = mutableListOf<CharacterEntity>()
+                val keys = mutableListOf<RemoteKeys>()
 
-                val characters = response.results.map {
-                    it.toEntity()
+                response.results.map {
+                    characters.add(it.toEntity())
+                    keys.add(RemoteKeys(characterId = it.getId(), prevKey = prevKey, nextKey = nextKey))
                 }
 
                 if (loadType == LoadType.REFRESH) {
@@ -76,6 +73,7 @@ class CharacterRemoteMediator(
                     // update all the rows with isFavorite = true
                     database.charactersDAO().upsert(characters)
                 }
+
 
                 database.remoteKeysDAO().insertAll(keys)
                 database.charactersDAO().insertAll(characters)
