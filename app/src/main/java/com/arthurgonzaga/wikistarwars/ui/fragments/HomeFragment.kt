@@ -1,10 +1,12 @@
 package com.arthurgonzaga.wikistarwars.ui.fragments
 
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.os.bundleOf
@@ -67,6 +69,17 @@ class HomeFragment : Fragment() {
             val spanCount = requireContext().resources.getInteger(R.integer.rv_column_count)
 
             addItemDecoration(SpacingItemDecoration(spanCount = spanCount, spacing = space))
+        }
+
+        binding.row.searchBar.setOnEditorActionListener { textView, action, _ ->
+            if(action == EditorInfo.IME_ACTION_SEARCH){
+
+                vm.search(textView.text.toString())
+                textView.text = ""
+
+                return@setOnEditorActionListener true
+            }
+            false
         }
         return binding.root
     }

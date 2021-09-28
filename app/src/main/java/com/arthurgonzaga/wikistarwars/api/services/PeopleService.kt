@@ -9,7 +9,8 @@ interface PeopleService {
 
     @GET("people")
     fun getPeoplePage(
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("search") query: String = ""
     ): Call<PageResponse>
 
 }

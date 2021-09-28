@@ -14,7 +14,7 @@ interface CharacterDAO{
 
 
     @Query("SELECT id FROM characters WHERE is_favorite = 1")
-    fun getAllFavoritesIds(): List<Int>
+    suspend fun getAllFavoritesIds(): List<Int>
 
     @Query("SELECT * FROM characters")
     fun getAllCharacters(): PagingSource<Int, CharacterEntity>

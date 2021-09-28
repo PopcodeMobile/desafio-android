@@ -9,6 +9,8 @@ import androidx.room.withTransaction
 import com.arthurgonzaga.wikistarwars.api.responses.CharacterResponse
 import com.arthurgonzaga.wikistarwars.api.services.PeopleService
 import com.arthurgonzaga.wikistarwars.data.WikiStarWarsDB
+import com.arthurgonzaga.wikistarwars.data.dao.CharacterDAO
+import com.arthurgonzaga.wikistarwars.data.dao.RemoteKeysDAO
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.data.model.RemoteKeys
 import com.arthurgonzaga.wikistarwars.util.toEntity
@@ -21,7 +23,8 @@ import java.io.InvalidObjectException
 @ExperimentalPagingApi
 class CharacterRemoteMediator(
     private val service: PeopleService,
-    private val database: WikiStarWarsDB
+    private val database: WikiStarWarsDB,
+    private val query: String
 ) : RemoteMediator<Int, CharacterEntity>() {
 
     // Set to refresh every time i
@@ -35,8 +38,7 @@ class CharacterRemoteMediator(
         state: PagingState<Int, CharacterEntity>
     ): MediatorResult {
 
-        val pageKeyData = getKeyPageData(loadType, state)
-        val page = when (pageKeyData) {
+        val page = when (val pageKeyData = getKeyPageData(loadType, state)) {
             is MediatorResult.Success -> {
                 return pageKeyData
             }
@@ -48,7 +50,7 @@ class CharacterRemoteMediator(
         return try {
 
             // Get the page result
-            val response = service.getPeoplePage(page).await()
+            val response = service.getPeoplePage(page, query).await()
             val isEndOfList = response.results.isEmpty()
             database.withTransaction {
 

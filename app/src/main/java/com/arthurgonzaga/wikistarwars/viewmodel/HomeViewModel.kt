@@ -2,9 +2,7 @@ package com.arthurgonzaga.wikistarwars.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.repository.interfaces.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,12 +13,15 @@ class HomeViewModel @Inject constructor(
     val repository: HomeRepository
 ) : ViewModel(), LifecycleObserver {
 
-    val characters: LiveData<PagingData<CharacterEntity>> = getCharactersPagingData()
 
+    private val _currentSearchText = MutableLiveData("")
 
-    private fun getCharactersPagingData(): LiveData<PagingData<CharacterEntity>>{
-        Log.i(TAG, "getting CharactersPagingData")
-        return repository.getCharacters().cachedIn(viewModelScope)
+    val characters = _currentSearchText.switchMap { query ->
+        if(query.isBlank()){
+            repository.getCharacters("").cachedIn(viewModelScope)
+        }else {
+            repository.getCharacters(query).cachedIn(viewModelScope)
+        }
     }
 
 
@@ -28,6 +29,10 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             repository.favoriteCharacter(characterId, isFavorite)
         }
+    }
+
+    fun search(text: String) {
+        _currentSearchText.value = text
     }
 
     companion object {
