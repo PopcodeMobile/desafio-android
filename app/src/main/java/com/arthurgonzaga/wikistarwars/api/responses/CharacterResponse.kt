@@ -30,10 +30,12 @@ data class CharacterResponse(
         return url.split("people/")[1].replace("/","").toInt()
     }
 
-    var homeWorldId: Int? = homeWorldUrl.split("planets/")[1].replace("/","").toIntOrNull()
-        private set
+    fun getHomeWorldId(): Int{
+        return homeWorldUrl.split("planets/")[1].replace("/","").toInt()
+    }
 
-    var specieId: Int? = speciesUrls.firstOrNull()?.split("species/")?.get(1)?.replace("/","")?.toIntOrNull()
-        private set
+    fun getSpecieId(): Int? {
+        return speciesUrls.firstOrNull()?.split("species/")?.get(1)?.replace("/","")?.toIntOrNull()
+    }
 
 }

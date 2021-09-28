@@ -3,6 +3,8 @@ package com.arthurgonzaga.wikistarwars.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.arthurgonzaga.wikistarwars.util.toEntity
+import io.reactivex.rxjava3.core.Observable
 import java.io.Serializable
 
 @Entity(tableName = "characters")

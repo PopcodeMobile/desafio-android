@@ -62,12 +62,13 @@ dependencies {
     def paging_version = "3.0.1"
     def room_version = "2.3.0"
     def lifecycle_version = "2.2.0"
+    def rxjava_version = "3.0.0"
 
     // Retrofit
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_verion"
     implementation "com.squareup.retrofit2:converter-gson:$gson_version"
-
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:$rxjava_version"
 
     // Navigation Component
 
@@ -78,6 +79,7 @@ dependencies {
     // Paging 3
 
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation "androidx.paging:paging-rxjava3:$paging_version"
 
     // Room
 
@@ -95,6 +97,11 @@ dependencies {
 
     implementation  "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.3.1"
+
+
+    //RxJava
+    implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxjava_version"
 
     // Testing
 

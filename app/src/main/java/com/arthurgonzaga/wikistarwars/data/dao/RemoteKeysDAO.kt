@@ -15,10 +15,10 @@ interface RemoteKeysDAO {
 
 
     @Query("SELECT * FROM remote_keys WHERE characterId = :id")
-    suspend fun remoteKeysById(id: Int): RemoteKeys?
+    fun remoteKeysById(id: Int): RemoteKeys?
 
     @Query("DELETE FROM remote_keys")
-    suspend fun clearRemoteKeys()
+    fun clearRemoteKeys()
 
 
 

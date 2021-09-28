@@ -17,6 +17,9 @@ interface CharacterDAO{
     @Query("SELECT id FROM characters WHERE is_favorite = 1")
     suspend fun getAllFavoritesIds(): List<Int>
 
+    @Query("SELECT id FROM characters WHERE is_favorite = 1")
+    fun getAllFavoritesIdsUpsert(): List<Int>
+
     @Query("SELECT * FROM CHARACTERS WHERE is_favorite = 1")
     fun getAllFavoriteCharacters(): PagingSource<Int, CharacterEntity>
 
@@ -39,8 +42,8 @@ interface CharacterDAO{
 
 
     @Transaction
-    suspend fun upsert(obj: List<CharacterEntity>) {
-        val favoriteIds = getAllFavoritesIds()
+    fun upsert(obj: List<CharacterEntity>) {
+        val favoriteIds = getAllFavoritesIdsUpsert()
         clearCharacters()
 
         insertAll(obj);

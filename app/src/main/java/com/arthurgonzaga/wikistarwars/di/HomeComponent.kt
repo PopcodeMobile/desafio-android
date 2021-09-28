@@ -1,7 +1,9 @@
 package com.arthurgonzaga.wikistarwars.di
 
 import androidx.paging.ExperimentalPagingApi
+import com.arthurgonzaga.wikistarwars.api.services.HomeWorldService
 import com.arthurgonzaga.wikistarwars.api.services.PeopleService
+import com.arthurgonzaga.wikistarwars.api.services.SpeciesService
 import com.arthurgonzaga.wikistarwars.data.WikiStarWarsDB
 import com.arthurgonzaga.wikistarwars.repository.HomeRepositoryImpl
 import com.arthurgonzaga.wikistarwars.repository.interfaces.HomeRepository
@@ -19,7 +21,9 @@ object HomeComponent {
     @Provides
     @ViewModelScoped
     fun provideHomeRepository(
-        service: PeopleService,
+        peopleService: PeopleService,
+        speciesService: SpeciesService,
+        homeWorldService: HomeWorldService,
         db: WikiStarWarsDB
-    ): HomeRepository = HomeRepositoryImpl(service, db)
+    ): HomeRepository = HomeRepositoryImpl(peopleService, speciesService, homeWorldService, db)
 }

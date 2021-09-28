@@ -2,7 +2,9 @@ package com.arthurgonzaga.wikistarwars.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.*
+import com.arthurgonzaga.wikistarwars.api.services.HomeWorldService
 import com.arthurgonzaga.wikistarwars.api.services.PeopleService
+import com.arthurgonzaga.wikistarwars.api.services.SpeciesService
 import com.arthurgonzaga.wikistarwars.data.WikiStarWarsDB
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.repository.interfaces.HomeRepository
@@ -14,7 +16,9 @@ import javax.inject.Inject
 
 @ExperimentalPagingApi
 class HomeRepositoryImpl @Inject constructor(
-    private val service: PeopleService,
+    private val peopleService: PeopleService,
+    private val speciesService: SpeciesService,
+    private val homeWorldService: HomeWorldService,
     private val database: WikiStarWarsDB
 ) : HomeRepository {
 
@@ -24,15 +28,21 @@ class HomeRepositoryImpl @Inject constructor(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
             pagingSourceFactory = pagingSourceFactory,
             initialKey = 1,
-            remoteMediator = CharacterRemoteMediator(service, database, query)
+            remoteMediator = CharacterRemoteMediator(
+                peopleService,
+                speciesService,
+                homeWorldService,
+                database,
+                query
+            )
         ).liveData
     }
 
 
     override suspend fun favoriteCharacter(characterId: Int, isFavorite: Boolean) {
-        if(isFavorite){
+        if (isFavorite) {
             database.charactersDAO().favorite(characterId)
-        }else {
+        } else {
             database.charactersDAO().unFavorite(characterId)
         }
     }

@@ -5,10 +5,11 @@ import com.arthurgonzaga.wikistarwars.api.responses.CharacterResponse
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 
 fun CharacterResponse.toEntity(
-    specieName: String,
     homeWorldName: String,
+    specieName: String?,
 ) = CharacterEntity(
     id = this.getId(),
+    name= this.name,
     height= this.height,
     weight= this.weight,
     hairColor= this.hairColor,
@@ -16,7 +17,7 @@ fun CharacterResponse.toEntity(
     eyeColor= this.eyeColor,
     birthYear= this.birthYear,
     gender= this.gender,
-    specieName = specieName,
+    specieName = specieName ?: "Human",
     homeWoldName = homeWorldName,
 )
 
