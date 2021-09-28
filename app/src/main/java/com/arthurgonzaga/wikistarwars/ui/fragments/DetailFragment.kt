@@ -60,13 +60,9 @@ class DetailFragment : Fragment() {
     private suspend fun showInfosWithAnimation(){
         delay(260)
         binding.gridLayout.forEach { info ->
-            // Only show the invisible ones because we are going
-            // to load the homeWorldName and the specieName
-            if(info.visibility == View.INVISIBLE){
-                (info as CharacterInfo)
-                info.show()
-                delay(25)
-            }
+            (info as CharacterInfo)
+            info.show()
+            delay(25)
         }
     }
 }

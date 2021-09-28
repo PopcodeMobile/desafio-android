@@ -67,7 +67,7 @@ class CharacterInfo @JvmOverloads constructor(
      *  Show the view with a fading in animation
      */
     fun show() {
-        Log.i(TAG, "showing $TAG")
+        Log.i(TAG, "showing $titleStr")
         this.apply {
             // Set the content view to 0% opacity but visible, so that it is visible
             // (but fully transparent) during the animation.
@@ -79,21 +79,7 @@ class CharacterInfo @JvmOverloads constructor(
             animate()
                 .alpha(1f)
                 .setDuration(shortAnimationDuration.toLong())
-                .setListener(object : Animator.AnimatorListener{
-                    override fun onAnimationStart(p0: Animator?) {
-                    }
-
-                    override fun onAnimationEnd(p0: Animator?) {
-                        Log.d(TAG, "animation ended: ")
-                    }
-
-                    override fun onAnimationCancel(p0: Animator?) {
-                    }
-
-                    override fun onAnimationRepeat(p0: Animator?) {
-                    }
-
-                })
+                .setListener(null)
         }
     }
 
