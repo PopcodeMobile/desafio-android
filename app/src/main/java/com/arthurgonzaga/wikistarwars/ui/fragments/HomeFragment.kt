@@ -88,12 +88,17 @@ class HomeFragment : Fragment() {
             if(action == EditorInfo.IME_ACTION_SEARCH){
 
                 vm.search(textView.text.toString())
-                textView.text = ""
 
                 return@setOnEditorActionListener true
             }
             false
         }
+
+        binding.row.searchBarLayout.setEndIconOnClickListener { _ ->
+            binding.row.searchBar.setText("")
+            vm.search("")
+        }
+
         binding.row.favoriteListButton.setOnClickListener { _ ->
             navigateToFavoritesFragment()
         }

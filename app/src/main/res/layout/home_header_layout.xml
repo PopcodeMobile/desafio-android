@@ -36,12 +36,12 @@
         android:id="@+id/changeColor"
         android:layout_width="@dimen/medium"
         android:layout_height="@dimen/medium"
-        android:background="@drawable/circle"
         android:layout_marginEnd="@dimen/large"
+        android:background="@drawable/circle"
         android:backgroundTint="?colorSecondaryVariant"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/app_description"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/app_description">
 
         <ImageView
             android:layout_width="@dimen/normal"

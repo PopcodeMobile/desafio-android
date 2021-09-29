@@ -20,6 +20,7 @@
         android:layout_marginEnd="@dimen/tiny"/>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/search"
@@ -30,6 +31,9 @@
         app:boxCornerRadiusTopStart="8dp"
         app:boxCornerRadiusTopEnd="8dp"
         app:startIconTint="@color/icon_text_input_tint"
+        app:endIconDrawable="@drawable/ic_close"
+        app:endIconTint="@color/icon_text_input_tint"
+        app:endIconMode="clear_text"
         app:startIconDrawable="@drawable/ic_search"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
