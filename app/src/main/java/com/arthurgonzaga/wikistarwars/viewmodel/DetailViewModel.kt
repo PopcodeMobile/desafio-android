@@ -1,5 +1,7 @@
 package com.arthurgonzaga.wikistarwars.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arthurgonzaga.wikistarwars.repository.interfaces.MainRepository
@@ -13,6 +15,10 @@ class DetailViewModel @Inject constructor(
 ): ViewModel() {
 
 
+    private val _newFavorite = MutableLiveData<Boolean?>()
+    val newFavorite: LiveData<Boolean?> = _newFavorite
+
+
     fun unFavoriteCharacter(id: Int){
         viewModelScope.launch {
             mainRepository.unFavoriteCharacter(id)
@@ -21,7 +27,8 @@ class DetailViewModel @Inject constructor(
 
     fun favoriteCharacter(id: Int){
         viewModelScope.launch {
-            mainRepository.favoriteCharacter(id)
+            _newFavorite.value = mainRepository.favoriteCharacter(id)
+            _newFavorite.value = null
         }
     }
 }

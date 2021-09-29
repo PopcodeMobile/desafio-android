@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.trace
 import androidx.core.view.forEach
 import androidx.fragment.app.viewModels
@@ -84,5 +85,18 @@ class DetailFragment : Fragment() {
             info.show()
             delay(25)
         }
+    }
+
+    fun observeChanges(){
+        vm.newFavorite.observe(viewLifecycleOwner){ isSuccessful ->
+            Log.d(TAG, "isSuccessful: $isSuccessful")
+            if(isSuccessful == true){
+                Toast.makeText(requireContext(), R.string.favorite_success, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    companion object {
+        private const val TAG = "DetailFragment"
     }
 }

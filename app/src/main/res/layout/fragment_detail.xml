@@ -62,7 +62,7 @@
                 android:layout_marginEnd="@dimen/column_spacing"
                 android:layout_marginBottom="@dimen/large"
                 android:visibility="invisible"
-                app:subtitle="@{character.height}"
+                app:subtitle="@{@string/height_subtitle(character.height)}"
                 app:title="@string/height"
                 tools:subtitle="172 cm"
                 tools:visibility="visible" />
@@ -80,7 +80,7 @@
                 android:id="@+id/weight_info"
                 android:layout_marginEnd="@dimen/column_spacing"
                 android:visibility="invisible"
-                app:subtitle="@{character.weight}"
+                app:subtitle="@{@string/weight_subtitle(character.weight)}"
                 app:title="@string/weight"
                 tools:subtitle="77 kg"
                 tools:visibility="visible" />
