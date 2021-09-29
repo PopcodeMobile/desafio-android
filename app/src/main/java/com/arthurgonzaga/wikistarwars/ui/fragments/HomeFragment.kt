@@ -1,5 +1,6 @@
 package com.arthurgonzaga.wikistarwars.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ import com.arthurgonzaga.wikistarwars.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
+import com.arthurgonzaga.wikistarwars.ui.components.MyThemes
 import com.arthurgonzaga.wikistarwars.ui.components.SpacingItemDecoration
 import com.arthurgonzaga.wikistarwars.ui.util.navigateToDetailFragment
 
@@ -48,6 +50,7 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
         setupSearchBar()
+        setupThemeChanger()
 
         return binding.root
     }
@@ -93,6 +96,25 @@ class HomeFragment : Fragment() {
         }
         binding.row.favoriteListButton.setOnClickListener { _ ->
             navigateToFavoritesFragment()
+        }
+    }
+
+    private fun setupThemeChanger(){
+        val sharedPref = requireContext().getSharedPreferences(getString(R.string.theme_key), Context.MODE_PRIVATE)
+
+        val nextTheme = when(binding.header.changeColor.backgroundTintList?.defaultColor){
+            requireContext().getColor(R.color.yellow) -> MyThemes.YELLOW
+            requireContext().getColor(R.color.blue) -> MyThemes.BLUE
+            requireContext().getColor(R.color.red) -> MyThemes.RED
+            else -> MyThemes.YELLOW
+        }
+
+        binding.header.changeColor.setOnClickListener { _ ->
+            with(sharedPref.edit()){
+                putInt("theme", nextTheme.ordinal)
+                commit()
+            }
+            requireActivity().recreate()
         }
     }
 

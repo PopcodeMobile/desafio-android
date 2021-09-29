@@ -24,4 +24,5 @@
     <string name="weight_subtitle">%1$s kg</string>
 
     <string name="favorite_success">Character was favorited successfully</string>
+    <string name="theme_key">theme_key</string>
 </resources>

@@ -23,7 +23,24 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yellow</item>
         <item name="colorPrimaryVariant">@color/yellow</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="Theme.WikiStarWars.Blue" parent="Theme.WikiStarWars">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
+        <item name="colorSecondaryVariant">@color/red</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="Theme.WikiStarWars.Red" parent="Theme.WikiStarWars">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryVariant">@color/red</item>
+        <item name="colorSecondaryVariant">@color/yellow</item>
+        <item name="colorOnPrimary">@color/black_0.5</item>
     </style>
 
 </resources>

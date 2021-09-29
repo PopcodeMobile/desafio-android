@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -8,8 +9,8 @@
         android:id="@+id/star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/starwars"
         android:lineSpacingMultiplier="0.8"
+        android:text="@string/starwars"
         android:textAlignment="center"
         android:textAppearance="@style/LogoTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,5 +31,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/star"
         app:layout_constraintVertical_bias="0.53" />
+
+    <FrameLayout
+        android:id="@+id/changeColor"
+        android:layout_width="@dimen/medium"
+        android:layout_height="@dimen/medium"
+        android:background="@drawable/circle"
+        android:layout_marginEnd="@dimen/large"
+        android:backgroundTint="?colorSecondaryVariant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/normal"
+            android:layout_height="@dimen/normal"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:foreground="@drawable/ic_baseline_remove_red_eye_24"
+            android:foregroundTint="?attr/colorOnPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
