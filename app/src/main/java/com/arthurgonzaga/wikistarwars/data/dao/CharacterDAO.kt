@@ -17,6 +17,13 @@ interface CharacterDAO {
     @Query("SELECT id FROM characters WHERE is_favorite = 1")
     suspend fun getAllFavoritesIds(): List<Int>
 
+    @Query("SELECT id FROM characters WHERE is_favorite = 1 AND is_synchronized_with_backend = 0")
+    suspend fun getAllFavoritesIdsNotInSync(): List<Int>
+
+    @Query("UPDATE characters SET is_synchronized_with_backend = 1  WHERE id= :id")
+    suspend fun setInSync(id: Int)
+
+
     @Query("SELECT id FROM characters WHERE is_favorite = 1")
     fun getAllFavoritesIdsUpsert(): List<Int>
 

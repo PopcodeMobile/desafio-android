@@ -18,10 +18,12 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun favoriteCharacter(characterId: Int): Boolean {
         return try {
+            dao.favorite(characterId, false)
             val isSuccessful =  favoriteService.setFavorite(characterId).awaitResponse().isSuccessful
             dao.favorite(characterId, isSuccessful)
+
             isSuccessful
-        }catch (e: HttpException){
+        }catch (e: Exception){
             false
         }
     }
@@ -31,7 +33,15 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun synchronizeFavoriteCharacters(): Boolean {
-        TODO("Not yet implemented")
+        val ids = dao.getAllFavoritesIdsNotInSync()
+
+        val syncResults = mutableListOf<Boolean>()
+        ids.map {
+            val isSuccessful = favoriteService.setFavorite(it).awaitResponse().isSuccessful
+            dao.setInSync(it)
+            syncResults.add(isSuccessful)
+        }
+        return !syncResults.contains(false)
     }
 
 }

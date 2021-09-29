@@ -3,23 +3,29 @@ package com.arthurgonzaga.wikistarwars.ui
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.IdRes
 import com.arthurgonzaga.wikistarwars.R
 import com.arthurgonzaga.wikistarwars.ui.components.MyThemes
+import com.arthurgonzaga.wikistarwars.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private val vm : MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(getMyTheme())
         setContentView(R.layout.activity_main)
 
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
+        vm.inSync.observe(this){
+            if(it == true){
+                Toast.makeText(this, R.string.sync_success, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun getMyTheme(): Int{

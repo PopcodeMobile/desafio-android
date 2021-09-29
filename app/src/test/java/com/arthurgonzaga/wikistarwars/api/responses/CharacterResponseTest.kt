@@ -20,7 +20,7 @@ class CharacterResponseTest {
         )
 
         // When
-        val specieId = characterResponse.specieId
+        val specieId = characterResponse.getSpecieId()
 
         // Then
         assertThat(specieId).isEqualTo(null)
@@ -40,7 +40,7 @@ class CharacterResponseTest {
         )
 
         // When
-        val specieId = characterResponse.specieId
+        val specieId = characterResponse.getSpecieId()
 
         // Then
         assertThat(specieId).isEqualTo(1)
@@ -57,7 +57,7 @@ class CharacterResponseTest {
             )
 
         // When
-        val planetId = characterResponse.homeWorldId
+        val planetId = characterResponse.getHomeWorldId()
 
         // Then
         assertThat(planetId).isEqualTo(10)
