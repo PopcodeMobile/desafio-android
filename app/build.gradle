@@ -63,6 +63,7 @@ dependencies {
     def room_version = "2.3.0"
     def lifecycle_version = "2.2.0"
     def rxjava_version = "3.0.0"
+    def rv_animators_version = "4.0.2"
 
     // Retrofit
 
@@ -102,6 +103,10 @@ dependencies {
     //RxJava
     implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
     implementation "io.reactivex.rxjava3:rxandroid:$rxjava_version"
+
+    // RecyclerView Animators
+
+    implementation "jp.wasabeef:recyclerview-animators:$rv_animators_version"
 
     // Testing
 

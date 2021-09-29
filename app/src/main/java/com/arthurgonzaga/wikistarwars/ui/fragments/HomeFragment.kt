@@ -24,6 +24,7 @@ import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.ui.components.MyThemes
 import com.arthurgonzaga.wikistarwars.ui.components.SpacingItemDecoration
 import com.arthurgonzaga.wikistarwars.ui.util.navigateToDetailFragment
+import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 
 
 /**
@@ -75,6 +76,7 @@ class HomeFragment : Fragment() {
                 startPostponedEnterTransition()
                 true
             }
+            itemAnimator = ScaleInAnimator()
 
             val space = requireContext().resources.getDimensionPixelSize(R.dimen.normal)
             val spanCount = requireContext().resources.getInteger(R.integer.rv_column_count)
