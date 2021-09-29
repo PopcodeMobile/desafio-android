@@ -1,0 +1,132 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.arthurgonzaga.wikistarwars"
+        minSdk 23
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Exporting room schema
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+
+    def retrofit_verion = "2.9.0"
+    def gson_version = "2.9.0"
+    def paging_version = "3.0.1"
+    def room_version = "2.3.0"
+    def lifecycle_version = "2.2.0"
+    def rxjava_version = "3.0.0"
+    def rv_animators_version = "4.0.2"
+
+    // Retrofit
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_verion"
+    implementation "com.squareup.retrofit2:converter-gson:$gson_version"
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:$rxjava_version"
+
+    // Navigation Component
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+
+    // Paging 3
+
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation "androidx.paging:paging-rxjava3:$paging_version"
+
+    // Room
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // Hilt
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+
+    // Lifecycle
+
+    implementation  "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.3.1"
+
+
+    //RxJava
+    implementation "io.reactivex.rxjava3:rxjava:$rxjava_version"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxjava_version"
+
+    // RecyclerView Animators
+
+    implementation "jp.wasabeef:recyclerview-animators:$rv_animators_version"
+
+    // Testing
+
+    def mockito_version = "2.21.0"
+    def arch_version = "2.1.0"
+    def fragment_version = "1.4.0-alpha09"
+    def truth_version = "1.1.3"
+
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "androidx.arch.core:core-testing:$arch_version"
+    testImplementation "com.google.truth:truth:$truth_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    androidTestImplementation "com.google.truth:truth:$truth_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
+}

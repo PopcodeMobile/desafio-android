@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="@dimen/large"
+    android:background="?attr/backgroundColor"
+    tools:context=".ui.fragments.FavoriteListFragment">
+
+    <TextView
+        android:id="@+id/heading_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/starwars_jedi"
+        android:text="@string/favorites"
+        android:layout_marginTop="@dimen/medium"
+        android:textAppearance="@style/HeadingTextAppearance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="64dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="@dimen/medium"
+        android:alpha="0.5"
+        android:background="@drawable/divider_background"
+        app:layout_constraintEnd_toEndOf="@+id/heading_text_view"
+        app:layout_constraintStart_toStartOf="@+id/heading_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/heading_text_view" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/medium"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        app:spanCount="@integer/rv_column_count"
+        tools:itemCount="8"
+        tools:layout_editor_absoluteX="32dp"
+        tools:listitem="@layout/rv_character_item" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

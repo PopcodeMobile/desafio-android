@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name" translatable="false">WikiStarWars</string>
+    <string name="app_description">the characters wiki</string>
+
+    <string name="starwars" translatable="false">Star\nWars</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="content_description_favorite_button">Favorite</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="hair_color">Hair color</string>
+    <string name="birth_year">Birth year</string>
+    <string name="eye_color">Eye color</string>
+    <string name="skin_color">Skin color</string>
+    <string name="gender">Gender</string>
+    <string name="homeworld">Homeworld</string>
+    <string name="specie">Specie</string>
+    <string name="favorites">Favorites</string>
+    <string name="no_favorites">You have not favorite\nany character yet</string>
+    <string name="search">Search</string>
+    <string name="content_description_favorite_list_button">Favorite list</string>
+    <string name="rv_subtitle">%1$s cm  -  %2$s kg</string>
+    <string name="height_subtitle">%1$s cm</string>
+    <string name="weight_subtitle">%1$s kg</string>
+
+    <string name="favorite_success">Character was favorited successfully</string>
+    <string name="sync_success">Favorite characters was synchronized successfully</string>
+    <string name="theme_key">theme_key</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LogoTextAppearance">
+        <item name="android:fontFamily">@font/starwars_jedi</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">@dimen/logo</item>
+    </style>
+
+    <style name="TitleTextAppearance">
+        <item name="android:fontFamily">@font/montserrat_semi_bold</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:textSize">@dimen/title</item>
+    </style>
+
+    <style name="HeadingTextAppearance">
+        <item name="android:fontFamily">@font/montserrat_extra_bold</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">@dimen/heading</item>
+    </style>
+
+</resources>
