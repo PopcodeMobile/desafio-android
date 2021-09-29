@@ -59,8 +59,7 @@ class FavoriteListFragment : Fragment() {
                 context = requireContext(),
                 navigateToDetail = ::navigateToDetailFragment,
                 favoriteCharacter = { id, isFavorite ->
-                    if (!isFavorite) vm.unFavorite(id)
-
+                    if (!isFavorite) vm.unFavoriteCharacter(id)
                 }
             )
 

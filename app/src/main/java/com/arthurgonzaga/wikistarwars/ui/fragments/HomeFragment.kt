@@ -1,6 +1,7 @@
 package com.arthurgonzaga.wikistarwars.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -46,9 +48,13 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
         setupSearchBar()
-        observeChanges()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeChanges()
     }
 
     private fun setupRecyclerView(){
@@ -85,6 +91,9 @@ class HomeFragment : Fragment() {
             }
             false
         }
+        binding.row.favoriteListButton.setOnClickListener { _ ->
+            navigateToFavoritesFragment()
+        }
     }
 
     private fun observeChanges(){
@@ -94,8 +103,11 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.row.favoriteListButton.setOnClickListener { _ ->
-            navigateToFavoritesFragment()
+        vm.newFavorite.observe(viewLifecycleOwner){ isSuccessful ->
+            Log.d(TAG, "isSuccessful: $isSuccessful")
+            if(isSuccessful == true){
+                Toast.makeText(requireContext(), R.string.favorite_success, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -116,4 +128,8 @@ class HomeFragment : Fragment() {
         R.id.goToDetailFragmentFromHome
     )
 
+
+    companion object {
+        private const val TAG = "HomeFragment"
+    }
 }

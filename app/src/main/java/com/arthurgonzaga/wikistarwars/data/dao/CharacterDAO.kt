@@ -8,7 +8,7 @@ import androidx.room.*
 
 
 @Dao
-interface CharacterDAO{
+interface CharacterDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(characterEntity: List<CharacterEntity>): List<Long>
@@ -23,8 +23,8 @@ interface CharacterDAO{
     @Query("SELECT * FROM CHARACTERS WHERE is_favorite = 1")
     fun getAllFavoriteCharacters(): PagingSource<Int, CharacterEntity>
 
-    @Query("UPDATE characters SET is_favorite = 1 WHERE id= :id")
-    suspend fun favorite(id: Int)
+    @Query("UPDATE characters SET is_favorite = 1, is_synchronized_with_backend = :isSynchronized  WHERE id= :id")
+    suspend fun favorite(id: Int, isSynchronized: Boolean = false)
 
     @Query("UPDATE characters SET is_favorite = 0 WHERE id = :id")
     suspend fun unFavorite(id: Int)
@@ -32,7 +32,7 @@ interface CharacterDAO{
     @Query("SELECT * FROM characters")
     fun getAllCharacters(): PagingSource<Int, CharacterEntity>
 
-    @Query("DELETE FROM characters")
+    @Query("DELETE FROM characters WHERE is_favorite = 0")
     fun clearCharacters()
 
     @Query("UPDATE characters SET is_favorite = 1 WHERE id IN (:ids)")

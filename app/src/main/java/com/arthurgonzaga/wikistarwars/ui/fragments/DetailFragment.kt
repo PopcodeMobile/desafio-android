@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.trace
 import androidx.core.view.forEach
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,7 @@ import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.databinding.FragmentDetailBinding
 import com.arthurgonzaga.wikistarwars.databinding.FragmentHomeBinding
 import com.arthurgonzaga.wikistarwars.ui.components.CharacterInfo
+import com.arthurgonzaga.wikistarwars.util.setImage
 import com.arthurgonzaga.wikistarwars.viewmodel.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -44,6 +46,26 @@ class DetailFragment : Fragment() {
 
         binding.character = args.character
 
+        val characterId = args.character.id
+        binding.favoriteButton.setOnClickListener {
+            if (args.character.isFavorite) {
+                vm.unFavoriteCharacter(characterId)
+                binding.favoriteButton.setImage(false)
+                args.character.isFavorite = false
+            } else {
+                vm.favoriteCharacter(characterId)
+                binding.favoriteButton.setImage(true)
+                args.character.isFavorite = true
+            }
+        }
+
+        setupAnimations()
+
+        return binding.root
+    }
+
+
+    fun setupAnimations() {
         val animation = TransitionInflater.from(requireContext()).inflateTransition(
             android.R.transition.move
         )
@@ -53,11 +75,9 @@ class DetailFragment : Fragment() {
         lifecycleScope.launch {
             showInfosWithAnimation()
         }
-
-        return binding.root
     }
 
-    private suspend fun showInfosWithAnimation(){
+    private suspend fun showInfosWithAnimation() {
         delay(260)
         binding.gridLayout.forEach { info ->
             (info as CharacterInfo)

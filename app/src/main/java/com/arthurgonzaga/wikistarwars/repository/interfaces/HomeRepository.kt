@@ -9,5 +9,4 @@ interface HomeRepository {
 
     fun getCharacters(query: String): LiveData<PagingData<CharacterEntity>>
 
-    suspend fun favoriteCharacter(characterId: Int, isFavorite: Boolean)
 }

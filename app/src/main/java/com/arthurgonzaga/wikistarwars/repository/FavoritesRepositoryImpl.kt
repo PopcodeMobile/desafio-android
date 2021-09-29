@@ -22,8 +22,4 @@ class FavoritesRepositoryImpl @Inject constructor(
             db.charactersDAO().getAllFavoriteCharacters()
         }.liveData
     }
-
-    override suspend fun unFavorite(characterId: Int) {
-        db.charactersDAO().unFavorite(characterId)
-    }
 }

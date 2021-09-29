@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.arthurgonzaga.wikistarwars.repository.interfaces.FavoritesRepository
 import com.arthurgonzaga.wikistarwars.repository.interfaces.HomeRepository
+import com.arthurgonzaga.wikistarwars.repository.interfaces.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -12,14 +13,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    val repository: FavoritesRepository
+    favoritesRepository: FavoritesRepository,
+    private val mainRepository: MainRepository
 ): ViewModel() {
 
-    val favoritesCharacters = repository.getFavoriteCharacters().cachedIn(viewModelScope)
+    val favoritesCharacters = favoritesRepository.getFavoriteCharacters().cachedIn(viewModelScope)
 
-    fun unFavorite(id: Int){
+    fun unFavoriteCharacter(id: Int){
         viewModelScope.launch {
-            repository.unFavorite(id)
+            mainRepository.unFavoriteCharacter(id)
         }
     }
 }

@@ -37,13 +37,4 @@ class HomeRepositoryImpl @Inject constructor(
             )
         ).liveData
     }
-
-
-    override suspend fun favoriteCharacter(characterId: Int, isFavorite: Boolean) {
-        if (isFavorite) {
-            database.charactersDAO().favorite(characterId)
-        } else {
-            database.charactersDAO().unFavorite(characterId)
-        }
-    }
 }

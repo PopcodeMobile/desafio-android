@@ -20,4 +20,6 @@
     <string name="search">Search</string>
     <string name="content_description_favorite_list_button">Favorite list</string>
     <string name="rv_subtitle">%1$s cm  -  %2$s kg</string>
+
+    <string name="favorite_success">Character was favorited successfully</string>
 </resources>

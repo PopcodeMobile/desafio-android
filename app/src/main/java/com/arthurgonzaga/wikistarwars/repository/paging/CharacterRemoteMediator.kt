@@ -103,10 +103,12 @@ class CharacterRemoteMediator(
                 // clear all the rows with isFavorite = false
                 // update all the rows with isFavorite = true
                 database.charactersDAO().upsert(characters)
+                // FIXME: 9/28/2021  (need to separate the favorites from the CharacterEntity model)
+                // BUG: it shows the search and the favorites, even if they has anything to do with the query
             }
 
             val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
-            var nextKey = if (characters.isEmpty()) null else page + 1
+            val nextKey = if (characters.isEmpty()) null else page + 1
 
             val keys = characters.map {
                 RemoteKeys(characterId = it.id, prevKey = prevKey, nextKey = nextKey)

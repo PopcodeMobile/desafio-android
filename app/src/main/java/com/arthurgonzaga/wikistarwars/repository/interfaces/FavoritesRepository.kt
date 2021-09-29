@@ -7,7 +7,4 @@ import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 interface FavoritesRepository {
 
     fun getFavoriteCharacters(): LiveData<PagingData<CharacterEntity>>
-
-    suspend fun unFavorite(characterId: Int)
-
 }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arthurgonzaga.wikistarwars.R
 import com.arthurgonzaga.wikistarwars.data.model.CharacterEntity
 import com.arthurgonzaga.wikistarwars.databinding.RvCharacterItemBinding
+import com.arthurgonzaga.wikistarwars.util.setImage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -82,14 +83,6 @@ class CharacterAdapter(
         }
     }
 
-    private fun ImageButton.setImage(isFavorite: Boolean) {
-        val drawable = ResourcesCompat.getDrawable(
-            context.resources,
-            if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border,
-            context.theme
-        )
-        this.setImageDrawable(drawable)
-    }
 
     class VH(val binding: RvCharacterItemBinding) : RecyclerView.ViewHolder(binding.root)
 

@@ -28,7 +28,7 @@ data class CharacterEntity(
     @ColumnInfo(name = "home_world_name")
     val homeWoldName: String? = null,
     @ColumnInfo(name = "is_favorite")
-    val isFavorite: Boolean = false,
+    var isFavorite: Boolean = false,
     @ColumnInfo(name = "is_synchronized_with_backend")
     val isSynchronizedWithBackend: Boolean = false,
 ): Serializable
