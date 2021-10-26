@@ -4,4 +4,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="favorities">Favoritos</string>
+    <string name="loading">Carregando...</string>
+    <string name="details">Detalhes</string>
+    <string name="height">Altura</string>
+    <string name="mass">Peso</string>
+    <string name="gender">Gênero</string>
+    <string name="birth_year">Ano de aniversário</string>
+    <string name="hair_color">Cor dos olhos</string>
+    <string name="skin_color">Cor da pele</string>
+    <string name="home_world">Planeta natal</string>
+    <string name="species">Espécies</string>
 </resources>

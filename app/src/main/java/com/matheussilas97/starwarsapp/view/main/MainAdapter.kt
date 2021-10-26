@@ -14,9 +14,9 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(i: CharactersDetailsResponse) {
             binding.txtName.text = i.name
-            binding.txtGender.text = i.gender
-            binding.txtHeight.text = i.height
-            binding.txtMass.text = i.mass
+            binding.txtGender.text = "Gênero: ${i.gender}"
+            binding.txtHeight.text = "Altura: ${i.height}"
+            binding.txtMass.text = "Peso: ${i.mass}"
             binding.layout.setOnClickListener {
                 onItemClickLister?.onClick(1)
             }
