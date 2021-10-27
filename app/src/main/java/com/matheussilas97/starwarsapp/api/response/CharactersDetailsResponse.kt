@@ -31,6 +31,9 @@ data class CharactersDetailsResponse(
     @SerializedName("birth_year")
     val birthYear: String,
 
+    @SerializedName("species")
+    val species: List<String>,
+
     @SerializedName("homeworld")
     val homeworld: String,
 

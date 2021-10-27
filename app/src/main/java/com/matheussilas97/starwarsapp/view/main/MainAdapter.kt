@@ -14,11 +14,11 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(i: CharactersDetailsResponse) {
             binding.txtName.text = i.name
-            binding.txtGender.text = "Gênero: ${i.gender}"
-            binding.txtHeight.text = "Altura: ${i.height}"
-            binding.txtMass.text = "Peso: ${i.mass}"
+            binding.txtGender.text = "Gender: ${i.gender}"
+            binding.txtHeight.text = "Height: ${i.height}"
+            binding.txtMass.text = "Mass: ${i.mass}"
             binding.layout.setOnClickListener {
-                onItemClickLister?.onClick(1)
+                onItemClickLister?.onClick(i.url)
             }
         }
     }
@@ -42,7 +42,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     }
 
     interface OnItemClickListener {
-        fun onClick(id: Int)
+        fun onClick(url: String)
     }
 
     private var onItemClickLister: OnItemClickListener? = null

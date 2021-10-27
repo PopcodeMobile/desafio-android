@@ -13,6 +13,7 @@ import com.matheussilas97.starwarsapp.R
 import com.matheussilas97.starwarsapp.api.response.CharactersDetailsResponse
 import com.matheussilas97.starwarsapp.databinding.FragmentMainBinding
 import com.matheussilas97.starwarsapp.utils.BaseFragment
+import com.matheussilas97.starwarsapp.utils.Constants
 import com.matheussilas97.starwarsapp.view.charactersdetails.DetailsActivity
 
 
@@ -40,7 +41,7 @@ class MainFragment : BaseFragment() {
                 if (it != null) {
                     buildList(it.results)
                 } else {
-                    setNoResultAdapter(binding.recyclerMain, "Nenhum personagem encontrado")
+                    setNoResultAdapter(binding.recyclerMain, "No characters found")
                 }
             })
     }
@@ -51,8 +52,10 @@ class MainFragment : BaseFragment() {
         binding.recyclerMain.adapter = adapter
         adapter.updateTask(list)
         adapter.addOnItemClickListener(object : MainAdapter.OnItemClickListener {
-            override fun onClick(id: Int) {
-                startActivity(Intent(requireContext(), DetailsActivity::class.java))
+            override fun onClick(url: String) {
+                val intent = Intent(requireContext(), DetailsActivity::class.java)
+                intent.putExtra(Constants.URL, url)
+                startActivity(intent)
             }
 
         })

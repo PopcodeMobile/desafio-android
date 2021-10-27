@@ -206,8 +206,10 @@
                     app:layout_constraintTop_toBottomOf="@id/txt_homeworld" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_species"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/info_species" />
