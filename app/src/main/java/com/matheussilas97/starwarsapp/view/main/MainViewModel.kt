@@ -7,6 +7,7 @@ import com.matheussilas97.starwarsapp.R
 import com.matheussilas97.starwarsapp.api.Apifactory
 import com.matheussilas97.starwarsapp.api.response.CharactersListResponse
 import com.matheussilas97.starwarsapp.api.service.ApiServices
+import com.matheussilas97.starwarsapp.utils.PaginationScrollListener
 import com.matheussilas97.starwarsapp.utils.Utils
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,31 +17,41 @@ class MainViewModel : ViewModel() {
 
     val services = Apifactory.create(ApiServices::class.java)
 
-    fun listCharacters(page: Int, context: Context): MutableLiveData<CharactersListResponse> {
-        val result = MutableLiveData<CharactersListResponse>()
+    private var _lastPage: Long = 9
+    private var _currentPage: Long = 1
+    val listCharacters = MutableLiveData<CharactersListResponse>()
 
+    fun getListCharacter(context: Context) {
         val dialog = Utils.showLoading(context, R.string.loading)
-        services.listCharacters(page).enqueue(object : Callback<CharactersListResponse> {
+        services.listCharacters(_currentPage).enqueue(object : Callback<CharactersListResponse> {
             override fun onResponse(
                 call: Call<CharactersListResponse>,
                 response: Response<CharactersListResponse>
             ) {
                 if (response.isSuccessful) {
-                    result.value = response.body()
+                    _currentPage++
+                    listCharacters.value = response.body()
                     dialog.dismiss()
                 } else {
-                    result.value = null!!
+                    val a = ""
                     dialog.dismiss()
                 }
             }
 
             override fun onFailure(call: Call<CharactersListResponse>, t: Throwable) {
-                result.value = null!!
+                val a = ""
                 dialog.dismiss()
             }
 
         })
 
-        return result
+    }
+
+    fun isLastPage(): Boolean {
+        return _currentPage < _lastPage
+    }
+
+    fun clearCurrentPage() {
+        this._currentPage = PaginationScrollListener.PAGE_START.toLong()
     }
 }

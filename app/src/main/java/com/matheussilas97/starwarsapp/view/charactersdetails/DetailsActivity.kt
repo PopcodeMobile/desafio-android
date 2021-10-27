@@ -40,7 +40,7 @@ class DetailsActivity : BaseActivity() {
     }
 
     private fun setDetails(url: String) {
-        viewModel.getDetails(url).observe(this, Observer {
+        viewModel.getDetails(url, this).observe(this, Observer {
             if (it != null) {
                 binding.txtName.text = it.name
                 binding.txtGender.text = it.gender

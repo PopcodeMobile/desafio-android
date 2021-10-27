@@ -8,7 +8,7 @@ import com.matheussilas97.starwarsapp.databinding.ItemCharactersListBinding
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
-    private var charactersList: List<CharactersDetailsResponse> = ArrayList()
+    private var charactersList: ArrayList<CharactersDetailsResponse> = ArrayList()
 
     inner class MainViewHolder(val binding: ItemCharactersListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -36,9 +36,15 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
     override fun getItemCount(): Int = charactersList.size
 
 
-    fun updateTask(itemList: List<CharactersDetailsResponse>) {
-        this.charactersList = itemList
+    fun updateTask(itemList: ArrayList<CharactersDetailsResponse>) {
+        charactersList.addAll(itemList)
         notifyDataSetChanged()
+    }
+
+
+    fun clear() {
+        charactersList.clear()
+        // notifyDataSetChanged()
     }
 
     interface OnItemClickListener {

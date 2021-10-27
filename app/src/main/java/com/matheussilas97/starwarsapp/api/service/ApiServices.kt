@@ -13,7 +13,7 @@ import retrofit2.http.Url
 interface ApiServices {
 
     @GET("people/")
-    fun listCharacters(@Query("page")page: Int): Call<CharactersListResponse>
+    fun listCharacters(@Query("page")page: Long): Call<CharactersListResponse>
 
     @GET
     fun details(@Url url: String): Call<CharactersDetailsResponse>

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class CharactersListResponse(
 
     @SerializedName("count")
-    val count: Int,
+    val count: Long,
 
     @SerializedName("next")
     val next: String,
@@ -14,6 +14,6 @@ data class CharactersListResponse(
     val previous: String,
 
     @SerializedName("results")
-    val results: List<CharactersDetailsResponse>
+    val results: ArrayList<CharactersDetailsResponse>
 
 )

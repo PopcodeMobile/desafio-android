@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.matheussilas97.starwarsapp.R
 import com.matheussilas97.starwarsapp.api.response.CharactersDetailsResponse
 import com.matheussilas97.starwarsapp.databinding.FragmentMainBinding
 import com.matheussilas97.starwarsapp.utils.BaseFragment
 import com.matheussilas97.starwarsapp.utils.Constants
+import com.matheussilas97.starwarsapp.utils.PaginationScrollListener
 import com.matheussilas97.starwarsapp.view.charactersdetails.DetailsActivity
 
 
@@ -23,34 +25,41 @@ class MainFragment : BaseFragment() {
     private lateinit var viewModel: MainViewModel
     private var pageNumber = 1
 
+    private lateinit var adapter: MainAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        viewModel.getListCharacter(requireContext())
 
         observer()
 
-        return binding.root
-    }
 
-    private fun observer() {
-        viewModel.listCharacters(pageNumber, requireContext())
-            .observe(viewLifecycleOwner, Observer {
-                if (it != null) {
-                    buildList(it.results)
-                } else {
-                    setNoResultAdapter(binding.recyclerMain, "No characters found")
-                }
-            })
-    }
+        binding.recyclerMain.setHasFixedSize(true)
+        val layoutManager =
+            GridLayoutManager(requireContext(), 1, GridLayoutManager.VERTICAL, false)
+        binding.recyclerMain.layoutManager = layoutManager
+        adapter = MainAdapter()
 
-    private fun buildList(list: List<CharactersDetailsResponse>) {
-        val adapter = MainAdapter()
-        binding.recyclerMain.layoutManager = LinearLayoutManager(requireContext())
+        adapter.clear()
+        viewModel.clearCurrentPage()
         binding.recyclerMain.adapter = adapter
-        adapter.updateTask(list)
+
+
+        binding.recyclerMain.addOnScrollListener(object :
+            PaginationScrollListener(layoutManager) {
+            override fun loadMoreItems() {
+                if (viewModel.isLastPage()) {
+                    viewModel.getListCharacter(requireContext())
+                }else{
+                    val a = ""
+                }
+            }
+
+        })
         adapter.addOnItemClickListener(object : MainAdapter.OnItemClickListener {
             override fun onClick(url: String) {
                 val intent = Intent(requireContext(), DetailsActivity::class.java)
@@ -59,6 +68,33 @@ class MainFragment : BaseFragment() {
             }
 
         })
+
+
+
+//        buildList()
+
+
+
+        return binding.root
+    }
+
+    private fun observer() {
+        viewModel.listCharacters.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+               adapter.updateTask(it.results)
+            } else {
+                setNoResultAdapter(binding.recyclerMain, "No characters found")
+            }
+        })
+    }
+
+    private fun buildList() {
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+      //
     }
 
 
