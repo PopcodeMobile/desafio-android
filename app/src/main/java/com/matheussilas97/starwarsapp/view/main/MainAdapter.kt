@@ -44,7 +44,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     fun clear() {
         charactersList.clear()
-        // notifyDataSetChanged()
+        notifyDataSetChanged()
     }
 
     interface OnItemClickListener {

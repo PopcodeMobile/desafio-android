@@ -44,7 +44,6 @@ class MainViewModel : ViewModel() {
             }
 
         })
-
     }
 
     fun isLastPage(): Boolean {

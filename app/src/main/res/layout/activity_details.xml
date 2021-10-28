@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".view.charactersdetails.DetailsActivity">
 
     <androidx.core.widget.NestedScrollView
@@ -22,7 +23,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:navigationIcon="@drawable/ic_back"
-                app:title="@string/details" />
+                app:title="@string/details"
+                app:titleTextColor="@color/yellow" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -38,7 +40,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@id/favorite"
@@ -60,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="@string/height"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_name" />
@@ -69,6 +71,7 @@
                     android:id="@+id/txt_height"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/info_height" />
 
@@ -78,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/mass"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_height" />
@@ -87,6 +90,7 @@
                     android:id="@+id/txt_mass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/info_mass" />
 
@@ -95,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/info_height" />
@@ -104,6 +108,7 @@
                     android:id="@+id/txt_gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/info_gender" />
 
@@ -113,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/birth_year"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_gender" />
@@ -122,6 +127,7 @@
                     android:id="@+id/txt_year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/info_year" />
 
@@ -131,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="@string/hair_color"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@id/info_skin_color"
                     app:layout_constraintStart_toStartOf="parent"
@@ -141,6 +147,7 @@
                     android:id="@+id/txt_hair_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
                     app:layout_constraintEnd_toEndOf="@id/info_hair_color"
                     app:layout_constraintStart_toStartOf="@id/info_hair_color"
                     app:layout_constraintTop_toBottomOf="@id/info_hair_color" />
@@ -151,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="@string/skin_color"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@id/info_eye_color"
                     app:layout_constraintStart_toEndOf="@id/info_hair_color"
@@ -161,6 +168,7 @@
                     android:id="@+id/txt_skin_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
                     app:layout_constraintEnd_toEndOf="@id/info_skin_color"
                     app:layout_constraintStart_toStartOf="@id/info_skin_color"
                     app:layout_constraintTop_toBottomOf="@id/info_skin_color" />
@@ -171,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="@string/hair_color"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/info_skin_color"
@@ -181,10 +189,21 @@
                     android:id="@+id/txt_eye_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
                     app:layout_constraintEnd_toEndOf="@id/info_eye_color"
                     app:layout_constraintStart_toStartOf="@id/info_eye_color"
                     app:layout_constraintTop_toBottomOf="@id/info_eye_color" />
 
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/yellow"
+                    android:textColor="@color/yellow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_eye_color" />
 
                 <TextView
                     android:id="@+id/info_homeworld"
@@ -192,15 +211,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20sp"
                     android:text="@string/home_world"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_eye_color" />
+                    app:layout_constraintTop_toBottomOf="@id/view" />
 
                 <TextView
                     android:id="@+id/txt_homeworld"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/info_homeworld" />
 
@@ -210,7 +230,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20sp"
                     android:text="@string/species"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_homeworld" />

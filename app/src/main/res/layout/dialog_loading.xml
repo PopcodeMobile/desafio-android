@@ -41,7 +41,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/laLoading"
                     android:textAlignment="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/blue" />
 
             </RelativeLayout>
 

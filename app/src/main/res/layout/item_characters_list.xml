@@ -4,14 +4,15 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp">
+    android:background="@color/background"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/txt_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Nameklafd"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="jaksfjçaklsfj"
+        android:textColor="@color/yellow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_name" />
 
@@ -31,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="akljsdfkajsfajsç"
+        android:textColor="@color/yellow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_gender" />
 
@@ -39,8 +42,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="jafsdlfjakçs"
+        android:textColor="@color/yellow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_height" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/yellow"
+        android:textColor="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_mass" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
