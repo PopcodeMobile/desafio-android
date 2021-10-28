@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.matheussilas97.starwarsapp.R
 import com.matheussilas97.starwarsapp.api.response.SpeciesResponse
+import com.matheussilas97.starwarsapp.database.model.FavoriteModel
 import com.matheussilas97.starwarsapp.databinding.ActivityDetailsBinding
 import com.matheussilas97.starwarsapp.utils.BaseActivity
 import com.matheussilas97.starwarsapp.utils.Constants
@@ -22,6 +23,8 @@ class DetailsActivity : BaseActivity() {
 
     private var listSpecies = mutableListOf<String>()
 
+    private var urlCharacter = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailsBinding.inflate(layoutInflater)
@@ -35,7 +38,9 @@ class DetailsActivity : BaseActivity() {
             showToast(getString(R.string.error))
             onBackPressed()
         }
+
         onClick()
+        observer()
 
     }
 
@@ -51,6 +56,8 @@ class DetailsActivity : BaseActivity() {
                 binding.txtSkinColor.text = it.skinColor
                 binding.txtYear.text = it.birthYear
                 binding.txtHomeworld.text = ""
+
+                urlCharacter = it.url
 
                 if (it.homeworld.isNotEmpty()) {
                     getHomeWolrd(it.homeworld)
@@ -97,9 +104,33 @@ class DetailsActivity : BaseActivity() {
         })
     }
 
+    private fun saveFavorite() {
+        viewModel.postFavorite(binding.txtName.text.toString()).observe(this, Observer {
+            showToast(it)
+        })
+
+    }
+
+    private fun observer() {
+        viewModel.saveStatus.observe(this, Observer {
+            if (it) {
+                val model = FavoriteModel(
+                    binding.txtName.text.toString(),
+                    binding.txtName.text.toString(),
+                    urlCharacter
+                )
+                viewModel.saveClass(model)
+            }
+        })
+    }
+
     private fun onClick() {
         binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
+        }
+
+        binding.favorite.setOnClickListener {
+            saveFavorite()
         }
     }
 }

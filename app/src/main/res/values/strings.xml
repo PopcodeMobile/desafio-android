@@ -12,6 +12,12 @@
     <string name="skin_color">Skin color</string>
     <string name="home_world">Homeworld</string>
     <string name="species">Species</string>
+    <string name="no_favorites">No favorite characters</string>
     <string name="no_data">Data not found</string>
     <string name="error">An unexpected error happened</string>
+    <string name="success_favorite">Favorite character</string>
+    <string name="favorite">Favorite</string>
+    <string name="unfavor_msg">Do you want to unfavor this character?</string>
+    <string name="disfavor">Disfavor</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -69,12 +69,6 @@ class MainFragment : BaseFragment() {
 
         })
 
-
-
-//        buildList()
-
-
-
         return binding.root
     }
 
@@ -87,15 +81,4 @@ class MainFragment : BaseFragment() {
             }
         })
     }
-
-    private fun buildList() {
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-      //
-    }
-
-
 }
