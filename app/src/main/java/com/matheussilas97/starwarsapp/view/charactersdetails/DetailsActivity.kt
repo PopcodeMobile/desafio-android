@@ -10,6 +10,8 @@ import com.matheussilas97.starwarsapp.database.model.FavoriteModel
 import com.matheussilas97.starwarsapp.databinding.ActivityDetailsBinding
 import com.matheussilas97.starwarsapp.utils.BaseActivity
 import com.matheussilas97.starwarsapp.utils.Constants
+import com.matheussilas97.starwarsapp.utils.Utils
+import kotlinx.coroutines.*
 
 class DetailsActivity : BaseActivity() {
 
@@ -120,7 +122,12 @@ class DetailsActivity : BaseActivity() {
 
     private fun saveFavorite() {
         viewModel.postFavorite(binding.txtName.text.toString()).observe(this, Observer {
-            showToast(it)
+            if (it == "May the force be with you") {
+                Utils.showDialogWarning(R.drawable.rebels, it, this)
+            } else {
+                Utils.showDialogWarning(R.drawable.empire, it, this)
+            }
+
         })
 
     }
