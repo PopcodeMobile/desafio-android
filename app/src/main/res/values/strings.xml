@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">StarWars APP</string>
     <string name="home">Home</string>
+    <string name="characters">Characters</string>
     <string name="favorities">Favorites</string>
     <string name="loading">Loading...</string>
     <string name="details">Details</string>
@@ -14,7 +15,7 @@
     <string name="home_world">Homeworld</string>
     <string name="species">Species</string>
     <string name="no_favorites">No favorite characters</string>
-    <string name="no_species">No species found</string>
+    <string name="no_species">No specie found</string>
     <string name="no_data">Data not found</string>
     <string name="error">An unexpected error happened</string>
     <string name="success_favorite">Favorite character</string>
@@ -22,4 +23,5 @@
     <string name="unfavor_msg">Do you want to unfavor this character?</string>
     <string name="disfavor">Disfavor</string>
     <string name="cancel">Cancel</string>
+    <string name="favorite_characters">Favorite characters</string>
 </resources>

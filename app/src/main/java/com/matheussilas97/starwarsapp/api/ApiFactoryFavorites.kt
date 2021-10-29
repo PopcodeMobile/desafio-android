@@ -1,4 +1,4 @@
-package com.matheussilas97.starwarsapp.api.favorites
+package com.matheussilas97.starwarsapp.api
 
 import com.matheussilas97.starwarsapp.utils.Constants
 import okhttp3.Interceptor

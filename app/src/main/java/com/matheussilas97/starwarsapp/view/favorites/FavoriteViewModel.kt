@@ -4,17 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
-import com.matheussilas97.starwarsapp.api.favorites.ApiFactoryFavorites
-import com.matheussilas97.starwarsapp.api.favorites.FavoriteErrorResponse
-import com.matheussilas97.starwarsapp.api.favorites.FavoritesResponse
-import com.matheussilas97.starwarsapp.api.favorites.FavoritesService
+import com.matheussilas97.starwarsapp.api.ApiFactoryFavorites
+import com.matheussilas97.starwarsapp.api.service.FavoritesService
 import com.matheussilas97.starwarsapp.database.model.FavoriteModel
 import com.matheussilas97.starwarsapp.database.repository.FavoriteRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class FavoriteViewModel (application: Application) : AndroidViewModel(application) {
 

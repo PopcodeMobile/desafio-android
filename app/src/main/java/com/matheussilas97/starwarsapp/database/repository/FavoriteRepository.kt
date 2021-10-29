@@ -1,7 +1,6 @@
 package com.matheussilas97.starwarsapp.database.repository
 
 import android.content.Context
-import com.matheussilas97.starwarsapp.api.favorites.FavoritesResponse
 import com.matheussilas97.starwarsapp.database.MainDataBase
 import com.matheussilas97.starwarsapp.database.model.FavoriteModel
 

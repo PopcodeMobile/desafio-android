@@ -1,4 +1,4 @@
-package com.matheussilas97.starwarsapp.api.favorites
+package com.matheussilas97.starwarsapp.api.response
 
 import com.google.gson.annotations.SerializedName
 
