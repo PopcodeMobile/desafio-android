@@ -13,9 +13,9 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>
     inner class FavoriteViewHolder(val binding: ItemFavoriteBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(i: FavoriteModel) {
-            binding.txtName.text = i.name
+            binding.txtName.text = i.idName
             binding.delete.setOnClickListener {
-                onItemClickLister?.onDelete(i.id)
+                onItemClickLister?.onDelete(i.idName)
             }
             binding.layout.setOnClickListener {
                 onItemClickLister?.onClick(i.url)

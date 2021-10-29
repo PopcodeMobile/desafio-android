@@ -9,10 +9,7 @@ data class FavoriteModel(
 
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id: String,
-
-    @ColumnInfo(name = "name")
-    val name: String,
+    val idName: String,
 
     @ColumnInfo(name = "url")
     val url: String

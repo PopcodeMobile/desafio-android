@@ -18,6 +18,7 @@ interface FavoriteDAO {
     @Query("SELECT * FROM favorites WHERE id = :id")
     fun load(id: String): FavoriteModel?
 
-    @Query("SELECT * FROM favorites WHERE url = :url")
+    @Query("SELECT EXISTS(SELECT * FROM favorites WHERE url = :url)")
     fun isFavorite(url: String): Boolean
+
 }

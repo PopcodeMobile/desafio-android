@@ -148,4 +148,11 @@ class CharactersDetailsViewModel(application: Application) : AndroidViewModel(ap
     fun isFavorite(url: String): Boolean {
         return favoriteRepository.isFavorite(url)
     }
+
+    fun deleteFavorite(id: String) {
+        val favorite = favoriteRepository.getLoad(id)
+        if (favorite != null) {
+            favoriteRepository.deleteStudents(favorite)
+        }
+    }
 }

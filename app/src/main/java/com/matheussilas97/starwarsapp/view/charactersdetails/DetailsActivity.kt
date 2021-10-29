@@ -19,6 +19,7 @@ class DetailsActivity : BaseActivity() {
     private var listSpecies = mutableListOf<String>()
 
     private var urlCharacter = ""
+    private var nameCharacter = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,20 +39,26 @@ class DetailsActivity : BaseActivity() {
         observer()
     }
 
-    private fun setStarFavorite() {
-        if (viewModel.isFavorite(urlCharacter)) {
+    private fun setStarFavorite(url: String) {
+        if (viewModel.isFavorite(url)) {
             binding.favorite.setImageResource(R.drawable.ic_star)
         } else {
             binding.favorite.setImageResource(R.drawable.ic_star2)
         }
     }
 
+    private fun changeFavorite() {
+        if (viewModel.isFavorite(urlCharacter)) {
+            viewModel.deleteFavorite(binding.txtName.text.toString())
+            binding.favorite.setImageResource(R.drawable.ic_star2)
+        } else {
+            saveFavorite()
+        }
+    }
+
     private fun setDetails(url: String) {
         viewModel.getDetails(url, this).observe(this, Observer {
             if (it != null) {
-
-                setStarFavorite()
-
                 binding.txtName.text = it.name
                 binding.txtGender.text = it.gender
                 binding.txtHeight.text = it.height
@@ -62,7 +69,9 @@ class DetailsActivity : BaseActivity() {
                 binding.txtYear.text = it.birthYear
                 binding.txtHomeworld.text = ""
 
+                nameCharacter = it.name
                 urlCharacter = it.url
+                setStarFavorite(it.url)
 
                 if (it.homeworld.isNotEmpty()) {
                     getHomeWolrd(it.homeworld)
@@ -121,10 +130,10 @@ class DetailsActivity : BaseActivity() {
             if (it) {
                 val model = FavoriteModel(
                     binding.txtName.text.toString(),
-                    binding.txtName.text.toString(),
                     urlCharacter
                 )
                 viewModel.saveClass(model)
+                binding.favorite.setImageResource(R.drawable.ic_star)
             }
         })
     }
@@ -135,7 +144,8 @@ class DetailsActivity : BaseActivity() {
         }
 
         binding.favorite.setOnClickListener {
-            saveFavorite()
+            changeFavorite()
         }
     }
+
 }

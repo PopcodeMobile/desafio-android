@@ -11,11 +11,11 @@ object ApiFactoryFavorites {
 
     private val authInterceptor = Interceptor { chain ->
 
-        if (statusPrefer == "") {
-            statusPrefer = "status=400"
-        } else {
-            statusPrefer = ""
-        }
+//        if (statusPrefer == "") {
+//            statusPrefer = "status=400"
+//        } else {
+//            statusPrefer = ""
+//        }
 
         val newUrl = chain.request().url
             .newBuilder()
