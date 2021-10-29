@@ -9,10 +9,12 @@
     <string name="gender">Gender</string>
     <string name="birth_year">Birth Year</string>
     <string name="hair_color">Hair color</string>
+    <string name="eye_color">Eye color</string>
     <string name="skin_color">Skin color</string>
     <string name="home_world">Homeworld</string>
     <string name="species">Species</string>
     <string name="no_favorites">No favorite characters</string>
+    <string name="no_species">No species found</string>
     <string name="no_data">Data not found</string>
     <string name="error">An unexpected error happened</string>
     <string name="success_favorite">Favorite character</string>

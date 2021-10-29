@@ -21,8 +21,7 @@ class MainViewModel : ViewModel() {
     private var _currentPage: Long = 1
     val listCharacters = MutableLiveData<CharactersListResponse>()
 
-    fun getListCharacter(context: Context) {
-        val dialog = Utils.showLoading(context, R.string.loading)
+    fun getListCharacter() {
         services.listCharacters(_currentPage).enqueue(object : Callback<CharactersListResponse> {
             override fun onResponse(
                 call: Call<CharactersListResponse>,
@@ -31,16 +30,13 @@ class MainViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     _currentPage++
                     listCharacters.value = response.body()
-                    dialog.dismiss()
                 } else {
                     val a = ""
-                    dialog.dismiss()
                 }
             }
 
             override fun onFailure(call: Call<CharactersListResponse>, t: Throwable) {
                 val a = ""
-                dialog.dismiss()
             }
 
         })

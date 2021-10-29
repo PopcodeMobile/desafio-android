@@ -17,6 +17,7 @@ import com.matheussilas97.starwarsapp.utils.Constants
 import com.matheussilas97.starwarsapp.view.charactersdetails.DetailsActivity
 
 import android.content.DialogInterface
+import com.matheussilas97.starwarsapp.database.model.FavoriteModel
 import com.matheussilas97.starwarsapp.utils.BaseFragment
 
 
@@ -33,33 +34,37 @@ class FavorityFragment : BaseFragment() {
         viewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
 
         viewModel.list()
-        buildList()
+        observer()
 
         return binding.root
     }
 
-    private fun buildList() {
+    private fun observer() {
         viewModel.favoriteList.observe(viewLifecycleOwner, Observer {
             if (!it.isNullOrEmpty()) {
-                val adapter = FavoriteAdapter()
-                binding.recyclerFavorite.layoutManager = LinearLayoutManager(requireContext())
-                binding.recyclerFavorite.adapter = adapter
-                adapter.updateList(it)
-                adapter.addOnItemClickListener(object : FavoriteAdapter.OnItemClickListener {
-                    override fun onClick(url: String) {
-                        val intent = Intent(requireContext(), DetailsActivity::class.java)
-                        intent.putExtra(Constants.URL, url)
-                        startActivity(intent)
-                    }
-
-                    override fun onDelete(id: String) {
-                        dialogDeleteFavorite(id)
-                    }
-
-                })
+                buildList(it)
             }else{
                 setNoResultAdapter(binding.recyclerFavorite, getString(R.string.no_favorites))
             }
+        })
+    }
+
+    private fun buildList(it: List<FavoriteModel>) {
+        val adapter = FavoriteAdapter()
+        binding.recyclerFavorite.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerFavorite.adapter = adapter
+        adapter.updateList(it)
+        adapter.addOnItemClickListener(object : FavoriteAdapter.OnItemClickListener {
+            override fun onClick(url: String) {
+                val intent = Intent(requireContext(), DetailsActivity::class.java)
+                intent.putExtra(Constants.URL, url)
+                startActivity(intent)
+            }
+
+            override fun onDelete(id: String) {
+                dialogDeleteFavorite(id)
+            }
+
         })
     }
 

@@ -36,38 +36,6 @@ class CharactersDetailsViewModel(application: Application) : AndroidViewModel(ap
     private var mSaveFavorite = MutableLiveData<Boolean>()
     val saveFavorite: LiveData<Boolean> = mSaveFavorite
 
-    fun postFavorite(id: String): MutableLiveData<String> {
-        val result = MutableLiveData<String>()
-
-        serviceFavorite.postFavorites(id).enqueue(object : Callback<FavoritesResponse> {
-            override fun onResponse(
-                call: Call<FavoritesResponse>,
-                response: Response<FavoritesResponse>
-            ) {
-                if (response.isSuccessful) {
-                    result.value = response.body()?.message
-                    mSaveStatus.value = true
-                } else {
-                    val errorMessage =
-                        Gson().fromJson(
-                            response.errorBody()?.string(),
-                            FavoriteErrorResponse::class.java
-                        )
-                    val error = errorMessage.errorMessage
-                    result.value = error
-                    mSaveStatus.value = false
-                }
-            }
-
-            override fun onFailure(call: Call<FavoritesResponse>, t: Throwable) {
-                mSaveStatus.value = true
-            }
-
-        })
-
-        return result
-    }
-
     fun getDetails(url: String, context: Context): MutableLiveData<CharactersDetailsResponse> {
         val result = MutableLiveData<CharactersDetailsResponse>()
         val dialog = Utils.showLoading(context, R.string.loading)
@@ -93,12 +61,6 @@ class CharactersDetailsViewModel(application: Application) : AndroidViewModel(ap
         })
 
         return result
-    }
-
-    fun saveClass(favorite: FavoriteModel) {
-//        if (favorite.id == 0) {
-            mSaveFavorite.value = favoriteRepository.addStudents(favorite)
-//        }
     }
 
     fun getHomeWorld(url: String): MutableLiveData<HomeWorldResponse> {
@@ -145,5 +107,45 @@ class CharactersDetailsViewModel(application: Application) : AndroidViewModel(ap
         })
 
         return result
+    }
+
+    fun postFavorite(id: String): MutableLiveData<String> {
+        val result = MutableLiveData<String>()
+
+        serviceFavorite.postFavorites(id).enqueue(object : Callback<FavoritesResponse> {
+            override fun onResponse(
+                call: Call<FavoritesResponse>,
+                response: Response<FavoritesResponse>
+            ) {
+                if (response.isSuccessful) {
+                    result.value = response.body()?.message
+                    mSaveStatus.value = true
+                } else {
+                    val errorMessage =
+                        Gson().fromJson(
+                            response.errorBody()?.string(),
+                            FavoriteErrorResponse::class.java
+                        )
+                    val error = errorMessage.errorMessage
+                    result.value = error
+                    mSaveStatus.value = false
+                }
+            }
+
+            override fun onFailure(call: Call<FavoritesResponse>, t: Throwable) {
+                mSaveStatus.value = true
+            }
+
+        })
+
+        return result
+    }
+
+    fun saveClass(favorite: FavoriteModel) {
+        mSaveFavorite.value = favoriteRepository.addStudents(favorite)
+    }
+
+    fun isFavorite(url: String): Boolean {
+        return favoriteRepository.isFavorite(url)
     }
 }

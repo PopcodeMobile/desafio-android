@@ -34,7 +34,7 @@ class MainFragment : BaseFragment() {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
-        viewModel.getListCharacter(requireContext())
+        viewModel.getListCharacter()
 
 
         observer()
@@ -46,7 +46,7 @@ class MainFragment : BaseFragment() {
     private fun setRecycler() {
         binding.recyclerMain.setHasFixedSize(true)
         val layoutManager =
-            GridLayoutManager(requireContext(), 1, GridLayoutManager.VERTICAL, false)
+            GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
         binding.recyclerMain.layoutManager = layoutManager
         adapter = MainAdapter()
         adapter.clear()
@@ -66,7 +66,7 @@ class MainFragment : BaseFragment() {
             PaginationScrollListener(layoutManager) {
             override fun loadMoreItems() {
                 if (viewModel.isLastPage()) {
-                    viewModel.getListCharacter(requireContext())
+                    viewModel.getListCharacter()
                 }
             }
         })

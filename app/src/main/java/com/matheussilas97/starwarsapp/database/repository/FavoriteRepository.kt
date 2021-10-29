@@ -18,4 +18,6 @@ class FavoriteRepository(context: Context) {
 
     fun getLoad(id: String): FavoriteModel? = mDataBase.load(id)
 
+    fun isFavorite(url: String): Boolean = mDataBase.isFavorite(url)
+
 }

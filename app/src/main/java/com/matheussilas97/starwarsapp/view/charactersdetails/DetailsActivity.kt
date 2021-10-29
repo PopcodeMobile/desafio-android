@@ -1,20 +1,15 @@
 package com.matheussilas97.starwarsapp.view.charactersdetails
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.matheussilas97.starwarsapp.R
-import com.matheussilas97.starwarsapp.api.response.SpeciesResponse
 import com.matheussilas97.starwarsapp.database.model.FavoriteModel
 import com.matheussilas97.starwarsapp.databinding.ActivityDetailsBinding
 import com.matheussilas97.starwarsapp.utils.BaseActivity
 import com.matheussilas97.starwarsapp.utils.Constants
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class DetailsActivity : BaseActivity() {
 
@@ -41,12 +36,22 @@ class DetailsActivity : BaseActivity() {
 
         onClick()
         observer()
+    }
 
+    private fun setStarFavorite() {
+        if (viewModel.isFavorite(urlCharacter)) {
+            binding.favorite.setImageResource(R.drawable.ic_star)
+        } else {
+            binding.favorite.setImageResource(R.drawable.ic_star2)
+        }
     }
 
     private fun setDetails(url: String) {
         viewModel.getDetails(url, this).observe(this, Observer {
             if (it != null) {
+
+                setStarFavorite()
+
                 binding.txtName.text = it.name
                 binding.txtGender.text = it.gender
                 binding.txtHeight.text = it.height
@@ -68,7 +73,7 @@ class DetailsActivity : BaseActivity() {
                 if (!it.species.isNullOrEmpty()) {
                     getSpeciesUrl(it.species)
                 } else {
-                    setNoResultAdapter(binding.recyclerSpecies, "Nenhuma espécie encontrada")
+                    setNoResultAdapter(binding.recyclerSpecies, getString(R.string.no_species))
                 }
             }
         })
