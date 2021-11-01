@@ -35,8 +35,7 @@ class MainFragment : BaseFragment() {
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         viewModel.getListCharacter()
-
-
+        
         observer()
         setRecycler()
 
@@ -77,7 +76,7 @@ class MainFragment : BaseFragment() {
             if (it != null) {
                 adapter.updateTask(it.results)
             } else {
-                setNoResultAdapter(binding.recyclerMain, "No characters found")
+                setNoResultAdapter(binding.recyclerMain, getString(R.string.no_character))
             }
         })
     }

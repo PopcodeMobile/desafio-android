@@ -16,6 +16,7 @@
     <string name="species">Species</string>
     <string name="no_favorites">No favorite characters</string>
     <string name="no_species">No specie found</string>
+    <string name="no_character">No characters found</string>
     <string name="no_data">Data not found</string>
     <string name="error">An unexpected error happened</string>
     <string name="success_favorite">Favorite character</string>
