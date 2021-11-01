@@ -22,7 +22,7 @@ A lista de itens deve exibir as seguintes informações:
 
 Os dados devem ser salvos em banco de dados local para acesso offline e atualizados sempre que a tela for aberta.
 
-OK ### Detalhes do Personagem
+### Detalhes do Personagem  OK
 
 Ao clicar em um item da lista o seu app deve mostrar as informações abaixo:
 
@@ -39,22 +39,22 @@ Ao clicar em um item da lista o seu app deve mostrar as informações abaixo:
 
 A busca pelo nome do planeta e da espécie deve ser feita em paralelo.
 
-OK ### Favoritos
+### Favoritos   OK
 
 Na lista e nos detalhes deve ser possível adicionar e remover um personagem a sua lista de favoritos. Tambem deve ser possível filtrar quais personagens foram favoritados na lista principal.
 
-OK ##### Adição e Remoção de Favoritos
+##### Adição e Remoção de Favoritos   OK
 
 URL BASE: http://private-782d3-starwarsfavorites.apiary-mock.com/
 
-OK Ao adicionar um favorito a aplicação deve fazer um request para a api starwarsfavorites (documentação disponível no topo do documento). 
+Ao adicionar um favorito a aplicação deve fazer um request para a api starwarsfavorites (documentação disponível no topo do documento).  OK
 A aplicação deve:
-OK + Exibir a mensagem de retorno da API em caso de sucesso ou erro.
++ Exibir a mensagem de retorno da API em caso de sucesso ou erro.    OK
 + Reenviar a requisição da próxima vez que o app for aberto em caso de erro.
-OK + Salvar no banco de dados local quais personagens foram favoritados.
-OK + Tratar a remoção de favoritos apenas no banco de dados local.
++ Salvar no banco de dados local quais personagens foram favoritados. OK
++ Tratar a remoção de favoritos apenas no banco de dados local.   OK
 
-OK Em metade das requisições enviadas para a api starwarsfavorites a aplicação deve adicionar o header `Prefer` com o valor `status=400`.
+Em metade das requisições enviadas para a api starwarsfavorites a aplicação deve adicionar o header `Prefer` com o valor `status=400`.   OK
 
 P.S.: O candidato deve escolher o ID.
 
