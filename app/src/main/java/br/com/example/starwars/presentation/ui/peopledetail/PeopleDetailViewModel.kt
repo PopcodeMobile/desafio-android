@@ -1,6 +1,5 @@
 package br.com.example.starwars.presentation.ui.peopledetail
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,11 +10,14 @@ import br.com.example.starwars.domain.entities.Specie
 import br.com.example.starwars.domain.usecase.FavoritePerson
 import br.com.example.starwars.domain.usecase.GetPlanet
 import br.com.example.starwars.domain.usecase.GetSpecie
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PeopleDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class PeopleDetailViewModel @Inject constructor(
     private val getPlanet: GetPlanet,
     private val getSpecie: GetSpecie,
     private val favoritePerson: FavoritePerson
