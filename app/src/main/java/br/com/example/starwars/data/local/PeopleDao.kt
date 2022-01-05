@@ -18,4 +18,7 @@ interface PeopleDao {
 
     @Query("UPDATE people SET favorite = :favorite WHERE id = :id")
     suspend fun updatePerson(favorite: Boolean, id: Int)
+
+    @Query("DELETE FROM people")
+    suspend fun clearPeople()
 }

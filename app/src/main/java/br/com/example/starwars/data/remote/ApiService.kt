@@ -9,7 +9,7 @@ import retrofit2.http.Url
 
 interface ApiService {
 
-    @GET("people/")
+    @GET("people")
     suspend fun getListPeople(@Query("page") page: Int): ApiListPeopleResponse
 
     @GET

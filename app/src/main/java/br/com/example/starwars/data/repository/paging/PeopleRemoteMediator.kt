@@ -21,27 +21,48 @@ class PeopleRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, ApiPeople>
     ): MediatorResult {
+
+        val page = when (loadType) {
+            LoadType.REFRESH -> {
+                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                remoteKeys?.nextKey?.minus(1) ?: PAGE_INDEX
+            }
+            LoadType.PREPEND -> {
+                val remoteKeys = getRemoteKeyForFirstItem(state)
+                val prevKey = remoteKeys?.prevKey
+                if (prevKey == null) {
+                    return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                }
+                prevKey
+            }
+            LoadType.APPEND -> {
+                val remoteKeys = getRemoteKeyForLastItem(state)
+                val nextKey = remoteKeys?.nextKey
+                if (nextKey == null) {
+                    return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                }
+                nextKey
+            }
+        }
+
         return try {
+            val response = apiService.getListPeople(page = page)
+            val endOfPaginationReached = response.people.isEmpty()
 
-            val loadKey = when (loadType) {
-                LoadType.REFRESH -> RemoteKeys(id = 0, next = 1)
-                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-                LoadType.APPEND -> {
-                    state.lastItemOrNull()
-                        ?: return MediatorResult.Success(endOfPaginationReached = true)
-                    getRemoteKeys()
+            dataBase.withTransaction {
+                if (loadType == LoadType.REFRESH) {
+                    dataBase.remoteKeysDao().clearRemoteKeys()
+                    dataBase.peopleDao().clearPeople()
                 }
+                val prevKey = if (page == PAGE_INDEX) null else page - 1
+                val nextKey = if (endOfPaginationReached) null else page + 1
+
+                val key = RemoteKeys(prevKey = prevKey, nextKey = nextKey)
+                dataBase.remoteKeysDao().insert(key)
+                dataBase.peopleDao().insertAll(response.people)
             }
 
-            val response = loadKey?.next?.let { apiService.getListPeople(page = it) }
-            if (response != null) {
-                dataBase.withTransaction {
-                    dataBase.remoteKeysDao()
-                        .saveRemoteKeys(RemoteKeys(0, loadKey.next.plus(1)))
-                    response.people.let { dataBase.peopleDao().insertAll(it) }
-                }
-            }
-            MediatorResult.Success(endOfPaginationReached = response?.people == null)
+            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: IOException) {
             MediatorResult.Error(exception)
         } catch (exception: HttpException) {
@@ -49,7 +70,31 @@ class PeopleRemoteMediator(
         }
     }
 
-    private suspend fun getRemoteKeys(): RemoteKeys? {
-        return dataBase.remoteKeysDao().getRemoteKeys().firstOrNull()
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, ApiPeople>): RemoteKeys? {
+        return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
+            ?.let { repo ->
+                repo.id?.toLong()?.let { dataBase.remoteKeysDao().remoteKeysRepoId(it) }
+            }
+    }
+
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, ApiPeople>): RemoteKeys? {
+        return state.pages.firstOrNull() { it.data.isNotEmpty() }?.data?.firstOrNull()
+            ?.let { repo ->
+                repo.id?.toLong()?.let { dataBase.remoteKeysDao().remoteKeysRepoId(it) }
+            }
+    }
+
+    private suspend fun getRemoteKeyClosestToCurrentPosition(
+        state: PagingState<Int, ApiPeople>
+    ): RemoteKeys? {
+        return state.anchorPosition?.let { position ->
+            state.closestItemToPosition(position)?.id?.let { repoId ->
+                dataBase.remoteKeysDao().remoteKeysRepoId(repoId.toLong())
+            }
+        }
+    }
+
+    companion object {
+        private const val PAGE_INDEX = 1
     }
 }

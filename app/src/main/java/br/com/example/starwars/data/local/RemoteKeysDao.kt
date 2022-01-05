@@ -9,8 +9,11 @@ import br.com.example.starwars.data.entities.RemoteKeys
 @Dao
 interface RemoteKeysDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveRemoteKeys(redditKey: RemoteKeys)
+    suspend fun insert(remoteKey: RemoteKeys)
 
-    @Query("SELECT * FROM remote_keys ORDER BY id DESC")
-    suspend fun getRemoteKeys(): List<RemoteKeys>
+    @Query("SELECT * FROM remote_keys WHERE repoId = :repoId")
+    suspend fun remoteKeysRepoId(repoId: Long): RemoteKeys?
+
+    @Query("DELETE FROM remote_keys")
+    suspend fun clearRemoteKeys()
 }
